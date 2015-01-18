@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.1, December 14, 2014
+ * rash.js - Version 0.1.1, January 18, 2015
  * Copyright (c) 2014, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -55,7 +55,7 @@ jQuery.fn.extend({
 
 $(function() {
     /* Bibliographic reference list */
-    $('.bibliography ul li').sort(function(a,b) {
+    $('.bibliography ul li , .bibliography ol li').sort(function(a,b) {
         var a_text = $(a).text().replace(/ \s+/g," ").split();
         var b_text = $(b).text().replace(/ \s+/g," ").split();
         if (a_text < b_text) {
@@ -65,7 +65,7 @@ $(function() {
         } else {
             return 0;
         }
-    }).appendTo('.bibliography ul');
+    }).appendTo('.bibliography ul , .bibliography ol');
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
@@ -271,7 +271,7 @@ $(function() {
     $(".bibliography ul").replaceWith("<ol>" +$(".bibliography ul").html() + "</ol>");
     /* /END Bibliography */
     
-    /* List */
+    /* List (back-compatibility with RASH version 0.2) */
     /* They must be selected in reverse order because of possible conflicts with nested lists */
     $($("ul[type=number]").get().reverse()).each(function(){
         $(this).replaceWith("<ol>" + $(this).html() + "</ol>");
@@ -279,7 +279,7 @@ $(function() {
     $($("ul[type=bullet]").get().reverse()).each(function(){
         $(this).replaceWith("<ul>" + $(this).html() + "</ul>");
     });
-    /* /END List */
+    /* /END List (back-compatibility with RASH version 0.2)  */
     
     /* Footer */
     var footer = $("<footer class=\"footer hidden-print\"><p>" + 

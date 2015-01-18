@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="rash-2014-12-14.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1, December 14, 2014
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.1, January 18, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -57,14 +57,14 @@ Under the following terms:
         <!-- Abstract -->
         <div class="abstract">
             <h1>Abstract</h1>
-            <p>The current version (0.1) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format (<a href="../grammar/rash-2014-12-14.rng">version 0.2</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version (0.1.1) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format (<a href="../grammar/rash.rng">version 0.3</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a>.</p>
         </div>
         
         <!-- Sections -->
         <div class="section">
             <h1>Introduction</h1>
-            <p>This paper introduces the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <b>24 elements</b> for writing academic research articles. It is possible to includes also <b><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</b> within any element of the language. In addition, this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easyly access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
+            <p>This paper introduces the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <b>25 elements</b> for writing academic research articles. It is possible to includes also <b><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</b> within any element of the language. In addition, this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easyly access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
             <p>Any RASH documents begins as a simple HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <span class="code">html</span>. This latter one contains the element <span class="code">head</span>, for defining metadata, and the element <span class="code">body</span>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
             <p class="code">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -78,7 +78,7 @@ Under the following terms:
     &lt;/body&gt;
 &lt;/html&gt;</p>
             <p>This document presents which elements are specifiable in each of the two document blocks, i.e., metadata and content. In <a class="ref" href="#metadata"></a> we explain how to specify the metadata of the article as appropriate elements within <span class="code">head</span>, while the rest of the document mainly pertains elements within the element <span class="code">body</span>. In particular:</p>
-            <ul type="bullet">
+            <ul>
                 <li><p>in <a class="ref" href="#textualelements"></a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines;</p></li>
                 <li><p>in <a class="ref" href="#sections"></a> we present the hierarchical structures for organising the text, e.g., the sections;</p></li>
                 <li><p>in <a class="ref" href="#floatings"></a> we show how to create figures (both inlines and as separate blocks), tables and formulas (both inlines and as separate blocks);</p></li>
@@ -107,7 +107,7 @@ Under the following terms:
             <div id="author" class="section">
                 <h1>Authors</h1>
                 <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using four distinct elements <span class="code">meta</span>. In particular, each element <span class="code">meta</span> must have the attribute <span class="code">name</span> specified and set according to the pattern <span class="code">author.[id].[data]</span>, where <q>[id]</q> is a unique identifier for the author, while <q>[data]</q> is the particular kind of information we want to refer to for that author. There exist four differet kinds of information we must specify, i.e.:</p>
-                <ul type="bullet">
+                <ul>
                     <li><p><b>number</b>, i.e., the position of the author in the list of author of the paper;</p></li>
                     <li><p><b>name</b>, i.e., the full name of the author as it should appear in the paper;</p></li>
                     <li><p><b>email</b>, i.e., the email address of the author;</p></li>
@@ -168,12 +168,12 @@ Under the following terms:
             
             <div class="section" id="lists">
                 <h1>Lists</h1>
-                <p>The list are self-contained blocks that must be used outside paragraphs and that allow us to structure test as a sequence of item. The element for defining lists is <span class="code">ul</span>. It comes with a mandatory attribute <span class="code">type</span> set to <q>bullet</q> for unordered lists, and to <q>number</q> for ordered lists.</p>
+                <p>The list are self-contained blocks that must be used outside paragraphs and that allow us to structure test as a sequence of item. The elements for defining lists are <span class="code">ul</span> (for unordered lists) and <span class="code">ol</span> (for ordered lists).</p>
                 <p>Each list element can contain only <span class="code">li</span> elements, i.e., list items; the latter ones <b>cannot</b> contain text directly, but can contain other blocks (see <a href="#paragraphs"></a>) and sections (see <a href="#sections"></a>).</p>
                 <p>An example of these two kinds of list is shown in the following excerpt.</p>
                 <p class="code">
 &lt;!-- An unordered list --&gt;
-&lt;ul type="bullet"&gt;
+&lt;ul&gt;
     &lt;li&gt;&lt;p&gt;A list item of an unordered list containing a paragraph.&lt;/p&gt;&lt;/li&gt;
     &lt;li&gt;
         &lt;p&gt;Another item.&lt;/p&gt;
@@ -182,9 +182,9 @@ Under the following terms:
 &lt;/ul&gt;
 
 &lt;!-- An ordered list --&gt;
-&lt;ul type="number"&gt;
+&lt;ol&gt;
     &lt;li&gt;&lt;p&gt;A list item of an ordered list.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;</p>
+&lt;/ol&gt;</p>
             </div>
             
             <div class="section" id="inlines">
@@ -293,10 +293,10 @@ Under the following terms:
                     <p class="caption">Caption of the table.</p>
                 </div>
                 <p>Each table box is composed by two distinct and mandatory elements:</p> 
-                <ul type="bullet">
+                <ul>
                     <li>
                         <p><span class="code">table</span>, which must contain at least one table row (i.e., the element <span class="code">tr</span>) composed by one or more table cells, that can be</p> 
-                        <ul type="bullet">
+                        <ul>
                             <li><p>heading cells (element <span class="code">th</span>) that can contains text and inline elements as introduced in <a class="ref" href="#inlines"></a>;</p></li>
                             <li><p>data cells (element <span class="code">td</span>) that can contains one or more paragraphs (cf. <a href="#paragraphs" class="ref"></a>).</p></li>
                         </ul>
@@ -532,12 +532,12 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
         <!-- References -->
         <div id="bibreflist" class="bibliography">
             <h1>References</h1>
-            <ul type="number">
+            <ol>
                 <li id="Per2014"><p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a></p></li>
                 <li id="ParagraphWikipedia"><p>Wikipedia entry <q>Paragraph</q>. <a href="https://en.wikipedia.org/wiki/Paragraph">https://en.wikipedia.org/wiki/Paragraph</a> (last visited, December 17, 2014).</p></li>
                 <li id="CDN2014"><p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a></p></li>
                 <li id="RDFa2013"><p>Sporny, M. (2013). HTML+RDFa 1.1: Support for RDFa in HTML4 and HTML5. W3C Recommendation, 22 August 2013. World Wide Web Consortium. Retrieved from http://www.w3.org/TR/rdfa-in-html/</p></li>
-            </ul>
+            </ol>
         </div>
         
         <!-- Footnotes -->
