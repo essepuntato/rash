@@ -2,7 +2,7 @@
 <?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.1, January 18, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.2, February 9, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -463,7 +463,7 @@ Under the following terms:
         
         <div id="referencing" class="section">
             <h1>Referencing things</h1>
-            <p>All the sections (e.g., <a class="ref" href="#sections"></a>), figures (e.g., <a class="ref" href="#figure_1"></a>), tables (e.g., <a class="ref" href="#table_1"></a>), formulas (e.g., <a class="ref" href="#formula_1"></a>), bibliographic references (e.g., <a class="ref" href="#Per2014"></a>) and footnotes (e.g., <a class="footnote" href="#fn3"></a>) can be referenced within the text by using the <b>empty</b> element <span class="code">a</span>. It must have the attribute <span class="code">href</span> pointing to an element <span class="code">id</span> of the document (preceded by the character <q>#</q>), and the attribute <span class="code">class</span> set to <q>footnote</q> (for referring to footnotes) and <q>ref</q> in the other cases.</p>
+            <p>All the sections (e.g., <a class="ref" href="#sections"></a>), figures (e.g., <a class="ref" href="#figure_1"></a>), tables (e.g., <a class="ref" href="#table_1"></a>), formulas (e.g., <a class="ref" href="#formula_1"></a>), bibliographic references (e.g., <a class="ref" href="#Per2014"></a>), footnotes (e.g., <a class="footnote" href="#fn3"></a>) and even multiple footnotes (e.g., <a class="footnote" href="#fn5"></a><a class="footnote" href="#fn4"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <b>empty</b> element <span class="code">a</span>. It must have the attribute <span class="code">href</span> pointing to an element <span class="code">id</span> of the document (preceded by the character <q>#</q>), and the attribute <span class="code">class</span> set to <q>footnote</q> (for referring to footnotes) and <q>ref</q> in the other cases.</p>
             <p>For instance, the reference pointers introduced in the above paragraph are defined in RASH through the following code.</p>
             <p class="code">
 &lt;p&gt;
@@ -471,9 +471,13 @@ Under the following terms:
     figures (e.g., &lt;a class="ref" href="#figure_1"&gt;&lt;/a&gt;), tables (e.g., 
     &lt;a class="ref" href="#table_1"&gt;&lt;/a&gt;), formulas (e.g., 
     &lt;a class="ref" href="#formula_1"&gt;&lt;/a&gt;), bibliographic references 
-    (e.g., &lt;a class="ref" href="#Per2014"&gt;&lt;/a&gt;) and footnotes 
-    (e.g., &lt;a class="footnote" href="#fn3"&gt;&lt;/a&gt;) can be referenced within 
-    the text by using the &lt;b&gt;empty&lt;/b&gt; element &lt;span class="code"&gt;a&lt;/span&gt;.
+    (e.g., &lt;a class="ref" href="#Per2014"&gt;&lt;/a&gt;), footnotes 
+    (e.g., &lt;a class="footnote" href="#fn3"&gt;&lt;/a&gt;) and even multiple 
+    footnotes (e.g., &lt;a class="footnote" href="#fn5"&gt;&lt;/a&gt;
+    &lt;a class="footnote" href="#fn4"&gt;&lt;/a&gt;, that will be 
+    automatically separated through a &lt;q&gt;&lt;sup&gt;,&lt;/sup&gt;&lt;/q&gt;) 
+    can be referenced within the text by using the &lt;b&gt;empty&lt;/b&gt;
+    element &lt;span class="code"&gt;a&lt;/span&gt;.
 &lt;/p&gt;</p>
         </div>
         

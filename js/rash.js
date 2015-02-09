@@ -1,5 +1,4 @@
 /*
- * rash.js - Version 0.1.1, January 18, 2015
  * Copyright (c) 2014, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -126,7 +125,21 @@ $(function() {
 
     /* Footnotes (part 2) */
     $(".footnote").each(function() {
-        var prev_el = $(this).prev();
+        var cur_contents = $(this).parent().contents();
+        var cur_index = cur_contents.index($(this));
+        var prev_tmp = null;
+        while (cur_index > 0 && !prev_tmp) {
+            cur_prev = cur_contents[cur_index - 1];
+            if (cur_prev.nodeType != 3 || $(cur_prev).text().replace(/ /g,'') != '') {
+                prev_tmp = cur_prev;
+            } else {
+                cur_index--;
+            }
+        }
+        var prev_el = $(prev_tmp);
+        console.log($(this));
+        console.log(prev_el);
+        
         var current_id = $(this).attr("href");
         var footnote_element = $(current_id);
         if (footnote_element.length > 0 && footnote_element.parent(".footnotes").length > 0) {

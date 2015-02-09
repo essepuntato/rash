@@ -30,7 +30,11 @@ body { counter-reset: fn_pointer; }
 /* /END Footnote counters */
 
 /* Figure, table and formula */
-body { counter-reset: pictures tables formulas; }
+body { 
+    counter-reset: pictures; 
+    counter-reset: tables; 
+    counter-reset: formulas; 
+}
 
 img {
     max-width:90%;
@@ -52,6 +56,7 @@ table {
 .table {
     counter-increment: tables;
 }
+
 .table .caption:before {
     content: "Table " counter(tables) ". ";
     font-weight:bold;
