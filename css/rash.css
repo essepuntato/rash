@@ -45,30 +45,6 @@ table {
     max-width:90%;
 }
 
-.picture {
-    counter-increment: pictures;
-}
-.picture .caption:before {
-    content: "Figure " counter(pictures) ". ";
-    font-weight:bold;
-}
-
-.table {
-    counter-increment: tables;
-}
-
-.table .caption:before {
-    content: "Table " counter(tables) ". ";
-    font-weight:bold;
-}
-
-.formula {
-    counter-increment: formulas;
-}
-.formula p:after {
-    content: " (" counter(formulas) ")";
-}
-
 .picture, .table, .formula {
     margin-top: 2em;
     margin-bottom: 2em;

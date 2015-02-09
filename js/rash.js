@@ -83,6 +83,20 @@ $(function() {
     $(".footnotes").prepend("<h1>Footnotes</h1>");
     /* /END Footnotes (part one) */
     
+    /* Captions */
+    $(".picture .caption").each(function() {
+        var cur_number = $(this).parent().findNumber(".picture");
+        $(this).html("<b>Figure " + cur_number + ".</b> " + $(this).html());
+    });
+    $(".table .caption").each(function() {
+        var cur_number = $(this).parent().findNumber(".table");
+        $(this).html("<b>Table " + cur_number + ".</b> " + $(this).html());
+    });
+    $(".formula p").each(function() {
+        var cur_number = $(this).parent().findNumber(".formula");
+        $(this).html($(this).html() + " (" + cur_number + ")");
+    });
+    /* /END Captions */
     
     /* References */
     $("a.ref").each(function() {
@@ -137,9 +151,6 @@ $(function() {
             }
         }
         var prev_el = $(prev_tmp);
-        console.log($(this));
-        console.log(prev_el);
-        
         var current_id = $(this).attr("href");
         var footnote_element = $(current_id);
         if (footnote_element.length > 0 && footnote_element.parent(".footnotes").length > 0) {
