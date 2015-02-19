@@ -2,7 +2,7 @@
 <?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.2, February 9, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.3, February 19, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -24,15 +24,17 @@ Under the following terms:
         <!-- Visualisation requirements (mandatory for optimal reading) -->
         <meta charset="UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
         <link rel="stylesheet" href="../css/bootstrap.min.css" />
         <link rel="stylesheet" href="../css/rash.css"/>
+        
         <script src="../js/jquery.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
         <script src="../js/rash.js"></script>
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.1, December 14, 2014</title>
+        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.1.3, February 19, 2014</title>
         
         <!-- Author's data (one or more) -->
         <meta content="Silvio Peroni" name="author.sp.name"/>
@@ -57,7 +59,7 @@ Under the following terms:
         <!-- Abstract -->
         <div class="abstract">
             <h1>Abstract</h1>
-            <p>The current version (0.1.1) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format (<a href="../grammar/rash.rng">version 0.3</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version (0.1.3) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format (<a href="../grammar/rash.rng">version 0.3</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a>.</p>
         </div>
         
@@ -84,7 +86,7 @@ Under the following terms:
                 <li><p>in <a class="ref" href="#floatings"></a> we show how to create figures (both inlines and as separate blocks), tables and formulas (both inlines and as separate blocks);</p></li>
                 <li><p>in <a class="ref" href="#references"></a> we introduce how to define the bibliographic reference of a paper;</p></li>
                 <li><p>in <a class="ref" href="#footnotes"></a> we show how to define footnotes related to a document;</p></li>
-                <li><p>in <a class="ref" href="#references"></a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc.;</p></li>
+                <li><p>in <a class="ref" href="#referencing"></a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc.;</p></li>
                 <li><p>in <a class="ref" href="#rdfa"></a> we present how to add RDFa annotation on the papers in RASH format.</p></li>
             </ul>
             <p>Finally, in <a class="ref" href="#visualisation"></a> we discuss how RASH files are actually rendered by the browser, by means of using external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>.</p>
@@ -512,7 +514,7 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
         
         <div id="visualisation" class="section">
             <h1>Visualisation</h1>
-            <p>The whole visualisation of this document (as any other RASH document) is rendered by the browser in the current form by means of appropriate <a href="http://www.w3.org/Style/CSS/specs.en.html">CSS3</a> stylesheets and javascript scripts developed for this purpose. We are actually some external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>, in order to guarantee this clear visualisation and for adding additional tools to the user – such as the footbar with statistics about the paper (i.e., number of words, figures, tables and formulas), the automatic reordering of footnotes and references, the visualisation of the metadata of the paper, etc.</p>
+            <p>The whole visualisation of this document (as any other RASH document) is rendered by the browser in the current form by means of appropriate <a href="http://www.w3.org/Style/CSS/specs.en.html">CSS3</a> stylesheets and javascript scripts developed for this purpose. We are actually some external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>, in order to guarantee this clear visualisation and for adding additional tools to the user – such as the footbar with statistics about the paper (i.e., number of words, figures, tables and formulas) and with a menu to change the actual layout of the page (the layouts currently available are: Web-based and Springer's <a href="http://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Lecture Note in Computer Science</a>), the automatic reordering of footnotes and references, the visualisation of the metadata of the paper, etc.</p>
             <p>In order to permit a correct visualisation of RASH documents, it is needed to add few line of HTML code at the very beginning of the document, within the element <span class="code">head</span>, as shown in the following excerpt.</p>
             <p class="code">
 &lt;!-- Visualisation requirements (mandatory for optimal reading) --&gt;

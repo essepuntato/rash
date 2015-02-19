@@ -1,5 +1,5 @@
 /* 
-rash.css - Version 0.1, December 14, 2014
+rash.css - Version 0.2, February 19, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -30,12 +30,6 @@ body { counter-reset: fn_pointer; }
 /* /END Footnote counters */
 
 /* Figure, table and formula */
-body { 
-    counter-reset: pictures; 
-    counter-reset: tables; 
-    counter-reset: formulas; 
-}
-
 img {
     max-width:90%;
     height:auto;
@@ -148,8 +142,21 @@ body {
   padding: 20px;
 }
 
-.footer span {
+.footer span , .footer div {
     margin-left: 30px;
+}
+
+#layoutselection {
+    margin-left: 0px;
+    margin-right: 5px;
+}
+
+.footer div {
+    margin-top:-5px;
+}
+
+.footer p {
+    display: inline;
 }
 /* /END Footer */
 

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2014, Silvio Peroni <essepuntato@gmail.com>
+ * rash.js - Version 0.3, February 19, 2015
+ * Copyright (c) 2014-2015, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
  * or without fee is hereby granted, provided that the above copyright notice and this 
@@ -49,6 +50,245 @@ jQuery.fn.extend({
         } else {
             return cur_count;
         }
+    },
+    changeCSS: function(currentStyle) {
+        if (currentStyle) {
+            var current_path = null;
+            $("link[rel='stylesheet']").each(function() {
+                if (current_path == null) {
+                    var cur_href = $(this).attr("href");
+                    if (cur_href.match(/\.css$/)) {
+                        var cur_index = cur_href.lastIndexOf("/");
+                        if (cur_index < 0) {
+                            current_path = "";
+                        } else {
+                            current_path = cur_href.substring(0, cur_index + 1);
+                        }
+                    }
+                }
+            });
+            if (current_path == null) {
+                current_path = "";
+            }
+            
+            if (currentStyle == "#rash_web_based_layout") {
+                $("link[rel='stylesheet']").remove();
+                var bootstrap_css = $("<link rel=\"stylesheet\" href=\"" + current_path + "bootstrap.min.css\"/>");
+                var rash_css = $("<link rel=\"stylesheet\" href=\"" + current_path + "rash.css\"/>");
+                bootstrap_css.appendTo($("head"));
+                rash_css.appendTo($("head"));
+                $("#layoutselection").text("Web-based");
+                $(this).hideCSS();
+                $(this).addHeaderHTML();
+                $(this).orderCaptions(false);
+            } else if (currentStyle == "#rash_lncs_layout") {
+                $("link[rel='stylesheet']").remove();
+                var lncs_css = $("<link rel=\"stylesheet\" href=\"" + current_path + "lncs.css\"/>");
+                lncs_css.appendTo($("head"));
+                $("#layoutselection").text("Springer LNCS");
+                $(this).hideCSS();
+                $(this).addHeaderLNCS();
+                $(this).orderCaptions(true, $(".table"));
+            }
+        }
+    },
+    toggleCSS: function() {
+        $(".footer ul").toggle();
+    },
+    hideCSS: function() {
+        $(".footer ul").hide();
+    },
+    addHeaderHTML: function() {
+        /* Reset header */
+        $("header").remove();
+        $("p.keywords").remove();
+    
+        /* Header title */
+        var header = $("<header class=\"page-header container\"></header>");
+        header.prependTo($("body"))
+        var title_string = "";
+        var title_split = $("head title").html().split(" -- ");
+        if (title_split.length == 1) {
+            title_string = title_split[0];
+        } else {
+            title_string = title_split[0] + "<br /><small>" + title_split[1] + "</small>";
+        }
+        
+        header.append("<h1 class=\"title\">" + title_string + "</h1>")
+        /* /END Header title */
+    
+        /* Header author */
+        var author_data = {};
+        $("head meta[name^='author.']").each(function() {
+            var current_value = $(this).attr("name");
+            var current_id = current_value.replace(/author\.(.+)\..+/gi, "$1");
+            var current_key = current_value.replace(/author\..+\.(.+)/gi, "$1");
+            if (!author_data.hasOwnProperty(current_id)) {
+                author_data[current_id] = {};
+            }
+            author_data[current_id][current_key] = $(this).attr("content");
+        });
+        
+        var list_of_authors = [];
+        for (var author_id in author_data) {
+            list_of_authors.push(author_data[author_id]);
+        }
+        list_of_authors.sort(function(a,b) { return parseInt(a.number) - parseInt(b.number)});
+        
+        for (var i = 0; i < list_of_authors.length; i++) {
+            var author = list_of_authors[i];
+            var author_element = $("<address class=\"lead authors\"></address>");
+            if (author.hasOwnProperty("name")) {
+                var name_element_string = "<strong class=\"author_name\">" + author.name + "</strong>"
+                if (author.hasOwnProperty("email")) {
+                    name_element_string += " <code class=\"email\"><a href=\"mailto:" + author.email + "\">" + author.email + "</a></code>";
+                }
+                author_element.append(name_element_string);
+            }
+            if (author.hasOwnProperty("affiliation")) {
+                var current_author_affiliations = author.affiliation.split(";");
+                for (var j = 0; j < current_author_affiliations.length; j++) {
+                    author_element.append(
+                        "<br /><span class=\"affiliation\">" + current_author_affiliations[j].replace(/@/g, ", ").trim() + "</span>");
+                }
+            }
+            if (i == 0) {
+                author_element.insertAfter($("header h1"));
+            } else {
+                author_element.insertAfter($("header address:last-of-type"));
+            }
+        }
+        /* /END Header author */
+        
+        /* ACM subjects */
+        var categories = $("meta[name='category']");
+        if (categories.length > 0) {
+            var list_of_categories = $("<p class=\"acm_subject_categories\"><strong>ACM Subject Categories</strong></p>");
+            categories.each(function() {
+                list_of_categories.append("<br /><code>" + $(this).attr("content").split(",").join(", ") + "</code>");
+            });
+            list_of_categories.appendTo(header);
+        }
+        /* /END ACM subjects */
+        
+        /* General terms */
+        var terms = $("meta[name='generalterm']");
+        if (terms.length > 0) {
+            var list_of_terms = $("<ul class=\"list-inline\"></ul>");
+            terms.each(function() {
+                list_of_terms.append("<li><code>" + $(this).attr("content") + "</code></li>");
+            });
+            $("<p class=\"acm_general_terms\"><strong>General Terms</strong></p>").append(list_of_terms).appendTo(header);
+        }
+        /* /END General terms */
+        
+        /* Keywords */
+        var keywords = $("meta[name='keyword']");
+        if (keywords.length > 0) {
+            var list_of_keywords = $("<ul class=\"list-inline\"></ul>");
+            keywords.each(function() {
+                list_of_keywords.append("<li><code>" + $(this).attr("content") + "</code></li>");
+            });
+            $("<p class=\"keywords\"><strong>Keywords</strong></p>").append(list_of_keywords).appendTo(header);
+        }
+        /* /END Keywords */
+    },
+    /* This function modifies the current structure of the page in order to follow the
+     * layout specification of the Lecture Notes in Computer Science by Springer. */
+    addHeaderLNCS: function() {
+        /* Initialise the page again */
+        $(this).addHeaderHTML();
+        
+        /* Authors */
+        var authors = $("<address class=\"lead authors\"></address>");
+        
+        /* Find all affiliations */
+        var list_of_affiliations = [];
+        $("header .authors .affiliation").each(function () {
+            var cur_affiliation = $(this).text().trim();
+            if (list_of_affiliations.indexOf(cur_affiliation) == -1) {
+                list_of_affiliations.push(cur_affiliation);
+            }
+        });
+        
+        /* Find all authors metadata */
+        var author_names = [];
+        var author_affiliation_index = [];
+        var author_email = [];
+        $("header .authors").each(function() {
+            /* Name */
+            author_names.push($(this).find(".author_name").text().trim());
+            
+            /* Affiliation index */
+            cur_affiliation_indexes = [];
+            $(this).find(".affiliation").each(function() {
+                cur_affiliation_indexes.push(list_of_affiliations.indexOf($(this).text().trim()) + 1);
+            });
+            author_affiliation_index.push(cur_affiliation_indexes);
+            
+            /* Email */
+            author_email.push($(this).find(".email a").text().trim());
+        });
+        
+        /* Add authors' names + affiliation number */
+        for (var i = 0; i < author_names.length; i++) {
+            var cur_affiliation_index = "";
+            if (list_of_affiliations.length > 1) {
+                cur_affiliation_index += "<sup>";
+                for (var j = 0; j < author_affiliation_index[i].length; j++) {
+                    if (j > 0) {
+                        cur_affiliation_index += ", ";
+                    }
+                    cur_affiliation_index += author_affiliation_index[i][j];
+                }
+                cur_affiliation_index += "</sup>";
+            }
+            authors.append($("<strong class=\"author_name\">" + author_names[i] + cur_affiliation_index + "</strong>"));
+        }
+        
+        /* Affiliation */
+        authors.append("<br /><br />");
+        var affiliations = $("<span class=\"affiliation\"></span>");
+        for (var i = 0; i < list_of_affiliations.length; i++) {
+            if (i > 0) {
+                affiliations.append("<br />");
+            }
+            if (list_of_affiliations.length > 1) {
+                affiliations.append("<sup>" + (i+1) + "</sup> ");
+            }
+            affiliations.append(list_of_affiliations[i]);
+        }
+        affiliations.appendTo(authors);
+        
+        /* Emails */
+        authors.append("<br />");
+        var emails = $("<code class=\"email\"></code>");
+        for (var i = 0; i < author_email.length; i++) {
+            if (i > 0) {
+               emails.append(", "); 
+            }
+            emails.append(author_email[i]);
+        }
+        emails.appendTo(authors);
+        
+        /* Remove the all authors' metadata and add the new one */
+        $("header address").remove();
+        authors.appendTo($("header"));
+        
+        /* Keywords */
+        $("header p.keywords").appendTo("div.abstract");
+        /* /END Authors */
+    },
+    /* It reorder the captions */
+    orderCaptions: function(captionFirst, listOfElements) {
+        listOfElements = typeof listOfElements !== "undefined" ? listOfElements : $(".table, .picture");
+        listOfElements.each(function()  {
+            if (captionFirst) {
+                $(this).find(".caption").prependTo($(this));
+            } else {
+                $(this).find(".caption").appendTo($(this));
+            }
+        });
     }
 });
 
@@ -206,90 +446,9 @@ $(function() {
     });
     /* /END Blockquote */
     
-    /* Header title */
-    var header = $("<header class=\"page-header container\"></header>");
-    header.prependTo($("body"))
-    var title_string = "";
-    var title_split = $("head title").html().split(" -- ");
-    if (title_split.length == 1) {
-        title_string = title_split[0];
-    } else {
-        title_string = title_split[0] + "<br /><small>" + title_split[1] + "</small>";
-    }
-    
-    header.append("<h1 class=\"title\">" + title_string + "</h1>")
-    /* /END Header title */
-    
-    /* List of authors */
-    var author_data = {};
-    $("head meta[name^='author.']").each(function() {
-        var current_value = $(this).attr("name");
-        var current_id = current_value.replace(/author\.(.+)\..+/gi, "$1");
-        var current_key = current_value.replace(/author\..+\.(.+)/gi, "$1");
-        if (!author_data.hasOwnProperty(current_id)) {
-            author_data[current_id] = {};
-        }
-        author_data[current_id][current_key] = $(this).attr("content");
-    });
-    
-    var list_of_authors = [];
-    for (var author_id in author_data) {
-        list_of_authors.push(author_data[author_id]);
-    }
-    list_of_authors.sort(function(a,b) { return parseInt(a.number) - parseInt(b.number)});
-    
-    for (var i = 0; i < list_of_authors.length; i++) {
-        var author = list_of_authors[i];
-        var author_element = $("<address class=\"lead\"></address>");
-        if (author.hasOwnProperty("name")) {
-            var name_element_string = "<strong>" + author.name + "</strong>"
-            if (author.hasOwnProperty("email")) {
-                name_element_string += " <code><a href=\"mailto:" + author.email + "\">" + author.email + "</a></code>";
-            }
-            author_element.append(name_element_string);
-        }
-        if (author.hasOwnProperty("affiliation")) {
-            var current_author_affiliations = author.affiliation.split(";");
-            for (var j = 0; j < current_author_affiliations.length; j++) {
-                author_element.append("<br />" + current_author_affiliations[j].replace(/@/g, ", ").trim());
-            }
-        }
-        author_element.appendTo(header);
-    }
-    /* /END List of authors */
-    
-    /* ACM subjects */
-    var categories = $("meta[name='category']");
-    if (categories.length > 0) {
-        var list_of_categories = $("<p><strong>ACM Subject Categories</strong></p>");
-        categories.each(function() {
-            list_of_categories.append("<br /><code>" + $(this).attr("content").split(",").join(", ") + "</code>");
-        });
-        list_of_categories.appendTo(header);
-    }
-    /* /END ACM subjects */
-    
-    /* General terms */
-    var terms = $("meta[name='generalterm']");
-    if (terms.length > 0) {
-        var list_of_terms = $("<ul class=\"list-inline\"></ul>");
-        terms.each(function() {
-            list_of_terms.append("<li><code>" + $(this).attr("content") + "</code></li>");
-        });
-        $("<p><strong>General Terms</strong></p>").append(list_of_terms).appendTo(header);
-    }
-    /* /END General terms */
-    
-    /* Keywords */
-    var keywords = $("meta[name='keyword']");
-    if (keywords.length > 0) {
-        var list_of_keywords = $("<ul class=\"list-inline\"></ul>");
-        keywords.each(function() {
-            list_of_keywords.append("<li><code>" + $(this).attr("content") + "</code></li>");
-        });
-        $("<p><strong>Keywords</strong></p>").append(list_of_keywords).appendTo(header);
-    }
-    /* /END Keywords */
+    /* Set header */
+    $(this).addHeaderHTML();
+    /* /END Set header */
     
     /* Bibliography */
     $(".bibliography ul").replaceWith("<ol>" +$(".bibliography ul").html() + "</ol>");
@@ -311,7 +470,30 @@ $(function() {
         "<span>Figures: " + $("body").countElements("div.picture img") + "</span>" +
         "<span>Tables: " + $("body").countElements("table") + "</span>" +
         "<span>Formulas: " + $("body").countElements("div.formula") + "</span>" +
+        "<div class=\"btn-group dropup\">" +
+            "<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" " + 
+                "aria-expanded=\"false\" onClick=\"$(this).toggleCSS()\">" + 
+                "Layout: <span id=\"layoutselection\">Web-based</span><span class=\"caret\"></span></button>" +
+            "<ul class=\"dropdown-menu\" role=\"menu\">" +
+                "<li><a href=\"#rash_web_based_layout\" onClick=\"$(this).changeCSS('#rash_web_based_layout')\">Web-based</a></li>" +
+                "<li><a href=\"#rash_lncs_layout\" onClick=\"$(this).changeCSS('#rash_lncs_layout')\">Springer LNCS</a></li>" +
+            "</ul>" +
+        "</div>" +
         "</p></footer>");
     footer.appendTo($("body"))
     /* /END Footer */
+    
+    /* General function for loading CSS */
+    var currentStyle = document.location.hash;
+    $(this).changeCSS(currentStyle);
+    
+    /* This will be run only when the status (via hash in the URL) changes */
+    $(window).on('hashchange',function() { 
+        var currentStyle = document.location.hash;
+        if (!currentStyle) {
+            currentStyle = "#rash_web_based_layout";
+        }
+        $(this).changeCSS(currentStyle);
+    });
+    /* /END General function for loading CSS */
 });
