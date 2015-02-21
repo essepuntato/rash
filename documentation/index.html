@@ -2,7 +2,7 @@
 <?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.1.3, February 19, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.2, February 20, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -16,10 +16,14 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 Under the following terms:
 * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 -->
-<html prefix="
-    fabio: http://purl.org/spar/fabio/
-    cito: http://purl.org/spar/cito/
-    rash: http://cs.unibo.it/save-sd/rash/">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    prefix="
+        schema: http://schema.org/
+        prism: http://prismstandard.org/namespaces/basic/2.0/
+        fabio: http://purl.org/spar/fabio/
+        cito: http://purl.org/spar/cito/
+        rash: http://cs.unibo.it/save-sd/rash/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
         <meta charset="UTF-8"></meta>
@@ -34,44 +38,64 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.1.3, February 19, 2014</title>
+        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.2, February 20, 2014</title>
         
         <!-- Author's data (one or more) -->
-        <meta content="Silvio Peroni" name="author.sp.name"/>
-        <meta content="silvio.peroni@unibo.it" name="author.sp.email"/>
+        <meta about="sp" name="dc.creator" content="Silvio Peroni"/>
+        <meta about="sp" property="schema:email" content="silvio.peroni@unibo.it" />
+        <link about="sp" property="schema:affiliation" href="cs-unibo" />
+        
+        <!-- Affiliations -->
         <meta 
-            content="Department of Computer Science and Engineering@University of Bologna@Bologna@Italy" 
-            name="author.sp.affiliation"/>
-        <meta content="1" name="author.sp.number"/>
+            about="cs-unibo" property="schema:name" 
+            content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy" />
         
         <!-- Paper keywords (one or more) -->
-        <meta content="markup language" name="keyword"/>
-        <meta content="HTML" name="keyword"/>
+        <meta property="prism:keyword" content="markup language"/>
+        <meta property="prism:keyword" content="HTML"/>
         
         <!-- ACM category (one or more) -->
-        <meta name="category" content="I.7.2,Document And Text Processing,Document Capture,Document analysis"/>
-        
-        <!-- ACM general terms (one or more) -->
-        <meta name="generalterm" content="Theory"/>
+        <meta name="dcterms.subject" content="I.7.2,Document And Text Processing,Document Capture,Document analysis"/>
         <!-- /END Metadata -->
+        
+        <!-- Adding Turtle to the document -->
+        <script type="text/turtle">
+            <![CDATA[
+            @prefix pro: <http://purl.org/spar/pro/> .
+            @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+            <sp> a foaf:Person ;
+                foaf:givenName "Silvio" ;
+                foaf:familyName "Peroni" ;
+                foaf:homepage <http://www.essepuntato.it> ;
+                pro:holdsRoleInTime [
+                    a pro:RoleInTime ;
+                    pro:withRole pro:author ;
+                    pro:relatesToDocument <>
+                ] .
+            ]]>
+        </script>
     </head>
     <body>
         <!-- Abstract -->
         <div class="abstract">
             <h1>Abstract</h1>
-            <p>The current version (0.1.3) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format (<a href="../grammar/rash.rng">version 0.3</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
-            <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a>.</p>
+            <p>The current version (0.2) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) (<a href="../grammar/rash.rng">version 0.3</a>, available also as a pure <a href="../grammar/rash-html.rng">HTML grammar</a> without the specification of the default namespace), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </div>
         
         <!-- Sections -->
         <div class="section">
             <h1>Introduction</h1>
-            <p>This paper introduces the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <b>25 elements</b> for writing academic research articles. It is possible to includes also <b><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</b> within any element of the language. In addition, this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easyly access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
-            <p>Any RASH documents begins as a simple HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <span class="code">html</span>. This latter one contains the element <span class="code">head</span>, for defining metadata, and the element <span class="code">body</span>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
+            <p>This paper introduces the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) format, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <b>25 elements</b> for writing academic research articles. It is possible to includes also <b><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</b> within any element of the language. In addition, this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easily access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
+            <p>Any RASH documents begins as a simple (X)HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <span class="code">html</span> with the usual namespace and with additional (and mandatory) prefix declarations (through the attribute <span class="code">prefix</span>). The element <span class="code">html</span> contains the element <span class="code">head</span>, for defining metadata of the document, and the element <span class="code">body</span>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
             <p class="code">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE html&gt;
-&lt;html&gt;
+&lt;html
+    xmlns="http://www.w3.org/1999/xhtml"
+    prefix="
+        schema: http://schema.org/
+        prism: http://prismstandard.org/namespaces/basic/2.0/"&gt;
     &lt;head&gt;
         &lt;-- Metadata about the document --&gt;
     &lt;/head&gt;
@@ -87,7 +111,7 @@ Under the following terms:
                 <li><p>in <a class="ref" href="#references"></a> we introduce how to define the bibliographic reference of a paper;</p></li>
                 <li><p>in <a class="ref" href="#footnotes"></a> we show how to define footnotes related to a document;</p></li>
                 <li><p>in <a class="ref" href="#referencing"></a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc.;</p></li>
-                <li><p>in <a class="ref" href="#rdfa"></a> we present how to add RDFa annotation on the papers in RASH format.</p></li>
+                <li><p>in <a class="ref" href="#rdfa"></a> we present how to add RDF annotations on the papers in RASH format.</p></li>
             </ul>
             <p>Finally, in <a class="ref" href="#visualisation"></a> we discuss how RASH files are actually rendered by the browser, by means of using external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>.</p>
         </div>
@@ -108,45 +132,62 @@ Under the following terms:
             
             <div id="author" class="section">
                 <h1>Authors</h1>
-                <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using four distinct elements <span class="code">meta</span>. In particular, each element <span class="code">meta</span> must have the attribute <span class="code">name</span> specified and set according to the pattern <span class="code">author.[id].[data]</span>, where <q>[id]</q> is a unique identifier for the author, while <q>[data]</q> is the particular kind of information we want to refer to for that author. There exist four differet kinds of information we must specify, i.e.:</p>
+                <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using three distinct elements, two <span class="code">meta</span>s and one <span class="code">link</span>. Each of these elements must have must have the attribute <span class="code">about</span> set to the same value, which is a unique identifier for the author. Each of these elements allows us to specify different kinds of information, i.e.:</p>
                 <ul>
-                    <li><p><b>number</b>, i.e., the position of the author in the list of author of the paper;</p></li>
-                    <li><p><b>name</b>, i.e., the full name of the author as it should appear in the paper;</p></li>
-                    <li><p><b>email</b>, i.e., the email address of the author;</p></li>
-                    <li><p><b>affiliation</b>, i.e., the affiliation of the author for this paper.</p></li>
+                    <li><p>the <b>full name</b> of the author as it should appear in the paper - through an element <span class="code">meta</span> having the attribute <span class="code">name</span> set to <q>dc.creator</q>, and the attribute <span class="code">content</span> specifying the actual name;</p></li>
+                    <li><p>the <b>email address</b> of the author - through an element <span class="code">meta</span> having the attribute <span class="code">property</span> set to <q>schema:email</q>, and the attribute <span class="code">content</span> specifying the actual author's email;</p></li>
+                    <li><p>the <b>affiliations</b> of the author for this paper - through one (or more) element(s) <span class="code">link</span> having the attribute <span class="code">property</span> set to <q>schema:affiliation</q>, and the attribute <span class="code">href</span> specifying the identifier for a particular affiliation (see <a href="#affiliation" class="ref"></a>).</p></li>
                 </ul>
                 <p>An example of how to create all these author's information is shown in the following excerpt.</p>
                 <p class="code">
-&lt;meta name="author.sp.number" content="1"&gt;&lt;/meta&gt;
-&lt;meta name="author.sp.name" content="Silvio Peroni"&gt;&lt;/meta&gt;
-&lt;meta name="author.sp.email" content="silvio.peroni@unibo.it"&gt;&lt;/meta&gt;
-&lt;meta 
-    name="author.sp.affiliation" 
-    content="Department of Computer Science and Engineering@University of Bologna@Bologna (Italy)"&gt;&lt;/meta&gt;</p>
-                <p>It is possible to use special characters in the affiliation element. In particular, <q>@</q> is used to separate the different fields that can form an affiliation (e.g., the department, the university, the city), while <q>;</q> is used to separate multiple affiliations when some author belongs to more than one institution, as shown in the following excerpt.</p>
+&lt;meta about="sp" name="dc.creator" content="Silvio Peroni" /&gt;
+&lt;meta about="sp" property="schema:email" 
+    content="silvio.peroni@unibo.it" /&gt;
+&lt;link about="sp" property="schema:affiliation" href="cs-unibo" /&gt;</p>
+                <p>Of course, it is possible to specify additional affiliations for an author by adding the appropriate number of elements <span class="code">link</span>, as shown in the following excerpt.</p>
                 <p class="code">
-&lt;meta name="author.an.number" content="2"&gt;&lt;/meta&gt;
-&lt;meta name="author.an.name" content="Andrea Nuzzolese"&gt;&lt;/meta&gt;
-&lt;meta name="author.an.email" content="andrea.nuzzolese@istc.cnr.it"&gt;&lt;/meta&gt;
+&lt;meta about="an" name="dc.creator" 
+    content="Andrea Giovanni Nuzzolese" /&gt;
+&lt;meta about="an" property="schema:email" 
+    content="nuzzoles@cs.unibo.it" /&gt;
+&lt;link about="an" property="schema:affiliation" href="cs-unibo" /&gt;
+&lt;link about="an" property="schema:affiliation" href="stlab-cnr" /&gt;</p>
+            </div>
+            
+            <div class="section" id="affiliation">
+                <h1>Affiliations</h1>
+                <p>All the affiliation used by the authors (introduced in <a class="ref" href="#author"></a>) must be defined through an appropriate element <span class="code">meta</span> having:</p>
+                <ul>
+                    <li><p>the attribute <span class="code">about</span> set to the same identifier used by the author's metadata for referring to the particular affiliation;</p></li>
+                    <li><p>the attribute <span class="code">property</span> set to <q>schema:name</q>;</p></li>
+                    <li><p>the attribute <span class="code">content</span> set to the actual name of the affiliation, where the various units of the affiliation (e.g., research group, department, institution, city, country) must be separated by a comma.</p></li>
+                </ul>
+                <p>An example of how to create an affiliation is shown in the following excerpt.</p>
+                <p class="code">
+&lt;!-- Affiliations (one or more) --&gt;
 &lt;meta 
-    name="author.an.affiliation" 
-    content="STLab@ISTC@CNR@Rome (Italy);
-             Department of Computer Science and Engineering@University of Bologna@Bologna (Italy)"&gt;&lt;/meta&gt;</p>
+    about="cs-unibo" property="schema:name" 
+    content="Department of Computer Science and Engineering, 
+             University of Bologna, Bologna, Italy" /&gt;</p>
             </div>
             
             <div class="section">
-                <h1>ACM subject categories, general terms and keywords</h1>
-                <p>In addition to the aforementioned data, it is possible to use <span class="code">meta</span> elements to specify other article-related data, such as the <a href="http://www.acm.org/about/class/class/2012">ACM subject categories</a>, <a href="http://www.acm.org/about/class/1998/">ACM general terms</a>, and free text keyword. An item of any of these kinds is defined by using a particular <span class="code">meta</span> element using <q>category</q>, <q>generalterm</q> and <q>keyword</q> as value of the attribute <span class="code">name</span> respectively, and specifying the actual string it refers to through the attribute <span class="code">content</span>, as shown in the following excerpt.</p>
+                <h1>ACM subject categories and keywords</h1>
+                <p>In addition to the aforementioned data, it is possible to use <span class="code">meta</span> elements to specify other article-related data, such as the <a href="http://www.acm.org/about/class/class/2012">ACM subject categories</a> and free text keyword. In particular:</p> 
+                <ul>
+                    <li><p>an element <span class="code">meta</span> must be used for each of the ACM subject categories to specify, with the attribute <span class="code">name</span> set to <q>dcterms.subject</q> and the attribute <span class="code">content</span> containing a comma-separated list of categories (from the most generic to the most concrete);</p></li>
+                    <li><p>an element <span class="code">meta</span> must be used for each of the keywords to specify, with the attribute <span class="code">property</span> set to <q>prism:keyword</q> and the attribute <span class="code">content</span> containing a the string defining the keyword.</p></li>
+                </ul>
+                <p>An example of how to create all these information is shown in the following excerpt.</p>
                 <p class="code">
 &lt;!-- Paper keywords (one or more) --&gt;
-&lt;meta content="markup language" name="keyword"&gt;&lt;/meta&gt;
-&lt;meta content="HTML" name="keyword"&gt;&lt;/meta&gt;
+&lt;meta property="prism:keyword" content="markup language" /&gt;
+&lt;meta property="prism:keyword" content="HTML" /&gt;
 
 &lt;!-- ACM category (one or more) --&gt;
-&lt;meta name="category" content="I.7.2,Document And Text Processing,Document Capture,Document analysis"&gt;&lt;/meta&gt;
-
-&lt;!-- ACM general terms (one or more) --&gt;
-&lt;meta name="generalterm" content="Theory"&gt;&lt;/meta&gt;</p>
+&lt;meta name="dcterms.subject" 
+    content="I.7.2,Document And Text Processing,
+             Document Capture,Document analysis" /&gt;</p>
             </div>
         </div>
         
@@ -161,7 +202,10 @@ Under the following terms:
                 <p>The common paragraphs are described by the element <span class="code">p</span>, as used as follows.</p>
                 <p class="code">&lt;p&gt;This is the text forming a paragraph&lt;/p&gt;</p>
                 <p>The above paragraph is, instead, a paragraph containing source code. It is described by using the element <span class="code">p</span> with the attribute <span class="code">class</span> set with the class <q>code</q>, as shown as follows.</p>
-                <p class="code">&lt;p class="code"&gt;&amp;lt;p&amp;amp;gt;This is the text forming a paragraph&amp;lt;/p&amp;gt;&lt;/p&gt;</p>
+                <p class="code">
+&lt;p class="code"&gt;
+    &amp;lt;p&amp;gt;This is the text forming a paragraph&amp;lt;/p&amp;gt;
+&lt;/p&gt;</p>
                 <p>Finally, it is possible to also describe blocks of quotations by using the element <span class="code">p</span> with the attribute <span class="code">class</span> set with the class <q>quote</q>, as follows:</p>
                 <p class="quote">This is a block quotation.</p>
                 <p>The source code of the above paragraph is shown as follows:</p>
@@ -176,7 +220,9 @@ Under the following terms:
                 <p class="code">
 &lt;!-- An unordered list --&gt;
 &lt;ul&gt;
-    &lt;li&gt;&lt;p&gt;A list item of an unordered list containing a paragraph.&lt;/p&gt;&lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;A list item of an unordered list containing a paragraph.&lt;/p&gt;
+    &lt;/li&gt;
     &lt;li&gt;
         &lt;p&gt;Another item.&lt;/p&gt;
         &lt;p&gt;Containing two paragraphs.&lt;/p&gt;
@@ -211,10 +257,10 @@ Under the following terms:
     The text contained in this paragraph is annotated with markup for inline elements. 
     In particular we have &lt;i&gt;normal&lt;/i&gt; and &lt;b&gt;strong&lt;/b&gt; emphasis, 
     &lt;q&gt;quotations&lt;/q&gt;, &lt;sup&gt;superscripts&lt;/sup&gt; and 
-    &lt;sub&gt;subscripts&lt;/sub&gt;, &lt;span class="code"&gt;source code&lt;/span&gt; 
-    and &lt;a href="https://en.wikipedia.org/wiki/Hyperlink"&gt;hyperlinks&lt;/a&gt;.
-    In addition to pure textual elements, we can also add images, like 
-    &lt;img src="https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg" /&gt;,
+    &lt;sub&gt;subscripts&lt;/sub&gt;, &lt;span class="code"&gt;source code&lt;/span&gt; and
+    &lt;a href="https://en.wikipedia.org/wiki/Hyperlink"&gt;hyperlinks&lt;/a&gt;.
+    In addition to pure textual elements, we can also add images, 
+    like &lt;img src="logo.svg" alt="Picture with a logo" /&gt;, 
     and formulas by using the MathML specification, like
     &lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;
         &lt;mi&gt;&amp;#x03C0;&lt;!-- π --&gt;&lt;/mi&gt;
@@ -257,7 +303,7 @@ Under the following terms:
                 <p>We can define a figure box containing an image with a caption by using the element <span class="code">div</span> with the attribute <span class="code">class</span> set to <q>picture</q> and the attribute <span class="code">id</span> set to some value in order to refer to this item.</p>
                 <div id="figure_1" class="picture">
                     <p class="img_block">
-                        <img src="img/rash.png"></img>
+                        <img src="img/rash.png" alt="The RASH logo!"></img>
                     </p>
                     <p class="caption">Caption of the figure.</p>
                 </div>
@@ -265,7 +311,7 @@ Under the following terms:
                 <p class="code">
 &lt;div id="figure_1" class="picture"&gt;
     &lt;p class="img_block"&gt;
-        &lt;img src="rash.png"&gt;&lt;/img&gt;
+        &lt;img src="rash.png"&gt;&lt; alt="The RASH logo!" /img&gt;
     &lt;/p&gt;
     &lt;p class="caption"&gt;Caption of the figure.&lt;/p&gt;
 &lt;/div&gt;</p>
@@ -334,7 +380,7 @@ Under the following terms:
                 <p>We can define a formula box containing a formula by using the element <span class="code">div</span> with the attribute <span class="code">class</span> set to <q>formula</q> and the attribute <span class="code">id</span> set to some value in order to refer to this item.</p>
                 <div id="formula_1" class="formula">
                     <p class="img_block">
-                        <img src="img/formula.png"/>
+                        <img src="img/formula.png" alt="[a + b]^260 + [a + b]_i" />
                     </p>
                 </div>
                 <div id="formula_2" class="formula">
@@ -424,23 +470,34 @@ Under the following terms:
     &lt;ul type="number"&gt;
         &lt;li id="Per2014"&gt;
             &lt;p&gt;
-                Peroni, S. (2014). Research Articles in Simplified HTML (RASH). 
+                Peroni, S. (2014). Research Articles in Simplified HTML 
+                (RASH). 
                 &lt;a href="http://cs.unibo.it/save-sd/rush.rng"&gt;
-                    http://cs.unibo.it/save-sd/rush/rush.rng&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+                    http://cs.unibo.it/save-sd/rush/rush.rng&lt;/a&gt;
+            &lt;/p&gt;
+        &lt;/li&gt;
         &lt;li id="ParagraphWikipedia"&gt;
             &lt;p&gt;
                 Wikipedia entry &lt;q&gt;Paragraph&lt;/q&gt;. 
                 &lt;a href="https://en.wikipedia.org/wiki/Paragraph"&gt;
-                    https://en.wikipedia.org/wiki/Paragraph&lt;/a&gt; (last visited, December 17, 2014).&lt;/p&gt;&lt;/li&gt;
+                    https://en.wikipedia.org/wiki/Paragraph&lt;/a&gt; 
+                    (last visited, December 17, 2014).
+            &lt;/p&gt;
+        &lt;/li&gt;
         &lt;li id="CDN2014"&gt;
             &lt;p&gt;
-                Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). 
-                Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., 
-                d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), 
-                Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes 
-                in Computer Science 8465: 580-594. Berlin, Germany: Springer. 
-                &lt;a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39"&gt;
-                    http://dx.doi.org/10.1007/978-3-319-07443-6_39&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+                Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., 
+                Peroni, S., Vitali, F. (2014). Evaluating citation 
+                functions in CiTO: cognitive issues. In Presutti, V., 
+                d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., 
+                Tordai, A. (Eds.), Proceedings of the 11th Extended 
+                Semantic Web Conference (ESWC 2014), Lecture Notes 
+                in Computer Science 8465: 580-594. Berlin, Germany: 
+                Springer. &lt;a 
+                href="http://dx.doi.org/10.1007/978-3-319-07443-6_39"&gt;
+                    http://dx.doi.org/10.1007/978-3-319-07443-6_39&lt;/a&gt;
+            &lt;/p&gt;
+        &lt;/li&gt;
     &lt;/ul&gt;
 &lt;/div&gt;</p>
         </div>
@@ -484,9 +541,9 @@ Under the following terms:
         </div>
         
         <div id="rdfa" class="section">
-            <h1>Using RDFa</h1>
-            <p>RASH has been developed in order to allow anyone to add <a about="rash:expression" typeof="fabio:InstructionManual" rel="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations to any element of the document.</p>
-            <p>For instance, we have inject the following triples (in Turtle) within the above paragraph.</p>
+            <h1>Using RDFa and Turtle</h1>
+            <p>RASH has been developed in order to allow anyone to add <a about="rash:expression" typeof="fabio:InstructionManual" property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations to any element of the document.</p>
+            <p>For instance, we have injected the following triples (in Turtle) within the above paragraph.</p>
             <p class="code">
 @prefix cito: &lt;http://purl.org/spar/cito/&gt; .
 @prefix fabio: &lt;http://purl.org/spar/fabio/&gt; .
@@ -494,7 +551,7 @@ Under the following terms:
 
 rash:expression a fabio:InstructionManual;
 cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
-            <p>That was possible by adding RDFa annotations by using the appropriate attribute within the paragraph contente, while the prefixes were defined in the element <span class="code">html</span>, as shown in the following excerpt.</p>
+            <p>That was possible by adding RDFa annotations by using the appropriate attribute within the paragraph content, while the prefixes were defined in the element <span class="code">html</span>, as shown in the following excerpt.</p>
             <p class="code">
 &lt;html prefix="
     fabio: http://purl.org/spar/fabio/
@@ -510,6 +567,24 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
 &lt;/html&gt;
             </p>
             <p>For a complete introduction of RDFa within HTML documents, please read the official documentation <a class="ref" href="#RDFa2013"></a>.</p>
+            <p>In addition to RDFa, RASH makes available another way to add RDF statements to the document, i.e., the use of an element <span class="code">script</span> (with the attribute <span class="code">type</span> set to <q>text/turtle</q>) within the element <span class="code">head</span> for adding plain <a href="http://www.w3.org/TR/turtle/">Turtle</a> content. An example of use of such element for Turtle statemenets in introduced in the following excerpt.</p>
+            <p class="code">
+&lt;script type="text/turtle"&gt;
+    &lt;![CDATA[
+    @prefix pro: &lt;http://purl.org/spar/pro/&gt; .
+    @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+    &lt;sp&gt; a foaf:Person ;
+        foaf:givenName "Silvio" ;
+        foaf:familyName "Peroni" ;
+        foaf:homepage &lt;http://www.essepuntato.it&gt; ;
+        pro:holdsRoleInTime [
+            a pro:RoleInTime ;
+            pro:withRole pro:author ;
+            pro:relatesToDocument &lt;&gt;
+        ] .
+    ]]&gt;
+&lt;/script&gt;</p>
+            <p>For a complete introduction of Turtle, please read the official documentation <a class="ref" href="#Turtle2014"></a>.</p>
         </div>
         
         <div id="visualisation" class="section">
@@ -543,6 +618,7 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
                 <li id="ParagraphWikipedia"><p>Wikipedia entry <q>Paragraph</q>. <a href="https://en.wikipedia.org/wiki/Paragraph">https://en.wikipedia.org/wiki/Paragraph</a> (last visited, December 17, 2014).</p></li>
                 <li id="CDN2014"><p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a></p></li>
                 <li id="RDFa2013"><p>Sporny, M. (2013). HTML+RDFa 1.1: Support for RDFa in HTML4 and HTML5. W3C Recommendation, 22 August 2013. World Wide Web Consortium. Retrieved from http://www.w3.org/TR/rdfa-in-html/</p></li>
+                <li id="Turtle2014"><p>Prud'hommeaux, E., Carothers, G. (2014). RDF 1.1 Turtle: Terse RDF Triple Language. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from http://www.w3.org/TR/turtle/</p></li>
             </ol>
         </div>
         

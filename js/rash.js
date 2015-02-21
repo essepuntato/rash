@@ -118,7 +118,8 @@ jQuery.fn.extend({
         /* /END Header title */
     
         /* Header author */
-        var author_data = {};
+        var list_of_authors = [];
+        /*
         $("head meta[name^='author.']").each(function() {
             var current_value = $(this).attr("name");
             var current_id = current_value.replace(/author\.(.+)\..+/gi, "$1");
@@ -128,29 +129,40 @@ jQuery.fn.extend({
             }
             author_data[current_id][current_key] = $(this).attr("content");
         });
-        
-        var list_of_authors = [];
-        for (var author_id in author_data) {
-            list_of_authors.push(author_data[author_id]);
-        }
-        list_of_authors.sort(function(a,b) { return parseInt(a.number) - parseInt(b.number)});
+        */
+        $("head meta[name='dc.creator']").each(function() {
+            var current_value = $(this).attr("name");
+            var current_id = $(this).attr("about");
+            var current_name = $(this).attr("content");
+            var current_email = $("head meta[about='" + current_id + "'][property='schema:email']").attr("content");
+            var current_affiliations = [];
+            $("head link[about='" + current_id + "'][property='schema:affiliation']").each(function() {
+                var cur_affiliation_id = $(this).attr("href");
+                current_affiliations.push($("head meta[about='" + cur_affiliation_id + "'][property='schema:name']").attr("content"));
+            });
+            
+            list_of_authors.push({
+                "name": current_name,
+                "email": current_email,
+                "affiliation": current_affiliations
+            });
+        });
         
         for (var i = 0; i < list_of_authors.length; i++) {
             var author = list_of_authors[i];
             var author_element = $("<address class=\"lead authors\"></address>");
-            if (author.hasOwnProperty("name")) {
+            if (author["name"] != null) {
                 var name_element_string = "<strong class=\"author_name\">" + author.name + "</strong>"
-                if (author.hasOwnProperty("email")) {
+                if (author["email"] != null) {
                     name_element_string += " <code class=\"email\"><a href=\"mailto:" + author.email + "\">" + author.email + "</a></code>";
                 }
                 author_element.append(name_element_string);
             }
-            if (author.hasOwnProperty("affiliation")) {
-                var current_author_affiliations = author.affiliation.split(";");
-                for (var j = 0; j < current_author_affiliations.length; j++) {
-                    author_element.append(
-                        "<br /><span class=\"affiliation\">" + current_author_affiliations[j].replace(/@/g, ", ").trim() + "</span>");
-                }
+            
+            for (var j = 0; j < author.affiliation.length; j++) {
+                author_element.append(
+                    "<br /><span class=\"affiliation\">" + 
+                    author.affiliation[j].replace(/\s+/g, " ").replace(/, ?/g, ", ").trim() + "</span>");
             }
             if (i == 0) {
                 author_element.insertAfter($("header h1"));
@@ -161,7 +173,7 @@ jQuery.fn.extend({
         /* /END Header author */
         
         /* ACM subjects */
-        var categories = $("meta[name='category']");
+        var categories = $("meta[name='dcterms.subject']");
         if (categories.length > 0) {
             var list_of_categories = $("<p class=\"acm_subject_categories\"><strong>ACM Subject Categories</strong></p>");
             categories.each(function() {
@@ -171,19 +183,8 @@ jQuery.fn.extend({
         }
         /* /END ACM subjects */
         
-        /* General terms */
-        var terms = $("meta[name='generalterm']");
-        if (terms.length > 0) {
-            var list_of_terms = $("<ul class=\"list-inline\"></ul>");
-            terms.each(function() {
-                list_of_terms.append("<li><code>" + $(this).attr("content") + "</code></li>");
-            });
-            $("<p class=\"acm_general_terms\"><strong>General Terms</strong></p>").append(list_of_terms).appendTo(header);
-        }
-        /* /END General terms */
-        
         /* Keywords */
-        var keywords = $("meta[name='keyword']");
+        var keywords = $("meta[property='prism:keyword']");
         if (keywords.length > 0) {
             var list_of_keywords = $("<ul class=\"list-inline\"></ul>");
             keywords.each(function() {

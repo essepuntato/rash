@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.3, January 18, 2015
+Research Articles in Simplified HTML (RASH) format - Version 0.3, January 20, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -25,7 +25,17 @@ Under the following terms:
     <!-- Elements -->
     <define name="html">
         <element name="html">
-            <ref name="cm_standard_attribute" />
+            <attribute name="prefix">
+                <data type="string">
+                    <param name="pattern">.*schema:\s+http://schema.org/.*</param>
+                    <param name="pattern">.*prism:\s+http://prismstandard.org/namespaces/basic/2.0/.*</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_statements" />
+            <optional>
+                <ref name="aVocab" />
+            </optional>
             <ref name="head" />
             <ref name="body" />
         </element>
@@ -33,7 +43,7 @@ Under the following terms:
     
     <define name="head">
         <element name="head">
-            <ref name="cm_standard_attribute" />
+            <ref name="attributes_html_element_no_class" />
             <interleave>
                 <ref name="title" />
                 <oneOrMore>
@@ -41,9 +51,6 @@ Under the following terms:
                         <ref name="cm_meta_author" />
                         <zeroOrMore>
                             <ref name="meta_keyword" />
-                        </zeroOrMore>
-                        <zeroOrMore>
-                            <ref name="meta_generalterm" />
                         </zeroOrMore>
                         <zeroOrMore>
                             <ref name="meta_category" />
@@ -64,71 +71,87 @@ Under the following terms:
     </define>
     
     <define name="script">
-        <element name="script">
-            <ref name="aSrc" />
-        </element>
+        <choice>
+            <element name="script">
+                <ref name="aSrc" />
+            </element>
+            <element name="script">
+                <attribute name="type">
+                    <value>text/turtle</value>
+                </attribute>
+                <text />
+            </element>
+        </choice>
     </define>
     
     <define name="link">
         <element name="link">
-            <ref name="aRel" />
-            <ref name="aHref" />
+            <optional>
+                <ref name="aHref" />
+            </optional>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_html_head_generic" />
+            <ref name="attributes_rdfa_syntax" />
+            <ref name="attributes_rdfa_subject" />
+            <optional>
+                <ref name="aProperty" />
+            </optional>
+            <optional>
+                <ref name="aRel" />
+            </optional>
+            <ref name="attributes_rdfa_resource" />
+            <ref name="attributes_rdfa_literal" />
+            <ref name="attributes_rdfa_macro" />
         </element>
     </define>
     
     <define name="meta">
         <element name="meta">
-            <ref name="cm_head_attribute" />
+            <ref name="attributes_html_head_element" />
         </element>
     </define>
     
     <define name="meta_category">
         <element name="meta">
             <attribute name="name">
-                <value type="string">category</value>
+                <value type="string">dcterms.subject</value>
             </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
-        </element>
-    </define>
-    
-    <define name="meta_generalterm">
-        <element name="meta">
-            <attribute name="name">
-                <value type="string">generalterm</value>
-            </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
+            <ref name="attributes_html_element_no_class" />
         </element>
     </define>
     
     <define name="meta_keyword">
         <element name="meta">
-            <attribute name="name">
-                <value type="string">keyword</value>
+            <attribute name="property">
+                <value type="string">prism:keyword</value>
             </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
         </element>
     </define>
     
     <define name="meta_author_name">
         <element name="meta">
             <attribute name="name">
-                <value type="string">author.1.name</value>
+                <value type="string">dc.creator</value>
             </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
+            <ref name="attributes_html_element_no_class" />
         </element>
     </define>
     
-    <define name="meta_author_affiliation">
-        <element name="meta">
-            <attribute name="name">
-                <value type="string">author.1.affiliation</value>
+    <define name="link_author_affiliation">
+        <element name="link">
+            <attribute name="about">
+                <text />
             </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
+            <attribute name="property">
+                <value type="string">schema:affiliation</value>
+            </attribute>
+            <attribute name="href">
+                <data type="anyURI" />
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
         </element>
     </define>
     
@@ -137,26 +160,13 @@ Under the following terms:
             <attribute name="name">
                 <value type="string">author.1.email</value>
             </attribute>
-            <ref name="aContent" />
-            <ref name="cm_standard_attribute_no_content" />
-        </element>
-    </define>
-    
-    <define name="meta_author_number">
-        <element name="meta">        
-            <attribute name="number">
-                <value type="string">author.1.number</value>
-            </attribute>
-            <attribute name="content">
-                <value type="int">1</value>
-            </attribute>
-            <ref name="cm_standard_attribute_no_content" />
+            <ref name="attributes_html_element_no_class" />
         </element>
     </define>
     
     <define name="body">
         <element name="body">
-            <ref name="cm_standard_attribute" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="div_abstract" />
             <oneOrMore>
                 <ref name="div_section" />
@@ -173,14 +183,14 @@ Under the following terms:
     
     <define name="li">
         <element name="li">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_container" />
         </element>
     </define>
     
     <define name="ul">
         <element name="ul">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <oneOrMore>
                 <ref name="li" />
             </oneOrMore>
@@ -189,7 +199,7 @@ Under the following terms:
     
     <define name="ol">
         <element name="ol">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <oneOrMore>
                 <ref name="li" />
             </oneOrMore>
@@ -198,7 +208,7 @@ Under the following terms:
     
     <define name="p">
         <element name="p">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
@@ -206,9 +216,11 @@ Under the following terms:
     <define name="p_code">
         <element name="p">
             <attribute name="class">
-                <value>code</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*code.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_inline" />
         </element>
     </define>
@@ -216,30 +228,32 @@ Under the following terms:
     <define name="p_quote">
         <element name="p">
             <attribute name="class">
-                <value>quote</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*quote.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="h1">
         <element name="h1">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="title">
         <element name="title">
-            <ref name="cm_standard_attribute" />
+            <ref name="attributes_html_element_no_class" />
             <text />
         </element>
     </define>
     
     <define name="table">
         <element name="table">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <oneOrMore>
                 <ref name="tr" />
             </oneOrMore>
@@ -248,7 +262,7 @@ Under the following terms:
     
     <define name="tr">
         <element name="tr">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <oneOrMore>
                 <choice>
                     <ref name="th" />
@@ -260,7 +274,7 @@ Under the following terms:
     
     <define name="th">
         <element name="th">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <optional>
                 <ref name="aRowspan" />
             </optional>
@@ -273,7 +287,7 @@ Under the following terms:
     
     <define name="td">
         <element name="td">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <optional>
                 <ref name="aRowspan" />
             </optional>
@@ -287,9 +301,11 @@ Under the following terms:
     <define name="div_abstract">
         <element name="div">
             <attribute name="class">
-                <value type="string">abstract</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*abstract.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_sections" />
         </element>
     </define>
@@ -297,9 +313,11 @@ Under the following terms:
     <define name="div_section">
         <element name="div">
             <attribute name="class">
-                <value type="string">section</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*section.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_sections" />
         </element>
     </define>
@@ -307,9 +325,11 @@ Under the following terms:
     <define name="div_acknowledgements">
         <element name="div">
             <attribute name="class">
-                <value type="string">acknowledgements</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*acknowledgements.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_sections" />
         </element>
     </define>
@@ -317,9 +337,11 @@ Under the following terms:
     <define name="div_references">
         <element name="div">
             <attribute name="class">
-                <value type="string">bibliography</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*bibliography.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="h1" />
             <choice>
                 <ref name="ul" />
@@ -331,12 +353,14 @@ Under the following terms:
     <define name="div_footnotes">
         <element name="div">
             <attribute name="class">
-                <value type="string">footnotes</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*footnotes.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <oneOrMore>
                 <element name="div">
-                    <ref name="cm_body_attribute" />
+                    <ref name="attributes_html_element" />
                     <ref name="cm_container" />
                 </element>
             </oneOrMore>
@@ -346,9 +370,11 @@ Under the following terms:
     <define name="div_figure">
         <element name="div">
             <attribute name="class">
-                <value type="string">picture</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*picture.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_img_block" />
             <ref name="cm_caption" />
         </element>
@@ -357,9 +383,11 @@ Under the following terms:
     <define name="div_table">
         <element name="div">
             <attribute name="class">
-                <value type="string">table</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*table.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="table" />
             <ref name="cm_caption" />
         </element>
@@ -368,16 +396,20 @@ Under the following terms:
     <define name="div_formula">
         <element name="div">
             <attribute name="class">
-                <value type="string">formula</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*formula.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <choice>
                 <ref name="cm_img_block" />
                 <element name="p">
                     <attribute name="class">
-                        <value type="string">math_block</value>
+                        <data type="NMTOKENS">
+                            <param name="pattern">.*math_block.*</param>
+                        </data>
                     </attribute>
-                    <ref name="cm_body_attribute_no_class" />
+                    <ref name="attributes_html_element_no_class" />
                     <ref name="math" />
                 </element>
             </choice>
@@ -394,10 +426,10 @@ Under the following terms:
     
     <define name="a">
         <element name="a">
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <optional>
                 <attribute name="class">
-                    <data type="string">
+                    <data type="NMTOKENS">
                         <except>
                             <value>ref</value>
                             <value>footnote</value>
@@ -417,12 +449,11 @@ Under the following terms:
     
     <define name="aRefFootnote">
         <element name="a">
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <attribute name="class">
-                <choice>
-                    <value>ref</value>
-                    <value>footnote</value>
-                </choice>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*(ref|footnote).*</param>
+                </data>
             </attribute>
             <attribute name="href">
                 <data type="anyURI" />
@@ -435,42 +466,42 @@ Under the following terms:
     
     <define name="i">
         <element name="i">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="b">
         <element name="b">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="q">
         <element name="q">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="sup">
         <element name="sup">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="sub">
         <element name="sub">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="span">
         <element name="span">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="cm_inline" />
         </element>
     </define>
@@ -478,17 +509,20 @@ Under the following terms:
     <define name="span_code">
         <element name="span">
             <attribute name="class">
-                <value>code</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*code.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="img">
         <element name="img">
-            <ref name="cm_body_attribute" />
+            <ref name="attributes_html_element" />
             <ref name="aSrc" />
+            <ref name="aAlt" />
         </element>
     </define>
     <!-- /END Elements -->
@@ -496,6 +530,12 @@ Under the following terms:
     <!-- Attributes -->
     <define name="aSrc">
         <attribute name="src">
+            <data type="anyURI" />
+        </attribute>
+    </define>
+    
+    <define name="aAlt">
+        <attribute name="alt">
             <data type="string" />
         </attribute>
     </define>
@@ -565,7 +605,7 @@ Under the following terms:
     
     <define name="aClass">
         <attribute name="class">
-            <data type="string" />
+            <data type="NMTOKENS" />
         </attribute>
     </define>
     
@@ -713,19 +753,23 @@ Under the following terms:
     <define name="cm_caption">
         <element name="p">
             <attribute name="class">
-                <value type="string">caption</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*caption.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
-            <text />
+            <ref name="attributes_html_element_no_class" />
+            <ref name="cm_inline" />
         </element>
     </define>
     
     <define name="cm_img_block">
         <element name="p">
             <attribute name="class">
-                <value type="string">img_block</value>
+                <data type="NMTOKENS">
+                    <param name="pattern">.*img_block.*</param>
+                </data>
             </attribute>
-            <ref name="cm_body_attribute_no_class" />
+            <ref name="attributes_html_element_no_class" />
             <ref name="img" />
         </element>
     </define>
@@ -734,76 +778,130 @@ Under the following terms:
         <group>
             <ref name="meta_author_name" />
             <ref name="meta_author_email" />
-            <ref name="meta_author_affiliation" />
-            <ref name="meta_author_number" />
+            <ref name="link_author_affiliation" />
         </group>
     </define>
     
-    <define name="cm_head_attribute">
+    <!-- Content models for HTML attributes -->
+    <define name="attributes_html_head_element">
+        <ref name="attributes_html_generic" />
+        <ref name="attributes_html_head_generic" />
+        <ref name="attributes_rdfa" />
+    </define>
+    
+    <define name="attributes_html_head_generic">
         <optional>
             <ref name="aName" />
         </optional>
         <optional>
             <ref name="aCharset" />
         </optional>
-        <ref name="cm_standard_attribute" />
     </define>
     
-    <define name="cm_standard_attribute_no_content">
+    <define name="attributes_html_element">
+        <ref name="attributes_html_element_no_class" />
+        <optional>
+            <ref name="aClass" />
+        </optional>
+    </define>
+    
+    <define name="attributes_html_element_no_class">
+        <ref name="attributes_html_generic" />
+        <ref name="attributes_rdfa" />
+    </define>
+    
+    <define name="attributes_html_generic">
         <optional>
             <ref name="aId" />
         </optional>
-        <optional>
-            <ref name="aLang" />
-        </optional>
-        <optional>
-            <ref name="aVocab" />
-        </optional>
-        <optional>
-            <ref name="aTypeof" />
-        </optional>
-        <optional>
-            <ref name="aProperty" />
-        </optional>
-        <optional>
-            <ref name="aResource" />
-        </optional>
+    </define>
+    
+    <!-- 
+        The following chategorisation of RDFa attributes has been taken 
+        from http://www.w3.org/TR/rdfa-syntax/#attribute_roles 
+    -->
+    <define name="attributes_rdfa">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_statements" />
+    </define>
+    
+    <define name="attributes_rdfa_statements">
+        <ref name="attributes_rdfa_subject" />
+        <ref name="attributes_rdfa_predicate" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
+    </define>
+    
+    <define name="attributes_rdfa_syntax">
         <optional>
             <ref name="aPrefix" />
         </optional>
         <optional>
+            <ref name="aVocab" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_subject">
+        <optional>
             <ref name="aAbout" />
         </optional>
+    </define>
+    
+    <define name="attributes_rdfa_predicate">
+        <optional>
+            <ref name="aProperty" />
+        </optional>
+        <ref name="attributes_rdfa_rel_rev" />
+    </define>
+    
+    <define name="attributes_rdfa_rel_rev">
         <optional>
             <ref name="aRel" />
         </optional>
         <optional>
             <ref name="aRev" />
         </optional>
+    </define>
+    
+    <define name="attributes_rdfa_resource">
+        <optional>
+            <ref name="aResource" />
+        </optional>
+        <!-- 
+            @href and @src are not included here since thay can be used in RDFa 
+            fashion only with those elements that include them 
+        -->
+    </define>
+    
+    <define name="attributes_rdfa_literal">
+        <optional>
+            <ref name="aLang" />
+        </optional>
+        <optional>
+            <ref name="aContent" />
+        </optional>
         <optional>
             <ref name="aDatatype" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_macro">
+        <optional>
+            <ref name="aTypeof" />
         </optional>
         <optional>
             <ref name="aInlist" />
         </optional>
     </define>
     
-    <define name="cm_standard_attribute">
-        <ref name="cm_standard_attribute_no_content" />
-        <optional>
-            <ref name="aContent" />
-        </optional>
-    </define>
-    
-    <define name="cm_body_attribute">
-        <ref name="cm_standard_attribute" />
-        <optional>
-            <ref name="aClass" />
-        </optional>
-    </define>
-    
-    <define name="cm_body_attribute_no_class">
-        <ref name="cm_standard_attribute" />
+    <!-- It defines a particular restriction of use of RDFa without the attribute property -->
+    <define name="attributes_rdfa_no_property">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_rel_rev" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
     </define>
     <!-- /END Content Models -->
 </grammar>
