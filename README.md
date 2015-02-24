@@ -2,7 +2,7 @@
 
 This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in *RASH*, i.e., a markup language defined as a subset of HTML for writing scientific articles.
 
-Please use the hashtag *#rashfwk* for referring to any of the items defined in the RASH Framework.
+Please use the hashtag *#rashfwk* for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.
 
 ## Research Article in Simplified HTML (RASH)
 
@@ -11,9 +11,9 @@ The **Research Articles in Simplified HTML** (*RASH*) format is a markup languag
 The documentation (version 0.2) is available online at http://cs.unibo.it/save-sd/rash and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). It documents [RASH version 0.3](http://cs.unibo.it/save-sd/rash/grammar/rash.rng) (which is also available also as a [pure HTML grammar](http://cs.unibo.it/save-sd/rash/grammar/rash-html.rng).
 
 
-## How to contribute
+### How to contribute
 
-Please use the hashtag *#rashtodo* for suggesting bugs or additional features for RASH.
+Please use the hashtag *#rashtodo* for suggesting bugs or additional features for RASH via Twitter or other social platforms.
 
 
 ### Change log
