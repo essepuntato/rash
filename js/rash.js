@@ -467,7 +467,7 @@ $(function() {
     
     /* Footer */
     var footer = $("<footer class=\"footer hidden-print\"><p>" + 
-        "<span>Word count: " + $("body").countWords() + "</span>" +
+        "<span>Words: " + $("body").countWords() + "</span>" +
         "<span>Figures: " + $("body").countElements("div.picture img") + "</span>" +
         "<span>Tables: " + $("body").countElements("table") + "</span>" +
         "<span>Formulas: " + $("body").countElements("div.formula") + "</span>" +
