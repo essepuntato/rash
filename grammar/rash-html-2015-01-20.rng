@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.3.1, March 3, 2015
+Research Articles in Simplified HTML (RASH) format - Version 0.3, January 20, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -585,6 +585,15 @@ Under the following terms:
     <define name="aLang">
         <attribute name="lang">
             <data type="language" />
+        </attribute>
+    </define>
+    
+    <define name="aType">
+        <attribute name="type">
+            <choice>
+                <value>bullet</value>
+                <value>number</value>
+            </choice>
         </attribute>
     </define>
     
