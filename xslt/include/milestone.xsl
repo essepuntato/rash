@@ -21,7 +21,7 @@
     
     <xsl:template name="create.img">
         <xsl:param name="max" select="'\textwidth'" as="xs:string" />
-        <xsl:text>\includegraphics[\maxwidth={</xsl:text>
+        <xsl:text>\includegraphics[width=\maxwidth{</xsl:text>
         <xsl:value-of select="$max" />
         <xsl:text>}]{</xsl:text>
         <xsl:value-of select="@src" />

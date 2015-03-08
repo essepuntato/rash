@@ -168,15 +168,15 @@
     
     <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'formula']">
         <xsl:call-template name="n" />
+        <xsl:call-template name="n" />
         <xsl:text>\begin{equation}</xsl:text>
-        <xsl:call-template name="n" />
         <xsl:call-template name="next"/>
-        <xsl:call-template name="n" />
-        <xsl:text>\end{equation}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\label{</xsl:text>
         <xsl:value-of select="@id" />
         <xsl:text>}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\end{equation}</xsl:text>
         <xsl:call-template name="n" />
     </xsl:template>
     

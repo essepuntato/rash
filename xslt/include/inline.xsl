@@ -22,9 +22,9 @@
     
     <xsl:template match="iml:q">
         <xsl:call-template name="add.space" />
-        <xsl:text>“</xsl:text>
+        <xsl:text>``</xsl:text>
         <xsl:call-template name="next" />
-        <xsl:text>”</xsl:text>
+        <xsl:text>''</xsl:text>
     </xsl:template>
     
     <xsl:template match="iml:a">

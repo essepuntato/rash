@@ -51,10 +51,10 @@
         <xsl:text>\usepackage{subscript}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\lstset{breaklines=true, basicstyle=\small\ttfamily}</xsl:text>
+        <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="lset" />
         <xsl:call-template name="graphics" />
         <xsl:call-template name="mathml" />
-        <xsl:call-template name="footnote_verb" />
         
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />

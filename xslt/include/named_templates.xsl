@@ -4,6 +4,7 @@
     xmlns:iml="http://www.w3.org/1999/xhtml" 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
     xmlns:f="http://www.essepuntato.it/XSLT/fuction">
 
     <xsl:output 
@@ -53,7 +54,7 @@
     <xsl:template name="table_fragment">
         <xsl:variable name="firstRow" select="iml:tr[1]/(iml:td|iml:th)" as="element()*" />
         <xsl:variable name="nCol" select="count($firstRow)" as="xs:integer" />
-        <xsl:variable name="rowWidth" select="concat(xs:string(xs:double(100 div $nCol)), '%')" as="xs:string" />
+        <xsl:variable name="rowWidth" select="xs:string(xs:double(xs:double(100 div $nCol) div 100))" as="xs:string" />
         <xsl:variable name="isFirstColHeading" select="every $f in (iml:tr/element()[1]) satisfies $f[self::iml:th]" as="xs:boolean" />
         <xsl:choose>
             <xsl:when test="$isFirstColHeading and $nCol > 1">

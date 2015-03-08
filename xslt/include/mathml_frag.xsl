@@ -1,10 +1,15 @@
 <xsl:stylesheet version="2.0" 
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:m="http://www.w3.org/1998/Math/MathML" 
+ xmlns:iml="http://www.w3.org/1999/xhtml"
  xmlns:xs="http://www.w3.org/2001/XMLSchema"
  exclude-result-prefixes="m xs">
+ 
+ <xsl:template mode="pmml2tex" match="m:math[ancestor::iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'math_block']]">\let\par\empty <xsl:apply-templates mode="pmml2tex"
+  /></xsl:template>
+ 
  <xsl:template mode="pmml2tex" match="m:math"> \[\let\par\empty <xsl:apply-templates mode="pmml2tex"
-  /> \] </xsl:template>
+ /> \] </xsl:template>
 
  <xsl:template mode="pmml2tex" match="m:mrow">
   <xsl:text>{</xsl:text>

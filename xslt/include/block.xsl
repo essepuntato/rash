@@ -4,9 +4,11 @@
     xmlns:iml="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
     xmlns:f="http://www.essepuntato.it/XSLT/fuction">
     
     <xsl:import href="named_templates.xsl"/>
+    <xsl:import href="mathml.xsl"/>
     
     <xsl:output 
         encoding="UTF-8"
@@ -39,14 +41,16 @@
         <xsl:text>\end{quote}</xsl:text>
     </xsl:template>
     
+    <xsl:template match="iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'img_block']" priority="1.2">
+        <xsl:call-template name="n" />
+        <xsl:call-template name="next">
+            <xsl:with-param name="select" select="iml:img" />
+        </xsl:call-template>
+    </xsl:template>
+    
     <xsl:template match="iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'math_block']" priority="1.2">
         <xsl:call-template name="n" />
-        <xsl:call-template name="n" />
-        <xsl:text>\begin{flalign*}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:call-template name="next" />
-        <xsl:call-template name="n" />
-        <xsl:text>\end{flalign*}</xsl:text>
+        <xsl:apply-templates select="m:math" mode="pmml2tex" />
     </xsl:template>
     
     <xsl:template match="text()[ancestor::iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'quote']]">
@@ -67,7 +71,7 @@
         <xsl:text>\begin{lstlisting}[mathescape]</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select=".//text()" />
+            <xsl:with-param name="select" select="for $t in .//text() return if (((every $prec in $t/preceding-sibling::text() satisfies normalize-space($prec) = '') or (every $foll in $t/following-sibling::text() satisfies normalize-space($foll) = ''))) then () else $t" />
         </xsl:call-template>
         <xsl:call-template name="n" />
         <xsl:text>\end{lstlisting}</xsl:text>
