@@ -14,7 +14,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 Under the following terms:
 * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 -->
-<grammar 
+<grammar ns="http://www.w3.org/1999/xhtml"
   xmlns="http://relaxng.org/ns/structure/1.0"
   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
   datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
