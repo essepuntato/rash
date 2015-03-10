@@ -7,6 +7,8 @@
     xmlns:m="http://www.w3.org/1998/Math/MathML"
     xmlns:f="http://www.essepuntato.it/XSLT/fuction">
 
+    <xsl:import href="mathml.xsl"/>
+
     <xsl:output 
         encoding="UTF-8"
         method="text"
@@ -19,6 +21,25 @@
     
     <xsl:template name="t">
         <xsl:text>    </xsl:text>
+    </xsl:template>
+    
+    <xsl:template name="document_title">
+        <xsl:text>\title{</xsl:text>
+        <xsl:choose>
+            <xsl:when test="contains(iml:title,'--')">
+                <xsl:variable name="titleTok" select="tokenize(iml:title,'--')" />
+                <xsl:value-of select="normalize-space($titleTok[1])" />
+                <xsl:text>}</xsl:text>
+                <xsl:call-template name="n" />
+                <xsl:text>\subtitle{</xsl:text>
+                <xsl:value-of select="normalize-space($titleTok[2])" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="iml:title"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>}</xsl:text>
+        <xsl:call-template name="n" />
     </xsl:template>
     
     <xsl:template name="footnote_verb">
@@ -92,27 +113,98 @@
         <xsl:param name="type" tunnel="yes" as="xs:string"/>
         <xsl:param name="select" select="text()|element()" as="node()*"/>
         <xsl:param name="allCaps" select="false()" as="xs:boolean" tunnel="yes"/>
+        <xsl:param name="isInline" select="false()" as="xs:boolean"/>
         <xsl:variable name="cur.lang" select="if (exists(@xml:lang)) then @xml:lang else $lang"/>
 
         <xsl:for-each select="$select">
-            <xsl:apply-templates select=".">
-                <xsl:with-param name="lang"
-                    select="if (empty(@xml:lang)) then $cur.lang else @xml:lang" as="xs:string"
-                    tunnel="yes"/>
-            </xsl:apply-templates>
+            <xsl:choose>
+                <xsl:when test="self::m:math">
+                    <xsl:apply-templates select="." mode="pmml2tex" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select=".">
+                        <xsl:with-param name="lang"
+                            select="if (empty(@xml:lang)) then $cur.lang else @xml:lang" as="xs:string"
+                            tunnel="yes"/>
+                        <xsl:with-param name="isInline" select="$isInline" tunnel="yes" />
+                    </xsl:apply-templates>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:for-each>
     </xsl:template>
-
+    
+    <xsl:template name="categories">
+        <xsl:if test="exists(//iml:meta[@name = 'dcterms.subject'])">
+            <xsl:call-template name="n" />
+            <xsl:for-each select="//iml:meta[@name = 'dcterms.subject']/@content">
+                <xsl:call-template name="n" />
+                <xsl:variable name="tok" select="tokenize(.,',')" as="xs:string*"/>
+                <xsl:text>\category{</xsl:text>
+                <xsl:value-of select="normalize-space($tok[1])"/>
+                <xsl:text>}{</xsl:text>
+                <xsl:value-of select="normalize-space($tok[2])"/>
+                <xsl:text>}{</xsl:text>
+                <xsl:value-of select="normalize-space($tok[3])"/>
+                <xsl:text>}</xsl:text>
+                <xsl:if test="count($tok) > 3">
+                    <xsl:text>[</xsl:text>
+                    <xsl:value-of select="normalize-space($tok[4])"/>
+                    <xsl:text>]</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="keywords">
+        <xsl:if test="exists(//iml:meta[@property = 'prism:keyword'])">
+            <xsl:call-template name="n" />
+            <xsl:call-template name="n" />
+            <xsl:text>\keywords{</xsl:text>
+            <xsl:for-each select="//iml:meta[@property = 'prism:keyword']">
+                <xsl:sort select="@content" data-type="text"/>
+                <xsl:value-of select="@content"/>
+                <xsl:if test="position() != last()">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:text>}</xsl:text>
+        </xsl:if>
+    </xsl:template>
+    
     <xsl:template match="text()[empty(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'code'])]">
-        <xsl:value-of select="f:replace(.)"/>
+        <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
+        <xsl:choose>
+            <xsl:when test="$isInline">
+                <xsl:value-of select="f:replace(replace(., '\s+', ' '))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="f:replace(.)"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="text()[exists(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'quote'])]" priority="1.2">
-        <xsl:value-of select="replace(f:replace(.),'&#xa;','&#xa;&#xa;')"/>
+        <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
+        <xsl:choose>
+            <xsl:when test="$isInline">
+                <xsl:value-of select="replace(f:replace(normalize-space(.)),'&#xa;','&#xa;&#xa;')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="replace(f:replace(.),'&#xa;','&#xa;&#xa;')"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="text()[exists(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'code'])]">
-        <xsl:value-of select="f:replaceCode(.)"/>
+        <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
+        <xsl:choose>
+            <xsl:when test="$isInline">
+                <xsl:value-of select="f:replaceCode(normalize-space(.))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="f:replaceCode(.)"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:function name="f:replace" as="xs:string">
@@ -209,6 +301,15 @@
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
+            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'formula']">
+                <xsl:variable name="str" select="('Formula','Formula','Formula')" as="xs:string*"/>
+                <xsl:value-of select="$str[$i]"/>
+                <xsl:text>~\</xsl:text>
+                <xsl:value-of select="if ($use.pages) then 'v' else ''" />
+                <xsl:text>ref{</xsl:text>
+                <xsl:value-of select="$id" />
+                <xsl:text>}</xsl:text>
+            </xsl:when>
             <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'section']">
                 <xsl:variable name="str" select="('Sezione','Section','Section')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
@@ -244,115 +345,13 @@
         <xsl:attribute name="padding" select="'2pt'"/>
     </xsl:template>
     
-    <xsl:template name="lset">
+    <xsl:template name="greek">
         <xsl:call-template name="n" />
-        <xsl:text>\lstset{literate=%</xsl:text>
+        <xsl:text>\usepackage{fontspec,unicode-math}</xsl:text>
         <xsl:call-template name="n" />
-        <xsl:text>{Ö}{{\"O}}1</xsl:text>
+        <xsl:text>\usepackage[Latin,Greek]{ucharclasses}</xsl:text>
         <xsl:call-template name="n" />
-        <xsl:text>{Ä}{{\"A}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ü}{{\"U}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ß}{{\ss}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ü}{{\"u}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ä}{{\"a}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ö}{{\"o}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ą}{{\k{a}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ć}{{\'c}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ę}{{\k{e}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ł}{{\l{}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ń}{{\'n}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ó}{{\'o}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ś}{{\'s}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ż}{{\.z}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ź}{{\'z}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ą}{{\k{A}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ć}{{\'C}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ę}{{\k{E}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ł}{{\L{}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ń}{{\'N}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ó}{{\'O}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ś}{{\'S}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ż}{{\.Z}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ź}{{\'Z}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ć}{{\'c}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{č}{{\v{c}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{đ}{{\dj{}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{š}{{\v{s}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ž}{{\v{z}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ć}{{\'C}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Č}{{\v{C}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Đ}{{\DJ{}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Š}{{\v{S}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ž}{{\v{Z}}}1 </xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{é}{{\'{e}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{è}{{\`{e}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ê}{{\^{e}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ë}{{\¨{e}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{û}{{\^{u}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ù}{{\`{u}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ú}{{\'{u}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{â}{{\^{a}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{à}{{\`{a}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{î}{{\^{i}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{ç}{{\c{c}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ç}{{\c{C}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{É}{{\'{E}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Ê}{{\^{E}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{À}{{\`{A}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Â}{{\^{A}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>{Î}{{\^{I}}}1</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>}</xsl:text>
+        <xsl:text>\setTransitionsForGreek{\fontspec{Times New Roman}}{}</xsl:text>
         <xsl:call-template name="n" />
     </xsl:template>
 </xsl:stylesheet>

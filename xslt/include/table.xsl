@@ -34,7 +34,7 @@
         <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
         
         <xsl:for-each select="iml:li[not($scope) or (some $ref in ($scope//iml:a[some $token in tokenize(@class, ' ') satisfies $token = 'ref'] | //iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'footnotes']/iml:div[some $footnote in $scope//iml:a[some $token in tokenize(@class, ' ') satisfies $token = 'footnote'] satisfies $footnote/@href = concat('#', @id)]//iml:a[some $token in tokenize(@class, ' ') satisfies $token = 'ref']) satisfies $ref/@href = concat('#', @id))]">
-            <xsl:sort data-type="text" select="lower-case(iml:p/text()[1])" />
+            <xsl:sort data-type="text" select="lower-case(string-join(iml:p//text(),''))" />
             <xsl:call-template name="n" />
             <xsl:text>\bibitem{</xsl:text>
             <xsl:value-of select="if ($id-for-refs) then concat($id-for-refs,'-',@id) else @id" />

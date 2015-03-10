@@ -48,13 +48,17 @@
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{tabularx}</xsl:text>
         <xsl:call-template name="n" />
-        <xsl:text>\usepackage{subscript}</xsl:text>
+        <xsl:text>\usepackage{fixltx2e}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\lstset{breaklines=true, basicstyle=\small\ttfamily}</xsl:text>
+        <xsl:call-template name="n" />
+        <!-- Balance the last page columns -->
+        <xsl:text>\usepackage{flushend}</xsl:text>
+        <xsl:call-template name="n" />
         <xsl:call-template name="footnote_verb" />
-        <xsl:call-template name="lset" />
         <xsl:call-template name="graphics" />
         <xsl:call-template name="mathml" />
+        <xsl:call-template name="greek" />
         
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
@@ -84,10 +88,7 @@
     </xsl:template>
     
     <xsl:template match="iml:head" priority="0.7">
-        <xsl:text>\title{</xsl:text>
-        <xsl:value-of select="iml:title"/>
-        <xsl:text>}</xsl:text>
-        <xsl:call-template name="n" />
+        <xsl:call-template name="document_title" />
         
         <xsl:variable name="max" select="count(iml:meta[@name='dc.creator'])" as="xs:integer"/>
         
@@ -113,7 +114,7 @@
             <!-- Affiliation -->
             <xsl:for-each select="
                 for $link in ../iml:link[@about = $curId and @property = 'schema:affiliation']/@href 
-                return ../iml:meta[@about = $link and @property = 'schema:name']/@content">
+                return ../iml:meta[@about = $link and @property = 'schema:name'][1]/@content">
                 <xsl:text>\affaddr{</xsl:text>
                 <xsl:value-of select="." />
                 <xsl:text>}</xsl:text>
@@ -145,45 +146,15 @@
         <xsl:call-template name="n" />
         
         <!-- Add categories -->
-        <xsl:if test="exists(//iml:meta[@name = 'dcterms.subject'])">
-            <xsl:call-template name="n" />
-            <xsl:for-each select="//iml:meta[@name = 'category']/@content">
-                <xsl:call-template name="n" />
-                <xsl:variable name="tok" select="tokenize(.,',')" as="xs:string*"/>
-                <xsl:text>\category{</xsl:text>
-                <xsl:value-of select="normalize-space($tok[1])"/>
-                <xsl:text>}{</xsl:text>
-                <xsl:value-of select="normalize-space($tok[2])"/>
-                <xsl:text>}{</xsl:text>
-                <xsl:value-of select="normalize-space($tok[3])"/>
-                <xsl:text>}</xsl:text>
-                <xsl:if test="count($tok) > 3">
-                    <xsl:text>[</xsl:text>
-                    <xsl:value-of select="normalize-space($tok[4])"/>
-                    <xsl:text>]</xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:if>
+        <xsl:call-template name="categories" />
         
         <!-- Add keywords -->
-        <xsl:if test="exists(//iml:meta[@property = 'prism:keyword'])">
-            <xsl:call-template name="n" />
-            <xsl:call-template name="n" />
-            <xsl:text>\keywords{</xsl:text>
-            <xsl:for-each select="//iml:meta[@property = 'prism:keyword']">
-                <xsl:sort select="@content" data-type="text"/>
-                <xsl:value-of select="@content"/>
-                <xsl:if test="position() != last()">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-            <xsl:text>}</xsl:text>
-        </xsl:if>
+        <xsl:call-template name="keywords" />
     </xsl:template>
     
     <xsl:template match="iml:body" priority="0.7">
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnote' and $token != 'abstract']|text()"
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnotes' and $token != 'abstract']|text()"
                 as="node()*"/>
         </xsl:call-template>
     </xsl:template>
@@ -214,6 +185,16 @@
         <xsl:call-template name="n" />
         <xsl:text>\begin{tabularx}{0.45\textwidth}</xsl:text>
         <xsl:call-template name="table_fragment" />
+        <xsl:call-template name="n" />
+    </xsl:template>
+    
+    <xsl:template 
+        match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'acknowledgements']" 
+        priority="2.0">
+        <xsl:call-template name="n" />
+        <xsl:call-template name="n" />
+        <xsl:text>\subsection*{Acknowledgements}</xsl:text>
+        <xsl:call-template name="next"/>
         <xsl:call-template name="n" />
     </xsl:template>
     

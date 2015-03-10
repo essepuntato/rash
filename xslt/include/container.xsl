@@ -23,10 +23,7 @@
     </xsl:template>
     
     <xsl:template match="iml:head">
-        <xsl:text>\title{</xsl:text>
-        <xsl:value-of select="iml:title"/>
-        <xsl:text>}</xsl:text>
-        <xsl:call-template name="n" />
+        <xsl:call-template name="document_title" />
         
         <xsl:variable name="max" select="count(iml:meta[@name='dc.creator'])" as="xs:integer"/>
         
@@ -71,40 +68,10 @@
         </xsl:call-template>
         
         <!-- Add categories -->
-        <xsl:if test="exists(//iml:meta[@name = 'dcterms.subject'])">
-            <xsl:call-template name="n" />
-            <xsl:for-each select="//iml:meta[@name = 'dcterms.subject']/@content">
-                <xsl:call-template name="n" />
-                <xsl:variable name="tok" select="tokenize(.,',')" as="xs:string*"/>
-                <xsl:text>\category{</xsl:text>
-                <xsl:value-of select="$tok[1]"/>
-                <xsl:text>}{</xsl:text>
-                <xsl:value-of select="$tok[2]"/>
-                <xsl:text>}{</xsl:text>
-                <xsl:value-of select="$tok[3]"/>
-                <xsl:text>}</xsl:text>
-                <xsl:if test="count($tok) > 3">
-                    <xsl:text>[</xsl:text>
-                    <xsl:value-of select="$tok[4]"/>
-                    <xsl:text>]</xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:if>
+        <xsl:call-template name="categories" />
         
         <!-- Add keywords -->
-        <xsl:if test="exists(//iml:meta[@property = 'prism:keyword'])">
-            <xsl:call-template name="n" />
-            <xsl:call-template name="n" />
-            <xsl:text>\keywords{</xsl:text>
-            <xsl:for-each select="//iml:meta[@property = 'prism:keyword']">
-                <xsl:sort select="@content" data-type="text"/>
-                <xsl:value-of select="@content"/>
-                <xsl:if test="position() != last()">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-            <xsl:text>}</xsl:text>
-        </xsl:if>
+        <xsl:call-template name="keywords" />
     </xsl:template>
 
     <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'abstract']">
@@ -138,7 +105,7 @@
         <xsl:text>\maketitle</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnote' and $token != 'abstract']|text()"
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnotes' and $token != 'abstract']|text()"
                 as="node()*"/>
         </xsl:call-template>
         <xsl:call-template name="n" />
@@ -223,6 +190,7 @@
                 <xsl:text>\begin{thebibliography}{4}</xsl:text>
                 <xsl:call-template name="n" />
                 <xsl:call-template name="next"/>
+                <xsl:call-template name="n" />
                 <xsl:call-template name="n" />
                 <xsl:text>\end{thebibliography}</xsl:text>
             </xsl:otherwise>

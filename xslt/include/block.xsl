@@ -50,7 +50,7 @@
     
     <xsl:template match="iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'math_block']" priority="1.2">
         <xsl:call-template name="n" />
-        <xsl:apply-templates select="m:math" mode="pmml2tex" />
+        <xsl:call-template name="next" />
     </xsl:template>
     
     <xsl:template match="text()[ancestor::iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'quote']]">
@@ -71,7 +71,7 @@
         <xsl:text>\begin{lstlisting}[mathescape]</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="for $t in .//text() return if (((every $prec in $t/preceding-sibling::text() satisfies normalize-space($prec) = '') or (every $foll in $t/following-sibling::text() satisfies normalize-space($foll) = ''))) then () else $t" />
+            <xsl:with-param name="select" select=".//text()" />
         </xsl:call-template>
         <xsl:call-template name="n" />
         <xsl:text>\end{lstlisting}</xsl:text>
