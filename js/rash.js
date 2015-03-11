@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.3, February 19, 2015
+ * rash.js - Version 0.3.1, March 11, 2015
  * Copyright (c) 2014-2015, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -296,8 +296,8 @@ jQuery.fn.extend({
 $(function() {
     /* Bibliographic reference list */
     $('.bibliography ul li , .bibliography ol li').sort(function(a,b) {
-        var a_text = $(a).text().replace(/ \s+/g," ").split();
-        var b_text = $(b).text().replace(/ \s+/g," ").split();
+        var a_text = $(a).text().replace(/\s+/g," ").split();
+        var b_text = $(b).text().replace(/\s+/g," ").split();
         if (a_text < b_text) {
             return -1;
         } else if (a_text > b_text) {
