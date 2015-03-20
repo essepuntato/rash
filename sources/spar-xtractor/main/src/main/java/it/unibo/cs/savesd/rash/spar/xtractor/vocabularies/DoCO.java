@@ -26,6 +26,7 @@ public class DoCO {
     public static final String NS = "http://purl.org/spar/doco/";
     
     public static final String FABIO_NS = "http://purl.org/spar/fabio/";
+    public static final String SALT_NS = "http://salt.semanticauthoring.org/ontologies/sro#";
     
     /** <p>The namespace of the vocabulary as a string</p>
      *  @see #NS */
@@ -308,6 +309,8 @@ public class DoCO {
     
     public static final Resource Expression = m_model.createResource( FABIO_NS + "Expression" );
     
+    public static final Resource Abstract = m_model.createResource( SALT_NS + "Abstract" );
+    
     public static Set<Resource> keys(){
         Set<Resource> keys = new HashSet<Resource>();
         Field[] fields = DoCO.class.getFields();
@@ -333,7 +336,9 @@ public class DoCO {
     public static Resource getDoCOClass(DoCOClass docoClass){
         switch (docoClass) {
             case Expression:
-                return Expression;
+                return DoCO.Expression;
+            case Abstract:
+                return DoCO.Abstract;
             default:
                 return m_model.createResource(NS + docoClass);
         }

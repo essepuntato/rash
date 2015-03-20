@@ -1,7 +1,9 @@
 package it.unibo.cs.savesd.rash.spar.xtractor.impl;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.Xtractor;
+import it.unibo.cs.savesd.rash.spar.xtractor.XtractorTest;
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigProperties;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.Abstract;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.BodyMatter;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.DoCOIndividualBuilder;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.DoCOIndividuals;
@@ -21,7 +23,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -324,25 +325,142 @@ public class XtractorImpl implements Xtractor {
         /*
          * Iterate body's children in order to detect divs that represent sections.
          */
-        Elements sectionElements = body.select(" > " + sectionElement + ".section");
+        Elements sectionElements = body.select(" > " + sectionElement + ".section, " + sectionElement + ".abstract");
         
         Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
         int sections = 0;
         for(Element section : sectionElements){
+            
             String sectionID = section.id();
             Resource sectionResource = null;
-            if(sectionID != null && !sectionID.isEmpty())
-                sectionResource = model.createResource(sectionID);
-            
+            if(sectionID != null && !sectionID.isEmpty()) sectionResource = model.createResource(sectionID);
             else{
-                sectionID = namingParagraph + "-" + sections;
+                sectionID = namingSection + "-" + sections;
                 sectionResource = model.createResource(sectionID);
                 section.attr("id", sectionID);
             }
+            
+            DoCOClass docoClass;
+            Class<? extends Section> docoIndividualClass;
+            if(section.attr("class").equalsIgnoreCase("abstract")){
+                docoClass = DoCOClass.Abstract;
+                docoIndividualClass  = Abstract.class;
+            }
+            else{
+                docoClass = DoCOClass.Section;
+                docoIndividualClass  = Section.class;
+            }
+            
+            rdFaInjector.createDoCOElement(section, contains, sectionResource, docoClass);
+            Section sec = DoCOIndividualBuilder.build(docoIndividualClass, section, prefixes);
+            sectionIndividuals.add(sec);
+            
+            /*
+             * Add doco:SectionTitle individuals.
+             */
+            Elements titles = section.select(" > h1");
+            if(titles != null){
+                Element title = titles.first();
+                String titleId = title.id();
                 
-            rdFaInjector.createDoCOElement(section, contains, sectionResource, DoCOClass.Section);
-            sectionIndividuals.add(DoCOIndividualBuilder.build(Section.class, section, prefixes));
+                
+                Resource sectionTitleResource = null;
+                if(titleId != null && !titleId.isEmpty()) sectionTitleResource = model.createResource(titleId);
+                else{
+                    titleId = sectionID + "/title";
+                    sectionTitleResource = model.createResource(titleId);
+                    title.attr("id", titleId);
+                }
+                
+                /*
+                 * Insert title content by means of c4o:hasContent
+                 */
+                String titleContent = title.html();
+                title.html("");
+                Element span = title.appendElement("span");
+                span.html(titleContent);
+                span.attr("property", "http://purl.org/spar/c4o/hasContent");
+                
+                rdFaInjector.createDoCOElement(title, contains, sectionTitleResource, DoCOClass.SectionTitle);
+                
+            }
+            
+            sectionIndividuals.addAll(createSections(sec));
+            
+        }
+        
+        return sectionIndividuals; 
+        
+    }
+    
+    
+    private DoCOIndividuals<Section> createSections(Section section) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
+    
+        
+        Element sectionElement = section.asElement();
+        
+        DoCOIndividuals<Section> sectionIndividuals = new DoCOIndividuals<Section>();
+        
+        if(this.prefixes == null){
+            this.prefixes = getPrefixes(sectionElement.ownerDocument());
+        }
+        
+        /*
+         * Iterate body's children in order to detect divs that represent sections.
+         */
+        Elements sectionElements = sectionElement.select(" > " + this.sectionElement + ".section");
+        
+        Model model = ModelFactory.createDefaultModel();
+        Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
+        int sections = 0;
+        for(Element subSection : sectionElements){
+            
+            String sectionID = subSection.id();
+            Resource sectionResource = null;
+            if(sectionID != null && !sectionID.isEmpty()) sectionResource = model.createResource(sectionID);
+            else{
+                sectionID = sectionElement.attr("resource") + "/" + sections;
+                sectionResource = model.createResource(sectionID);
+                subSection.attr("id", sectionID);
+            }
+            
+            rdFaInjector.createDoCOElement(subSection, contains, sectionResource, DoCOClass.Section);
+            Section subSec = DoCOIndividualBuilder.build(Section.class, subSection, prefixes);
+            sectionIndividuals.add(subSec);
+            
+            /*
+             * Add doco:SectionTitle individuals.
+             */
+            Elements titles = subSection.select(" > h1");
+            if(titles != null){
+                Element title = titles.first();
+                String titleId = title.id();
+                
+                
+                Resource sectionTitleResource = null;
+                if(titleId != null && !titleId.isEmpty()) sectionTitleResource = model.createResource(titleId);
+                else{
+                    titleId = sectionID + "/title";
+                    sectionTitleResource = model.createResource(titleId);
+                    title.attr("id", titleId);
+                }
+                
+                /*
+                 * Insert title content by means of c4o:hasContent
+                 */
+                String titleContent = title.html();
+                title.html("");
+                Element span = title.appendElement("span");
+                span.html(titleContent);
+                span.attr("property", "http://purl.org/spar/c4o/hasContent");
+                
+                rdFaInjector.createDoCOElement(title, contains, sectionTitleResource, DoCOClass.SectionTitle);
+                
+            }
+            
+            
+            sectionIndividuals.addAll(createSections(subSec));
         }
         
         return sectionIndividuals; 

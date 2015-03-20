@@ -50,7 +50,6 @@ public class DoCOIndividualBuilder {
                     constructor.setAccessible(true);
                     
                     individual = constructor.newInstance(element);
-                    
                     if(type.equals(individual.getDoCOClass().getURI()))
                         return individual;
                     else throw new MissmatchingDoCOClassDeclarationException();
