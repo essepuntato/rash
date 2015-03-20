@@ -183,7 +183,6 @@ public class XtractorTest {
     public void tesExtract(){
         try {
             Document doc = xtractor.extract("http://cs.unibo.it/save-sd/rash/documentation/index.html", DoCOClass.Sentence);
-            System.out.println(doc.html());
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
