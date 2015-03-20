@@ -60,6 +60,7 @@ public class XtractorTest {
         }
     }
     
+    /*
     @Test
     public void testParagraphReading(){
         Method method;
@@ -85,6 +86,7 @@ public class XtractorTest {
         Assert.assertTrue(true);
         
     }
+    */
     
     @Test
     public void testSentenceDetection(){

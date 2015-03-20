@@ -1,7 +1,6 @@
 package it.unibo.cs.savesd.rash.spar.xtractor.impl;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.Xtractor;
-import it.unibo.cs.savesd.rash.spar.xtractor.XtractorTest;
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigProperties;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.BodyMatter;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.DoCOIndividualBuilder;
@@ -465,73 +464,5 @@ public class XtractorImpl implements Xtractor {
     
     private String[] detectSentences(String text){
         return sentenceDetector.sentDetect(text);
-    }
-    
-    private Elements getParagraphs(Document document){
-        
-        String sectionElement = configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION);
-        String paragraphElement = configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH);
-        List<Object> ignoreClasses = configuration.getList(ConfigProperties.HTML_IGNORE_CLASS);
-        
-        
-        
-        Elements pElements = new Elements();
-        // Get all DIV elements.
-        Elements divs = document.getElementsByTag(sectionElement);
-        
-        // Traverse all DIV elements.
-        for(Element div : divs){
-            
-            
-            Elements ps = div.children();
-            for(Element p : ps){
-                if(p.nodeName().equalsIgnoreCase(paragraphElement)){
-                    boolean validParagraph = true;
-                    
-                    for(int i=0, j=ignoreClasses.size(); i<j && validParagraph; i++){
-                        Object ignoreClass = ignoreClasses.get(i);
-                        if(ignoreClass instanceof String && p.hasClass((String)ignoreClass))
-                            validParagraph = false;
-                    }
-                    
-                    if(validParagraph){
-                        pElements.add(p);
-                    }
-                }
-            }
-        }
-        
-        return pElements;
-    }
-    
-    private Elements getParagraphs(Element section, Document document){
-        
-        String sectionElement = configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION);
-        String paragraphElement = configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH);
-        List<Object> ignoreClasses = configuration.getList(ConfigProperties.HTML_IGNORE_CLASS);
-        
-        Elements pElements = new Elements();
-            
-        Elements ps = section.children();
-        for(Element p : ps){
-            if(p.nodeName().equalsIgnoreCase(paragraphElement)){
-                boolean validParagraph = true;
-                
-                for(int i=0, j=ignoreClasses.size(); i<j && validParagraph; i++){
-                    Object ignoreClass = ignoreClasses.get(i);
-                    if(ignoreClass instanceof String && p.hasClass((String)ignoreClass))
-                        validParagraph = false;
-                }
-                
-                if(validParagraph){
-                    pElements.add(p);
-                }
-            }
-        }
-        return pElements;
-    }
-    
-    public static void main(String[] args) {
-        
     }
 }
