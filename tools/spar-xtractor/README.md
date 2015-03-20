@@ -7,21 +7,24 @@ Annotations are based on the DoCO (cf. http://purl.org/spar/doco), which is an o
 The script can be used from command line and its synoptic is the following:
 
 usage: sparxtract
- -i,--input <file/uri>   MANDATORY - Input RASH document provided either
-                         as local file path or remote URI.
+ -i,--input <file/uri>    MANDATORY - Input RASH document provided either
+                          as local file path or remote URI.
+
  -c,--config <file>      OPTIONAL - File containing configuration
                          properties for the application. If not provided
                          the default configuration is used.
+
  -l,--level <string>     OPTIONAL - This parameter determines the document
                          structure level used for generating SPAR
                          annotations. By level we mean the document
                          structures such as body matter, section,
                          paragraph, sentences, etc.
                          Valid values are:
-                         - bodymatter;
-                         - section;
-                         - paragraph;
-                         - sentence.
+                         * bodymatter;
+                         * section;
+                         * paragraph;
+                         * sentence.
+
  -o,--output <file>      OPTIONAL - File containing configuration
                          properties for the application. If not provided
                          the default configuration is used.

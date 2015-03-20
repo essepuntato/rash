@@ -41,10 +41,11 @@ The usage of the JAR is the following
                          structures such as body matter, section,
                          paragraph, sentences, etc.
                          Valid values are:
-                         - bodymatter;
-                         - section;
-                         - paragraph;
-                         - sentence.
+                         * bodymatter;
+                         * section;
+                         * paragraph;
+                         * sentence.
+
  -o,--output <file>      OPTIONAL - File containing configuration
                          properties for the application. If not provided
                          the default configuration is used.
