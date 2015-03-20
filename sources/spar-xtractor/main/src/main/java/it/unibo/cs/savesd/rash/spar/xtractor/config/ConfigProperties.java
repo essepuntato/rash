@@ -18,11 +18,14 @@ public class ConfigProperties {
     private static final Logger LOG = LoggerFactory.getLogger(ConfigProperties.class); 
     
     private static final String ARTIFACT_ID = "it.unibo.cs.savesd.rash.spar.xtractor.html";
+    public static final String HTML_ELEMENT_EXPRESSION = ARTIFACT_ID + ".element.expression";
+    public static final String HTML_ELEMENT_BODY_MATTER = ARTIFACT_ID + ".element.bodymatter";
     public static final String HTML_ELEMENT_SECTION = ARTIFACT_ID + ".element.section";
     public static final String HTML_ELEMENT_PARAGRAPH = ARTIFACT_ID + ".element.paragraph";
     public static final String HTML_IGNORE_CLASS = ARTIFACT_ID + ".ignore.class";
     public static final String SENTENCE_DETECTOR_MODEL_EN = ARTIFACT_ID + "opennlp.sentence.detector.model.en";
     public static final String NAMESPACE = ARTIFACT_ID + ".namespace";
+    public static final String NAMING_EXPRESSION = ARTIFACT_ID + ".naming.expression";
     public static final String NAMING_BODY_MATTER = ARTIFACT_ID + ".naming.bodymatter";
     public static final String NAMING_SECTION = ARTIFACT_ID + ".naming.section";
     public static final String NAMING_PARAGRAPH = ARTIFACT_ID + ".naming.paragraph";

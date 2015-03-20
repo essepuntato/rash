@@ -1,7 +1,18 @@
 package it.unibo.cs.savesd.rash.spar.xtractor.impl;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.Xtractor;
+import it.unibo.cs.savesd.rash.spar.xtractor.XtractorTest;
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigProperties;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.BodyMatter;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.DoCOIndividualBuilder;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.DoCOIndividuals;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.Expression;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.InvalidDoCOIndividualException;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.MissmatchingDoCOClassDeclarationException;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.NotInstantiableIndividualException;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.Paragraph;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.Section;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.Sentence;
 import it.unibo.cs.savesd.rash.spar.xtractor.vocabularies.DoCOClass;
 
 import java.io.FileInputStream;
@@ -10,7 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
@@ -48,6 +63,33 @@ public class XtractorImpl implements Xtractor {
     private SentenceDetector sentenceDetector;
     private RDFaInjectorImpl rdFaInjector;
     
+    /*
+     * Namespace
+     */
+    protected String namespace;
+    
+    /*
+     * HTML elements that can be associated to DoCO objects.
+     */
+    protected String expressionElement;
+    protected String bodyMatterElement;
+    protected String sectionElement;
+    protected String paragraphElement;
+    
+    /*
+     * Naming conventions
+     */
+    protected String namingExpression;
+    protected String namingBodyMatter;
+    protected String namingSection;
+    protected String namingParagraph;
+    protected String namingSentence;
+    
+    /*
+     * Namespaces and prefixes
+     */
+    private Map<String,String> prefixes;
+    
     public XtractorImpl(Configuration configuration) {
         this.configuration = configuration;
         rdFaInjector = new RDFaInjectorImpl();
@@ -55,6 +97,28 @@ public class XtractorImpl implements Xtractor {
     }
     
     protected void activate(){
+        expressionElement = configuration.getString(ConfigProperties.HTML_ELEMENT_EXPRESSION);
+        bodyMatterElement = configuration.getString(ConfigProperties.HTML_ELEMENT_BODY_MATTER);
+        sectionElement = configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION);
+        paragraphElement = configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH);
+        
+        /*
+         * Se-up the namespace.
+         */
+        namespace = configuration.getString(ConfigProperties.NAMESPACE);
+        
+        /*
+         * Set-up the naming conventions.
+         */
+        namingExpression = configuration.getString(ConfigProperties.NAMING_EXPRESSION);
+        namingBodyMatter = configuration.getString(ConfigProperties.NAMING_BODY_MATTER);
+        namingSection = configuration.getString(ConfigProperties.NAMING_SECTION);
+        namingParagraph = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
+        namingSentence = configuration.getString(ConfigProperties.NAMING_SENTENCE);
+        
+        /*
+         * Set-up the model for sentence detector based on Apache OpenNlp 
+         */
         SentenceModel model = null;
         InputStream modelIn = null;
         String sentenceDetectorModelEn = configuration.getString(ConfigProperties.SENTENCE_DETECTOR_MODEL_EN);
@@ -82,10 +146,11 @@ public class XtractorImpl implements Xtractor {
         
         String namespace = configuration.getString(ConfigProperties.NAMESPACE);
         if(namespace == null)configuration.setProperty(ConfigProperties.NAMESPACE, "");
+         
     }
     
     @Override
-    public void extract(String path) throws MalformedURLException {
+    public Document extract(String path, DoCOClass level) throws MalformedURLException {
         Document doc = null;
         if(path != null && !path.isEmpty()){
             if(path.startsWith("http://")){
@@ -100,239 +165,301 @@ public class XtractorImpl implements Xtractor {
         }
         
         if(doc != null){
-            Elements paragraphs = getParagraphs(doc);
-            for(Element paragraph : paragraphs){
-                String text = paragraph.text();
-                if(text != null && !text.isEmpty()){
-                    String[] sentences = detectSentences(text);
+            
+            try {
+                switch (level) {
+                    case Expression:
+                        createExpression(doc);
+                        break;
+                    case BodyMatter:
+                        createBodyMatter(doc);
+                        break;
+                    case Section:
+                        createSections(doc);
+                        break;
+                    case Paragraph:
+                        createParagraphs(doc);
+                        break;
+                    case Sentence:
+                        createSentences(doc);
+                        break;
+                    default:
+                        createSentences(doc);
+                        break;
                 }
+            } catch (InvalidDoCOIndividualException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (MissmatchingDoCOClassDeclarationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NotInstantiableIndividualException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
                 
+            return doc;
         }
+        else return null;
     }
     
-    public void createBodyMatter(Document document){
+    @Override
+    public Map<String,String> getPrefixes(Document document){
+        Map<String,String> prefixes = new HashMap<String,String>();
         
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String namingBodyMatter = configuration.getString(ConfigProperties.NAMING_BODY_MATTER);
+        Elements test = document.getElementsByTag("html");
+        if(test != null && test.size() > 0){
+            Element html = test.first();
+            String prefixString = html.attr("prefix");
+            if(prefixString != null && !prefixString.trim().isEmpty()){
+                String regex = "((.)+:) ((.)+:\\/\\/(.)+)";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(prefixString);
+                while(matcher.find()){
+                    String prefix = matcher.group(1);
+                    String namespace  = matcher.group(3);
+                    
+                    if(prefix != null)
+                        prefix = prefix.trim();
+                    if(namespace != null)
+                        namespace = namespace.trim();
+                    
+                    prefixes.put(prefix, namespace);
+                }
+            }
+            
+        }
         
-        RDFaInjectorImpl rdFaInjector = new RDFaInjectorImpl();
+        
+        return prefixes;
+    }
+    
+    @Override
+    public Expression createExpression(Document document) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException{
+        /*
+         * Add the fabio:Expression
+         */
+        Elements test = document.getElementsByTag(expressionElement);
+        if(test != null){
+            Element html = test.first();
+            Resource expressionResource = ModelFactory.createDefaultModel().createResource(namingExpression);
+            rdFaInjector.createDoCOElement(html, expressionResource, DoCOClass.Expression);
+            
+            if(this.prefixes == null){
+                this.prefixes = getPrefixes(document);
+            }
+            
+            return DoCOIndividualBuilder.build(Expression.class, html, prefixes);
+        }
+        else throw new InvalidDoCOIndividualException();
+        
+        
+    }
+    
+    public BodyMatter createBodyMatter(Document document) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
+        
+        /*
+         * Add the expression.
+         */
+        
+        Expression expression = createExpression(document);
+        
+        if(expression != null) return createBodyMatter(expression);
+        else return null;
+        
+        
+    }
+    
+    public BodyMatter createBodyMatter(Expression expression) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
+        
+        Element body = expression.asElement().select(" > body").first();
         
         /*
          * Add the doco:BodyMatter
          */
         Model model = ModelFactory.createDefaultModel();
-        Resource bodyResource = model.createResource(namespace + namingBodyMatter);
-        Element body = document.body();
-        rdFaInjector.createDoCOElement(body, bodyResource, DoCOClass.BodyMatter);
-    }
-    
-    @Override
-    public void createSections(Document document){
-        
-        
-        Elements paragraphs = getParagraphs(document);
-        
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
-        
-        RDFaInjectorImpl rdFaInjector = new RDFaInjectorImpl();
-        
-        Element body = document.body();
-        
-        /*
-         * Iterate body's children in order to detect divs that represent sections.
-         */
-        Elements bodyChildren = body.children();
-        
-        Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
-        int sections = 0;
-        for(Element bodyChild : bodyChildren){
-            if(bodyChild.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION))){
-                if(bodyChild.hasClass("section")){
-                    sections += 1;
-                    Resource sectionResource = model.createResource(namespace + paragraphNaming + "-" + sections);
-                    rdFaInjector.createDoCOElement(bodyChild, contains, sectionResource, DoCOClass.Section);
-                }
+        if(body.nodeName().equals(bodyMatterElement)){
+            Resource bodyResource = null;
+            String bodyID = body.id();
+            if(bodyID != null && !bodyID.isEmpty())
+                bodyResource = model.createResource(bodyID);
+            else{
+                bodyResource = model.createResource(namingBodyMatter);
+                body.attr("id", namingBodyMatter);
             }
+            rdFaInjector.createDoCOElement(body, contains, bodyResource, DoCOClass.BodyMatter);
         }
+        
+        if(this.prefixes == null){
+            this.prefixes = getPrefixes(body.ownerDocument());
+        }
+        return DoCOIndividualBuilder.build(BodyMatter.class, body, prefixes);
         
     }
     
     @Override
-    public void createSections(Element body, Document document){
+    public DoCOIndividuals<Section> createSections(Document document) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
         
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
+        /*
+         * Call createBodyMatter, which in turn calls createExpression. 
+         */
+        BodyMatter bodyMatter = createBodyMatter(document);
+        
+        if(bodyMatter != null) return createSections(bodyMatter);
+        else return null;
+        
+    }
+    
+    public DoCOIndividuals<Section> createSections(BodyMatter bodyMatter) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
+    
+        
+        Element body = bodyMatter.asElement();
+        
+        DoCOIndividuals<Section> sectionIndividuals = new DoCOIndividuals<Section>();
+        
+        if(this.prefixes == null){
+            this.prefixes = getPrefixes(body.ownerDocument());
+        }
         
         /*
          * Iterate body's children in order to detect divs that represent sections.
          */
-        Elements bodyChildren = body.children();
+        Elements sectionElements = body.select(" > " + sectionElement + ".section");
         
         Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
         int sections = 0;
-        for(Element bodyChild : bodyChildren){
-            if(bodyChild.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION))){
-                if(bodyChild.hasClass("section")){
-                    sections += 1;
-                    Resource sectionResource = model.createResource(namespace + paragraphNaming + "-" + sections);
-                    rdFaInjector.createDoCOElement(bodyChild, contains, sectionResource, DoCOClass.Section);
-                }
+        for(Element section : sectionElements){
+            String sectionID = section.id();
+            Resource sectionResource = null;
+            if(sectionID != null && !sectionID.isEmpty())
+                sectionResource = model.createResource(sectionID);
+            
+            else{
+                sectionID = namingParagraph + "-" + sections;
+                sectionResource = model.createResource(sectionID);
+                section.attr("id", sectionID);
             }
+                
+            rdFaInjector.createDoCOElement(section, contains, sectionResource, DoCOClass.Section);
+            sectionIndividuals.add(DoCOIndividualBuilder.build(Section.class, section, prefixes));
         }
+        
+        return sectionIndividuals; 
         
     }
 
     @Override
-    public void createParagraphs(Document document){
-        
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String sectionNaming = configuration.getString(ConfigProperties.NAMING_SECTION);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
-        
-        RDFaInjectorImpl rdFaInjector = new RDFaInjectorImpl();
-        
-        Element body = document.body();
+    public DoCOIndividuals<Paragraph> createParagraphs(Document document) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
         
         /*
-         * Iterate body's children in order to detect divs that represent sections.
+         * Call createSections, that calls createBodyMatter, which in turn calls createExpression. 
          */
-        Elements bodyChildren = body.children();
-        
-        Model model = ModelFactory.createDefaultModel();
-        Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
-        int sections = 0;
-        for(Element section : bodyChildren){
-            if(section.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION))){
-                if(section.hasClass("section")){
-                    sections += 1;
-                    
-                    Elements paragraphElements = section.children();
-                    
-                    int paragraphs = 0;
-                    for(Element paragraph : paragraphElements){
-                        if(paragraph.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH))){
-                            paragraphs += 1;
-                            String uri = namespace + sectionNaming + "-" + sections + "/" + paragraphNaming + "-" + paragraphs;
-                            Resource paragraphResource = model.createResource(uri);
-                            rdFaInjector.createDoCOElement(paragraph, contains, paragraphResource, DoCOClass.Paragraph);
-                        }
-                    }
-                }
+        DoCOIndividuals<Section> sections = createSections(document);
+        if(sections != null){
+            DoCOIndividuals<Paragraph> paragraphs = new DoCOIndividuals<Paragraph>();
+            for(Section section : sections){
+                paragraphs.addAll(createParagraphs(section));
             }
+            return paragraphs;
         }
-        
+        else return null;
     }
     
     @Override
-    public void createParagraphs(Element section, Document document){
+    public DoCOIndividuals<Paragraph> createParagraphs(Section section) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException{
         
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String sectionNaming = configuration.getString(ConfigProperties.NAMING_SECTION);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
+        DoCOIndividuals<Paragraph> paragraphIndividuals = new DoCOIndividuals<Paragraph>();
         
-        String sectionUri = section.attr("resource");
-        if(sectionUri == null) sectionUri = namespace + sectionNaming;
+        String sectionUri = section.getURI();
+        if(sectionUri == null) sectionUri = namingSection;
         
         Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
-        Elements paragraphElements = section.children();
+        Elements paragraphElements = section.asElement().select(" > " + paragraphElement);
+        
+        if(this.prefixes == null){
+            this.prefixes = getPrefixes(section.asElement().ownerDocument());
+        }
                     
         int paragraphs = 0;
         for(Element paragraph : paragraphElements){
-            if(paragraph.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH))){
-                paragraphs += 1;
-                String uri = sectionUri + "/" + paragraphNaming + "-" + paragraphs;
-                Resource paragraphResource = model.createResource(uri);
-                rdFaInjector.createDoCOElement(paragraph, contains, paragraphResource, DoCOClass.Paragraph);
+            paragraphs += 1;
+            
+            Resource paragraphResource = null;
+            String paragraphID = paragraph.id();
+            if(paragraphID != null && !paragraphID.isEmpty())
+                paragraphResource = model.createResource(paragraphID);
+            else{
+                String uri = sectionUri + "/" + namingParagraph + "-" + paragraphs;
+                paragraphResource = model.createResource(uri);
+                paragraph.attr("id", uri);
             }
+            rdFaInjector.createDoCOElement(paragraph, contains, paragraphResource, DoCOClass.Paragraph);
+            paragraphIndividuals.add(DoCOIndividualBuilder.build(Paragraph.class, paragraph, prefixes));
         }
+        
+        return paragraphIndividuals;
         
     }
     
     @Override
-    public void createSentences(Document document){
-        
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String sectionNaming = configuration.getString(ConfigProperties.NAMING_SECTION);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
-        String sentenceNaming = configuration.getString(ConfigProperties.NAMING_SENTENCE);
-        
-        Element body = document.body();
+    public DoCOIndividuals<Sentence> createSentences(Document document) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException{
         
         /*
-         * Iterate body's children in order to detect divs that represent sections.
+         * Call createParagraphs, which recursively calls: 
+         *   - createSections; 
+         *   - createBodyMatter;
+         *   - createExpression. 
          */
-        Elements bodyChildren = body.children();
-        
-        Model model = ModelFactory.createDefaultModel();
-        Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
-        Property hasContent = model.createProperty("http://purl.org/spar/c4o/hasContent");
-        int sections = 0;
-        for(Element section : bodyChildren){
-            if(section.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_SECTION))){
-                if(section.hasClass("section")){
-                    sections += 1;
-                    
-                    Elements paragraphElements = getParagraphs(section, document);
-                    
-                    int paragraphs = 0;
-                    for(Element paragraph : paragraphElements){
-                        if(paragraph.nodeName().equalsIgnoreCase(configuration.getString(ConfigProperties.HTML_ELEMENT_PARAGRAPH))){
-                            paragraphs += 1;
-                            
-                            String text = paragraph.html();
-                            paragraph = paragraph.html("");
-                            String[] sentences = detectSentences(text);
-                            for(int i=0; i<sentences.length; i++){
-                                String uri = namespace + sectionNaming + "-" + sections + "/" + paragraphNaming + "-" + paragraphs + "/" + sentenceNaming + "-" + (i+1);
-                                Resource sentenceResource = model.createResource(uri);
-                                
-                                Element span = rdFaInjector.appendDoCOElement(paragraph, Tag.valueOf("span"), contains, sentenceResource, DoCOClass.Sentence);
-                                Element contentSpan = rdFaInjector.appendDoCOElement(span, Tag.valueOf("span"), hasContent);
-                                
-                                contentSpan.html(sentences[i]);    
-                            }
-                            
-                        }
-                    }
-                }
+        DoCOIndividuals<Paragraph> paragraphs = createParagraphs(document);
+        if(paragraphs != null){
+            DoCOIndividuals<Sentence> sentences = new DoCOIndividuals<Sentence>();
+            for(Paragraph paragraph : paragraphs){
+                sentences.addAll(createSentences(paragraph));
             }
+            return sentences;
         }
+        else return null;
         
     }
     
     @Override
-    public void createSentences(Element paragraph, Document document){
+    public DoCOIndividuals<Sentence> createSentences(Paragraph paragraph) throws InvalidDoCOIndividualException, MissmatchingDoCOClassDeclarationException, NotInstantiableIndividualException {
         
-        String namespace = configuration.getString(ConfigProperties.NAMESPACE);
-        String sectionNaming = configuration.getString(ConfigProperties.NAMING_SECTION);
-        String paragraphNaming = configuration.getString(ConfigProperties.NAMING_PARAGRAPH);
-        String sentenceNaming = configuration.getString(ConfigProperties.NAMING_SENTENCE);
+        DoCOIndividuals<Sentence> sentenceIndividuals = new DoCOIndividuals<Sentence>();
         
-        String paragraphUri = paragraph.attr("resource");
-        if(paragraphUri == null) paragraphUri = namespace + sectionNaming + "/" + paragraphNaming;
+        String paragraphUri = paragraph.getURI();
+        if(paragraphUri == null) paragraphUri = namespace + namingSection + "/" + namingParagraph;
         
         Model model = ModelFactory.createDefaultModel();
         
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
         Property hasContent = model.createProperty("http://purl.org/spar/c4o/hasContent");
-        String text = paragraph.html();
-        paragraph.html("");
+        
+        if(this.prefixes == null){
+            this.prefixes = getPrefixes(paragraph.asElement().ownerDocument());
+        }
+        
+        Element paragraphElement = paragraph.asElement();
+        String text = paragraphElement.html();
+        paragraphElement.html("");
         String[] sentences = detectSentences(text);
         for(int i=0; i<sentences.length; i++){
-            String uri = paragraphUri + "/" + sentenceNaming + "-" + (i+1);
+            String uri = paragraphUri + "/" + namingSentence + "-" + (i+1);
             Resource sentenceResource = model.createResource(uri);
             
-            Element span = rdFaInjector.appendDoCOElement(paragraph, Tag.valueOf("span"), contains, sentenceResource, DoCOClass.Sentence);
+            Element span = rdFaInjector.appendDoCOElement(paragraphElement, Tag.valueOf("span"), contains, sentenceResource, DoCOClass.Sentence);
             Element contentSpan = rdFaInjector.appendDoCOElement(span, Tag.valueOf("span"), hasContent);
             
             contentSpan.html(sentences[i]);
             
+            sentenceIndividuals.add(DoCOIndividualBuilder.build(Sentence.class, span, prefixes));
+            
         }
+        
+        return sentenceIndividuals;
         
     }
     

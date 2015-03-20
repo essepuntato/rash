@@ -1,13 +1,18 @@
 package it.unibo.cs.savesd.rash.spar.xtractor;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigBuilder;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.InvalidDoCOIndividualException;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.MissmatchingDoCOClassDeclarationException;
+import it.unibo.cs.savesd.rash.spar.xtractor.doco.NotInstantiableIndividualException;
 import it.unibo.cs.savesd.rash.spar.xtractor.impl.XtractorImpl;
+import it.unibo.cs.savesd.rash.spar.xtractor.vocabularies.DoCOClass;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.jsoup.Jsoup;
@@ -44,6 +49,14 @@ public class XtractorTest {
             Assert.fail("Malformed URL");
         } catch (IOException e) {
             Assert.fail("I/O Exception");
+        }
+    }
+    
+    @Test
+    public void testPrefixes(){
+        Map<String,String> prefixes = xtractor.getPrefixes(document);
+        for(String prefix : prefixes.keySet()){
+            String namespace = prefixes.get(prefix);
         }
     }
     
@@ -101,22 +114,77 @@ public class XtractorTest {
     
     @Test
     public void testDoCOBodyMatterGeneration(){
-        xtractor.createBodyMatter(document);
+        try {
+            xtractor.createBodyMatter(document);
+        } catch (InvalidDoCOIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MissmatchingDoCOClassDeclarationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotInstantiableIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     @Test
     public void testDoCOSectionsGeneration(){
-        xtractor.createSections(document);
+        try {
+            xtractor.createSections(document);
+        } catch (InvalidDoCOIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MissmatchingDoCOClassDeclarationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotInstantiableIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     @Test
     public void testDoCOParagraphsGeneration(){
-        xtractor.createParagraphs(document);
+        try {
+            xtractor.createParagraphs(document);
+        } catch (InvalidDoCOIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MissmatchingDoCOClassDeclarationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotInstantiableIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     @Test
     public void testDoCOSentencesGeneration(){
-        xtractor.createSentences(document);
-        System.out.println(document);
+        try {
+            xtractor.createSentences(document);
+        } catch (InvalidDoCOIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MissmatchingDoCOClassDeclarationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotInstantiableIndividualException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //System.out.println(document);
+    }
+    
+    @Test
+    public void tesExtract(){
+        try {
+            Document doc = xtractor.extract("http://cs.unibo.it/save-sd/rash/documentation/index.html", DoCOClass.Sentence);
+            System.out.println(doc.html());
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

@@ -52,5 +52,6 @@ public enum DoCOClass {
     TableOfContents,
     TextBox,
     TextChunk,
-    Title
+    Title,
+    Expression
 }
