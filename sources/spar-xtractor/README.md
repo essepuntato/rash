@@ -28,11 +28,13 @@ Such a JAR is named savesd.rash.spar.xtractor-VERSION.jar, where VERSION has to 
 ## Usage
 The usage of the JAR is the following
 
- -i,--input <file/uri>   MANDATORY - Input RASH document provided either
-                         as local file path or remote URI.
+ -i,--input <file/uri>    MANDATORY - Input RASH document provided either
+                          as local file path or remote URI.
+
  -c,--config <file>      OPTIONAL - File containing configuration
                          properties for the application. If not provided
                          the default configuration is used.
+
  -l,--level <string>     OPTIONAL - This parameter determines the document
                          structure level used for generating SPAR
                          annotations. By level we mean the document
