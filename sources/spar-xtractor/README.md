@@ -41,10 +41,11 @@ The usage of the JAR is the following
                          structures such as body matter, section,
                          paragraph, sentences, etc.
                          Valid values are:
-                         * bodymatter;
-                         * section;
-                         * paragraph;
-                         * sentence.
+
+*   bodymatter;
+*   section;
+*   paragraph;
+*   sentence.
 
  -o,--output <file>      OPTIONAL - File containing configuration
                          properties for the application. If not provided
@@ -54,4 +55,4 @@ The usage of the JAR is the following
 
 An example of command line execution of the binaries is the following:
 
-$> java -jar -Xmx256m -i http://cs.unibo.it/save-sd/rash/documentation/index.html
+$> java -jar -Xmx256m savesd.rash.spar.xtractor-0.1-SNAPSHOT.jar -i http://cs.unibo.it/save-sd/rash/documentation/index.html
