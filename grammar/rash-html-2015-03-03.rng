@@ -27,8 +27,8 @@ Under the following terms:
         <element name="html">
             <attribute name="prefix">
                 <data type="string">
-                    <param name="pattern">[\s\S]*schema:\s+http://schema.org/[\s\S]*</param>
-                    <param name="pattern">[\s\S]*prism:\s+http://prismstandard.org/namespaces/basic/2.0/[\s\S]*</param>
+                    <param name="pattern">.*schema:\s+http://schema.org/.*</param>
+                    <param name="pattern">.*prism:\s+http://prismstandard.org/namespaces/basic/2.0/.*</param>
                 </data>
             </attribute>
             <ref name="attributes_html_generic" />
