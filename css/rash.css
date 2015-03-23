@@ -1,5 +1,5 @@
 /* 
-rash.css - Version 0.2, February 19, 2015
+rash.css - Version 0.2.1, March 23, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -228,5 +228,10 @@ body {
     
     address {
         font-size: 12pt !important;
+    }
+    
+    table {
+        max-width:100%;
+        font-size: 80%;
     }
 }

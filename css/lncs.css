@@ -1,5 +1,5 @@
 /* 
-lncs.css - Version 0.1, February 19, 2015
+lncs.css - Version 0.1.1, March 23, 2015
 by Silvio Peroni
 
 based on
@@ -315,15 +315,10 @@ table{
     border-collapse:collapse;
     width:100%;
     margin-bottom:1em;
-}
-
-tr{
-    vertical-align:top;
-}
-
-table{
     border-top:2px solid #000;
     border-bottom:2px solid #000;
+    font-size:8pt;
+    word-break:break-all;
 }
 
 th,
@@ -335,6 +330,7 @@ td{
 }
 
 tr{
+    vertical-align:top;
     border-bottom:1px solid #000;
 }
 
@@ -345,6 +341,10 @@ tr:last-child{
 th:last-child,
 td:last-child{
     padding-right:0;
+}
+
+table p {
+    text-indent:0;
 }
 /* /END Tables */
 
@@ -684,3 +684,4 @@ div.footnotes{
         widows:3;
     }
 }
+
