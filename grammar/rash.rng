@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.3.3, March 24, 2015
+Research Articles in Simplified HTML (RASH) format - Version 0.3.4, March 24, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -133,10 +133,27 @@ Under the following terms:
     
     <define name="meta_author_name">
         <element name="meta">
+            <attribute name="about">
+                <text />
+            </attribute>
             <attribute name="name">
                 <value type="string">dc.creator</value>
             </attribute>
-            <ref name="attributes_html_element_no_class" />
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_about" />
+        </element>
+    </define>
+    
+    <define name="meta_author_email">
+        <element name="meta">
+            <attribute name="about">
+                <text />
+            </attribute>
+            <attribute name="property">
+                <value type="string">schema:email</value>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
         </element>
     </define>
     
@@ -883,6 +900,14 @@ Under the following terms:
     </define>
     
     <!-- It defines a particular restriction of use of RDFa without the attribute property -->
+    <define name="attributes_rdfa_no_about">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_predicate" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
+    </define>
+    
     <define name="attributes_rdfa_no_property">
         <ref name="attributes_rdfa_syntax" />
         <ref name="attributes_rdfa_rel_rev" />
