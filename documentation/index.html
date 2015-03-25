@@ -2,7 +2,7 @@
 <?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.2.3, MArch 24, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.2.4, MArch 25, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -38,7 +38,7 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.2.3, March 24, 2015</title>
+        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.2.4, March 25, 2015</title>
         
         <!-- Author's data (one or more) -->
         <meta about="sp" name="dc.creator" content="Silvio Peroni"/>
@@ -77,12 +77,28 @@ Under the following terms:
                 ] .
             ]]>
         </script>
+        <script type="text/ld+json">
+            <![CDATA[
+                {
+                    "@context":
+                    {
+                      "nick": "http://xmlns.com/foaf/0.1/nick",
+                      "homepage": {
+                        "@id": "http://xmlns.com/foaf/0.1/homepage",
+                        "@type": "@id"
+                      }
+                    },
+                    "nick": ["S.", "essepuntato"],
+                    "homepace": "http://www.essepuntato.it"
+                }
+            ]]>
+        </script>
     </head>
     <body>
         <!-- Abstract -->
         <div class="abstract">
             <h1>Abstract</h1>
-            <p>The current version (0.2.3) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) (<a href="../grammar/rash.rng">version 0.3.4</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version (0.2.4) of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i class="code">RASH</i>) (<a href="../grammar/rash.rng">version 0.3.5</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a class="ref" href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </div>
         
@@ -570,7 +586,12 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
 &lt;/html&gt;
             </p>
             <p>For a complete introduction of RDFa within HTML documents, please read the official documentation <a class="ref" href="#RDFa2013"></a>.</p>
-            <p>In addition to RDFa, RASH makes available another way to add RDF statements to the document, i.e., the use of an element <span class="code">script</span> (with the attribute <span class="code">type</span> set to <q>text/turtle</q>) within the element <span class="code">head</span> for adding plain <a href="http://www.w3.org/TR/turtle/">Turtle</a> content. An example of use of such element for Turtle statemenets in introduced in the following excerpt.</p>
+            <p>In addition to RDFa, RASH makes available another way to add RDF statements to the document, i.e., the use of an element <span class="code">script</span> (within the element <span class="code">head</span>):</p>
+                <ul>
+                    <li><p>with the attribute <span class="code">type</span> set to <q>text/turtle</q> for adding plain <a href="http://www.w3.org/TR/turtle/">Turtle</a> content;</p></li>
+                    <li><p>with the attribute <span class="code">type</span> set to <q>text/ld+json</q> for adding plain <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a> content;</p></li>
+                </ul>
+            <p>An example of use of such element for Turtle statemenets in introduced in the following excerpt.</p>
             <p class="code">
 &lt;script type="text/turtle"&gt;
     &lt;![CDATA[
@@ -586,7 +607,24 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</p>
             pro:relatesToDocument &lt;&gt;
         ] .
     ]]&gt;
-&lt;/script&gt;</p>
+&lt;/script&gt;
+&lt;script type="text/ld+json"&gt;
+    &lt;![CDATA[
+        {
+            "@context":
+                {
+                    "nick": "http://xmlns.com/foaf/0.1/nick",
+                    "homepage": {
+                    "@id": "http://xmlns.com/foaf/0.1/homepage",
+                    "@type": "@id"
+                    }
+                },
+            "nick": ["S.", "essepuntato"],
+            "homepace": "http://www.essepuntato.it"
+        }
+    ]]&gt;
+&lt;/script&gt;
+            </p>
             <p>For a complete introduction of Turtle, please read the official documentation <a class="ref" href="#Turtle2014"></a>.</p>
         </div>
         

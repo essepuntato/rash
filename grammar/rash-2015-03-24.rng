@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.3.5, March 25, 2015
+Research Articles in Simplified HTML (RASH) format - Version 0.3.4, March 24, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -78,10 +78,7 @@ Under the following terms:
             </element>
             <element name="script">
                 <attribute name="type">
-                    <choice>
-                        <value>text/turtle</value>
-                        <value>text/ld+json</value>
-                    </choice>
+                    <value>text/turtle</value>
                 </attribute>
                 <text />
             </element>

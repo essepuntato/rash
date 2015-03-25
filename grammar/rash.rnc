@@ -1,0 +1,378 @@
+# Research Articles in Simplified HTML (RASH) format - Version 0.3.4, March 24, 2015
+# by Silvio Peroni
+# 
+# This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+# You are free to:
+# * Share - copy and redistribute the material in any medium or format
+# * Adapt - remix, transform, and build upon the material
+# for any purpose, even commercially.
+# 
+# The licensor cannot revoke these freedoms as long as you follow the license terms.
+# 
+# Under the following terms:
+# * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+default namespace = "http://www.w3.org/1999/xhtml"
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+namespace ns1 = "http://www.w3.org/1998/Math/MathML"
+
+start = html
+# Elements
+html =
+  element html {
+    attribute prefix {
+      xsd:string {
+        pattern = "[\s\S]*schema:\s+http://schema.org/[\s\S]*"
+        pattern =
+          "[\s\S]*prism:\s+http://prismstandard.org/namespaces/basic/2.0/[\s\S]*"
+      }
+    },
+    attributes_html_generic,
+    attributes_rdfa_statements,
+    aVocab?,
+    head,
+    body
+  }
+head =
+  element head {
+    attributes_html_element_no_class,
+    (title
+     & (cm_meta_author
+        | meta_keyword*
+        | meta_category*
+        | meta*
+        | script*
+        | link*)+)
+  }
+script =
+  element script { aSrc }
+  | element script {
+      attribute type { "text/turtle" },
+      text
+    }
+link =
+  element link {
+    aHref?,
+    attributes_html_generic,
+    attributes_html_head_generic,
+    attributes_rdfa_syntax,
+    attributes_rdfa_subject,
+    aProperty?,
+    aRel?,
+    attributes_rdfa_resource,
+    attributes_rdfa_literal,
+    attributes_rdfa_macro
+  }
+meta = element meta { attributes_html_head_element }
+meta_category =
+  element meta {
+    attribute name { xsd:string "dcterms.subject" },
+    attributes_html_element_no_class
+  }
+meta_keyword =
+  element meta {
+    attribute property { xsd:string "prism:keyword" },
+    attributes_html_generic,
+    attributes_rdfa_no_property
+  }
+meta_author_name =
+  element meta {
+    attribute about { text },
+    attribute name { xsd:string "dc.creator" },
+    attributes_html_generic,
+    attributes_rdfa_no_about
+  }
+meta_author_email =
+  element meta {
+    attribute about { text },
+    attribute property { xsd:string "schema:email" },
+    attributes_html_generic,
+    attributes_rdfa_no_property
+  }
+link_author_affiliation =
+  element link {
+    attribute about { text },
+    attribute property { xsd:string "schema:affiliation" },
+    attribute href { xsd:anyURI },
+    attributes_html_generic,
+    attributes_rdfa_no_property
+  }
+body =
+  element body {
+    attributes_html_element_no_class,
+    div_abstract?,
+    div_section+,
+    div_acknowledgements?,
+    div_references?,
+    div_footnotes?
+  }
+li = element li { attributes_html_element, cm_container }
+ul = element ul { attributes_html_element, li+ }
+ol = element ol { attributes_html_element, li+ }
+p = element p { attributes_html_element, cm_inline }
+p_code =
+  element p {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*code.*" }
+    },
+    attributes_html_element_no_class,
+    cm_inline
+  }
+p_quote =
+  element p {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*quote.*" }
+    },
+    attributes_html_element_no_class,
+    cm_inline
+  }
+h1 = element h1 { attributes_html_element_no_class, cm_inline }
+title = element title { attributes_html_element_no_class, text }
+table = element table { attributes_html_element, tr+ }
+tr = element tr { attributes_html_element, (th | td)+ }
+th =
+  element th {
+    attributes_html_element, aRowspan?, aColspan?, cm_inline
+  }
+td =
+  element td {
+    attributes_html_element, aRowspan?, aColspan?, cm_container
+  }
+div_abstract =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*abstract.*" }
+    },
+    attributes_html_element_no_class,
+    cm_sections
+  }
+div_section =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*section.*" }
+    },
+    attributes_html_element_no_class,
+    cm_sections
+  }
+div_acknowledgements =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*acknowledgements.*" }
+    },
+    attributes_html_element_no_class,
+    cm_sections
+  }
+div_references =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*bibliography.*" }
+    },
+    attributes_html_element_no_class,
+    h1,
+    (ul | ol)
+  }
+div_footnotes =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*footnotes.*" }
+    },
+    attributes_html_element_no_class,
+    element div { attributes_html_element, cm_container }+
+  }
+div_figure =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*picture.*" }
+    },
+    attributes_html_element_no_class,
+    cm_img_block,
+    cm_caption
+  }
+div_table =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*table.*" }
+    },
+    attributes_html_element_no_class,
+    table,
+    cm_caption
+  }
+div_formula =
+  element div {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*formula.*" }
+    },
+    attributes_html_element_no_class,
+    (cm_img_block
+     | element p {
+         attribute class {
+           xsd:NMTOKENS { pattern = ".*math_block.*" }
+         },
+         attributes_html_element_no_class,
+         math
+       })
+  }
+math = element ns1:math { cm_mathml_element+ }
+a =
+  element a {
+    attributes_html_element_no_class,
+    attribute class { (xsd:NMTOKENS - ("ref" | "footnote")) }?,
+    aHref?,
+    aNameRef?,
+    cm_inline
+  }
+aRefFootnote =
+  element a {
+    attributes_html_element_no_class,
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*(ref|footnote).*" }
+    },
+    attribute href { xsd:anyURI },
+    aNameRef?
+  }
+i = element i { attributes_html_element, cm_inline }
+b = element b { attributes_html_element, cm_inline }
+q = element q { attributes_html_element, cm_inline }
+sup = element sup { attributes_html_element, cm_inline }
+sub = element sub { attributes_html_element, cm_inline }
+span = element span { attributes_html_element, cm_inline }
+span_code =
+  element span {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*code.*" }
+    },
+    attributes_html_element_no_class,
+    cm_inline
+  }
+img = element img { attributes_html_element, aSrc, aAlt }
+# /END Elements
+
+# Attributes
+aSrc = attribute src { xsd:anyURI }
+aAlt = attribute alt { xsd:string }
+aHref = attribute href { xsd:anyURI }
+aNameRef = attribute name { xsd:anyURI }
+aRowspan = [ a:defaultValue = "1" ] attribute rowspan { xsd:integer }
+aColspan = [ a:defaultValue = "1" ] attribute colspan { xsd:integer }
+aName = attribute name { xsd:string }
+aCharset = attribute charset { xsd:string }
+aId = attribute id { xsd:ID }
+aLang = attribute lang { xsd:language }
+aValue = attribute value { xsd:string }
+aClass = attribute class { xsd:NMTOKENS }
+aContent = attribute content { xsd:string }
+aLevel = attribute level { xsd:integer }
+# /END Attributes
+
+# RDFa specific
+aVocab = attribute vocab { xsd:string }
+aTypeof = attribute typeof { xsd:string }
+aProperty = attribute property { xsd:string }
+aResource = attribute resource { xsd:string }
+aPrefix = attribute prefix { xsd:string }
+aAbout = attribute about { xsd:string }
+aRel = attribute rel { xsd:string }
+aRev = attribute rev { xsd:string }
+aDatatype = attribute datatype { xsd:string }
+aInlist = attribute inlist { xsd:string }
+# /END RDFa specific
+
+# Content Models
+cm_container =
+  (p
+   | p_code
+   | p_quote
+   | ul
+   | ol
+   | div_table
+   | div_figure
+   | div_formula)+
+cm_inline =
+  (text
+   | a
+   | aRefFootnote
+   | img
+   | math
+   | span
+   | span_code
+   | sub
+   | sup
+   | i
+   | b
+   | q)*
+cm_sections =
+  h1,
+  (p
+   | ul
+   | ol
+   | table
+   | div_section
+   | div_figure
+   | div_formula
+   | div_table)+
+cm_mathml_element =
+  element ns1:* {
+    (attribute * { text }
+     | text
+     | cm_mathml_element)*
+  }
+cm_caption =
+  element p {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*caption.*" }
+    },
+    attributes_html_element_no_class,
+    cm_inline
+  }
+cm_img_block =
+  element p {
+    attribute class {
+      xsd:NMTOKENS { pattern = ".*img_block.*" }
+    },
+    attributes_html_element_no_class,
+    img
+  }
+cm_meta_author =
+  meta_author_name, meta_author_email, link_author_affiliation
+# Content models for HTML attributes
+attributes_html_head_element =
+  attributes_html_generic, attributes_html_head_generic, attributes_rdfa
+attributes_html_head_generic = aName?, aCharset?
+attributes_html_element = attributes_html_element_no_class, aClass?
+attributes_html_element_no_class =
+  attributes_html_generic, attributes_rdfa
+attributes_html_generic = aId?
+# The following chategorisation of RDFa attributes has been taken 
+# from http://www.w3.org/TR/rdfa-syntax/#attribute_roles 
+attributes_rdfa = attributes_rdfa_syntax, attributes_rdfa_statements
+attributes_rdfa_statements =
+  attributes_rdfa_subject,
+  attributes_rdfa_predicate,
+  attributes_rdfa_resource,
+  attributes_rdfa_literal,
+  attributes_rdfa_macro
+attributes_rdfa_syntax = aPrefix?, aVocab?
+attributes_rdfa_subject = aAbout?
+attributes_rdfa_predicate = aProperty?, attributes_rdfa_rel_rev
+attributes_rdfa_rel_rev = aRel?, aRev?
+attributes_rdfa_resource =
+  (aResource?)
+  # @href and @src are not included here since thay can be used in RDFa 
+  # fashion only with those elements that include them 
+  
+attributes_rdfa_literal = aLang?, aContent?, aDatatype?
+attributes_rdfa_macro = aTypeof?, aInlist?
+# It defines a particular restriction of use of RDFa without the attribute property
+attributes_rdfa_no_about =
+  attributes_rdfa_syntax,
+  attributes_rdfa_predicate,
+  attributes_rdfa_resource,
+  attributes_rdfa_literal,
+  attributes_rdfa_macro
+attributes_rdfa_no_property =
+  attributes_rdfa_syntax,
+  attributes_rdfa_rel_rev,
+  attributes_rdfa_resource,
+  attributes_rdfa_literal,
+  attributes_rdfa_macro
+# /END Content Models
