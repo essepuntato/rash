@@ -49,16 +49,16 @@
         <xsl:text>\usepackage{tabularx}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{fixltx2e}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\lstset{breaklines=true, basicstyle=\small\ttfamily}</xsl:text>
-        <xsl:call-template name="n" />
-        <!-- Balance the last page columns -->
-        <xsl:text>\usepackage{flushend}</xsl:text>
-        <xsl:call-template name="n" />
+        
+        <xsl:call-template name="verbatim_text" />
         <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="graphics" />
         <xsl:call-template name="mathml" />
         <xsl:call-template name="greek" />
+        
+        <!-- Balance the last page columns -->
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{flushend}</xsl:text>
         
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />

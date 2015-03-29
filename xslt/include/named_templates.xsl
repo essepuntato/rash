@@ -50,6 +50,14 @@
         <xsl:call-template name="n" />
     </xsl:template>
     
+    <xsl:template name="verbatim_text">
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{upquote,textcomp}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\lstset{breaklines=true, basicstyle=\scriptsize\ttfamily, upquote=true}</xsl:text>
+        <xsl:call-template name="n" />
+    </xsl:template>
+    
     <xsl:template name="mathml">
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{amsmath}</xsl:text>
