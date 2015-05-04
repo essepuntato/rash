@@ -42,6 +42,23 @@
         <xsl:call-template name="n" />
     </xsl:template>
     
+    <xsl:template name="standard_packages">
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{amssymb}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\setcounter{tocdepth}{3}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{listings}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{booktabs}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{mathtools}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{tabularx}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{fixltx2e}</xsl:text>
+    </xsl:template>
+    
     <xsl:template name="footnote_verb">
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{fancyvrb}</xsl:text>

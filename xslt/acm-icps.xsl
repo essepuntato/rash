@@ -33,23 +33,7 @@
     <xsl:template match="/">
         <!-- Classe dello stile da usare (specificare magari dal file principale, come parametro) -->
         <xsl:text>\documentclass{sig-alternate}</xsl:text>
-        <xsl:call-template name="n" />
-        
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{amssymb}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\setcounter{tocdepth}{3}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{listings}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{booktabs}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{mathtools}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{tabularx}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{fixltx2e}</xsl:text>
-        
+        <xsl:call-template name="standard_packages" />
         <xsl:call-template name="verbatim_text" />
         <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="graphics" />
