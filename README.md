@@ -13,13 +13,13 @@ Please use the hashtag *#rashfwk* for referring to any of the items defined in t
 
 * [1st International Workshop on LINKed EDucation at the ISWC 2015](https://linked2015.wordpress.com/), held during the [14th International Semantic Web Conference (ISWC 2015)](http://iswc2015.semanticweb.org/)
 
-* [Linked Data for Information Extraction (LD4IE 2015)](http://oak.dcs.shef.ac.uk/ld4ie2015/LD4IE2015/Overview.html), held during the [14th International Semantic Web Conference (ISWC 2015)](http://iswc2015.semanticweb.org/)
+* [3rd International Workshop on Linked Data for Information Extraction (LD4IE 2015)](http://oak.dcs.shef.ac.uk/ld4ie2015/LD4IE2015/Overview.html), held during the [14th International Semantic Web Conference (ISWC 2015)](http://iswc2015.semanticweb.org/)
 
 ## Adopt RASH in your academic event
 
 Please feel free to adopt RASH for accepting HTML submissions in your academic event, and don't hesitate to contact us for further information at [essepuntato@gmail.com](email:essepuntato@gmail.com). The usual template we suggest for advertising the adoption of RASH is the following one:
 
-> Submit a zip archive containing an HTML file compliant with the Research Articles in Simplified HTML (RASH) format with the additional stylesheets and scripts included in the style package for guaranteeing a correct visualisation of the document on browsers.
+> Submit a zip archive containing an HTML file compliant with the *Research Articles in Simplified HTML* (*RASH*) format with the additional stylesheets and scripts included in the style package for guaranteeing a correct visualisation of the document on browsers.
 
 > RASH is part of a framework (https://github.com/essepuntato/rash/) for facilitating the creation of HTML research articles and their publication in research venues. In particular, RASH is composed by a few of the available HTML tags and allows one to add RDFa annotations to any element.
 
