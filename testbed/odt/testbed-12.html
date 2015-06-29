@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
+   <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../css/rash.css"/>
+      <script src="../../js/jquery.min.js"> </script>
+      <script src="../../js/bootstrap.min.js"> </script>
+      <script src="../../js/rash.js"> </script>
+      <title>No title specified</title>
+   </head>
+   <body>
+      <div class="section">
+         <h1>Referring things</h1>
+         <p>In this document we show how to refer to various things contained in it through internal links, where the text of the link will be substituted in the final RASH document. </p>
+         <p>In particular, we can refer to sections (<a href="#__RefHeading__146_1782259668" class="ref"> </a>), tables (<a href="#refTable0" class="ref"> </a>), formulas (<a href="#refIllustration0" class="ref"> </a>), figures (<a href="#refIllustration1" class="ref"> </a>) and references (<a href="#__RefNumPara__164_1782259668" class="ref"> </a>).</p>
+         <div class="section">
+            <h1>Tables</h1>
+            <p>Here a table.</p>
+            <div class="table" id="refTable0">
+               <table>
+                  <tr>
+                     <th>Table heading 1</th>
+                     <th>Table heading 2</th>
+                     <th>Table heading 3</th>
+                     <th>Table heading 4</th>
+                  </tr>
+                  <tr>
+                     <td>
+                        <p>cell 1 row 1</p>
+                     </td>
+                     <td>
+                        <p>cell 2 row 1</p>
+                     </td>
+                     <td>
+                        <p>cell 3 row 1</p>
+                     </td>
+                     <td>
+                        <p>cell 4 row 1</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <p>cell 1 row 2</p>
+                     </td>
+                     <td>
+                        <p>cell 2 row 2</p>
+                     </td>
+                     <td>
+                        <p>cell 3 row 2</p>
+                     </td>
+                     <td>
+                        <p>cell 4 row 2</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <p>cell 1 row 3</p>
+                     </td>
+                     <td>
+                        <p>cell 2 row 3</p>
+                     </td>
+                     <td>
+                        <p>cell 3 row 3</p>
+                     </td>
+                     <td>
+                        <p>cell 4 row 3</p>
+                     </td>
+                  </tr>
+               </table>
+               <p class="caption">My current table</p>
+            </div>
+         </div>
+         <div id="__RefHeading__146_1782259668" class="section">
+            <h1>Formula</h1>
+            <p>Here a formula.</p>
+            <div class="formula" id="refIllustration0">
+               <p class="math_block">
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                     <semantics>
+                        <mrow>
+                           <mrow>
+                              <mrow>
+                                 <mi>a</mi>
+                                 <mo stretchy="false">−</mo>
+                                 <mi>b</mi>
+                              </mrow>
+                              <mo stretchy="false">=</mo>
+                              <mrow>
+                                 <mo stretchy="false">¬</mo>
+                                 <mi>c</mi>
+                              </mrow>
+                           </mrow>
+                        </mrow>
+                        <annotation encoding="StarMath 5.0">a - b = neg c </annotation>
+                     </semantics>
+                  </math>
+               </p>
+            </div>
+         </div>
+         <div class="section">
+            <h1>Figure</h1>
+            <p>Here a figure.</p>
+            <div class="picture" id="refIllustration1">
+               <p class="img_block">
+                  <img src="./img/10000201000005BA0000010467019C00.png"
+                       alt="My current figure"/>
+               </p>
+               <p class="caption">My current figure</p>
+            </div>
+         </div>
+      </div>
+      <div class="bibliography">
+         <h1>References</h1>
+         <ol>
+            <li>
+               <p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a> 
+               </p>
+            </li>
+            <li id="__RefNumPara__164_1782259668">
+               <p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a> 
+               </p>
+            </li>
+            <li>
+               <p>Prud'hommeaux, E., Carothers, G. (2014). RDF 1.1 Turtle: Terse RDF Triple Language. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a> 
+               </p>
+            </li>
+         </ol>
+      </div>
+   </body>
+</html>

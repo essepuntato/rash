@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
+   <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../css/rash.css"/>
+      <script src="../../js/jquery.min.js"> </script>
+      <script src="../../js/bootstrap.min.js"> </script>
+      <script src="../../js/rash.js"> </script>
+      <title>No title specified</title>
+   </head>
+   <body>
+      <div class="section">
+         <h1>Tables</h1>
+         <p>In this example we want to introduce how to use table boxes in a document. In particular, a table is specified using the appropriate OpenOffice widget, and the table heading style is used to identify the heading cells of a particular table. The table should be followed by a caption paragraph by means of the appropriate default stylesheet, as shown as follows.</p>
+         <div class="table">
+            <table>
+               <tr>
+                  <th>Table heading 1</th>
+                  <th>Table heading 2</th>
+                  <th>Table heading 3</th>
+                  <th>Table heading 4</th>
+               </tr>
+               <tr>
+                  <td>
+                     <p>cell 1 row 1</p>
+                  </td>
+                  <td>
+                     <p>cell 2 row 1</p>
+                  </td>
+                  <td>
+                     <p>cell 3 row 1</p>
+                  </td>
+                  <td>
+                     <p>cell 4 row 1</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>cell 1 row 2</p>
+                  </td>
+                  <td>
+                     <p>cell 2 row 2</p>
+                  </td>
+                  <td>
+                     <p>cell 3 row 2</p>
+                  </td>
+                  <td>
+                     <p>cell 4 row 2</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>cell 1 row 3</p>
+                  </td>
+                  <td>
+                     <p>cell 2 row 3</p>
+                  </td>
+                  <td>
+                     <p>cell 3 row 3</p>
+                  </td>
+                  <td>
+                     <p>cell 4 row 3</p>
+                  </td>
+               </tr>
+            </table>
+            <p class="caption">This is the caption of the table</p>
+         </div>
+         <p>This is a normal paragraph.</p>
+      </div>
+   </body>
+</html>

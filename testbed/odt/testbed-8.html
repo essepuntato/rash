@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
+   <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../css/rash.css"/>
+      <script src="../../js/jquery.min.js"> </script>
+      <script src="../../js/bootstrap.min.js"> </script>
+      <script src="../../js/rash.js"> </script>
+      <title>No title specified</title>
+   </head>
+   <body>
+      <div class="section">
+         <h1>Figures</h1>
+         <p>In this example we want to introduce how to use images and figures within the text.</p>
+         <div class="section">
+            <h1>Inline image</h1>
+            <p>Inline images, such as <img src="./img/10000201000000580000003AB384A356.png"
+                    alt="This is the alternative text of the picture."/>, are created simply by adding it in the document.</p>
+         </div>
+         <div class="section">
+            <h1>Figure boxes</h1>
+            <p>Figure boxes are created by simply including them in a new paragraph and anchored as a character, without any other textual element in it, followed by a caption paragraph by means of the appropriate default stylesheet, as shown as follows.</p>
+            <div class="picture">
+               <p class="img_block">
+                  <img src="./img/10000201000005BA0000010467019C00.png"
+                       alt="This is the caption of the figure."/>
+               </p>
+               <p class="caption">This is the caption of the figure.</p>
+            </div>
+            <p>This is just another paragraph.</p>
+         </div>
+      </div>
+   </body>
+</html>

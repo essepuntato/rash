@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.3.1, March 11, 2015
+ * rash.js - Version 0.3.2, June 22, 2015
  * Copyright (c) 2014-2015, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -119,17 +119,6 @@ jQuery.fn.extend({
     
         /* Header author */
         var list_of_authors = [];
-        /*
-        $("head meta[name^='author.']").each(function() {
-            var current_value = $(this).attr("name");
-            var current_id = current_value.replace(/author\.(.+)\..+/gi, "$1");
-            var current_key = current_value.replace(/author\..+\.(.+)/gi, "$1");
-            if (!author_data.hasOwnProperty(current_id)) {
-                author_data[current_id] = {};
-            }
-            author_data[current_id][current_key] = $(this).attr("content");
-        });
-        */
         $("head meta[name='dc.creator']").each(function() {
             var current_value = $(this).attr("name");
             var current_id = $(this).attr("about");
@@ -400,6 +389,7 @@ $(function() {
                 "<a id=\"fn_pointer_" + current_id.replace("#", "") + 
                 "\" href=\"" + current_id + "\"" + 
                 "\" title=\"" + $(current_id).text().replace(/\s+/g," ").trim() + "\">" + count + "</a></sup>");
+            $(this).remove()
         } else {
             $(this).replaceWith("<span class=\"error\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
         }

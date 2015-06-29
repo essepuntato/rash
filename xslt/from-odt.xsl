@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+From ODT to RASH XSLT transformation file - Version 1.0, June 29, 2015
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
 <xsl:stylesheet 
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-    xmlns:iml="http://www.cs.unibo.it/2006/iml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:f="http://www.essepuntato.it/XSLT/fuction"
     xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
@@ -14,524 +28,366 @@
     xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
     xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
-    exclude-result-prefixes="xs f office text xlink style draw svg dc table fo iml">
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+    exclude-result-prefixes="xs xd f office text xlink style draw svg dc table fo meta">
+    <xd:doc scope="stylesheet">
+        <xd:desc>
+            <xd:p><xd:b>Created on:</xd:b> Jun 29, 2015</xd:p>
+            <xd:p><xd:b>Author:</xd:b> Silvio Peroni</xd:p>
+            <xd:p>This XSLT document allows the conversion of any ODT document into RASH.</xd:p>
+        </xd:desc>
+    </xd:doc>
     
     <xsl:output 
         encoding="UTF-8"
-        method="xml"
-        indent="no" />
+        method="xml" 
+        indent="yes" />
     
-    <!-- header tabelle -->
+    <!-- 
+        This parameters refers to the base path that all the URL of the CSS files 
+        of the final RASH document should have.
+    -->
+    <xsl:param name="basecss" select="'./'" />
     
-    <!-- DO NOTHING RULES -->
-    <!-- Match with any element that we do not consider in the conversion -->
-    <xsl:template match="element()">
-        <xsl:apply-templates />
+    <!-- 
+        This parameters refers to the base path that all the URL of the Javascript files 
+        of the final RASH document should have.
+    -->
+    <xsl:param name="basejs" select="'./'" />
+    
+    <!-- 
+        This parameters refers to the base path that all the URL of the RelaxNG files 
+        of the final RASH document should have.
+    -->
+    <xsl:param name="baserng" select="'./'" />
+    
+    <!-- 
+        This parameters refers to the base path that all the URL of the image files 
+        of the final RASH document should have.
+    -->
+    <xsl:param name="baseimg" select="'./'" />
+    
+    <!-- 
+        This parameters refers to the directory that contains the actual XML content 
+        of the ODT document to trnasform.
+    -->
+    <xsl:param name="dir" select="'./'" />
+    
+    <!-- This variable is used to remove separators in captions -->
+    <xsl:variable name="subcap" select="'^[!,\.:;\?\|\-\s]+'" as="xs:string" />
+    
+    <xd:doc scope="/">
+        <xd:desc>
+            <xd:p>This template is in charge of starting the transformation.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="/">
+        <xsl:apply-templates>
+            <xsl:with-param name="preformatted" select="false()" tunnel="yes" as="xs:boolean" />
+            <xsl:with-param name="caption" select="false()" tunnel="yes" as="xs:boolean" />
+        </xsl:apply-templates>
     </xsl:template>
     
-    <!-- Any 'a' representing an id (such as, the heading id) -->
-    <xsl:template match="text:a[not(contains(@xlink:href,'rash:#')) and contains(@xlink:href,'rash:')]">
-        <xsl:apply-templates />
-    </xsl:template>
-    
-    <!-- To add more thing to handle as links, please add the right keyword into the following variable -->
-    <xsl:variable name="keywords" select="('index')" as="xs:string+" />
-    <xsl:template match="text:a[not(contains(@xlink:href,'rash:#')) and contains(@xlink:href,'rash:') and (some $keyword in $keywords satisfies normalize-space(substring-after(substring-after(@xlink:href,'rash:'),'-')) = $keyword)]" priority="3.0">
-        <xsl:variable name="base" select="normalize-space(substring-after(@xlink:href,'rash:'))" />
-        <a name="{substring-before($base,'-')}" class="{substring-after($base,'-')}" />
-    </xsl:template>
-    
-    <!-- Any caption for images, tables or formula (that will be handled within these structures) -->
-    <xsl:template match="text:p[(@text:style-name = 'Caption') or (some $s in //style:style[@style:parent-style-name = 'Caption']/@style:name satisfies @text:style-name = $s)]" />
-    
-    <!-- Match with all the notes -->
-    <xsl:template match="office:annotation" />
-    
-    <!-- Match with all the code paragraph directly preceeded by other ones -->
-    <xsl:template match="text:p[(starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)) and preceding-sibling::text:p[1][starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)]]" />
-    
-    <!-- To avoid change tracking -->
-    <xsl:template match="text:tracked-changes" />
-    <!-- end of DO NOTHING RULES -->
-    
-    <!-- TEXT -->
-    <xsl:template match="text:line-break">
-        <xsl:param name="math" select="false()" tunnel="yes" as="xs:boolean" />
-        <xsl:if test="$math">
-            <xsl:text>\\</xsl:text>
-        </xsl:if>
-        <xsl:text>&#xa;</xsl:text>
-    </xsl:template>
-    
-    <!-- DOCUMENT -->
+    <xd:doc scope="office:text">
+        <xd:desc>
+            <xd:p>This template is in charge of creating the whole structure of the document in RASH.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="office:text">
-        <xsl:variable name="head" select="text:p[some $n in ('Title','Subtitle') satisfies (@text:style-name = $n) or (some $s in //style:style[starts-with(@style:parent-style-name, $n)]/@style:name satisfies @text:style-name = $s)]" as="element()*" />
+        <xsl:processing-instruction name="xml-model">href="<xsl:value-of select="$baserng" />rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"</xsl:processing-instruction>
         
-        <xsl:processing-instruction name="xml-model">href="grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"</xsl:processing-instruction>
-        
-        <html xmlns="http://www.w3.org/1999/xhtml" prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/ c4o: http://purl.org/spar/c4o/ biro: http://purl.org/spar/biro/">
+        <html 
+            xmlns="http://www.w3.org/1999/xhtml" 
+            prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
             <head>
                 <!-- Visualisation requirements (mandatory for optimal reading) -->
-                <meta charset="UTF-8" > </meta>
-                <meta name="viewport" content="width=device-width, initial-scale=1" ></meta>
-                <link rel="stylesheet" href="css/bootstrap.min.css" ></link>
-                <link rel="stylesheet" href="css/rash.css" ></link>
-                <script src="js/jquery.min.js"></script>
-                <script src="js/bootstrap.min.js"></script>
-                <script src="js/rash.js"></script>
+                <meta charset="UTF-8"></meta>
+                <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+                <link rel="stylesheet" href="{$basecss}bootstrap.min.css"></link>
+                <link rel="stylesheet" href="{$basecss}rash.css"></link>
+                <script src="{$basejs}jquery.min.js"><xsl:text> </xsl:text></script>
+                <script src="{$basejs}bootstrap.min.js"><xsl:text> </xsl:text></script>
+                <script src="{$basejs}rash.js"><xsl:text> </xsl:text></script>
                 <!-- /END Visualisation requirements (mandatory for optimal reading) -->
                 
-                <xsl:apply-templates select="$head" />
+                <xsl:call-template name="add.title" />
+                <xsl:call-template name="add.meta" />
             </head>
             <body>
-                <xsl:apply-templates select="text:h[1]">
-                    <xsl:with-param name="type" select="'root'" tunnel="yes" as="xs:string" />
-                </xsl:apply-templates>
-                <xsl:call-template name="handle.footnotes" />
+                <xsl:choose>
+                    <xsl:when test="text:h">
+                        <!-- Call all the elements before the first heading (if any) -->
+                        <xsl:apply-templates select="text:h[1]/preceding-sibling::element()" />
+                        
+                        <!-- Call all the remaining elements (i.e., starting from the first heading) -->
+                        <xsl:apply-templates select="text:h[1]" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!-- Call all the elements (base case) -->
+                        <xsl:apply-templates />
+                    </xsl:otherwise>
+                </xsl:choose>
+                
+                <xsl:call-template name="add.footnotes" />
             </body>
         </html>
     </xsl:template>
-    <!-- end of DOCUMENT -->
     
-    <!-- TITLE -->
-    <xsl:template match="office:text//text:p[(@text:style-name='Title') or ((some $s in //style:style[starts-with(@style:parent-style-name, 'Title')]/@style:name satisfies @text:style-name = $s))]">
-        <title>
-            <xsl:value-of select=".//text()" />
-        </title>
-    </xsl:template>
-    <!-- end of TITLE -->
-    
-    <!-- AUTHORS, CATEGORIES, GENERAL TERMS, KEYWORDS, BLURB -->
-    <xsl:template match="office:text//text:p[(@text:style-name = 'Subtitle') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Subtitle')]/@style:name satisfies @text:style-name = $s)]">
-        <xsl:variable name="text" select="normalize-space(string-join(.//text() except .//text()[ancestor::text:note],''))" as="xs:string" />
-        <xsl:choose>
-            <xsl:when test="matches($text,'^categories:','i')">
-                <xsl:for-each select="tokenize(substring-after($text,':'),'#')">
-                    <!-- <meta name="category" content="{normalize-space()}" /> -->
-                    <meta name="dcterms.subject"
-                        content="{normalize-space()}" />
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="matches($text,'^keywords:','i')">
-                <xsl:for-each select="tokenize(substring-after($text,':'),',')">
-                    <!-- <meta name="keyword" content="{normalize-space()}" /> -->
-                    <meta property="prism:keyword" content="{normalize-space()}" />
-                </xsl:for-each>
-            </xsl:when>
-            <!--
-            <xsl:when test="matches($text,'^general terms:','i')">
-                <xsl:for-each select="tokenize(substring-after($text,':'),',')">
-                    <meta name="generalterm" content="{normalize-space()}" />
-                </xsl:for-each>
-            </xsl:when>
-            -->
-            <xsl:otherwise> <!-- Authors -->
-                <xsl:variable name="currentNode" select="." as="element()" />
-                <xsl:for-each select="tokenize($text,',')">
-                    <xsl:variable name="id" as="xs:string" select="xs:string(position())" />
-                    <xsl:variable name="name" as="xs:string" select="normalize-space()" />
-                    <!--
-                    <meta name="author.{$id}.number" content="{$id}" />
-                    <meta name="author.{$id}.name" content="{$name}" />
-                    -->
-                    <xsl:variable name="initials" as="xs:string" select="lower-case( string-join( (for $s in tokenize($name, ' ') return substring($s, 1, 1)), '') )"  />
-                    
-                    <meta about="{$initials}" property="schema:name" name="dc.creator" content="{$name}" />
-                    <xsl:apply-templates select="$currentNode//text:note[normalize-space(.//text:note-citation/text()) = $id]">
-                        <xsl:with-param name="id" select="$id" as="xs:string" />
-                        <xsl:with-param name="initials" select="$initials" as="xs:string" />
-                    </xsl:apply-templates>
-                </xsl:for-each>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="text:note[ancestor::text:p[@text:style-name='Subtitle']/parent::office:text]">
-        <xsl:param name="id" as="xs:string" />
-        <xsl:param name="initials" as="xs:string" />
-        <xsl:variable name="fields" select="tokenize(string-join(.//text:note-body//text(),''),' / ')" as="xs:string*" />
-        <xsl:variable name="affiliation" select="normalize-space((for $s in $fields return if (matches($s,'affiliation:','i')) then substring-after($s,':') else '')[normalize-space() != ''])" as="xs:string" />
-        <xsl:variable name="email" select="normalize-space(string-join(for $s in $fields return if (matches($s,'email:','i')) then substring-after($s,':') else '',''))" as="xs:string" />
-        
-        <xsl:variable name="indexBlurb" select="string-join(.//text:note-body//text(),'')"></xsl:variable>
-        <!-- <xsl:variable name="blurb" select="substring-after(normalize-space(string-join(.//text:note-body//text(),'')),'lurb:')" as="xs:string*" /> -->
-
-        <xsl:variable name="affiliation-ref" as="xs:string" select="lower-case( string-join( (for $s in tokenize($affiliation, ' ') return substring($s, 1, 1)), '') )"  />
-        
-        <xsl:if test="$affiliation != ''">
-            <link about="{$initials}" property="schema:affiliation" href="{$affiliation-ref}" />
-            <!-- TODO: eliminare ripetizione affiliazioni -->
-            <meta about="{$affiliation-ref}" property="schema:name"
-                content="{$affiliation}" />
-            
-        </xsl:if>
-        <xsl:if test="$email != ''">
-            <meta about="{$initials}" property="schema:email" content="{$email}" />
-        </xsl:if>
-<!--
-        <xsl:if test="$blurb != ''">
-            <meta name="author.{$id}.blurb" content="{$blurb}" />
-        </xsl:if>
--->
-    </xsl:template>
-    <!-- end of AUTHORS, CATEGORIES, GENERAL TERMS, KEYWORDS -->
-    
-    <!-- FOOTNOTE -->
-    <xsl:template match="text:note">
-        <a class="footnote" href="#{@text:id}" />
-    </xsl:template>
-    
-    <xsl:template name="handle.footnotes">
-        <xsl:variable name="footnotes" select="//text:note[not(ancestor::text:p[@text:style-name = 'Subtitle'])]" as="element()*" />
-        <xsl:if test="$footnotes">
-            <div class="footnotes">
-                <xsl:for-each select="$footnotes">
-                    <div id="{./@text:id}">
-                        <xsl:apply-templates select="text:note-body/element()" />
-                    </div>
-                </xsl:for-each>
-            </div>
-        </xsl:if>
-    </xsl:template>
-    <!-- end FOOTNOTE -->
-    
-    <!-- TAB -->
-    <xsl:template match="text:tab">
-        <xsl:text>  </xsl:text>
-    </xsl:template>
-    <!-- end of TAB -->
-    
-    <!-- HEADINGS -->
+    <xd:doc scope="text:h">
+        <xd:desc>
+            <xd:p>This template is in charge of creating the headings.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="text:h|text:p[starts-with(@text:style-name, 'Heading')]">
-        <xsl:variable name="next.header" select="(following-sibling::text:h|following-sibling::text:p[starts-with(@text:style-name, 'Heading')])[1]" as="element()*" />
-        <xsl:variable name="level" select="if (self::text:p) then substring(@text:style-name,string-length(@text:style-name)) else @text:outline-level" as="xs:string" />
-        <xsl:variable name="type" as="xs:string" select="if (exists(text:a[starts-with(@xlink:href,'rash:')])) then substring-after(substring-after(text:a[starts-with(@xlink:href,'rash:')][1]/@xlink:href,'rash:'),'-') else 'section'" />
+        <xsl:variable 
+            name="next.header"
+            select="(following-sibling::text:h|following-sibling::text:p[
+                        starts-with(@text:style-name, 'Heading')])[1]" as="element()*" />
+        <xsl:variable name="level" select="f:getLevel(.)" as="xs:integer" />
         <div>
-            <xsl:call-template name="set.header.properties" />
-            
+            <xsl:call-template name="set.bookmarked.object.id" />
+            <xsl:call-template name="set.section.type" />
             <h1>
                 <xsl:apply-templates />
             </h1>
-            <xsl:apply-templates select="(following-sibling::text()|following-sibling::element()) except $next.header/(.|following-sibling::text()|following-sibling::element())">
-                <xsl:with-param name="type" select="$type" as="xs:string" tunnel="yes" />
-            </xsl:apply-templates>
+            <xsl:apply-templates 
+                select="(following-sibling::text()|following-sibling::element()) except
+                            $next.header/(.|following-sibling::text()|following-sibling::element())" />
             
-            <!-- If the next header has a higher level, call it -->
-            <xsl:variable name="nextLevel" as="xs:integer" select="xs:integer(if ($next.header/self::text:p) then substring($next.header/@text:style-name,string-length($next.header/@text:style-name)) else $next.header/@text:outline-level)"/>
-            <xsl:if test="exists($next.header) and $nextLevel > xs:integer($level)">
-                <xsl:apply-templates select="$next.header" />
-            </xsl:if>
-        </div>
-        <xsl:choose>
-            <xsl:when test="$level = '1'">
-                <xsl:apply-templates select="(following-sibling::text:h[@text:outline-level = '1']|following-sibling::text:p[starts-with(@text:style-name, 'Heading') and substring(@text:style-name,string-length(@text:style-name)) = '1'])[1]" />
-            </xsl:when>
-            <xsl:when test="$level = '2'">
-                <xsl:apply-templates select="(following-sibling::text:h[some $l in ('1','2') satisfies @text:outline-level = $l]|following-sibling::text:p[starts-with(@text:style-name, 'Heading') and (some $l in ('1','2') satisfies substring(@text:style-name,string-length(@text:style-name)) = $l)])[1][if (self::text:p) then substring(@text:style-name,string-length(@text:style-name)) = $level else @text:outline-level = $level]" />
-            </xsl:when>
-            <xsl:when test="$level = '3'">
-                <xsl:apply-templates select="(following-sibling::text:h[some $l in ('1','2','3') satisfies @text:outline-level = $l]|following-sibling::text:p[starts-with(@text:style-name, 'Heading') and (some $l in ('1','2','3') satisfies substring(@text:style-name,string-length(@text:style-name)) = $l)])[1][if (self::text:p) then substring(@text:style-name,string-length(@text:style-name)) = $level else @text:outline-level = $level]" />
-            </xsl:when>
-            <xsl:when test="$level = '4'">
-                <xsl:apply-templates select="(following-sibling::text:h[some $l in ('1','2','3','4') satisfies @text:outline-level = $l]|following-sibling::text:p[starts-with(@text:style-name, 'Heading') and (some $l in ('1','2','3','4') satisfies substring(@text:style-name,string-length(@text:style-name)) = $l)])[1][if (self::text:p) then substring(@text:style-name,string-length(@text:style-name)) = $level else @text:outline-level = $level]" />
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template name="set.header.properties">
-        <xsl:variable name="a" select="text:a[starts-with(@xlink:href,'rash:')]" as="element()*" />
-        <xsl:choose>
-            <xsl:when test="exists($a)">
-                <xsl:call-template name="set.properties">
-                    <xsl:with-param name="attr" select="$a[1]/@xlink:href" as="attribute()" />
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:attribute name="class" select="'section'" />
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template name="set.properties">
-        <xsl:param name="attr" as="attribute()" />
-        <xsl:variable name="id" select="substring-before(substring-after($attr,'rash:'),'-')" as="xs:string" />
-        <xsl:variable name="type" select="substring-after(substring-after($attr,'rash:'),'-')" as="xs:string" />
-        <xsl:if test="$id != ''">
-            <xsl:attribute name="id" select="$id" />
-        </xsl:if>
-        <xsl:if test="$type != ''">
-            <xsl:attribute name="class" select="$type" />
-        </xsl:if>
-    </xsl:template>
-    <!-- end of HEADINGS -->
-    
-    <!-- LINKS -->
-    <xsl:template match="text:a">
-        <xsl:variable name="ref" select="@xlink:href" as="xs:string" />
-        <a href="{@xlink:href}">
-            <xsl:apply-templates />
-        </a>
-    </xsl:template>
-    
-    <xsl:template match="text:a[contains(@xlink:href,'rash:#')]">
-        <xsl:variable name="element" select="." as="element()" />
-        <xsl:variable name="ref" select="substring-after(@xlink:href,'rash:#')" as="xs:string" />
-        <xsl:variable name="prec" select="($element/preceding-sibling::element()|$element/preceding-sibling::text())" as="node()*" />
-        
-        <!-- Se non ci sono ripetizioni vicine di riferimenti, ovvero nessuno degli elementi precedenti dello stesso tipo separati da soli spazi, allora aggiungi il link -->
-        <xsl:variable name="first-non-empty-text-or-element" select="f:getFirstNonEmptyTextOrElement(reverse($prec))" as="node()?"/>
-        <xsl:if test="not($first-non-empty-text-or-element) or $first-non-empty-text-or-element[self::text()] or not($first-non-empty-text-or-element[self::text:a and contains(@xlink:href,'rash:#') and substring-after(@xlink:href,'rash:#') = $ref])">
-            <a class="ref" href="#{$ref}" />
-        </xsl:if>
-    </xsl:template>
-    
-    <xsl:function name="f:getFirstNonEmptyTextOrElement" as="node()?">
-        <xsl:param name="seq" as="node()*" />
-        
-        <xsl:if test="exists($seq)">
-            <xsl:variable name="current" select="$seq[1]" as="node()" />
-            <xsl:choose>
-                <xsl:when test="$current[self::text()]">
-                    <xsl:choose>
-                        <xsl:when test="normalize-space($current) = ''">
-                            <xsl:sequence select="f:getFirstNonEmptyTextOrElement(subsequence($seq,2))" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$current" />
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="$current" />
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
-    </xsl:function>
-    <!-- end of LINKS -->
-    
-    <!-- PARAGRAPH -->
-    <xsl:template match="text:p">
-        <p>
-            <xsl:if test="starts-with(@text:style-name,'Quotations') or (some $s in //style:style[@style:parent-style-name = 'Quotations']/@style:name satisfies @text:style-name = $s)">
-                <xsl:attribute name="class" select="'quote'" />
-            </xsl:if>
-            <xsl:if test="starts-with(@text:style-name,'Illustration') or (some $s in //style:style[@style:parent-style-name = 'Illustration']/@style:name satisfies @text:style-name = $s)">
-                <xsl:attribute name="class" select="'math'" />
-            </xsl:if>
-            <xsl:apply-templates>
-                <xsl:with-param name="math" as="xs:boolean" select="true()" tunnel="yes" />
-            </xsl:apply-templates>
-        </p>
-    </xsl:template>
-    
-    
-    <xsl:template match="text()[matches(../../../preceding::text:h[1]/text:a[1]/@xlink:href,'rash:.*-bibliography')]">
-        <xsl:param name="curId" as="xs:string" tunnel="yes" />
-        <xsl:choose>
-            <xsl:when test="starts-with(., $curId)">
-                <!-- <xsl:value-of select="normalize-space(substring-after(., concat($curId, '.') ) )" /> -->
-                <xsl:value-of select="replace(substring-after(., concat($curId, '.') ), '^\s+', '')" />
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="."/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <!--
-    <xsl:template match="text:p[matches(../preceding::text:h[1]/text:a[1]/@xlink:href,'rash:.*-bibliography')]">
-        <p>
-            <xsl:apply-templates>
-            </xsl:apply-templates>
-        </p>
-    </xsl:template>
-    -->
-    
-    <xsl:template match="text:p[starts-with(@text:style-name,'Illustration') or (some $s in //style:style[@style:parent-style-name = 'Illustration']/@style:name satisfies @text:style-name = $s)]" priority="2.0">
-        <p class="math">
-            <xsl:apply-templates />
-        </p>
-    </xsl:template>
-    
-    <!-- Containing line breaks -->
-    <xsl:template match="text:p[.//text:line-break]">
-        <xsl:variable name="content" select="element()|text()" as="node()*" />
-        <xsl:variable name="alllinebreaks" select=".//(element()|text())" as="node()*" />
-        <xsl:variable name="isQuotation" select="starts-with(@text:style-name,'Quotations') or (some $s in //style:style[@style:parent-style-name = 'Quotations']/@style:name satisfies @text:style-name = $s)" as="xs:boolean"/>
-        <xsl:variable name="totPar" select="count(.//text:line-break) + 1" as="xs:integer" />
-        
-        <xsl:for-each select="1 to $totPar">
-            <xsl:variable name="num" select="." as="xs:integer" />
-            <p>
-                <xsl:if test="$isQuotation">
-                    <xsl:attribute name="class" select="'quote'" />
+            <!-- If the next header exists and has a higher level (it is starts a subsection), call it -->
+            <xsl:if test="$next.header">
+                <xsl:variable name="nextLevel" as="xs:integer" select="f:getLevel($next.header)" />
+                <xsl:if test="$nextLevel > xs:integer($level)">
+                    <xsl:apply-templates select="$next.header" />
                 </xsl:if>
-                
-                <xsl:apply-templates select="$content except (if ($num = 1) then () else $alllinebreaks[self::text:line-break][$num - 1]/(.|preceding::element()|preceding::text()|ancestor::element()), if ($num = $totPar) then () else $alllinebreaks[self::text:line-break][$num]/(.|following::element()|following::text()))" />
+            </xsl:if>
+        </div>
+        
+        <xsl:call-template name="get.following.content.elements">
+            <xsl:with-param name="curlev" select="$level" />
+        </xsl:call-template>
+    </xsl:template>
+    
+    <xd:doc scope="text:p">
+        <xd:desc>
+            <xd:p>This template is in charge of creating the paragraph that may contains figure/formula boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:p[.//draw:frame/draw:text-box]">
+        <!-- Create a paragraph containing all the nodes that are not part of the figure/formula -->
+        <xsl:variable name="pnodes" 
+            select="(element() except (draw:frame[draw:text-box]|element()[.//draw:frame[draw:text-box]])) |
+                text()" as="node()*" />
+        <xsl:if test="some $n in $pnodes satisfies normalize-space($n) != ''">
+            <p>
+                <xsl:apply-templates select="$pnodes" />
             </p>
-        </xsl:for-each>
+        </xsl:if>
+        
+        <xsl:apply-templates select=".//draw:frame[draw:text-box]" />
     </xsl:template>
     
-    <!-- Preformatted -->
-    <xsl:template match="text:p[(starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)) and preceding-sibling::text:p[1][not(starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s))]]">
-        
-        <xsl:variable name="allCodes" select="following-sibling::text:p[starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)]" as="element()*" />
-        <xsl:variable name="firstNonCode" select="following-sibling::element()[not(self::text:p[starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)])][1]" as="element()*" />
-        
-        <p class="code">
-            <xsl:apply-templates />
-            <xsl:for-each select="$allCodes except $firstNonCode/(.|following-sibling::element())">
-                <xsl:text>&#xa;</xsl:text>
-                <xsl:apply-templates />
-            </xsl:for-each>
-        </p>
-    </xsl:template>
-    <!-- end of PARAGRAPH -->
-    
-    <!-- IMAGES -->
-    <xsl:template match="text:p[exists(element()[not(self::text:soft-page-break)][1]/(self::draw:frame|.//draw:frame)|element()[1]//draw:frame) and empty(element()[not(self::text:soft-page-break)][1]/preceding-sibling::text()[normalize-space() != ''])]">
-        <xsl:variable name="el" select="(.//draw:frame)[1]" as="element()" />
-        <xsl:variable name="caption" select="(following-sibling::element())[1][self::text:p][(@text:style-name = 'Caption') or (some $s in //style:style[@style:parent-style-name = 'Caption']/@style:name satisfies @text:style-name = $s)]" as="element()" />
-        <div>
-            <xsl:call-template name="set.properties">
-                <xsl:with-param name="attr" select="$el/@draw:name" as="attribute()" />
+    <xd:doc scope="draw:frame">
+        <xd:desc>
+            <xd:p>This template is in charge of creating the figure/formula boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="draw:frame[draw:text-box]">
+        <xsl:variable name="isFormula" select="exists(.//svg:desc[. = 'formula'])" as="xs:boolean" />
+        <xsl:variable name="caption" 
+            select="draw:text-box/text:p[text:sequence]" as="element()*" />
+            
+        <div class="{if ($isFormula) then 'formula' else 'picture'}">
+            <xsl:call-template name="set.captioned.object.id">
+                <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
-            <p class="img_block">
-                <xsl:apply-templates select="$el" >
-                    <xsl:with-param name="caption" select="string-join($caption//text(), ' ')" />
-                </xsl:apply-templates>
+            <p class="{if ($isFormula) then 'math_block' else 'img_block'}">
+                <xsl:apply-templates select=".//draw:frame" />
             </p>
             
-            <xsl:apply-templates select="$caption" mode="caption" />
-        
+            <xsl:if test="not($isFormula)">
+                <xsl:call-template name="add.caption">
+                    <xsl:with-param name="caption" select="f:getCaptionNodes($caption)" as="node()*" />
+                </xsl:call-template>
+            </xsl:if>
         </div>
     </xsl:template>
     
-    <xsl:template match="draw:frame">
-        <xsl:param name="caption" />
-        <img class="{@svg:width}-{@svg:height}" src="{substring-after(draw:image/@xlink:href,'Pictures/')}" alt='{$caption}'/>
+    <xd:doc scope="draw:image">
+        <xd:desc>
+            <xd:p>This template is in charge of creating images.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="draw:image[not(following-sibling::svg:desc[. = 'formula'] | preceding-sibling::svg:desc[. = 'formula'])]">
+        <xsl:variable name="caption" 
+            select="replace(string-join(f:getCaptionNodes(.), ''), $subcap, '')" as="xs:string?" />
+        <xsl:variable name="alt" select="../svg:title" as="xs:string?" />
+        <img 
+            src="{$baseimg}{substring-after(@xlink:href,'Pictures/')}" 
+            alt="{if ($alt) then $alt else 
+                    if ($caption) then $caption else 'No alternate description has been provided.'}" />
     </xsl:template>
     
-    <xsl:template match="element()" mode="caption">
-        <p class="caption">
-            <xsl:apply-templates />
-        </p>
-    </xsl:template>
-    <!-- end of IMAGES -->
-    
-    <!-- LISTS -->
-    <xsl:template match="text:list[some $s in //text:list-style[exists(element()[1][self::text:list-level-style-bullet])]/@style:name satisfies @text:style-name = $s]">
-        <xsl:call-template name="bulleted" />
-    </xsl:template>
-    
-    <xsl:template match="text:list[some $s in //text:list-style[exists(element()[1][self::text:list-level-style-number])]/@style:name satisfies @text:style-name = $s]">
-        <xsl:call-template name="numbered" />
+    <xd:doc scope="draw:object">
+        <xd:desc>
+            <xd:p>This template is in charge of creating formulas.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="draw:object[parent::element()/svg:desc = 'formula']">
+        <xsl:variable name="curmath" 
+            select="doc(concat($dir, @xlink:href, '/content.xml'))/element()" as="element()?" />
+        <xsl:if test="$curmath">
+            <xsl:copy-of select="$curmath" />
+        </xsl:if>
     </xsl:template>
     
-    <xsl:template match="text:list">
-        <xsl:param name="type" select='bulleted' tunnel="yes" />
-        
+    <xd:doc scope="text:p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling common paragraphs.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:p">
+        <xsl:variable name="parent" select="parent::office:text" as="element()?" />
         <xsl:choose>
-            <xsl:when test="$type = 'number'">
-                <xsl:call-template name="numbered" />
+            <!-- When a paragraph is defined in the ODT document without providing any particular structured organisation of it into a paper (such as defining headings), a section is created automatically in the final RASH document. -->
+            <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
+                <div class="section">
+                    <h1>No heading specified</h1>
+                    <p>
+                        <xsl:apply-templates /> 
+                    </p>
+                    <xsl:apply-templates select="following-sibling::element()" />
+                </div>
             </xsl:when>
+            <!-- This is the basic case for the creation of paragraphs. -->
             <xsl:otherwise>
-                <xsl:call-template name="bulleted" />
+                <p>
+                    <xsl:apply-templates />
+                </p>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template name="bulleted">
-        <ul>
-            <xsl:apply-templates>
-                <xsl:with-param name="type" select="'bullet'" tunnel="yes" />
-            </xsl:apply-templates>            
-        </ul>
-    </xsl:template>
-    
-    <xsl:template name="numbered">
-        <xsl:variable name="curName" select="@text:style-name" as="xs:string*" />
-        <xsl:variable name="curNum" select="//text:list-style[@style:name = $curName][1]/text:list-level-style-number[1]/@text:start-value" as="attribute()*" />
-        <xsl:variable name="startValue" select="if (empty($curNum)) then 1 else xs:integer($curNum)" as="xs:integer" />
-        
-        <ol>
-            <xsl:choose>
-                <xsl:when test="@text:continue-numbering = 'true'">
-                    <xsl:attribute name="value" select="count(preceding-sibling::text:list/text:list-item) + 1" />
-                </xsl:when>
-                <xsl:when test="exists($curNum)">
-                    <xsl:attribute name="value" select="$startValue" />
-                </xsl:when>
-            </xsl:choose>
+    <xd:doc scope="text:p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling a sequence of paragraph that defines a block of code.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="
+        text:p[
+            (starts-with(@text:style-name,'Preformatted') or 
+            (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name 
+                satisfies @text:style-name = $s))]">
+        <xsl:variable name="prevp" select="preceding-sibling::text:p[1]" as="element()?" />
+        <xsl:if test="not($prevp) or not(f:isPreformattedElement($prevp))">
+            <xsl:variable name="allCodes" 
+                select="following-sibling::text:p[f:isPreformattedElement(.)]" as="element()*" />
+            <xsl:variable name="firstNonCode" 
+                select="following-sibling::element()[not(f:isPreformattedElement(.))][1]" as="element()*" />
             
-            <xsl:apply-templates>
-                <xsl:with-param name="type" select="'number'" tunnel="yes" />
-            </xsl:apply-templates>
-        </ol>
+            <p class="code">
+                <xsl:for-each select="(., $allCodes) except $firstNonCode/(.|following-sibling::element())">
+                    <xsl:text>&#xa;</xsl:text>
+                    <xsl:apply-templates />
+                </xsl:for-each>
+            </p>
+        </xsl:if>
     </xsl:template>
     
+    <xd:doc scope="text:p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling a cited paragraph.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:p[
+        starts-with(@text:style-name,'Quotations') or 
+        (some $s in //style:style[@style:parent-style-name = 'Quotations']/@style:name 
+            satisfies @text:style-name = $s)]">
+        <p class="quote">
+            <xsl:apply-templates />
+        </p>
+    </xsl:template>
+    
+    <xd:doc scope="text:list">
+        <xd:desc>
+            <xd:p>This template is in charge of handling lists.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:list">
+        <xsl:variable name="isBulletList" select="some $s 
+            in //text:list-style[exists(element()[1][self::text:list-level-style-bullet])]/@style:name 
+            satisfies @text:style-name = $s" as="xs:boolean" />
+        
+        <xsl:choose>
+            <xsl:when test="$isBulletList">
+                <ul>
+                    <xsl:apply-templates />           
+                </ul>
+            </xsl:when>
+            <xsl:otherwise>
+                <ol>
+                    <xsl:apply-templates />           
+                </ol>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xd:doc scope="text:list-item">
+        <xd:desc>
+            <xd:p>This template is in charge of handling list items.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="text:list-item">
         <li>
+            <xsl:call-template name="set.bookmarked.object.id" />
             <xsl:apply-templates />
         </li>
     </xsl:template>
-    <!-- end of LISTS -->
     
-    <!-- TABLE -->
-    <xsl:template match="table:table">
-        <xsl:variable name="caption" select="(following-sibling::element())[1][self::text:p][(@text:style-name = 'Caption') or (some $s in //style:style[@style:parent-style-name = 'Caption']/@style:name satisfies @text:style-name = $s)]" as="element()*" />
-        <xsl:variable name="id" select="substring-after(@table:name,'rash:')" as="xs:string" />
-        <xsl:variable name="stylename" select="@table:style-name" as="xs:string*" />
-        <div class="table">
-            <xsl:if test="$id != ''">
-                <xsl:attribute name="id" select="$id" />
-            </xsl:if>
-            <table> 
-                <!-- width="{//style:style[(if (empty($stylename)) then false() else @style:name = $stylename) or @style:name = concat('rash:',$id)]/style:table-properties/@style:width}"> -->
+    <xd:doc scope="text:note">
+        <xd:desc>
+            <xd:p>This template is in charge of handling references to footnotes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:note">
+        <a class="footnote" href="#{@text:id}"><xsl:text> </xsl:text></a>
+    </xsl:template>
+    
+    <xd:doc scope="text:p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling formula boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:p[.//draw:object[parent::element()/svg:desc = 'formula'] and normalize-space(replace(., 'formula', '')) = '']">
+        <div class="formula">
+            <p class="math_block">
                 <xsl:apply-templates />
-            </table>
-            
-            <xsl:apply-templates select="$caption" mode="caption" />
+            </p>
         </div>
     </xsl:template>
     
-    <xsl:template match="table:table-row">
-        <tr>
-            <xsl:apply-templates />
-        </tr>
-    </xsl:template>
-    
-    <xsl:template match="table:table-cell[exists(.//text:p[matches(@text:style-name,'^Table.*Heading$') or matches(@text:parent-style-name,'^Table.*Heading$') or (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Heading$')]/@style:name satisfies @text:style-name = $s)])]">
-        <th> <!-- width="{f:calculateMean(.)}"> -->
-            <!-- TODO: non sono consentiti paragrafi in th. Verificare, e trovare metodo migliore di questo -->
-            <xsl:apply-templates select="text:p/node()" />
-        </th>
-    </xsl:template>
-    
-    <xsl:template match="table:table-cell[exists(.//text:p[matches(@text:style-name,'^Table.*Contents') or matches(@text:parent-style-name,'^Table.*Contents') or (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Contents')]/@style:name satisfies @text:style-name = $s)])]">
-        <td> <!-- width="{f:calculateMean(.)}"> -->
-            <xsl:apply-templates />
-        </td>
-    </xsl:template>
-    
-    <xsl:function name="f:calculateMean" as="xs:string">
-        <xsl:param name="cell" as="element()" />
-        <xsl:variable name="pos" as="xs:integer" select="count($cell/preceding-sibling::table:table-cell) + 1" />
-        <xsl:variable name="col-pos" as="xs:integer" select="count($cell/ancestor::table:table[1]/table:table-column[sum(for $prev in (preceding-sibling::table:table-column) return if (exists(@table:number-columns-repeated)) then xs:integer(@table:number-columns-repeated) - 1 else 1) &lt; $pos and $pos &lt;= (sum(for $prev in (preceding-sibling::table:table-column) return if (exists(@table:number-columns-repeated)) then xs:integer(@table:number-columns-repeated) - 1 else 1) + (if (exists(@table:number-columns-repeated)) then xs:integer(@table:number-columns-repeated) - 1 else 1))]/preceding-sibling::table:table-column) + 1"/>
-        <xsl:variable name="name" select="$cell/ancestor::table:table[1]/table:table-column[$col-pos]/@table:style-name" as="xs:string" />
-        <xsl:variable name="cur" select="xs:double(for $style in (root($cell)//style:style[@style:name = $name]/style:table-column-properties) return if (exists($style/@style:column-width)) then substring-before($style/@style:column-width,'cm') else substring-before($style/@style:rel-column-width,'*'))" as="xs:double" />
-        
-        <xsl:variable name="tot" select="sum(for $c in $cell/ancestor::table:table[1]/table:table-column return xs:double(for $style in (root($cell)//style:style[@style:name = $c/@table:style-name]/style:table-column-properties) return if (exists($style/@style:column-width)) then substring-before($style/@style:column-width,'cm') else substring-before($style/@style:rel-column-width,'*')))" as="xs:double" />
-        
-        <xsl:value-of select="concat(xs:string(($cur div $tot) * 100),'%')" />
-    </xsl:function>
-    <!-- end of TABLE -->
-    
-    <!-- EMPHASIS, SUPERSCRIPT, SUBSCRIPT & COURIER FONT -->
+    <xd:doc scope="text:span">
+        <xd:desc>
+            <xd:p>This template handles all the inline textual elements that appear in the context of a paragraph, excluding links.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="text:span">
+        <!-- 
+            The 'preformatted' parameters is set to 'true()' if any of the ancestor of the 
+            current inline element is a preformatted text 
+        -->
+        <xsl:param name="preformatted" tunnel="yes" as="xs:boolean" />
         <xsl:variable name="isBold" select="some $s in //style:style[style:text-properties/@fo:font-weight = 'bold']/@style:name satisfies @text:style-name = $s" as="xs:boolean" />
         <xsl:variable name="isItalic" select="some $s in //style:style[style:text-properties/@fo:font-style = 'italic']/@style:name satisfies @text:style-name = $s" as="xs:boolean" />
-        <xsl:variable name="isCourier" select="starts-with(@text:style-name,'Source') or (some $s in //style:style[contains(style:text-properties/@style:font-name,'Courier')]/@style:name satisfies @text:style-name = $s)" as="xs:boolean" />
+        <xsl:variable 
+            name="isCourier" 
+            select="
+                $preformatted or 
+                starts-with(@text:style-name,'Source') or 
+                (some $s in //style:style[
+                    starts-with(style:text-properties/@style:font-name, 'Courier')]/@style:name 
+                        satisfies @text:style-name = $s)" as="xs:boolean" />
         <xsl:variable name="isSuperscript" select="some $s in //style:style[starts-with(style:text-properties/@style:text-position,'super')]/@style:name satisfies @text:style-name = $s" as="xs:boolean" />
         <xsl:variable name="isSubscript" select="some $s in //style:style[starts-with(style:text-properties/@style:text-position,'sub')]/@style:name satisfies @text:style-name = $s" as="xs:boolean" />
         
@@ -540,10 +396,158 @@
             <xsl:with-param name="sub" as="xs:boolean" tunnel="yes" select="$isSubscript" />
             <xsl:with-param name="bold" as="xs:boolean" tunnel="yes" select="$isBold" />
             <xsl:with-param name="italic" as="xs:boolean" tunnel="yes" select="$isItalic" />
-            <xsl:with-param name="courier" as="xs:boolean" tunnel="yes" select="if (empty(ancestor::text:p[starts-with(@text:style-name,'Preformatted') or (some $s in //style:style[starts-with(@style:parent-style-name, 'Preformatted')]/@style:name satisfies @text:style-name = $s)])) then $isCourier else false()" />
+            <xsl:with-param name="courier" as="xs:boolean" tunnel="yes" select="$isCourier" />
         </xsl:call-template>
     </xsl:template>
     
+    <xd:doc scope="text:a">
+        <xd:desc>
+            <xd:p>This template handles all the inline external (i.e., to an external website) links that appear in the context of a paragraph, excluding links.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:a">
+        <xsl:variable name="ref" select="@xlink:href" as="xs:string" />
+        <a href="{@xlink:href}">
+            <xsl:apply-templates />
+        </a>
+    </xsl:template>
+    
+    <xd:doc scope="text()">
+        <xd:desc>
+            <xd:p>This template handles all text nodes and, in case there is an inline quotation, it adds the appropriate element to the RASH document.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text()">
+        <xsl:param name="caption" tunnel="yes" />
+        <xsl:for-each select="f:sequenceOfTextNodes(if ($caption) then replace(., $subcap, '') else ., ())">
+            <xsl:variable name="isQuote" select="position() mod 2 = 0" as="xs:boolean" />
+            <xsl:choose>
+                <xsl:when test="$isQuote">
+                    <q><xsl:value-of select="." /></q>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="." />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:template>
+    
+    <xd:doc scope="table:table">
+        <xd:desc>
+            <xd:p>This template creates new table boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="table:table">
+        <xsl:variable name="caption" select="following-sibling::text:p[normalize-space() != ''][1][(@text:style-name = 'Table') or (some $s in //style:style[@style:parent-style-name = 'Table']/@style:name satisfies @text:style-name = $s)]" as="element()?" />
+        <div class="table">
+            <xsl:call-template name="set.captioned.object.id">
+                <xsl:with-param name="caption" select="$caption" />
+            </xsl:call-template>
+            <table> 
+                <xsl:apply-templates />
+            </table>
+            
+            <xsl:call-template name="add.caption">
+                <xsl:with-param name="caption" select="f:getCaptionNodes($caption)" />
+            </xsl:call-template>
+        </div>
+    </xsl:template>
+    
+    <xd:doc scope="table:table-row">
+        <xd:desc>
+            <xd:p>This template creates table rows.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="table:table-row">
+        <tr>
+            <xsl:apply-templates />
+        </tr>
+    </xsl:template>
+    
+    <xd:doc scope="table:table-cell">
+        <xd:desc>
+            <xd:p>This template creates new table heading cells.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="table:table-cell[
+        exists(.//text:p[matches(@text:style-name,'^Table.*Heading$') or 
+        matches(@text:parent-style-name,'^Table.*Heading$') or 
+        (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Heading$')]/@style:name 
+            satisfies @text:style-name = $s)])]">
+        <th>
+            <xsl:apply-templates select="text:p/node()" />
+        </th>
+    </xsl:template>
+    
+    <xd:doc scope="table:table-cell">
+        <xd:desc>
+            <xd:p>This template creates new table content cells.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="table:table-cell[
+        exists(.//text:p[matches(@text:style-name,'^Table.*Contents') or
+        matches(@text:parent-style-name,'^Table.*Contents') or 
+        (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Contents')]/@style:name 
+            satisfies @text:style-name = $s)])]">
+        <td>
+            <xsl:apply-templates />
+        </td>
+    </xsl:template>
+    
+    <xd:doc scope="text:bookmark-ref">
+        <xd:desc>
+            <xd:p>This template creates all the references to dereferanceable objects (i.e., sections, figures with caption, formulas with caption, tables and items in the reference list).</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:bookmark-ref | text:sequence-ref">
+        <a href="#{@text:ref-name}" class="ref"><xsl:text> </xsl:text></a>
+    </xsl:template>
+    
+    <xd:doc scope="svg:desc">
+        <xd:desc>
+            <xd:p>This template is used for avoiding to process certain elements.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="svg:desc | text:p[normalize-space() = '' and not(element())] | text:p[(@text:style-name = 'Table') or (some $s in //style:style[@style:parent-style-name = 'Table']/@style:name satisfies @text:style-name = $s)] | text:p[(@text:style-name = 'Title') or (some $s in //style:style[@style:parent-style-name = 'Title']/@style:name satisfies @text:style-name = $s)] | text:p[(@text:style-name = 'Subtitle') or (some $s in //style:style[@style:parent-style-name = 'Subtitle']/@style:name satisfies @text:style-name = $s)] | svg:title" />
+    
+    <xd:doc scope="element()">
+        <xd:desc>
+            <xd:p>This template continues the processing of its child elements without adding any markup.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="element()">
+        <xsl:apply-templates />
+    </xsl:template>
+    
+    <!-- NAMED TEMPLATES -->
+    <xd:doc scope="get.following.content.elements">
+        <xd:desc>
+            <xd:p>This named template allow one to get all the content elements after the first one. Since this particular sequence of element is used by different templates (e.g., for headings), the call has been implemented as a named template.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="get.following.content.elements">
+        <xsl:param name="curlev" select="1" as="xs:integer" />
+        
+        <xsl:variable name="seq" select="for $v in (1 to $curlev) return string($v)" as="xs:string+" />
+        <xsl:variable name="level" select="string($curlev)" as="xs:string" />
+        
+        <xsl:apply-templates select="
+            (
+                following-sibling::text:h[some $l in $seq 
+                    satisfies @text:outline-level = $l] |
+                following-sibling::text:p[starts-with(@text:style-name, 'Heading') 
+                    and (some $l in $seq 
+                        satisfies substring(@text:style-name,string-length(@text:style-name)) = $l)])[1][
+                if (self::text:p) 
+                    then substring(@text:style-name,string-length(@text:style-name)) = $level 
+                else @text:outline-level = $level]" />
+    </xsl:template>
+    
+    <xd:doc scope="add.inline">
+        <xd:desc>
+            <xd:p>This named template is in change of handling all the inline textual elements that may appear within a paragraph. The links are handled in another appropriate template.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template name="add.inline">
         <xsl:param name="bold" as="xs:boolean" tunnel="yes" />
         <xsl:param name="italic" as="xs:boolean" tunnel="yes" />
@@ -553,18 +557,18 @@
         
         <xsl:choose>
             <xsl:when test="$super">
-                <span class="sup">
+                <sup>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="super" tunnel="yes" as="xs:boolean" select="false()" />
                     </xsl:call-template>
-                </span>
+                </sup>
             </xsl:when>
             <xsl:when test="$sub">
-                <span class="sub">
+                <sub>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="sub" tunnel="yes" as="xs:boolean" select="false()" />
                     </xsl:call-template>
-                </span>
+                </sub>
             </xsl:when>
             <xsl:when test="$bold">
                 <b>
@@ -592,32 +596,250 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    <!-- end of EMPHASIS, SUPERSCRIPT, SUBSCRIPT & COURIER FONT -->
     
-    <!-- BIBLIOGRAPHY -->
-    
-    
-    <!-- TODO - controllare: non capisco perché questa complicazione... -->
-    <xsl:template match="text:list-item[matches(preceding::text:h[1]/text:a[1]/@xlink:href,'rash:.*-bibliography')]">
-        <xsl:variable name="joint" select="string-join(.//text(),'')" as="xs:string" />
-        <xsl:variable name="curId" select="normalize-space(substring-before($joint,'.'))" as="xs:string" />
-        <xsl:if test="//text:a[contains(@xlink:href,'rash:#') and substring-after(@xlink:href,'rash:#') = $curId]">
-            <li>
-                <xsl:choose>
-                    <xsl:when test="string-length($curId) > 0">
-                        <xsl:attribute name="id" select="$curId" />
-                        <!-- MODIFICATO -->
-                        <!-- <p><xsl:value-of select="normalize-space(substring-after($joint,'.'))" /></p> -->
-                        <xsl:apply-templates select="text:p">
-                            <xsl:with-param name="curId" select="$curId" as="xs:string" tunnel="yes"/>
-                        </xsl:apply-templates>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <p><xsl:value-of select="$joint" /></p>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </li>
+    <xd:doc scope="add.inline">
+        <xd:desc>
+            <xd:p>This named template is in change of handling all the footnotes contained in the paper.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.footnotes">
+        <xsl:variable name="footnotes" select="//text:note" />
+        
+        <xsl:if test="$footnotes">
+            <div class="footnotes">
+                <xsl:for-each select="$footnotes">
+                    <div id="{./@text:id}">
+                        <xsl:apply-templates select="text:note-body/element()" />
+                    </div>
+                </xsl:for-each>
+            </div>
         </xsl:if>
     </xsl:template>
-    <!-- end of BIBLIOGRAPHY -->
+    
+    <xd:doc scope="add.title">
+        <xd:desc>
+            <xd:p>This named template is in charge of handling the title of the document.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.title">
+        <xsl:variable name="titel" 
+            select="//office:text//text:p[
+                (@text:style-name='Title') or 
+                ((some $s in //style:style[starts-with(@style:parent-style-name, 'Title')]/@style:name 
+                    satisfies @text:style-name = $s))][1]" as="element()?" />
+        <xsl:variable name="subtitel" 
+            select="//office:text//text:p[
+                (@text:style-name='Subtitle') or 
+                ((some $s in //style:style[starts-with(@style:parent-style-name, 'Subtitle')]/@style:name 
+                    satisfies @text:style-name = $s))][1]" as="element()?" />
+        <title>
+            <xsl:choose>
+                <xsl:when test="normalize-space($titel) != ''">
+                    <xsl:value-of select="$titel" />
+                    <xsl:if test="normalize-space($subtitel) != ''">
+                        <xsl:text> -- </xsl:text>
+                        <xsl:value-of select="$subtitel" />
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>No title specified</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </title>
+    </xsl:template>
+    
+    <xd:doc scope="add.meta">
+        <xd:desc>
+            <xd:p>This named template is in charge of handling the head data of the document, i.e., authors, emails, affiliations, keywords, categories.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.meta">
+        <xsl:variable name="meta" select="doc(concat($dir, '/meta.xml'))" as="item()?" />
+        <xsl:if test="$meta">
+            <!-- Affiliations -->
+            <xsl:variable name="aff" as="xs:string*">
+                <xsl:variable name="afflist" as="xs:string*">
+                    <xsl:for-each select="$meta//meta:user-defined[@meta:name='Author']">
+                        <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
+                        <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
+                        <xsl:if test="$len > 2">
+                            <xsl:value-of select="normalize-space($tokens[3])" />
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:variable name="distaff" select="distinct-values($afflist)" as="xs:string*" />
+                <xsl:sequence select="(for $a in $distaff return lower-case($a), $distaff)" />
+            </xsl:variable>
+            <xsl:variable name="afflen" select="count($aff) div 2" as="xs:integer" />
+            <xsl:for-each select="$aff[position() > $afflen]">
+                <meta about="affiliation-{position()}" property="schema:name" content="{.}" />
+            </xsl:for-each>
+            
+            <!-- Author -->
+            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Author']">
+                <xsl:variable name="authiri" select="concat('author-', position())" as="xs:string" />
+                <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
+                <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
+                <xsl:if test="$len > 0">
+                    <meta about="{$authiri}" name="dc.creator" property="schema:name" 
+                        content="{normalize-space($tokens[1])}"/>
+                    <xsl:if test="$len > 1">
+                        <meta about="{$authiri}" property="schema:email" content="{normalize-space($tokens[2])}" />
+                        <xsl:if test="$len > 2">
+                            <xsl:variable name="idx" 
+                                select="index-of($aff, lower-case(normalize-space($tokens[3])))" as="xs:integer*" />
+                            <xsl:if test="$idx">
+                                <link about="{$authiri}" property="schema:affiliation" 
+                                    href="affiliation-{$idx[1]}" />
+                            </xsl:if>
+                        </xsl:if>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+            
+            <!-- Keywords -->
+            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Keyword']">
+                <meta property="prism:keyword" content="{normalize-space()}" />
+            </xsl:for-each>
+            
+            <!-- Categories -->
+            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Category']">
+                <meta name="dcterms.subject" content="{normalize-space()}" />
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:template>
+    
+    <xd:doc scope="add.caption">
+        <xd:desc>
+            <xd:p>This named template is in charge of creating captions to figures or tables.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.caption">
+        <xsl:param name="caption" as="node()*" />
+        <xsl:variable name="ftn" select="($caption//text())[1]" as="text()?" />
+        <p class="caption">
+            <xsl:choose>
+                <xsl:when test="$caption">
+                    <xsl:for-each select="$caption">
+                        <xsl:apply-templates select=".">
+                            <xsl:with-param name="caption" select="true()" tunnel="yes" as="xs:boolean" />
+                        </xsl:apply-templates>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    No caption has been provided.
+                </xsl:otherwise>
+            </xsl:choose>
+        </p>
+    </xsl:template>
+    
+    <xd:doc scope="set.section.type">
+        <xd:desc>
+            <xd:p>This named template set the type of a section if any ('section' is the default).</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="set.section.type">
+        <xsl:variable name="content" select="lower-case(normalize-space())" as="xs:string" />
+        
+        <xsl:choose>
+            <xsl:when test="$content = 'abstract' or $content = 'summary'">
+                <xsl:attribute name="class" select="'abstract'" />
+            </xsl:when>
+            <xsl:when test="$content = 'acknowledgements' or $content = 'acknowledgement'">
+                <xsl:attribute name="class" select="'acknowledgements'" />
+            </xsl:when>
+            <xsl:when test="$content = 'references' or $content = 'reference'">
+                <xsl:attribute name="class" select="'bibliography'" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="class" select="'section'" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xd:doc scope="set.bookmarked.object.id">
+        <xd:desc>
+            <xd:p>This named template set the id of a bookmarked object (i.e., section and references) if present.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="set.bookmarked.object.id">
+        <xsl:variable name="id" select=".//text:bookmark-start/@text:name[some $el in //text:bookmark-ref satisfies $el/@text:ref-name = .][1]" as="xs:string?" />
+        <xsl:if test="$id">
+            <xsl:attribute name="id" select="$id" />
+        </xsl:if>
+    </xsl:template>
+    
+    <xd:doc scope="set.captioned.object.id">
+        <xd:desc>
+            <xd:p>This named template set the id of a captioned object (i.e., a figure, a formula, a table) if present.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="set.captioned.object.id">
+        <xsl:param name="caption" as="element()*" />
+        <xsl:variable name="id" select="$caption//text:sequence/@text:ref-name[some $el in //text:sequence-ref satisfies $el/@text:ref-name = .][1]" as="xs:string?" />
+        <xsl:if test="$id">
+            <xsl:attribute name="id" select="$id" />
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- FUNCTIONS -->
+    <xd:doc scope="f:getLevel">
+        <xd:desc>
+            <xd:p>This function retrieves the level of a particular logic section of a paper starting from its header element.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getLevel" as="xs:integer">
+        <xsl:param name="curel" as="element()" />
+        <xsl:value-of select="xs:integer(if ($curel/self::text:p) then substring($curel/@text:style-name,string-length($curel/@text:style-name)) else $curel/@text:outline-level)"/>
+    </xsl:function>
+    
+    <xsl:function name="f:getContentChildElements" as="element()*">
+        <xsl:param name="parent" as="element()" />
+        <xsl:sequence select="$parent/(element() except (text:sequence-decls))" />
+    </xsl:function>
+    
+    <xd:doc scope="f:isPreformattedElement">
+        <xd:desc>
+            <xd:p>This function says whether a particular element is marked as preformatted.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isPreformattedElement" as="xs:boolean">
+        <xsl:param name="curel" as="element()" />
+        <xsl:value-of select="
+            starts-with($curel/@text:style-name,'Preformatted') or 
+            (some $s 
+                in root($curel)//style:style[starts-with(@style:parent-style-name,'Preformatted')]/@style:name 
+                satisfies $curel/@text:style-name = $s)" />
+    </xsl:function>
+    
+    <xd:doc scope="f:sequenceOfTextNodes">
+        <xd:desc>
+            <xd:p>This function returns a sequence of text nodes split by means of double quotations.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:sequenceOfTextNodes" as="xs:string*">
+        <xsl:param name="curtext" as="xs:string" />
+        <xsl:param name="curseq" as="xs:string*" />
+        <xsl:choose>
+            <xsl:when test="contains($curtext, '“') and contains($curtext, '”')">
+                <xsl:sequence select="f:sequenceOfTextNodes(
+                    substring-after($curtext, '”'),
+                    (substring-before($curtext,'“'), substring-after(substring-before($curtext, '”'),'“')))" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$curseq, $curtext" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc scope="f:getCaptionNodes">
+        <xd:desc>
+            <xd:p>This function returns the caption nodes of a particular image or table.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getCaptionNodes" as="node()*">
+        <xsl:param name="imgel" as="element()" />
+        <xsl:sequence select="$imgel/ancestor-or-self::text:p[1]/text:sequence/
+            (following-sibling::element()|following-sibling::text())" />
+    </xsl:function>
 </xsl:stylesheet>
