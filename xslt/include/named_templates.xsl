@@ -249,8 +249,8 @@
         <xsl:variable name="original" select="('–','—','“','”','_','%','&amp;','±','#','à','è','È','é','ì','ò','ù','…','\^','&lt;','&gt;','~','≡','⊥','⊤','∀','∃','≤','¬','⊑','⊓','⊔','á','í','ó','ú','\$','‘','’')" as="xs:string*" />
         <xsl:variable name="replacement" select="('--', '---', '``',&quot;''&quot;,'\\_','\\%','\\&amp;','\$\\pm\$','\\#','\\`a','\\`e','\\`E',&quot;\\'e&quot;,'\\`i','\\`o','\\`u','...','\\textasciicircum','\\textless{}','\\textgreater{}','\\char`\\~','\\equiv','\\bot','\\top','\\forall','\\exists','\\leq','\$\\neg\$','\$\\sqsubseteq\$','\$\\sqcap\$','\$\\sqcup\$',&quot;\\'a&quot;,&quot;\\'i&quot;,&quot;\\'o&quot;,&quot;\\'u&quot;,'\\\$','`',&quot;'&quot;)" as="xs:string*" />
         
-        <xsl:variable name="code.original" select="('“','”','…','≡','⊥','⊤','∀','∃','≤','¬','⊑','⊓','⊔','#','\$','‘','’')" as="xs:string*" />
-        <xsl:variable name="code.replacement" select="('&quot;','&quot;','...','\$\\equiv\$','\$\\bot\$','\$\\top\$','\$\\forall\$','\$\\exists\$','\$\\leq\$','\$\\neg\$','\$\\sqsubseteq\$','\$\\sqcap\$','\$\\sqcup\$','\$\\#\$','\$\\\$\$',&quot;'&quot;,&quot;'&quot;)" as="xs:string*" />
+        <xsl:variable name="code.original" select="('“','”','…','≡','⊥','⊤','∀','∃','≤','¬','⊑','⊓','⊔','\$','‘','’')" as="xs:string*" />
+        <xsl:variable name="code.replacement" select="('&quot;','&quot;','...','\$\\equiv\$','\$\\bot\$','\$\\top\$','\$\\forall\$','\$\\exists\$','\$\\leq\$','\$\\neg\$','\$\\sqsubseteq\$','\$\\sqcap\$','\$\\sqcup\$','\$\\\$\$',&quot;'&quot;,&quot;'&quot;)" as="xs:string*" />
         
         <xsl:choose>
             <xsl:when test="$isCode">

@@ -1,0 +1,307 @@
+\RequirePackage{amsmath}
+\long\def\mo#1{{#1}}
+
+
+\long\def\mn#1{\mathrm{#1}}
+
+\def\msub#1#2{%
+  \mathop{#1}\nolimits\sb{#2}}
+\def\mosub#1#2{%
+  #1\nolimits\sb{#2}}
+\def\msup#1#2{%
+  \mathop{#1}\nolimits\sp{#2}}
+\def\msubsup#1#2#3{%
+  \mathop{#1}\nolimits\sb{#2}\sp{#3}}
+\def\mosubsup#1#2#3{%
+  #1\nolimits\sb{#2}\sp{#3}}
+
+\def\munder#1#2{%
+  \mathop{#1}\sb{#2}}
+\def\mover#1#2{%
+  \mathop{#1}\sp{#2}}
+\def\munderover#1#2#3{%
+  \mathop{#1}\sb{#2}\sp{#3}}
+
+\def\pmmltexcarry#1#2#3{%
+  {\def\tmp{#1}%
+   \ifx\carryn\tmp\stackrel{#2}{#3}%
+   \else\ifx\carrynw\tmp\stackrel{#2\hfill}{#3}%
+   \else\ifx\carryne\tmp\stackrel{\hfill#2}{#3}%
+   \else\ifx\carrys\tmp\ustackrel{#2\hfill}{#3}%
+   \else\ifx\carrysw\tmp\ustackrel{#2\hfill}{#3}%
+   \else\ifx\carryse\tmp\ustackrel{\hfill#2}{#3}%
+   \else\ifx\carrye\tmp{#3}\rlap{$\relax\scriptstyle#2$}%
+   \else\ifx\carryw\tmp\llap{$\relax\scriptstyle#2$}{#3}%
+   \fi\fi\fi\fi\fi\fi\fi\fi}}
+
+\def\pmmlcline#1#2#3#4#5{%
+  \omit
+  \@multicnt#1%
+  \advance\@multispan\m@ne
+  \ifnum\@multicnt=\@ne\@firstofone{&\omit}\fi
+  \@multicnt#2%
+  \advance\@multicnt-#1%
+  \advance\@multispan\@ne
+  \arrayrulewidth#3\relax
+  \kern-#4\relax
+ \leaders\hrule\@height\arrayrulewidth\hfill
+  \kern-#5\relax
+  \cr
+  \noalign{\vskip-\arrayrulewidth}}
+
+
+\def\ustackrel#1#2{\mathrel{\mathop{#2}\limits\sb{#1}}}
+\def\carryn{n}
+\def\carrynw{nw}
+\def\carryne{ne}
+\def\carrys{s}
+\def\carrysw{sw}
+\def\carryse{se}
+\def\carryw{w}
+\def\carrye{e}
+
+
+
+
+\let\stripPT\strip@pt
+\def\menclosebox#1#2{%
+\setbox0\hbox{\fboxrule0pt\fbox{$#1$}}%
+\edef\height{\strip@pt\ht0 \space}%
+\edef\depth{-\strip@pt\dp0 \space}%
+\edef\width{\strip@pt\wd0 \space}%
+\dimen@\ht0
+\advance\dimen@-\dp0
+\divide\dimen@\tw@
+\edef\hheight{\strip@pt\dimen@\space}%
+\dimen@\wd0
+\divide\dimen@\tw@
+\edef\hwidth{\strip@pt\dimen@\space}%
+#2%
+{\box\z@}}
+
+\long\def\miinitial#1{{#1}}
+\long\def\mitailed#1{{#1}}
+\long\def\milooped#1{{#1}}
+\long\def\mistretched#1{{#1}}
+
+\long\def\mi#1{{#1}}
+\long\def\miscript#1{\mathcal{#1}}
+\long\def\midoublestruck#1{\mathbb{#1}}
+\long\def\minormal#1{\mathrm{#1}}
+\long\def\mibold#1{\bm{#1}}
+\long\def\miitalic#1{\mathit{#1}}
+\long\def\mibolditalic#1{\bm{\mathit{#1}}}
+\long\def\miboldscript#1{\bm{\mathcal{#1}}}
+\long\def\mifraktur#1{\bm{\mathfrak{#1}}}
+\long\def\miboldfraktur#1{\bm{\mathfrak{#1}}}
+\long\def\misansserif#1{\mathsf{#1}}
+\long\def\miboldsansserif#1{\bm{\mathsf{#1}}}
+\long\def\mimonospace#1{\mathtt{#1}}
+\long\def\misansserifitalic#1{\mathit{#1}}
+\long\def\misansserifbolditalic#1{\bm{\mathit{#1}}}
+
+
+\def\unicode#1{
+%\relax
+\expandafter\ifx
+\csname uc#1\endcsname\relax
+   \typeout{UC: bad: #1}%
+   \ensuremath{\langle#1\rangle}%
+  \else
+%   \typeout{UC: good #1 \expandafter\meaning\csname uc#1\endcsname}%
+   \csname uc#1\expandafter\endcsname
+  \fi}
+
+\def\mathscr{\mathcal}
+\def\textasciimacron{{hat}}
+\let\ampersand\&
+\@namedef{ucmp}{\ampersand}
+\@namedef{uc8201}{\,}
+\@namedef{uc8214}{\Vert}
+\@namedef{uc8202}{\mkern1mu }
+\@namedef{uc8289}{}
+\@namedef{uc8290}{}
+\@namedef{uc8291}{}
+\@namedef{uc8518}{d}
+\@namedef{uc8519}{e}
+\@namedef{uc8520}{i}
+\@namedef{uc65080}{\overbrace{}}
+\@namedef{uc773}{\overline{}}
+\@namedef{uc818}{\_}
+\@namedef{uc8771}{\simeq }
+\@namedef{uc9001}{\langle }% fix me
+\@namedef{uc9002}{\rangle }% fix me
+
+
+\let\endcell&
+\let\lt<
+\let\gt>
+
+\@namedef{uc160}{~}
+\@namedef{uc172}{\lnot }
+\@namedef{uc215}{\times }
+\@namedef{uc8226}{\bullet}
+\@namedef{uc8228}{.}
+\@namedef{uc8229}{..}
+\@namedef{uc8230}{\ldots }
+\@namedef{uc8240}{\textperthousand }
+\@namedef{uc8241}{\textpertenthousand }
+\@namedef{uc8242}{{'}}
+\@namedef{uc8243}{{''}}
+\@namedef{uc8244}{{'''}}
+\@namedef{uc8245}{\backprime }
+\@namedef{uc8249}{\guilsinglleft }
+\@namedef{uc8250}{\guilsinglright }
+\@namedef{uc8464}{\mathscr{I}}
+\@namedef{uc8465}{\mathfrak{I}}
+\@namedef{uc8466}{\mathscr{L}}
+\@namedef{uc8467}{\mathscr{l}}
+\@namedef{uc8469}{\mathbb{N}}
+\@namedef{uc8704}{\forall }
+\@namedef{uc8705}{\complement }
+\@namedef{uc8706}{\partial }
+\@namedef{uc8707}{\exists }
+\@namedef{uc8708}{\nexists }
+\@namedef{uc8709}{\varnothing }
+\@namedef{uc8711}{\nabla }
+\@namedef{uc8712}{\in }
+\@namedef{uc8713}{\not\in }
+\@namedef{uc8715}{\ni }
+\@namedef{uc8716}{\not\ni }
+\@namedef{uc8719}{\prod }
+\@namedef{uc8720}{\coprod }
+\@namedef{uc8721}{\sum }
+\@namedef{uc8722}{-}
+\@namedef{uc8723}{\mp }
+\@namedef{uc8724}{\dotplus }
+\@namedef{uc8726}{\setminus }
+\@namedef{uc8727}{{\sb\ast}}
+\@namedef{uc8728}{\circ }
+\@namedef{uc8729}{\bullet }
+\@namedef{uc8730}{\surd }
+\@namedef{uc8733}{\propto }
+\@namedef{uc8734}{\infty }
+\@namedef{uc8800}{\not =}
+\@namedef{uc8801}{\equiv }
+\@namedef{uc8802}{\not\equiv }
+\@namedef{uc8804}{\leq }
+\@namedef{uc8805}{\geq }
+\@namedef{uc8806}{\leqq }
+\@namedef{uc8807}{\geqq }
+\@namedef{uc8808}{\lneqq }
+\@namedef{uc8968}{\lceil }
+\@namedef{uc8969}{\rceil }
+\@namedef{uc8970}{\lfloor }
+\@namedef{uc8971}{\rfloor }
+\@namedef{uc8981}{\recorder }
+\@namedef{uc915}{\Gamma }
+\@namedef{uc945}{\alpha }
+\@namedef{uc946}{\beta }
+\@namedef{uc947}{\gamma }
+\@namedef{uc948}{\delta }
+\@namedef{uc949}{\epsilon }
+\@namedef{uc950}{\zeta }
+\@namedef{uc951}{\eta }
+\@namedef{uc952}{\theta }
+\@namedef{uc953}{\iota }
+\@namedef{uc954}{\kappa }
+\@namedef{uc955}{\lambda }
+\@namedef{uc956}{\mu }
+\@namedef{uc957}{\nu }
+\@namedef{uc958}{\xi }
+\@namedef{uc959}{o}
+\@namedef{uc960}{\pi }
+\@namedef{uc961}{\rho }
+\@namedef{uc962}{\varsigma }
+\@namedef{uc963}{\sigma }
+\@namedef{uc964}{\tau }
+\@namedef{uc965}{\upsilon }
+\@namedef{uc966}{\varphi }
+\@namedef{uc967}{\chi }
+\@namedef{uc8475}{\mathscr{R}}
+\@namedef{uc8592}{\leftarrow }
+\@namedef{uc8593}{\uparrow }
+\@namedef{uc8594}{\rightarrow }
+\@namedef{uc8595}{\downarrow }
+\@namedef{uc8596}{\leftrightarrow }
+\@namedef{uc8597}{\updownarrow }
+\@namedef{uc8598}{\nwarrow }
+\@namedef{uc8599}{\nearrow }
+\@namedef{uc8600}{\searrow }
+\@namedef{uc8601}{\swarrow }
+\@namedef{uc8602}{\nleftarrow }
+\@namedef{uc8603}{\nrightarrow }
+\@namedef{uc8604}{\arrowwaveright }
+\@namedef{uc8605}{\arrowwaveright }
+\@namedef{uc8606}{\twoheadleftarrow }
+\@namedef{uc8608}{\twoheadrightarrow }
+\@namedef{uc8610}{\leftarrowtail }
+\@namedef{uc8611}{\rightarrowtail }
+\@namedef{uc8614}{\mapsto }
+\@namedef{uc8617}{\hookleftarrow }
+\@namedef{uc8618}{\hookrightarrow }
+\@namedef{uc8619}{\looparrowleft }
+\@namedef{uc8620}{\looparrowright }
+\@namedef{uc8621}{\leftrightsquigarrow }
+\@namedef{uc8622}{\nleftrightarrow }
+\@namedef{uc8624}{\Lsh }
+\@namedef{uc8625}{\Rsh }
+\@namedef{uc8627}{\ElsevierGlyph{21B3}}
+\@namedef{uc8630}{\curvearrowleft }
+\@namedef{uc8631}{\curvearrowright }
+\@namedef{uc8634}{\circlearrowleft }
+\@namedef{uc8635}{\circlearrowright }
+\@namedef{uc8636}{\leftharpoonup }
+\@namedef{uc8637}{\leftharpoondown }
+\@namedef{uc8638}{\upharpoonright }
+\@namedef{uc8639}{\upharpoonleft }
+\@namedef{uc8640}{\rightharpoonup }
+\@namedef{uc8641}{\rightharpoondown }
+\@namedef{uc8642}{\downharpoonright }
+\@namedef{uc8643}{\downharpoonleft }
+\@namedef{uc8644}{\rightleftarrows }
+\@namedef{uc8740}{\nmid }
+\@namedef{uc8741}{\parallel }
+\@namedef{uc8742}{\nparallel }
+\@namedef{uc8743}{\wedge }
+\@namedef{uc8744}{\vee }
+\@namedef{uc8745}{\cap }
+\@namedef{uc8746}{\cup }
+\@namedef{uc8747}{\int }
+\@namedef{uc8748}{\int\!\int }
+\@namedef{uc8749}{\int\!\int\!\int }
+\@namedef{uc8750}{\oint }
+\@namedef{uc8658}{\Rightarrow }
+\@namedef{uc8659}{\Downarrow }
+\@namedef{uc8660}{\Leftrightarrow }
+\@namedef{uc8661}{\Updownarrow }
+\@namedef{uc8832}{\not\prec }
+\@namedef{uc8833}{\not\succ }
+\@namedef{uc8834}{\subset }
+\@namedef{uc8835}{\supset }
+\@namedef{uc8836}{\not\subset }
+\@namedef{uc8837}{\not\supset }
+\@namedef{uc8838}{\subseteq }
+\@namedef{uc8839}{\supseteq }
+\@namedef{uc8840}{\not\subseteq }
+\@namedef{uc8841}{\not\supseteq }
+\@namedef{uc8842}{\subsetneq }
+\@namedef{uc8843}{\supsetneq }
+\@namedef{uc8843-65024}{\varsupsetneq }
+\@namedef{uc8846}{\uplus }
+\@namedef{uc8847}{\sqsubset }
+\@namedef{uc8848}{\sqsupset }
+\@namedef{uc8849}{\sqsubseteq }
+\@namedef{uc8850}{\sqsupseteq }
+\@namedef{uc8851}{\sqcap }
+\@namedef{uc8852}{\sqcup }
+\@namedef{uc8853}{\oplus }
+\@namedef{uc8854}{\ominus }
+\@namedef{uc8855}{\otimes }
+\@namedef{uc8856}{\oslash }
+\@namedef{uc8614}{\mapsto }
+\@namedef{uc8901}{\cdot }
+\@namedef{uc8898}{\bigcap }
+\@namedef{uc8899}{\bigcup }
+\catcode`\_=12
+\catcode`\^=12

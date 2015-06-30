@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.0, June 30, 2015
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
     xmlns:iml="http://www.w3.org/1999/xhtml"
@@ -71,30 +86,35 @@
     </xsl:template>
     
     <xsl:template match="iml:head" priority="0.7">
+        <xsl:variable name="titlestr" as="xs:string" select="iml:title" />
         <xsl:text>\title{</xsl:text>
-        <xsl:value-of select="iml:title"/>
+        <xsl:value-of select="$titlestr"/>
         <xsl:text>}</xsl:text>
         <xsl:call-template name="n" />
         
-        <xsl:variable name="max"
-            select="xs:integer(max(iml:meta[ends-with(@name,'number')]/@content))"
-            as="xs:integer"/>
-        <xsl:variable name="names" select="iml:meta[ends-with(@name,'name')]/@content"
-            as="xs:string+"/>
-        <xsl:variable name="numbers"
-            select="for $n in $names return iml:meta[@name = concat(substring-before(//iml:meta[@content = $n]/@name,'name'),'number')]/@content"
-            as="xs:integer+"/>
-        <xsl:variable name="allAff"
-            select="for $n in $names return iml:meta[@name = concat(substring-before(//iml:meta[@content = $n]/@name,'name'),'affiliation')]/@content"
-            as="xs:string+"/>
-        <xsl:variable name="emails"
-            select="for $n in $names return iml:meta[@name = concat(substring-before(//iml:meta[@content = $n]/@name,'name'),'email')]/@content"
-            as="xs:string+"/>
+        <xsl:if test="string-length($titlestr) > 40">
+            <xsl:text>\titlerunning{</xsl:text>
+            <xsl:choose>
+                <xsl:when test="contains($titlestr, ':')">
+                    <xsl:value-of select="substring(substring-before($titlestr,':'), 0, 40)" />
+                </xsl:when>
+                <xsl:when test="contains($titlestr, '-')">
+                    <xsl:value-of select="substring(substring-before($titlestr,'-'), 0, 40)" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="substring($titlestr, 0, 40)" />
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text>}</xsl:text>
+        </xsl:if>
+        <xsl:call-template name="n" />
+        
         <xsl:variable name="affiliations" select="distinct-values(for $aff in iml:link[@property = 'schema:affiliation']/@href return iml:meta[@about = $aff]/@content)" as="xs:string*" />
+        <xsl:variable name="authors" select="iml:meta[@name='dc.creator']" as="element()*" />
         
         <!-- Authors -->
         <xsl:text>\author{</xsl:text>
-        <xsl:for-each select="iml:meta[@name='dc.creator']">
+        <xsl:for-each select="$authors">
             <xsl:variable name="curId" as="xs:string" select="@about"/>
             
             <xsl:value-of select="@content" />
@@ -113,6 +133,13 @@
             </xsl:if>
         </xsl:for-each>
         <xsl:text>}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:if test="count($authors) > 2">
+            <xsl:text>\authorrunning{</xsl:text>
+            <xsl:value-of select="$authors[1]/@content" />
+            <xsl:text> et al.</xsl:text>
+            <xsl:text>}</xsl:text>
+        </xsl:if>
         
         <xsl:call-template name="n" />
         <xsl:text>\institute{</xsl:text>
@@ -153,10 +180,10 @@
         <xsl:call-template name="next" />
         <xsl:call-template name="n" />
         <!-- Add keywords -->
-        <xsl:if test="exists(//iml:meta[@name = 'keyword'])">
+        <xsl:if test="exists(//iml:meta[@property = 'prism:keyword'])">
             <xsl:call-template name="n" />
             <xsl:text>\keywords{</xsl:text>
-            <xsl:for-each select="//iml:meta[@name = 'keyword']">
+            <xsl:for-each select="//iml:meta[@property = 'prism:keyword']">
                 <xsl:sort select="@content" data-type="text"/>
                 <xsl:value-of select="@content"/>
                 <xsl:if test="position() != last()">
@@ -172,8 +199,7 @@
     <xsl:template match="iml:body" priority="0.7">
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[@class != 'footnote' and @class != 'abstract']|text()"
-                as="node()*"/>
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnotes' and $token != 'abstract']|text()" />
         </xsl:call-template>
     </xsl:template>
     
