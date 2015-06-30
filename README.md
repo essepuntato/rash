@@ -4,6 +4,8 @@ This project includes all the documents and source codes related to the **RASH F
 
 Please use the hashtag *#rashfwk* for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.
 
+A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework).
+
 ## Venues that have adopted RASH as submission format
 * [2015 International Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD 2015)](http://cs.unibo.it/save-sd/2015/index.html), held during the [24th International World Wide Web Conference (WWW 2015)](http://www.www2015.it/)
 
@@ -26,3 +28,8 @@ Please feel free to adopt RASH for accepting HTML submissions in your academic e
 > The current version of the RASH format is fully introduced in its documentation page (http://cs.unibo.it/save-sd/rash/documentation/index.html), which includes several examples. The complete RelaxNG grammar of the language is available online (http://cs.unibo.it/save-sd/rash/grammar/rash.rng). The whole style package of this format (which includes the documentation, the examples and the grammar) is also available as a ZIP archive (http://cs.unibo.it/save-sd/rash/rash.zip).
 
 > We encourage to use the earliest version of browsers for guaranteeing the best visualisation of the RASH documents. In addition, the translation from your RASH submission into the appropriate publishing format (either LaTeX Springer LNCS or LaTeX ACM ICPS) and the related creation of the PDF of your Camera Ready version that will be used in the official proceedings of the workshop will be totally handled by us through a semi-automatic process.
+
+## Papers introducing the RASH Framework
+
+* Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
+
