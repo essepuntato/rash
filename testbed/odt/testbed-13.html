@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
+   <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../css/rash.css"/>
+      <script src="../../js/jquery.min.js"> </script>
+      <script src="../../js/bootstrap.min.js"> </script>
+      <script src="../../js/rash.js"> </script>
+      <title>RASH in ODT -- Documentation - Version 0.1, July 4, 2015</title>
+      <meta about="affiliation-1"
+            property="schema:name"
+            content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
+      <meta about="author-1"
+            name="dc.creator"
+            property="schema:name"
+            content="Silvio Peroni"/>
+      <meta about="author-1"
+            property="schema:email"
+            content="silvio.peroni@unibo.it"/>
+      <link about="author-1" property="schema:affiliation" href="affiliation-1"/>
+      <meta property="prism:keyword" content="OpenOffice"/>
+      <meta property="prism:keyword" content="ODT to RASH"/>
+      <meta property="prism:keyword" content="Scholarly Article"/>
+      <meta name="dcterms.subject"
+            content="Applied computing, Document management and text processing, Document preparation"/>
+   </head>
+   <body>
+      <div class="abstract">
+         <h1>Abstract</h1>
+         <p>This document describe how to use OpenOffice for writing scientific documents that can be easily converted in the <i>Research Article in Simplified HTML</i> (<i>RASH</i>) format. RASH is a markup language defined as a subset of HTML+RDF for writing scientific articles – its full documentation is available at <a href="http://cs.unibo.it/save-sd/rash/documentation/index.html">http://cs.unibo.it/save-sd/rash/documentation/index.html</a>. Note that this section is identified as <i>abstract section</i> because of the particular heading we have used (i.e., all sections having heading either <q>Abstract</q> or <q>Summary</q> are intended as abstract sections).</p>
+      </div>
+      <div class="section">
+         <h1>Introduction</h1>
+         <p>This paper introduces how to use OpenOffice in order to write scientific articles that are easily convertible into <i>RASH</i>, the <i>Research Articles in Simplified HTML</i> format <a href="#__RefNumPara__5348_179964520" class="ref"> </a>. RASH is a markup language that restricts the use of HTML elements to only 25 elements for writing academic research articles and that allows us to include also RDFa annotations within any element of the language.</p>
+         <p>The whole conversion approach has been proposed in order to provide authors with a good free and open source word-processor for writing documents such as OpenOffice without caring about the particular HTML tags to use for defining particular blocks of text and metadata. In addition, this is a meta-document (and, thus, a sort of template for scientific documents), since it uses all the admissible functionalities of OpenOffice that still allow one to easily converted it into RASH by using the tools we introduce at the end of the document. This document basically explains how to use OpenOffice default styles and tools for expressing the various elements that form a scientific paper. It is worth mentioning that, in order to have the best conversion into RASH, <b>only the default styles (with no modifications) and the listed tools should be used</b>. In particular, please do not care how the various elements will be shown in the ODT document, since OpenOffice should be used only for writing the content of the paper rather than presenting such content. All the presentational layout of the text will be handled by other external tools after converting the paper into RASH.</p>
+         <p>The rest of the document is organised as follows. In <a href="#__RefHeading__140_179964520" class="ref"> </a> we explain how to specify the metadata of the article, such as titles, authors, affiliations, keywords and ACM categories. In <a href="#__RefHeading__146_179964520" class="ref"> </a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines. In <a href="#__RefHeading__148_179964520" class="ref"> </a> we present the hierarchical structures for organising the text, e.g., the sections. In <a href="#__RefHeading__150_179964520" class="ref"> </a> we show how to create figures (both inlines and as separate blocks), tables and formulas (both inlines and as separate blocks). In <a href="#__RefHeading__152_179964520" class="ref"> </a> we introduce how to define the bibliographic reference of a paper. In <a href="#__RefHeading__154_179964520" class="ref"> </a> we show how to define footnotes related to a document. In <a href="#__RefHeading__156_179964520" class="ref"> </a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc. Finally, in <a href="#__RefHeading__158_179964520" class="ref"> </a> we present the tools for converting ODT documents into RASH.</p>
+      </div>
+      <div id="__RefHeading__140_179964520" class="section">
+         <h1>Metadata</h1>
+         <p>Each scholarly article comes with particular metadata that characterise the document, i.e., the title, the authors and (optionally) the keywords and ACM categories of the paper.</p>
+         <div class="section">
+            <h1>Title and subtitle</h1>
+            <p>We can specify the title of the paper by using the style <i>Title</i>, and the subtitle by using the style <i>Subtitle</i>. The style panel is shown when clicking on the button <img src="./testbed-13-sources/Pictures/100002010000002400000024FE536FB2.png"
+                    alt="No alternate description has been provided."/> on the OpenOffice toolbar, or pressing <i>CTRL+T</i> (Win) or <i>CMD+T</i> (Mac). In <a href="#refIllustration0" class="ref"> </a> the <q>Style and Formatting</q> panel is shown. You can select the new style for the paragraph currently containing the cursor by double clicking on the style name of interest (in the figure, the style <q>Title</q> is selected). In order to have all the styles available for selection, it is important to choose the <q>All Styles</q> option from the drop-down menu in the bottom part of the panel.</p>
+            <div class="picture" id="refIllustration0">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/1000020100000248000003BA7A5D749D.png"
+                       alt="The style and formatting panel, which allows one to select any style for the block of text in the document."/>
+               </p>
+               <p class="caption">The style and formatting panel, which allows one to select any style for the block of text in the document.</p>
+            </div>
+         </div>
+         <div class="section">
+            <h1>Authors and affiliations</h1>
+            <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using a particular user-defined metadata of the document containing a string defining her name, email, and affiliation. In order to do that, one has to open the properties of the current document by clicking on <q>File</q> and then <q>Properties...</q>, as shown in <a href="#refIllustration1" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration1">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000001B4000003DCC25508F9.png"
+                       alt="The file menu, which allows the access to the properties of the document."/>
+               </p>
+               <p class="caption">The file menu, which allows the access to the properties of the document.</p>
+            </div>
+            <p>In the <q>Custom Properties</q> panel, we can add additional metadata to the document by clicking on the button <q>Add</q> – see <a href="#refIllustration2" class="ref"> </a>. The information about an author must be specified by using the property name <i>Author</i> having type <i>Text</i>, and by specifying a particular string of tokens sparated by <q>--</q> as a value of such property. For instance, for specifying the author <q>Silvio Peroni</q> having email <q>silvio.peroni@unibo.it</q> and affiliation <q>Department of Computer Science and Engineering, University of Bologna, Bologna, Italy</q>, we should use the following string as value of the property:</p>
+            <p class="code">
+Silvio Peroni -- silvio.peroni@unibo.it -- Department of Computer Science and Engineering, University of Bologna, Bologna, Italy</p>
+            <p>Once added all the authors, we can proceed by clicking on <q>OK</q>.</p>
+            <div class="picture" id="refIllustration2">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000004FC000003BC81BAAAB6.png"
+                       alt="The panel for specifying the custom metadata of the paper, such as the authors' information."/>
+               </p>
+               <p class="caption">The panel for specifying the custom metadata of the paper, such as the authors' information.</p>
+            </div>
+         </div>
+         <div class="section">
+            <h1>Keywords and ACM categories</h1>
+            <p>In addition to the aforementioned data, it is possible to use the custom properties to specify other article-related data, such as the ACM subject categories and free text keyword. In particular:</p>
+            <ul>
+               <li>
+                  <p>the property <i>Keywords</i> (having type <i>Text</i>) can be used to add keywords related with the article (use <q>--</q> as separator);</p>
+               </li>
+               <li>
+                  <p>the property <i>Categories</i> (having type <i>Text</i>) can be used to add an <a href="http://www.acm.org/about/class/class/2012">ACM subject category</a> related with the article (use <q>--</q> as separator).</p>
+               </li>
+            </ul>
+            <p>An example of how to create all these information is shown in <a href="#refIllustration3" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration3">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000004FC000003BA5CACC304.png"
+                       alt="The panel for adding custom properties with keywords and categories specified."/>
+               </p>
+               <p class="caption">The panel for adding custom properties with keywords and categories specified.</p>
+            </div>
+         </div>
+      </div>
+      <div id="__RefHeading__146_179964520" class="section">
+         <h1>Textual elements</h1>
+         <p>The textual elements for describing the content of the paper can be split in two main categories. On the one hand, there are those that allow us to organise the content of a document in textual blocks, i.e., the paragraphs and other elements containing text. On the other hand, there are elements that allow us to associate particular functions to portions of text, i.e., the inline elements.</p>
+         <div class="section">
+            <h1>Paragraphs</h1>
+            <p>First of all, there are the paragraphs, i.e., <q>a self-contained unit of a discourse in writing dealing with a particular point or idea</q> 
+               <a href="#__RefNumPara__775_179964520" class="ref"> </a>. A paragraph is the simplest block structure containing text and, among the blocks, the only kind of element in the body where you can use the text.</p>
+            <p>There exist three different kinds of paragraphs: normal (as this one), paragraphs containing codes and paragraphs with quotes.</p>
+            <p>The normal paragraphs are defined by means of the standard style <i>Text body</i>, which is usually selected as default by OpenOffice. In addition, even the <i>Default</i> style can be used for defining common paragraphs.</p>
+            <p>Then we have paragraphs containing source code. They are defined by using the style <i>Preformatted Text</i> available in the <q>Style and Formatting</q> panel (CNTR+T for Windows users, CMD+T for Apple users), as shown as follows.</p>
+            <p class="code">
+This is a paragraph containing codes
+This is another one</p>
+            <p>Finally, it is possible to also describe blocks of quotations by using the style <i>Citation</i> as follows:</p>
+            <p class="quote">This is a quoted paragraph.</p>
+         </div>
+         <div class="section">
+            <h1>Lists</h1>
+            <p>The list are self-contained blocks that must be used outside paragraphs and that allow us to structure test as a sequence of item. The buttons <img src="./testbed-13-sources/Pictures/100002010000006000000032D1A5724E.png"
+                    alt="No alternate description has been provided."/> are used to define: </p>
+            <ul>
+               <li>
+                  <p>ordered lists (like this one), and</p>
+               </li>
+               <li>
+                  <p>unordered lists (like the following one).</p>
+               </li>
+            </ul>
+            <p>It is possible to include more than one paragraph within each list item as follows:</p>
+            <ol>
+               <li>
+                  <p>This is the first item of the list.</p>
+                  <p>This item includes two paragraphs.</p>
+               </li>
+               <li>
+                  <p>This is the second item of the list.</p>
+               </li>
+            </ol>
+         </div>
+         <div id="__RefHeading__1790_179964520" class="section">
+            <h1>Inline elements</h1>
+            <p>In addition to blocks, it is possible to describe small parts of a text with inline elements defining particular functions on such text, such as emphasis, inline quotation, super- and sub- scripts, and the like.</p>
+            <p>We can use two different kinds of emphases, the <i>normal one</i> and the <b>strong one</b>, created by using the button <img src="./testbed-13-sources/Pictures/10000201000000280000002CF6504391.png"
+                    alt="No alternate description has been provided."/> (CTRL+I on Windows or CMD+I on Mac) and the button <img src="./testbed-13-sources/Pictures/100002010000002A0000002C1FCAF6F9.png"
+                    alt="No alternate description has been provided."/> (CTRL+B on Windows or CMD+B on Mac) respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by simply writing the opening and closing quotations. While <sup>superscripts</sup> and <sub>subscripts</sub> are defined by selecting the sequence of characters of interest, and then clicking on the appropriate option on the <q>Position</q> tab in the <q>Character</q> panel accessible from the menu <q>Format</q>, as shown in <a href="#refIllustration4" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration4">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000006AC000003C261CBA649.png"
+                       alt="The position tab of the character panel, which allows one to convert selected characters in super- or sub-scripts."/>
+               </p>
+               <p class="caption">The position tab of the character panel, which allows one to convert selected characters in super- or sub-scripts.</p>
+            </div>
+            <p>This paragraph contains a simple example of <span class="code">inline code</span>, created by means of the default style for characters <i>Source Text</i>. Alternatively, it is possible to directly use the <span class="code">Courier font style</span> and the <span class="code">Courier New font style</span> for having the same effect.</p>
+            <p>It is also possible to insert images and formulas as part of the text inside a paragraph. For images, one should click on <q>From file...</q> available in the option <q>Picture</q> in the <q>Insert</q> menu as shown in <a href="#refIllustration5" class="ref"> </a>. In addition, in order to place the image in the right position within a paragraph, it is important to anchor it as a character. This is possible by right-clicking on the image and then selecting the option <q>As Character</q> in the menu <q>Anchor</q>, as shown in <a href="#refIllustration6" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration5">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000002A2000004603B14F738.png"
+                       alt="The insert menu and the option for adding images to a paragraph."/>
+               </p>
+               <p class="caption">The insert menu and the option for adding images to a paragraph.</p>
+            </div>
+            <div class="picture" id="refIllustration6">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/100002010000021A000002045D02B7BD.png"
+                       alt="The panel that allows one to anchor an image as character within a paragraph."/>
+               </p>
+               <p class="caption">The panel that allows one to anchor an image as character within a paragraph.</p>
+            </div>
+            <p>For formulas, one should access the <q>Object</q> option in the <q>Insert</q> menu, and then clicking on <q>Formula</q> (see <a href="#refIllustration7" class="ref"> </a>). Now one can use the panel for mathematical formulas in order to create the formula such as <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <semantics>
+                     <mrow>
+                        <mo stretchy="false">π</mo>
+                        <msup>
+                           <mi>r</mi>
+                           <mn>2</mn>
+                        </msup>
+                     </mrow>
+                     <annotation encoding="StarMath 5.0">%pi r^2</annotation>
+                  </semantics>
+               </math>, as shown in <a href="#refIllustration8" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration7">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000002CE00000470FEBBD248.png"
+                       alt="The menu for inserting a new formula."/>
+               </p>
+               <p class="caption">The menu for inserting a new formula.</p>
+            </div>
+            <div class="picture" id="refIllustration8">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/1000020100000834000001BA10B7D0BB.png"
+                       alt="The mathematical editor in OpenOffice."/>
+               </p>
+               <p class="caption">The mathematical editor in OpenOffice.</p>
+            </div>
+            <p>Finally, the <a href="http://github.com/essepuntato/rash">hyperlinks</a> can be created by clicking on the button <img src="./testbed-13-sources/Pictures/10000201000000300000002E021D57DE.png"
+                    alt="No alternate description has been provided."/> and by specifying the target URL, the content of the link through the appropriate panel, as shown in <a href="#refIllustration9" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration9">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000006140000030E54D308A3.png"
+                       alt="The panel for creating hypertextual links."/>
+               </p>
+               <p class="caption">The panel for creating hypertextual links.</p>
+            </div>
+         </div>
+      </div>
+      <div id="__RefHeading__148_179964520" class="section">
+         <h1>Sections</h1>
+         <p>Sections are pure structural constructs that allow one to organise the various textual blocks of a document according to appropriate hierarchies. In OpenOffice, any new section is implicitly defined by specifying a new heading by means of the appropriate style: <i>Heading 1</i>, <i>Heading 2</i> and <i>Heading 3</i>. </p>
+         <p>The sequence of headings of different importance implicitly describes the organisation into sections and subsections of the document. Thus, main sections will be added by means of the style <i>Heading 1</i>, subsections of those ones will be created by using the style <i>Heading 2</i>, and sub-subsections of the latter ones will be created by using the style <i>Heading 3</i>.</p>
+      </div>
+      <div id="__RefHeading__150_179964520" class="section">
+         <h1>Figure, tables and formulas</h1>
+         <p>In a scientific article, figures, tables and formulas as usually contained within appropriate blocks accompanied by a caption that allow one to refer to such items easily within the text. In OpenOffice, all these boxes are defined easily by inserting the object of interest and then by associating a caption to it.</p>
+         <div id="__RefHeading__1919_179964520" class="section">
+            <h1>Figures</h1>
+            <p>We can define a figure box containing an image with a caption by adding a new picture in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520" class="ref"> </a>) and then by right-clicking on the added picture and selecting the field <q>Caption...</q>, as shown in <a href="#refIllustration10" class="ref"> </a>.</p>
+            <p>Then one can simply add the text of the caption by using the panel <q>Caption</q> shown in <a href="#refIllustration11" class="ref"> </a>.</p>
+            <div class="picture" id="refIllustration10">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/100002010000011C00000208AECC7231.png"
+                       alt="The menu for adding captions to objects."/>
+               </p>
+               <p class="caption">The menu for adding captions to objects.</p>
+            </div>
+            <div class="picture" id="refIllustration11">
+               <p class="img_block">
+                  <img src="./testbed-13-sources/Pictures/10000201000004AC00000260311FC380.png"
+                       alt="The panel for adding the text of the caption to the selected object."/>
+               </p>
+               <p class="caption">The panel for adding the text of the caption to the selected object.</p>
+            </div>
+         </div>
+         <div class="section">
+            <h1>Tables</h1>
+            <p>We can define a table box containing a table with a caption by clicking on the button <img src="./testbed-13-sources/Pictures/10000201000000280000002411A0BFDC.png"
+                    alt="No alternate description has been provided."/> when the cursor is on an empty paragraph and then selecting how many rows and columns are needed for the table. The caption can be added by right-clicking on the added table and selecting the field <q>Caption...</q>, as also shown for figures in <a href="#__RefHeading__1919_179964520" class="ref"> </a>.</p>
+            <p>As shown in <a href="#refTable0" class="ref"> </a>, table cells can have associated basically two different styles. In particular, all the table cells are initialised with the style <i>Table Contents</i> associated. In order to set some cells as heading cells of the table, one should change their style in <i>Table Heading</i>.</p>
+            <div class="table" id="refTable0">
+               <table>
+                  <tr>
+                     <th>Types of cells</th>
+                     <th>Style associated</th>
+                  </tr>
+                  <tr>
+                     <td>
+                        <p>Heading cell</p>
+                     </td>
+                     <td>
+                        <p>Table Heading</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <p>Content cell</p>
+                     </td>
+                     <td>
+                        <p>Table Contents</p>
+                     </td>
+                  </tr>
+               </table>
+               <p class="caption">The possible types of cells in a table and the related style.</p>
+            </div>
+         </div>
+         <div class="section">
+            <h1>Formulas</h1>
+            <p>We can define a formula box (useful for allowing formulas to be referenced within the text) containing a formula with an <i>empty</i> caption by adding a new formula in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520" class="ref"> </a>) and then by right-clicking on the added formula and selecting the field <q>Caption...</q> as shown for figures in <a href="#__RefHeading__1919_179964520" class="ref"> </a> without specifying any text associated.</p>
+            <p>For instance the formula introduced in <a href="#__RefHeading__1790_179964520" class="ref"> </a> can be expressed in a formula box as follows:</p>
+            <div class="formula" id="refIllustration12">
+               <p class="math_block">
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                     <semantics>
+                        <mrow>
+                           <mo stretchy="false">π</mo>
+                           <msup>
+                              <mi>r</mi>
+                              <mn>2</mn>
+                           </msup>
+                        </mrow>
+                        <annotation encoding="StarMath 5.0">%pi r^2</annotation>
+                     </semantics>
+                  </math>
+               </p>
+            </div>
+            <p>It is worth mentioning that OpenOffice describes captions of formulas as they are common pictures. However, the translation of the document into RASH (briefly introduced in <a href="#__RefHeading__158_179964520" class="ref"> </a>) will be able to understand the difference, and it will put formulas in the appropriate boxes.</p>
+         </div>
+      </div>
+      <div id="__RefHeading__152_179964520" class="section">
+         <h1>References section</h1>
+         <p>All the references are organised in an <i>ordered list</i> within a special section defined by the actual content of the heading of such section. In particular all sections having heading either <q>References</q> or <q>Bibliography</q> are intended as reference sections.</p>
+         <p>This special section must have an heading and <b>only one</b> ordered list containing the full text of a bibliographic reference for each list item. Usually, it is the last section of the document. It is worth mentioning that the user can avoid to take care of the order the various references are listed in the reference list, since they will be reordered automatically in the RASH document obtained from the conversion of the original ODT document.</p>
+      </div>
+      <div id="__RefHeading__154_179964520" class="section">
+         <h1>Footnotes</h1>
+         <p>All the footnotes like<a class="footnote" href="#ftn1"> </a> can be defined by opening the menu <q>Insert</q>, selecting the option <q>Footnote/Endnote...</q>, and then clicking on the button <q>OK</q> in the footnote/endnote panel shown in <a href="#refIllustration13" class="ref"> </a>, taking care that the type selected is <q>Footnote</q>.</p>
+         <div class="picture" id="refIllustration13">
+            <p class="img_block">
+               <img src="./testbed-13-sources/Pictures/10000201000002F6000001B805DE747D.png"
+                    alt="The panel for creating new footnotes."/>
+            </p>
+            <p class="caption">The panel for creating new footnotes.</p>
+         </div>
+      </div>
+      <div id="__RefHeading__156_179964520" class="section">
+         <h1>Referring things</h1>
+         <p>All the sections (e.g., <a href="#__RefHeading__140_179964520" class="ref"> </a>), figures (e.g., <a href="#refIllustration0" class="ref"> </a>), tables (e.g., <a href="#refTable0" class="ref"> </a>), formulas (e.g., <a href="#refIllustration12" class="ref"> </a>), bibliographic references (e.g., <a href="#__RefNumPara__775_179964520" class="ref"> </a>), footnotes (e.g., <a class="footnote" href="#ftn1"> </a>) can be referenced within the text by using the OpenOffice cross-reference tool available by selecting the menu <q>Insert</q> and then clicking on <q>Cross-reference...</q>. The panel that will be opened (shown in <a href="#refIllustration14" class="ref"> </a>), allows us to specify to what particular object we want to refer to (section <q>Type</q>), which object of the selected type should be referenced (section <q>Selection</q>), and which referencing style should be used within the document (section <q>Insert reference to</q>).</p>
+         <p>While different option for including referencing in the document are possible, we suggest to use specific referencing style according to the object that is referenced. Our suggestion are described in <a href="#refTable1" class="ref"> </a> – of course the user can choose to adopt the preferred referencing style that differs with our suggestions.</p>
+         <div class="table" id="refTable1">
+            <table>
+               <tr>
+                  <th>Object</th>
+                  <th>Type</th>
+                  <th>Referencing style</th>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Section</p>
+                  </td>
+                  <td>
+                     <p>Headings</p>
+                  </td>
+                  <td>
+                     <p>Reference</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Figure</p>
+                  </td>
+                  <td>
+                     <p>Illustration</p>
+                  </td>
+                  <td>
+                     <p>Category and Number</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Table</p>
+                  </td>
+                  <td>
+                     <p>Table</p>
+                  </td>
+                  <td>
+                     <p>Category and Number</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Formula</p>
+                  </td>
+                  <td>
+                     <p>Illustration</p>
+                  </td>
+                  <td>
+                     <p>Category and Number</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Bibliographic reference</p>
+                  </td>
+                  <td>
+                     <p>Numbered Paragraphs</p>
+                  </td>
+                  <td>
+                     <p>Number (full context)</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p>Footnote</p>
+                  </td>
+                  <td>
+                     <p>Footnote</p>
+                  </td>
+                  <td>
+                     <p>Reference</p>
+                  </td>
+               </tr>
+            </table>
+            <p class="caption">The objects that can be referenced in the document (and that will be correctly converted in RASH) with their type and referencing style suggested.</p>
+         </div>
+         <p/>
+         <div class="picture" id="refIllustration14">
+            <p class="img_block">
+               <img src="./testbed-13-sources/Pictures/10000201000004FC000003BAEE187965.png"
+                    alt="The panel for adding cross-references to objects of the document."/>
+            </p>
+            <p class="caption">The panel for adding cross-references to objects of the document.</p>
+         </div>
+      </div>
+      <div id="__RefHeading__158_179964520" class="section">
+         <h1>Conversion into RASH</h1>
+         <p>The conversion of ODT documents, such as this one, into RASH is implemented by using a particular XSLT 2.0 document we developed for that purpose. The XSLT file is available online at <a href="http://github.com/essepuntato/rash/xslt/from-odt.xsl">http://github.com/essepuntato/rash/xslt/from-odt.xsl</a>. In addition, we have also released a simple Java application, downloadable at <a href="http://github.com/essepuntato/rash/tools">http://github.com/essepuntato/rash/tools</a>, that includes such XSLT file and that allows one to automatically convert an ODT document into RASH.</p>
+      </div>
+      <div class="acknowledgements">
+         <h1>Acknowledgements</h1>
+         <p>The acknowledgements of a document are organised in a special section defined by the actual content of the heading of such section. In particular all sections having heading either <q>Acknowledgement</q> or <q>Acknowledgements</q> are intended as acknowledgements sections. Acknowledgements are usually put just after the section concluding the document (i.e., <a href="#__RefHeading__158_179964520" class="ref"> </a> in this case) and before the reference section.</p>
+      </div>
+      <div class="bibliography">
+         <h1>References</h1>
+         <ol>
+            <li id="__RefNumPara__775_179964520">
+               <p>Wikipedia entry <q>Paragraph</q>. <a href="https://en.wikipedia.org/wiki/Paragraph">https://en.wikipedia.org/wiki/Paragraph</a> (last visited, July 1, 2015).</p>
+            </li>
+            <li id="__RefNumPara__5348_179964520">
+               <p>Peroni, S. (2015). RASH: Research Articles in Simplified HTML – Documentation. Version 0.2.5, July 3, 2015. <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">https://rawgit.com/essepuntato/rash/master/documentation/index.html</a> 
+               </p>
+            </li>
+         </ol>
+      </div>
+      <div class="footnotes">
+         <div id="ftn1">
+            <p>This is the first footnote of the document.</p>
+         </div>
+      </div>
+   </body>
+</html>

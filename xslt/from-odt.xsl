@@ -350,8 +350,8 @@ Under the following terms:
             <xd:p>This template is in charge of handling references to footnotes.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template match="text:note">
-        <a class="footnote" href="#{@text:id}"><xsl:text> </xsl:text></a>
+    <xsl:template match="text:note | text:note-ref">
+        <a class="footnote" href="#{@text:id | @text:ref-name}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="text:p">
@@ -698,13 +698,17 @@ Under the following terms:
             </xsl:for-each>
             
             <!-- Keywords -->
-            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Keyword']">
-                <meta property="prism:keyword" content="{normalize-space()}" />
+            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Keyword' or @meta:name='Keywords']">
+                <xsl:for-each select="tokenize(., '--')">
+                    <meta property="prism:keyword" content="{normalize-space()}" />
+                </xsl:for-each>
             </xsl:for-each>
             
             <!-- Categories -->
-            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Category']">
-                <meta name="dcterms.subject" content="{normalize-space()}" />
+            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Category' or @meta:name='Categories']">
+                <xsl:for-each select="tokenize(., '--')">
+                    <meta name="dcterms.subject" content="{normalize-space()}" />
+                </xsl:for-each>
             </xsl:for-each>
         </xsl:if>
     </xsl:template>
@@ -824,7 +828,10 @@ Under the following terms:
             <xsl:when test="contains($curtext, '“') and contains($curtext, '”')">
                 <xsl:sequence select="f:sequenceOfTextNodes(
                     substring-after($curtext, '”'),
-                    (substring-before($curtext,'“'), substring-after(substring-before($curtext, '”'),'“')))" />
+                    (
+                        $curseq, 
+                        substring-before($curtext,'“'), 
+                        substring-after(substring-before($curtext, '”'),'“')))" />
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="$curseq, $curtext" />

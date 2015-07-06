@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
+ <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.text" manifest:version="1.2" manifest:full-path="/"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Thumbnails/thumbnail.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000004FC000003BAEE187965.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/1000020100000834000001BA10B7D0BB.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000002CE00000470FEBBD248.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000002F6000001B805DE747D.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000006140000030E54D308A3.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/1000020100000248000003BA7A5D749D.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/100002010000021A000002045D02B7BD.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/100002010000011C00000208AECC7231.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/100002010000002400000024FE536FB2.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000001B4000003DCC25508F9.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000002A2000004603B14F738.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/100002010000002A0000002C1FCAF6F9.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000000280000002411A0BFDC.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/100002010000006000000032D1A5724E.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000004FC000003BA5CACC304.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000006AC000003C261CBA649.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000004AC00000260311FC380.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000000300000002E021D57DE.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000004FC000003BC81BAAAB6.png"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000000280000002CF6504391.png"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="styles.xml"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="meta.xml"/>
+ <manifest:file-entry manifest:media-type="application/rdf+xml" manifest:full-path="manifest.rdf"/>
+ <manifest:file-entry manifest:media-type="" manifest:full-path="Configurations2/accelerator/current.xml"/>
+ <manifest:file-entry manifest:media-type="application/vnd.sun.xml.ui.configuration" manifest:full-path="Configurations2/"/>
+ <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="layout-cache"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 2/settings.xml"/>
+ <manifest:file-entry manifest:media-type="" manifest:full-path="Object 2/Configurations2/accelerator/current.xml"/>
+ <manifest:file-entry manifest:media-type="application/vnd.sun.xml.ui.configuration" manifest:full-path="Object 2/Configurations2/"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 2/content.xml"/>
+ <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.formula" manifest:version="1.2" manifest:full-path="Object 2/"/>
+ <manifest:file-entry manifest:media-type="" manifest:full-path="Object 1/Configurations2/accelerator/current.xml"/>
+ <manifest:file-entry manifest:media-type="application/vnd.sun.xml.ui.configuration" manifest:full-path="Object 1/Configurations2/"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 1/settings.xml"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 1/content.xml"/>
+ <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.formula" manifest:version="1.2" manifest:full-path="Object 1/"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="settings.xml"/>
+ <manifest:file-entry manifest:media-type="application/x-openoffice-gdimetafile;windows_formatname=&quot;GDIMetaFile&quot;" manifest:full-path="ObjectReplacements/Object 1"/>
+ <manifest:file-entry manifest:media-type="application/x-openoffice-gdimetafile;windows_formatname=&quot;GDIMetaFile&quot;" manifest:full-path="ObjectReplacements/Object 2"/>
+</manifest:manifest>
