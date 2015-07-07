@@ -676,7 +676,7 @@ Under the following terms:
             </xsl:for-each>
             
             <!-- Author -->
-            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Author']">
+            <xsl:for-each select="$meta//meta:user-defined[matches(@meta:name, '^ *author', 'i')]">
                 <xsl:variable name="authiri" select="concat('author-', position())" as="xs:string" />
                 <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
                 <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
@@ -698,14 +698,14 @@ Under the following terms:
             </xsl:for-each>
             
             <!-- Keywords -->
-            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Keyword' or @meta:name='Keywords']">
+            <xsl:for-each select="$meta//meta:user-defined[matches(@meta:name, '^ *keywords?', 'i')]">
                 <xsl:for-each select="tokenize(., '--')">
                     <meta property="prism:keyword" content="{normalize-space()}" />
                 </xsl:for-each>
             </xsl:for-each>
             
             <!-- Categories -->
-            <xsl:for-each select="$meta//meta:user-defined[@meta:name='Category' or @meta:name='Categories']">
+            <xsl:for-each select="$meta//meta:user-defined[matches(@meta:name, '^ *categor(y|ies)', 'i')]">
                 <xsl:for-each select="tokenize(., '--')">
                     <meta name="dcterms.subject" content="{normalize-space()}" />
                 </xsl:for-each>
