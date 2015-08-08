@@ -31,5 +31,7 @@ Please feel free to adopt RASH for accepting HTML submissions in your academic e
 
 ## Papers introducing the RASH Framework
 
+* Di Iorio, A., Nuzzolese, A. G., Osborne, F., Peroni, S., Poggi, F., Smith, M., Vitali, F. Zhao, J. (2015). The RASH Framework: enabling HTML+RDF submissions in scholarly venues. To appear in Proceedings of the poster and demo session of the [14th International Semantic Web Conference (ISWC 2015)](http://iswc2015.semanticweb.org/). Preprint available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html) and [PDF](https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.pdf).
+
 * Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
 
