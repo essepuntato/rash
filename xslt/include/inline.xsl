@@ -33,9 +33,16 @@
     
     <xsl:template match="iml:a">
         <!--<xsl:call-template name="add.space" />-->
+        <xsl:variable name="containsUrl" select="matches(normalize-space(), '^(http|ftp)s?://')" as="xs:boolean" />
+        <xsl:if test="$containsUrl">
+            <xsl:text>\url{</xsl:text>    
+        </xsl:if>
         <xsl:call-template name="next">
             <xsl:with-param name="isInline" as="xs:boolean" select="true()" />
         </xsl:call-template>
+        <xsl:if test="$containsUrl">
+            <xsl:text>}</xsl:text>    
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="iml:span">

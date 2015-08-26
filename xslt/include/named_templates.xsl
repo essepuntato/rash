@@ -57,6 +57,10 @@
         <xsl:text>\usepackage{tabularx}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{fixltx2e}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage[hyphens]{url}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{hyperref}</xsl:text>
     </xsl:template>
     
     <xsl:template name="footnote_verb">

@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.3.2, June 22, 2015
+ * rash.js - Version 0.3.3, August 26, 2015
  * Copyright (c) 2014-2015, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -418,8 +418,7 @@ $(function() {
     
     /* Code (inline and blocks) */
     $(".code").not("p , span").each(function () {
-        var current_name = $(this).prop("tagName")
-        $(this).replaceWith("<" + current_name + "><code>" + $(this).html() + "</code></" + current_name + ">")
+        $(this).html("<code>" + $(this).html() + "</code>")
     });
     
     $("span.code").each(function () {
