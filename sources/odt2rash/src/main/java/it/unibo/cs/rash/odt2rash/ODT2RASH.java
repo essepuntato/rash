@@ -1,12 +1,10 @@
 package it.unibo.cs.rash.odt2rash;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,7 +118,6 @@ public class ODT2RASH {
 		css2include.add("lncs.css");
 		css2include.add("bootstrap.min.css");
 		for (String file : css2include) {
-			System.out.println(file);
 			InputStream is = ODT2RASH.class.getClassLoader().getResourceAsStream("css/" + file);
 			FileUtils.copyInputStreamToFile(is, new File(OUTPUT_FLD + File.separator + "css" + File.separator + file));	
 		}
@@ -130,7 +127,6 @@ public class ODT2RASH {
 		js2include.add("jquery.min.js");
 		js2include.add("bootstrap.min.js");
 		for (String file : js2include) {
-			System.out.println(file);
 			InputStream is = ODT2RASH.class.getClassLoader().getResourceAsStream("js/" + file);
 			FileUtils.copyInputStreamToFile(is, new File(OUTPUT_FLD + File.separator + "js" + File.separator + file));	
 		}  
@@ -156,6 +152,12 @@ public class ODT2RASH {
             e.printStackTrace( );
 		}
 		
+		File tempDir = new File(OUTPUT_FLD + File.separator + tempFolderName);
+		if (tempDir.exists())
+			FileUtils.deleteDirectory(tempDir);
+		
+		System.out.println("File " + INPUT_FILE + " successefully converted into RASH.");
+
 	}
 
 	

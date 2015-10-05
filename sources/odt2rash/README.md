@@ -1,15 +1,15 @@
-# SPAR Xtractor Sources
+# ODT2RASH Sources
 
 The project is based of Apache Maven for building.
 
 ## Compiling the source code
-The sources can be compiled from the top-level directory of SPAR Xtractor (i.e., the one in which this README is included in) with the following command:
+The sources can be compiled from the top-level directory of ODT2RASH converter (i.e., the one in which this README is included in) with the following command:
 
 $> mvn install
 
-The clean maven instruction can be provided in order to clean software dependencies from the local maven repository before building. For example:
+The clean maven instruction can be provided in order to clean software dependencies from the local maven repository before building and packaging. For example:
 
-$> mvn clean install
+$> mvn clean install package
 
 ## Binaries
 
@@ -20,9 +20,9 @@ Such a JAR is named rash.odt2rash-VERSION-jar-with-dependencies.jar, where VERSI
 ## Usage
 The usage of the JAR is the following
 
- -i  <file>		MANDATORY - THe input .odt document.
+ -i  <file>		MANDATORY - The input .odt document.
 
- -o  <folder>	MANDATORY - The folder where the output RASH file should be stored.
+ -o  <folder>	MANDATORY - The folder where the RASH output file should be stored.
 
  -h  			Print this message.
 
