@@ -5,6 +5,6 @@ while read odt; do
 		mkdir out 
 	fi
 	java -jar bin/odt2rash.jar -i $odt -o out/
-done
+done 
 
 
