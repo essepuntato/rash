@@ -7,6 +7,8 @@ import it.unibo.cs.savesd.rash.spar.xtractor.doco.NotInstantiableIndividualExcep
 import it.unibo.cs.savesd.rash.spar.xtractor.impl.XtractorImpl;
 import it.unibo.cs.savesd.rash.spar.xtractor.vocabularies.DoCOClass;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -144,6 +146,26 @@ public class XtractorTest {
         }
     }
     
+    private static final String xmlTarget = "/Users/andrea/Documents/CNR/Progetto DL e eGov/dati library/Nuzzolese";
+    private static final String xmlSource = "/Users/andrea/Documents/workspaceLuna/org.eswc-conferences.data";
+    
+    
+    @Test
+    public void utility(){
+        File file = new File(xmlSource);
+        
+        FileFilter xmlFilter = new FileFilter() {
+            
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".xml") && !pathname.getName().equals("pom.xml");
+            }
+        };
+        
+        for(File f : file.listFiles(xmlFilter))
+            f.renameTo(new File(xmlTarget + "/" + f.getName() + ".xml"));
+    }
+    
     @Test
     public void testDoCOParagraphsGeneration(){
         try {
@@ -187,4 +209,5 @@ public class XtractorTest {
             e.printStackTrace();
         }
     }
+    
 }

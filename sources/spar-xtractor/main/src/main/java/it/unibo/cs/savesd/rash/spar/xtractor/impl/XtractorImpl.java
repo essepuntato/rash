@@ -1,6 +1,7 @@
 package it.unibo.cs.savesd.rash.spar.xtractor.impl;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.Xtractor;
+import it.unibo.cs.savesd.rash.spar.xtractor.XtractorTest;
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigProperties;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.Abstract;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.BodyMatter;
@@ -15,14 +16,22 @@ import it.unibo.cs.savesd.rash.spar.xtractor.doco.Section;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.Sentence;
 import it.unibo.cs.savesd.rash.spar.xtractor.vocabularies.DoCOClass;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,10 +49,21 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.Syntax;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.expr.NodeValue;
+import com.hp.hpl.jena.sparql.function.FunctionBase2;
+import com.hp.hpl.jena.sparql.function.FunctionRegistry;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * 
@@ -160,7 +180,14 @@ public class XtractorImpl implements Xtractor {
                     log.error("An error occurred while parsing the document from a remote endpoint.", e);
                 }
             }
-            else doc = Jsoup.parse(path, null);
+            else {
+                File file = new File(path);
+                try {
+                    doc = Jsoup.parse(file, null);
+                } catch (IOException e) {
+                    log.error("An error occurred while parsing the document from local file system.", e);
+                }
+            }
         }
         
         if(doc != null){
@@ -581,5 +608,141 @@ public class XtractorImpl implements Xtractor {
     
     private String[] detectSentences(String text){
         return sentenceDetector.sentDetect(text);
+    }
+    
+    public static void main(String[] args) {
+        
+        FunctionRegistry.get().put("http://seat.pg/andrea/func/normalizeLabel", RefactorLabel.class);
+        FunctionRegistry.get().put("http://seat.pg/andrea/func/setLang", Language.class);
+        try {
+            Model model = FileManager.get().loadModel("/Users/andrea/Documents/software/gmde/Andrea_Stanbol/dizionario-seat.rdf");
+            
+            
+            String sparql = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> " +
+            		        "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
+            		        "PREFIX muto: <http://purl.org/muto/core#> " +
+            		        "PREFIX rdfs: <" + RDFS.getURI() + "> " +
+            		        "PREFIX func: <http://seat.pg/andrea/func/> " +
+            		        "CONSTRUCT{" +
+            		        "?place a dbpedia-owl:Place . " +
+            		        "?place rdfs:label ?label . " +
+            		        "?place rdfs:label ?labelCapital . " +
+            		        "?place rdfs:label ?labelNoStopwords " +
+            		        /*"?key a muto:Tag . ?key rdfs:label ?label . " +*/ 
+            		        /*"?cat a skos:Concept . ?cat rdfs:label ?label . ?cat rdfs:label ?labelCapital" +*/
+            		        "} " +
+            		        "WHERE{ " +
+            		        "?place rdfs:label ?placeLabel . BIND(func:setLang(func:normalizeLabel(?placeLabel, true), \"it\") AS ?label) . " +
+            		        "BIND(func:setLang(?placeLabel, \"it\") AS ?labelCapital) . " +
+            		        "BIND(func:setLang(func:normalizeLabel(?placeLabel, false), \"it\") AS ?labelNoStopwords) . " +
+            		        "FILTER(REGEX(STR(?place), \"^http://seat.pg/loc/\")) . " +
+            		        /*"?key rdfs:label ?keyLabel . BIND(func:setLang(?keyLabel, \"it\") as ?label) " +*/
+                            /*"FILTER(REGEX(STR(?key), \"^http://seat.pg/key/\")) . " +*/
+                            /*"?cat rdfs:label ?catLabel . BIND(func:setLang(?catLabel, \"it\") as ?label) " + */
+                            /*"FILTER(REGEX(STR(?cat), \"^http://seat.pg/cat/\")) " +*/
+            		        "}";
+            Query query = QueryFactory.create(sparql, Syntax.syntaxARQ);
+            QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
+            model = queryExecution.execConstruct();
+            
+            OutputStream out = new FileOutputStream("/Users/andrea/Documents/software/stanbol/entityhub/indexing/genericrdf/target/indexing/resources/rdfdata/dizionario-seat-classified.rdf");
+            model.write(out);
+            out.flush();
+            out.close();
+            
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public static class RefactorLabel extends FunctionBase2 {
+        
+        private Set<String> stopwords;
+        public RefactorLabel() {
+            try {
+                stopwords = readFile(new File("it.stopword"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                stopwords = new HashSet<String>();
+            }
+            
+            
+        }
+        
+        private Set<String> readFile(File stopwordFile) throws IOException
+        {
+            BufferedReader reader = null;
+            try {
+                HashSet<String> words = new HashSet<String>();
+                reader = new BufferedReader(
+                        new InputStreamReader(new FileInputStream(stopwordFile), Charset.forName("UTF-8")));
+                String line = null;
+                while((line=reader.readLine()) != null)
+                {
+                    int i = line.indexOf('|');
+                    if (i >= 0)
+                        line = line.substring(0, i);
+                    line = line.trim();
+                    if (line.length() > 0){
+                        words.add(line);
+                    }
+                }
+                return words;
+            } finally {
+                try {reader.close();}
+                catch(Exception e){}
+            }
+        }
+
+        @Override
+        public NodeValue exec(NodeValue literalValue, NodeValue useStopWords) {
+            System.out.println("L: " + literalValue.isLiteral());
+            System.out.println("B: " + useStopWords.isBoolean());
+            if(literalValue.isLiteral() && useStopWords.isBoolean()){
+                
+                String literal = literalValue.asNode().getLiteralLexicalForm();
+                String[] literalParts = literal.split(" ");
+                literal = null;
+                
+                System.out.println(literal);
+                for(String literalPart : literalParts){
+                    
+                    
+                    boolean stopword = false;
+                    if(literal != null && stopwords.contains(literalPart.trim().toLowerCase())) stopword = true;
+                    
+                    if(literal == null) literal = "";
+                    else literal += " ";
+                    
+                    if(stopword && useStopWords.getBoolean()) literal += literalPart.toLowerCase();
+                    else{
+                        char[] literalPartChars = literalPart.toCharArray();
+                        literal += Character.toUpperCase(literalPartChars[0]) + String.copyValueOf(literalPartChars, 1, literalPartChars.length-1).toLowerCase();  
+                    }
+                }
+                
+                return NodeValue.makeString(literal);
+            }
+            return null;
+        }
+        
+    }
+    
+    public static class Language extends FunctionBase2 {
+
+        @Override
+        public NodeValue exec(NodeValue literal, NodeValue langTag) {
+            if(literal.isLiteral() && langTag.isLiteral()){
+                return NodeValue.makeNode(literal.asNode().getLiteralLexicalForm(), langTag.getString(), (Node)null);   
+            }
+            return null;
+        }
+        
+        
+        
     }
 }
