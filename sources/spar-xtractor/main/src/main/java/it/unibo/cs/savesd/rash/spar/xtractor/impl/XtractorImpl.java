@@ -1,7 +1,6 @@
 package it.unibo.cs.savesd.rash.spar.xtractor.impl;
 
 import it.unibo.cs.savesd.rash.spar.xtractor.Xtractor;
-import it.unibo.cs.savesd.rash.spar.xtractor.XtractorTest;
 import it.unibo.cs.savesd.rash.spar.xtractor.config.ConfigProperties;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.Abstract;
 import it.unibo.cs.savesd.rash.spar.xtractor.doco.BodyMatter;

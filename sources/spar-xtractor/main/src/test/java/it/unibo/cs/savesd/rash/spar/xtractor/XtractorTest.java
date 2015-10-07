@@ -12,9 +12,15 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.jsoup.Jsoup;
@@ -38,16 +44,20 @@ public class XtractorTest {
     private static Xtractor xtractor;
     private static Document document;
     
+    private static final String rashDocs = "http://rawgit.com/essepuntato/rash/master/documentation/index.html";
+    
     @BeforeClass
-    public static void setUp(){
+    public static void setUp() throws NoSuchAlgorithmException{
         try {
             xtractor = new XtractorImpl(ConfigBuilder.init());
-            document = Jsoup.parse(new URL("http://cs.unibo.it/save-sd/rash/documentation/index.html"), 10000);
+            document = Jsoup.parse(new URL(rashDocs), 10000);
         } catch (ConfigurationException e) {
             Assert.fail("Configuration exception");
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             Assert.fail("Malformed URL");
         } catch (IOException e) {
+            e.printStackTrace();
             Assert.fail("I/O Exception");
         }
     }
@@ -202,7 +212,7 @@ public class XtractorTest {
     @Test
     public void tesExtract(){
         try {
-            Document doc = xtractor.extract("http://cs.unibo.it/save-sd/rash/documentation/index.html", DoCOClass.Sentence);
+            Document doc = xtractor.extract(rashDocs, DoCOClass.Sentence);
             //System.out.println(doc.html());
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
