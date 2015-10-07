@@ -86,6 +86,12 @@
         <xsl:text>\author{</xsl:text>
         <xsl:for-each select="iml:meta[@name='dc.creator']">
             <xsl:variable name="curId" as="xs:string" select="@about"/>
+            <xsl:variable name="pos" as="xs:integer" select="position() - 1" />
+            
+            <xsl:if test="$pos != 0 and $pos mod 3 = 0">
+                <xsl:call-template name="n" />
+                <xsl:text>\and</xsl:text>
+            </xsl:if>
             
             <xsl:call-template name="n" />
             <xsl:text>\alignauthor</xsl:text>
