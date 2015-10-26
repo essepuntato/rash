@@ -350,7 +350,9 @@ public class XtractorImpl implements Xtractor {
         /*
          * Iterate body's children in order to detect divs that represent sections.
          */
-        Elements sectionElements = body.select(" > " + sectionElement + ".section, " + sectionElement + ".abstract");
+        System.out.println(" > " + sectionElement + ":not([role]), " + sectionElement + "[role*=doc-abstract]");
+        Elements sectionElements = body.select(" > " + sectionElement + ":not([role]), " + sectionElement + "[role*=doc-abstract]");
+        
         
         Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");
@@ -368,7 +370,7 @@ public class XtractorImpl implements Xtractor {
             
             DoCOClass docoClass;
             Class<? extends Section> docoIndividualClass;
-            if(section.attr("class").equalsIgnoreCase("abstract")){
+            if(section.select("[role*=doc-abstract]").size() > 0){
                 docoClass = DoCOClass.Abstract;
                 docoIndividualClass  = Abstract.class;
             }
@@ -434,7 +436,8 @@ public class XtractorImpl implements Xtractor {
         /*
          * Iterate body's children in order to detect divs that represent sections.
          */
-        Elements sectionElements = sectionElement.select(" > " + this.sectionElement + ".section");
+        System.out.println(" > " + sectionElement + ":not([role])");
+        Elements sectionElements = sectionElement.select(" > " + sectionElement.nodeName() + ":not([role])");
         
         Model model = ModelFactory.createDefaultModel();
         Property contains = model.createProperty("http://www.essepuntato.it/2008/12/pattern#contains");

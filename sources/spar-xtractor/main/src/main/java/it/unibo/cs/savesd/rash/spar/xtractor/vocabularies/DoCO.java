@@ -25,8 +25,9 @@ public class DoCO {
     /** <p>The namespace of the vocabulary as a string</p> */
     public static final String NS = "http://purl.org/spar/doco/";
     
+    /** <p>The namespace of the FABIO ontology </p> */
     public static final String FABIO_NS = "http://purl.org/spar/fabio/";
-    public static final String SALT_NS = "http://salt.semanticauthoring.org/ontologies/sro#";
+    
     
     /** <p>The namespace of the vocabulary as a string</p>
      *  @see #NS */
@@ -309,7 +310,7 @@ public class DoCO {
     
     public static final Resource Expression = m_model.createResource( FABIO_NS + "Expression" );
     
-    public static final Resource Abstract = m_model.createResource( SALT_NS + "Abstract" );
+    public static final Resource Abstract = m_model.createResource( NS + "Abstract" );
     
     public static Set<Resource> keys(){
         Set<Resource> keys = new HashSet<Resource>();
