@@ -1,8 +1,8 @@
 ## Research Article in Simplified HTML (RASH)
 
-The **Research Articles in Simplified HTML** (*RASH*) format is a markup language that restricts the use of HTML elements to only 25 elements for writing academic research articles. It is possible to includes also RDFa annotations within any element of the language and other RDF statements in Turtle format by using the appropriate tag "script". 
+The **Research Articles in Simplified HTML** (*RASH*) format is a markup language that restricts the use of HTML elements to only 31 elements for writing academic research articles. It is possible to includes also RDFa annotations within any element of the language and other RDF statements in Turtle, JSON-LD and RDF/XML format by using the appropriate tag "script". 
 
-The documentation (version 0.2.4) is available online at http://cs.unibo.it/save-sd/rash and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). It documents [RASH version 0.3.5](http://cs.unibo.it/save-sd/rash/grammar/rash.rng).
+The documentation (version 0.4) is available online at https://rawgit.com/essepuntato/rash/master/documentation/index.html and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). It documents [RASH version 0.4](https://rawgit.com/essepuntato/rash/master/grammar/rash.rng).
 
 
 ### How to contribute
