@@ -13,14 +13,14 @@
       <title>No title specified</title>
    </head>
    <body>
-      <div class="section">
+      <section>
          <h1>Referring things</h1>
          <p>In this document we show how to refer to various things contained in it through internal links, where the text of the link will be substituted in the final RASH document. </p>
-         <p>In particular, we can refer to sections (<a href="#__RefHeading__146_1782259668" class="ref"> </a>), tables (<a href="#refTable0" class="ref"> </a>), formulas (<a href="#refIllustration0" class="ref"> </a>), figures (<a href="#refIllustration1" class="ref"> </a>) and references (<a href="#__RefNumPara__164_1782259668" class="ref"> </a>).</p>
-         <div class="section">
+         <p>In particular, we can refer to sections (<a href="#__RefHeading__146_1782259668" role="ref"> </a>), tables (<a href="#refTable0" role="ref"> </a>), formulas (<a href="#refIllustration0" role="ref"> </a>), figures (<a href="#refIllustration1" role="ref"> </a>), listings (<a href="#refText0" role="ref"> </a>), and references (<a href="#__RefNumPara__164_1782259668" role="doc-biblioref"> </a>).</p>
+         <section>
             <h1>Tables</h1>
             <p>Here a table.</p>
-            <div class="table" id="refTable0">
+            <figure role="tablebox" id="refTable0">
                <table>
                   <tr>
                      <th>Table heading 1</th>
@@ -71,14 +71,14 @@
                      </td>
                   </tr>
                </table>
-               <p class="caption">My current table</p>
-            </div>
-         </div>
-         <div id="__RefHeading__146_1782259668" class="section">
+               <figcaption>My current table</figcaption>
+            </figure>
+         </section>
+         <section id="__RefHeading__146_1782259668">
             <h1>Formula</h1>
             <p>Here a formula.</p>
-            <div class="formula" id="refIllustration0">
-               <p class="math_block">
+            <figure role="formulabox" id="refIllustration0">
+               <p>
                   <math xmlns="http://www.w3.org/1998/Math/MathML">
                      <semantics>
                         <mrow>
@@ -99,36 +99,47 @@
                      </semantics>
                   </math>
                </p>
-            </div>
-         </div>
-         <div class="section">
+            </figure>
+         </section>
+         <section>
             <h1>Figure</h1>
             <p>Here a figure.</p>
-            <div class="picture" id="refIllustration1">
-               <p class="img_block">
-                  <img src="./img/10000201000005BA0000010467019C00.png"
+            <figure role="picturebox" id="refIllustration1">
+               <p>
+                  <img src="./testbed-12-sources/Pictures/10000201000005BA0000010467019C00.png"
                        alt="My current figure"/>
                </p>
-               <p class="caption">My current figure</p>
-            </div>
-         </div>
-      </div>
-      <div class="bibliography">
+               <figcaption>My current figure</figcaption>
+            </figure>
+         </section>
+         <section>
+            <h1>Listing</h1>
+            <p>Here a listing.</p>
+            <figure role="listingbox" id="refText0">
+               <pre>
+                  <code>This is a piece of code
+One can use what ever style she prefers.</code>
+               </pre>
+               <figcaption>This is the caption of the listing.</figcaption>
+            </figure>
+         </section>
+      </section>
+      <section role="doc-bibliography">
          <h1>References</h1>
          <ol>
-            <li>
+            <li role="doc-biblioentry">
                <p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a> 
                </p>
             </li>
-            <li id="__RefNumPara__164_1782259668">
+            <li id="__RefNumPara__164_1782259668" role="doc-biblioentry">
                <p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a> 
                </p>
             </li>
-            <li>
+            <li role="doc-biblioentry">
                <p>Prud'hommeaux, E., Carothers, G. (2014). RDF 1.1 Turtle: Terse RDF Triple Language. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a> 
                </p>
             </li>
          </ol>
-      </div>
+      </section>
    </body>
 </html>

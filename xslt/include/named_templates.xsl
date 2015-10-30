@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+RASH to LaTeX: table module - Version 0.4, October 25, 2015
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:iml="http://www.w3.org/1999/xhtml" 
@@ -200,7 +215,7 @@
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="text()[empty(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'code'])]">
+    <xsl:template match="text()[empty(ancestor::iml:code)]">
         <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
         <xsl:choose>
             <xsl:when test="$isInline">
@@ -212,7 +227,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="text()[exists(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'quote'])]" priority="1.2">
+    <xsl:template match="text()[exists(ancestor::iml:blockquote)]" priority="3">
         <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
         <xsl:choose>
             <xsl:when test="$isInline">
@@ -224,16 +239,33 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="text()[exists(ancestor::element()[some $token in tokenize(@class, ' ') satisfies $token = 'code'])]">
+    <xsl:template match="text()[exists(ancestor::iml:code)]">
+        <!-- TODO: bisogna eliminare anche quelli che fanno parte di una sequenza iniziale o finale vuota -->
+        <!-- TODO: il last non empty dovrebbe entrare anche dentro il blocco del first non empty nel caso sia entrambi -->
         <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
-        <xsl:choose>
-            <xsl:when test="$isInline">
-                <xsl:value-of select="f:replaceCode(normalize-space(.))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="f:replaceCode(.)"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="isInInitialEmptySequence" select="normalize-space() = '' and (every $text in (ancestor::iml:code//text() intersect preceding::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
+        <xsl:variable name="isInFinalEmptySequence" select="normalize-space() = '' and (every $text in (ancestor::iml:code//text() intersect following::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
+        <xsl:if test="not($isInInitialEmptySequence or $isInFinalEmptySequence)">
+            <xsl:variable name="isFirstNonEmpty" select="normalize-space() != '' and (every $text in (ancestor::iml:code//text() intersect preceding::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
+            <xsl:variable name="isLastNonEmpty" select="normalize-space() != '' and (every $text in (ancestor::iml:code//text() intersect following::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
+            <xsl:choose>
+                <xsl:when test="$isInline">
+                    <xsl:value-of select="f:replaceCode(normalize-space(.))"/>
+                </xsl:when>
+                <xsl:when test="$isFirstNonEmpty and $isLastNonEmpty">
+                    <xsl:value-of select="replace(replace(f:replaceCode(.),'^(\n|\r)+',''), '\s+$','')"/>
+                </xsl:when>
+                <xsl:when test="$isFirstNonEmpty">
+                    <xsl:value-of select="replace(f:replaceCode(.),'^(\n|\r)+','')"/>
+                </xsl:when>
+                <xsl:when test="$isLastNonEmpty">
+                    <xsl:value-of select="replace(f:replaceCode(.),'\s+$','')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="f:replaceCode(.)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
     </xsl:template>
     
     <xsl:function name="f:replace" as="xs:string">
@@ -243,7 +275,25 @@
     
     <xsl:function name="f:replaceCode" as="xs:string">
         <xsl:param name="input" as="xs:string" />
-        <xsl:value-of select="f:replaceForLaTeX($input,1,true())" />
+        <xsl:value-of select="f:convertGreek(f:replaceForLaTeX($input,1,true()))" />
+    </xsl:function>
+    
+    <xsl:function name="f:convertGreek" as="xs:string">
+        <xsl:param name="str" as="xs:string" />
+        <xsl:variable name="cod" as="xs:integer*">
+            <xsl:for-each select="string-to-codepoints($str)">
+                <xsl:variable name="cur" select="." />
+                <xsl:choose>
+                    <xsl:when test="$cur >= 880 and $cur &lt;= 1023">
+                        <xsl:sequence select="36, $cur, 36" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="$cur" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:value-of select="codepoints-to-string($cod)" />
     </xsl:function>
     
     <xsl:function name="f:replaceForLaTeX" as="xs:string">
@@ -278,8 +328,6 @@
                 </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
-        
-        
     </xsl:function>
 
     <xsl:template name="attribute.common">
@@ -312,7 +360,16 @@
         <xsl:variable name="i" select="index-of($all.languages,$lang)" as="xs:integer*"/>
         
         <xsl:choose>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'table']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'listingbox']">
+                <xsl:variable name="str" select="('Listato','Listing','Listing')" as="xs:string*"/>
+                <xsl:value-of select="$str[$i]"/>
+                <xsl:text>~\</xsl:text>
+                <xsl:value-of select="if ($use.pages) then 'v' else ''" />
+                <xsl:text>ref{</xsl:text>
+                <xsl:value-of select="$id" />
+                <xsl:text>}</xsl:text>
+            </xsl:when>
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'tablebox']">
                 <xsl:variable name="str" select="('Tabella','Table','Table')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -321,7 +378,7 @@
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'picture']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'picturebox']">
                 <xsl:variable name="str" select="('Figura','Figure','Fig.')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -330,7 +387,7 @@
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'formula']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']">
                 <xsl:variable name="str" select="('Formula','Formula','Formula')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -339,29 +396,29 @@
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'section']">
-                <xsl:variable name="str" select="('Sezione','Section','Section')" as="xs:string*"/>
-                <xsl:value-of select="$str[$i]"/>
-                <xsl:text>~\ref{</xsl:text>
-                <xsl:value-of select="$id" />
-                <xsl:text>}</xsl:text>
-            </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'chapter']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'doc-chapter']">
                 <xsl:variable name="str" select="('Capitolo','Chapter','Chapter')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\ref{</xsl:text>
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'abstract']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']">
                 <xsl:variable name="i" select="index-of($all.languages,$lang)" as="xs:integer*"/>
                 <xsl:variable name="str" select="('Sommario','Abstract','Abstract')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@class, ' ') satisfies $token = 'bibliography']">
+            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography']">
                 <xsl:variable name="i" select="index-of($all.languages,$lang)" as="xs:integer*"/>
                 <xsl:variable name="str" select="('Bibliografia','Bibliography','Bibliopraphy')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
+            </xsl:when>
+            <xsl:when test="$el[self::iml:section]">
+                <xsl:variable name="str" select="('Sezione','Section','Section')" as="xs:string*"/>
+                <xsl:value-of select="$str[$i]"/>
+                <xsl:text>~\ref{</xsl:text>
+                <xsl:value-of select="$id" />
+                <xsl:text>}</xsl:text>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="''"/>

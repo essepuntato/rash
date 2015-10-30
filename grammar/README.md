@@ -11,6 +11,18 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
 
 
 ### Change log
+* Version 0.4
+  * Now it is possible to creating refereanceable listing boxes by means of the element 'figure' with attribute '@role' set to 'listingbox'.
+  * The structural semantics that was provided by means of specific element classes (specified with the attribute '@class') is now defined by means of the attribute '@role'. 
+  * All the roles used in RASH elements are strictly aligned, when possible, with the [Digital Publishing WAI-ARIA Module 1.0, W3C Editor's Draft 21 October 2015](https://rawgit.com/w3c/aria/master/aria/dpub.html).
+  * Element 'div' (used for defining sections and floating boxes) has been substituted with more appropriate semantic tags, i.e., 'section' and 'figure'.
+  * All the inline and block codes are now handled with the element 'code' and 'pre' (plus 'code) respectively instead of using 'span' and 'p' with the class 'code' specified.
+  * The element 'blockquote' is introduced for expressing quoting blocks within the text and must be used instead of the element 'p' with class 'quote'.
+  * It is possible to specify listing boxes by means of the element 'figure' having role 'listing', so as to reference explicitly to them within the text as for figures, tables and formulas.
+  * The caption of floating box is now specificable by means of the element 'figcaption' instead of using the element 'p' with class 'caption'.
+  * RDF/XML and CSV formats are now specifiable within the element 'script' in 'head'.
+  * The update of documents written with old RASH versions is now automatically handled by the script [rash-update.sh](https://github.com/essepuntato/rash/blob/master/tools/rash-update.sh) based on the XSLT [rash-update.xslt](https://github.com/essepuntato/rash/blob/master/xslt/rash-update.xsl).
+
 * Version 0.3.5
   * Added the possibility of specifying RDF statement in JSON-LD within the tag "script" having type "application/ld+json".
   * The grammar is also available in RelaxNG Compact syntax.

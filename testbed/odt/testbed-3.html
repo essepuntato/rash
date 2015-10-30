@@ -13,21 +13,34 @@
       <title>No title specified</title>
    </head>
    <body>
-      <div class="section">
+      <section>
          <h1>Code</h1>
          <p>In this example we want to introduce how to use monospace-based characters for codes.</p>
-         <div class="section">
+         <section>
             <h1>Inline code</h1>
-            <p>This is a simple example of <span class="code">inline code</span>, created by means of the default style for <span class="code">source code</span> characters. Alternatively, it is possible to directly use the <span class="code">Courier font style</span> and the <span class="code">Courier New font style</span> for having the same effect.</p>
-         </div>
-         <div class="section">
+            <p>This is a simple example of <code>inline code</code>, created by means of the default style for <code>source code</code> characters. Alternatively, it is possible to directly use the <code>Courier font style</code> and the <code>Courier New font style</code> for having the same effect.</p>
+         </section>
+         <section>
             <h1>Block code</h1>
             <p>For having an entire sequence of paragraphs as codes, we have to use the default ODT style for preformatted text, as follows:</p>
-            <p class="code">
+            <pre>
+               <code>
 This is a block of code
 That is organised in multiple lines
-Isn't it awesome?</p>
-         </div>
-      </div>
+Isn't it awesome?</code>
+            </pre>
+         </section>
+         <section>
+            <h1>Listing box</h1>
+            <p>Listing boxes are created by simply including them in a new paragraph and anchored as character, containing only textual element in it, followed by a caption paragraph by means of the appropriate default stylesheet, as shown as follows.</p>
+            <figure role="listingbox">
+               <pre>
+                  <code>This is a piece of code
+One can use what ever style she prefers.</code>
+               </pre>
+               <figcaption>This is the caption of the listing.</figcaption>
+            </figure>
+         </section>
+      </section>
    </body>
 </html>

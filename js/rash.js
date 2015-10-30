@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.3.3, August 26, 2015
+ * rash.js - Version 0.4, October 22, 2015
  * Copyright (c) 2014-2015, Silvio Peroni <essepuntato@gmail.com>
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
@@ -88,7 +88,7 @@ jQuery.fn.extend({
                 $("#layoutselection").text("Springer LNCS");
                 $(this).hideCSS();
                 $(this).addHeaderLNCS();
-                $(this).orderCaptions(true, $(".table"));
+                $(this).orderCaptions(true, $("figure[role=tablebox]"));
             }
         }
     },
@@ -266,25 +266,34 @@ jQuery.fn.extend({
         authors.appendTo($("header"));
         
         /* Keywords */
-        $("header p.keywords").appendTo("div.abstract");
+        $("header p.keywords").appendTo("section[role=doc-abstract]");
         /* /END Authors */
     },
     /* It reorder the captions */
     orderCaptions: function(captionFirst, listOfElements) {
-        listOfElements = typeof listOfElements !== "undefined" ? listOfElements : $(".table, .picture");
+        listOfElements = typeof listOfElements !== "undefined" ? listOfElements : $("figure[role=tablebox], figure[role=picturebox]");
         listOfElements.each(function()  {
             if (captionFirst) {
-                $(this).find(".caption").prependTo($(this));
+                $(this).find("figcaption").prependTo($(this));
             } else {
-                $(this).find(".caption").appendTo($(this));
+                $(this).find("figcaption").appendTo($(this));
             }
         });
     }
 });
 
 $(function() {
+    /* Code Block */
+    $('pre').each(function() {
+        $(this).html($.trim($(this).html()))
+    });
+    $('pre > code').each(function() {
+        $(this).html($.trim($(this).html()))
+    });
+    /* /END Code Block */
+
     /* Bibliographic reference list */
-    $('.bibliography ul li , .bibliography ol li').sort(function(a,b) {
+    $('li[role=doc-biblioentry] , li[role=doc-biblioentry]').sort(function(a,b) {
         var a_text = $(a).text().replace(/\s+/g," ").split();
         var b_text = $(b).text().replace(/\s+/g," ").split();
         if (a_text < b_text) {
@@ -294,12 +303,12 @@ $(function() {
         } else {
             return 0;
         }
-    }).appendTo('.bibliography ul , .bibliography ol');
+    }).appendTo('section[role=doc-bibliography] ul , section[role=doc-bibliography] ol');
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
-    $('.footnotes div').sort(function(a,b) {
-        var all_footnote_pointers = $("a[class=footnote]");
+    $('section[role=doc-footnotes] section[role=doc-footnote]').sort(function(a,b) {
+        var all_footnote_pointers = $("a[role=doc-noteref]");
         var a_index = all_footnote_pointers.index(all_footnote_pointers.filter("a[href='#" + $(a).attr("id") + "']"));
         var b_index = all_footnote_pointers.index(all_footnote_pointers.filter("a[href='#" + $(b).attr("id") + "']"));
         if (a_index < b_index) {
@@ -309,66 +318,88 @@ $(function() {
         } else {
             return 0;
         }
-    }).appendTo('.footnotes');
-    $(".footnotes").prepend("<h1>Footnotes</h1>");
+    }).appendTo('section[role=doc-footnotes]');
+    $("section[role=doc-footnotes]").prepend("<h1>Footnotes</h1>");
     /* /END Footnotes (part one) */
     
     /* Captions */
-    $(".picture .caption").each(function() {
-        var cur_number = $(this).parent().findNumber(".picture");
+    $("figure[role=picturebox] figcaption").each(function() {
+        var cur_number = $(this).parent().findNumber("figure[role=picturebox]");
         $(this).html("<b>Figure " + cur_number + ".</b> " + $(this).html());
     });
-    $(".table .caption").each(function() {
-        var cur_number = $(this).parent().findNumber(".table");
+    $("figure[role=tablebox] figcaption").each(function() {
+        var cur_number = $(this).parent().findNumber("figure[role=tablebox]");
         $(this).html("<b>Table " + cur_number + ".</b> " + $(this).html());
     });
-    $(".formula p").each(function() {
-        var cur_number = $(this).parent().findNumber(".formula");
+    $("figure[role=formulabox] p").each(function() {
+        var cur_number = $(this).parent().findNumber("figure[role=formulabox]");
         $(this).html($(this).html() + " (" + cur_number + ")");
+    });
+    $("figure[role=listingbox] figcaption").each(function() {
+        var cur_number = $(this).parent().findNumber("figure[role=listingbox]");
+        $(this).html("<b>Listing " + cur_number + ".</b> " + $(this).html());
     });
     /* /END Captions */
     
     /* References */
-    $("a.ref").each(function() {
+    $("a[role=ref]").each(function() {
         var cur_id = $(this).attr("href");
-        if ($(cur_id).parents("div.bibliography").length > 0) {
-            var cur_count = $(cur_id).prevAll("li").length + 1;
-            $(this).html("[" + cur_count + "]");
-            $(this).attr("title", $(cur_id).text().replace(/\s+/g, " ").trim());
-        } else if ($(cur_id+ ".picture").length > 0) {
-            var cur_count = $(cur_id).findNumber(".picture");
+        
+        if ($("figure[role=picturebox]" + cur_id).length > 0) {
+            var cur_count = $(cur_id).findNumber("figure[role=picturebox]");
             if (cur_count != 0) {
                 $(this).html("Figure " + cur_count);
             }
-        } else if ($(cur_id+ ".table").length > 0) {
-            var cur_count = $(cur_id).findNumber(".table");
+        } else if ($("figure[role=tablebox]" + cur_id).length > 0) {
+            var cur_count = $(cur_id).findNumber("figure[role=tablebox]");
             if (cur_count != 0) {
                 $(this).html("Table " + cur_count);
             }
-        } else if ($(cur_id+ ".formula").length > 0) {
-            var cur_count = $(cur_id).findNumber(".formula");
+        } else if ($("figure[role=formulabox]" + cur_id).length > 0) {
+            var cur_count = $(cur_id).findNumber("figure[role=formulabox]");
             if (cur_count != 0) {
                 $(this).html("Formula " + cur_count);
             }
-        } else if ($(cur_id+ ".section").length > 0) {
-            var cur_count = $(cur_id).findHierarchicalNumber(".section");
+        } else if ($("figure[role=listingbox]" + cur_id).length > 0) {
+            var cur_count = $(cur_id).findNumber("figure[role=listingbox]");
+            if (cur_count != 0) {
+                $(this).html("Listing " + cur_count);
+            }
+        } else if (
+            $("section[role=doc-abstract]" + cur_id).length > 0 ||
+            $("section[role=doc-bibliography]" + cur_id).length > 0 ||
+            $("section[role=doc-footnotes]" + cur_id).length > 0 ||
+            $("section[role=doc-acknowledgements]" + cur_id).length > 0) {
+            $(this).html("Section <q>" + $(cur_id + " h1").text() + "</q>");
+        } else if ($("section" + cur_id).length > 0) {
+            var cur_count = $(cur_id).findHierarchicalNumber(
+                "section:not([role=doc-abstract]):not([role=doc-bibliography]):" + 
+                "not([role=doc-footnotes]):not([role=doc-acknowledgements])");
             if (cur_count != null && cur_count != "") {
                 $(this).html("Section " + cur_count);
             }
-        } else if (
-                    $(cur_id+ ".abstract").length > 0 ||
-                    $(cur_id+ ".bibliography").length > 0 ||
-                    $(cur_id+ ".footnotes").length > 0 ||
-                    $(cur_id+ ".acknowledgements").length > 0) {
-            $(this).html("Section <q>" + $(cur_id + " h1").text() + "</q>");
-        } else{
-            $(this).replaceWith("<span class=\"error\">ERR: referenced element '" + cur_id.replace("#","") + "' does not exist</span>");
+        } else {
+            $(this).replaceWith("<span class=\"error\">ERR: referenced element '" + cur_id.replace("#","") + "' does not exist or it has not the correct type (it should be either a figure, a table, a formula, or a section)</span>");
         }
     });
     /* /END References */
+    
+    /* In-text reference pointer */
+    $("a[role=doc-biblioref]").each(function() {
+        var cur_id = $(this).attr("href");
+        
+        if ($(cur_id).parents("section[role=doc-bibliography]").length > 0) {
+            var cur_count = $(cur_id).prevAll("li").length + 1;
+            $(this).html("[" + cur_count + "]");
+            $(this).attr("title", $(cur_id).text().replace(/\s+/g, " ").trim());
+        } else {
+            $(this).replaceWith("<span class=\"error\">ERR: referenced element '" + cur_id.replace("#","") + "' does not exist or it has not the correct type (it should be a bibliographic reference).</span>");
+        }
+    });
+    /* /END In-text reference pointer */
 
     /* Footnotes (part 2) */
-    $(".footnote").each(function() {
+    $("a[role=doc-noteref]").each(function() {
         var cur_contents = $(this).parent().contents();
         var cur_index = cur_contents.index($(this));
         var prev_tmp = null;
@@ -383,8 +414,8 @@ $(function() {
         var prev_el = $(prev_tmp);
         var current_id = $(this).attr("href");
         var footnote_element = $(current_id);
-        if (footnote_element.length > 0 && footnote_element.parent(".footnotes").length > 0) {
-            var count = $(current_id).prevAll("div").length + 1;
+        if (footnote_element.length > 0 && footnote_element.parent("section[role=doc-footnotes]").length > 0) {
+            var count = $(current_id).prevAll("section").length + 1;
             $(this).after("<sup class=\"fn\">" + (prev_el.hasClass("fn") ? "," : "") +
                 "<a id=\"fn_pointer_" + current_id.replace("#", "") + 
                 "\" href=\"" + current_id + "\"" + 
@@ -394,20 +425,22 @@ $(function() {
             $(this).replaceWith("<span class=\"error\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
         }
     });
-    $(".footnotes > div").each(function() {
+    $("section[role=doc-footnotes] > section[role=doc-footnote]").each(function() {
         var current_id = $(this).attr("id");
-        $(this).children(":last-child").append(" <sup class=\"hidden-print\"><a href=\"#fn_pointer_" + current_id + "\">[back to pointer]</a></sup>");
+        $(this).children(":last-child").append(" <sup class=\"hidden-print\"><a href=\"#fn_pointer_" + current_id + "\">[back]</a></sup>");
     });
     /* /END Footnotes (part 2) */
     
     /* Container sections */
-    $("body > .section , .abstract , .acknowledgements , .bibliography, .footnotes").addClass("container");
+    $(
+        "body > section , section[role=doc-abstract] , section[role=doc-acknowledgements] , " + 
+        "section[role=doc-bibliography], section[role=doc-footnotes]").addClass("container");
     /* /END Container sections */
     
     /* Heading dimensions */
     $("h1").each(function () {
         var counter = 0;
-        $(this).parents("div").each(function() {
+        $(this).parents("section").each(function() {
             if ($(this).children("h1").length > 0) {
                 counter++;
             }
@@ -416,50 +449,21 @@ $(function() {
     });
     /* /END Heading dimensions */
     
-    /* Code (inline and blocks) */
-    $(".code").not("p , span").each(function () {
-        $(this).html("<code>" + $(this).html() + "</code>")
-    });
-    
-    $("span.code").each(function () {
-        $(this).replaceWith("<code>" + $(this).html() + "</code>")
-    });
-    
-    $("p.code").each(function () {
-        $(this).replaceWith("<pre>" + $(this).html() + "</pre>")
-    });
-    /* /END Code (inline and blocks) */
-    
-    /* Blockquote */
-    $("p.quote").each(function () {
-        $(this).replaceWith("<blockquote>" + $(this).html() + "</blockquote>")
-    });
-    /* /END Blockquote */
-    
     /* Set header */
     $(this).addHeaderHTML();
     /* /END Set header */
     
     /* Bibliography */
-    $(".bibliography ul").replaceWith("<ol>" +$(".bibliography ul").html() + "</ol>");
+    $("section[role=doc-bibliography] ul").replaceWith("<ol>" +$("section[role=doc-bibliography] ul").html() + "</ol>");
     /* /END Bibliography */
     
-    /* List (back-compatibility with RASH version 0.2) */
-    /* They must be selected in reverse order because of possible conflicts with nested lists */
-    $($("ul[type=number]").get().reverse()).each(function(){
-        $(this).replaceWith("<ol>" + $(this).html() + "</ol>");
-    });
-    $($("ul[type=bullet]").get().reverse()).each(function(){
-        $(this).replaceWith("<ul>" + $(this).html() + "</ul>");
-    });
-    /* /END List (back-compatibility with RASH version 0.2)  */
-    
     /* Footer */
-    var footer = $("<footer class=\"footer hidden-print\"><p>" + 
-        "<span>Words: " + $("body").countWords() + "</span>" +
-        "<span>Figures: " + $("body").countElements("div.picture img") + "</span>" +
-        "<span>Tables: " + $("body").countElements("table") + "</span>" +
-        "<span>Formulas: " + $("body").countElements("div.formula") + "</span>" +
+    var footer = $("<footer class=\"footer hidden-print\">" + 
+        "<p><span>Words: " + $("body").countWords() + "</span>" +
+        "<span>Figures: " + $("body").countElements("figure[role=picturebox]") + "</span>" +
+        "<span>Tables: " + $("body").countElements("figure[role=tablebox]") + "</span>" +
+        "<span>Formulas: " + $("body").countElements("figure[role=formulabox]") + "</span>" +
+        "<span>Listings: " + $("body").countElements("figure[role=listingbox]") + "</span></p>" +
         "<div class=\"btn-group dropup\">" +
             "<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" " + 
                 "aria-expanded=\"false\" onClick=\"$(this).toggleCSS()\">" + 

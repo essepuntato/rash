@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From ODT to RASH XSLT transformation file - Version 1.0, June 29, 2015
+From ODT to RASH XSLT transformation file - Version 1.1, October 24, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -33,7 +33,7 @@ Under the following terms:
     exclude-result-prefixes="xs xd f office text xlink style draw svg dc table fo meta">
     <xd:doc scope="stylesheet">
         <xd:desc>
-            <xd:p><xd:b>Created on:</xd:b> Jun 29, 2015</xd:p>
+            <xd:p><xd:b>Created on:</xd:b> Oct 24, 2015</xd:p>
             <xd:p><xd:b>Author:</xd:b> Silvio Peroni</xd:p>
             <xd:p>This XSLT document allows the conversion of any ODT document into RASH.</xd:p>
         </xd:desc>
@@ -76,6 +76,14 @@ Under the following terms:
     
     <!-- This variable is used to remove separators in captions -->
     <xsl:variable name="subcap" select="'^[!,\.:;\?\|\-\s]+'" as="xs:string" />
+    
+    <!-- 
+        These variables are used for identifying the text of the headings referring to the 
+        sections abstract, acknowledgements and bibliography 
+    -->
+    <xsl:variable name="abstract" select="('abstract', 'summary')" as="xs:string+" />
+    <xsl:variable name="acknowledgements" select="('acknowledgements', 'acknowledgement')" as="xs:string+" />
+    <xsl:variable name="bibliography" select="('bibliography', 'references', 'reference')" as="xs:string+" />
     
     <xd:doc scope="/">
         <xd:desc>
@@ -145,7 +153,7 @@ Under the following terms:
             select="(following-sibling::text:h|following-sibling::text:p[
                         starts-with(@text:style-name, 'Heading')])[1]" as="element()*" />
         <xsl:variable name="level" select="f:getLevel(.)" as="xs:integer" />
-        <div>
+        <section>
             <xsl:call-template name="set.bookmarked.object.id" />
             <xsl:call-template name="set.section.type" />
             <h1>
@@ -162,7 +170,7 @@ Under the following terms:
                     <xsl:apply-templates select="$next.header" />
                 </xsl:if>
             </xsl:if>
-        </div>
+        </section>
         
         <xsl:call-template name="get.following.content.elements">
             <xsl:with-param name="curlev" select="$level" />
@@ -188,22 +196,22 @@ Under the following terms:
         <xsl:apply-templates select=".//draw:frame[draw:text-box]" />
     </xsl:template>
     
-    <xd:doc scope="draw:frame">
+    <xd:doc scope="draw:frame[draw:text-box and .//draw:frame]">
         <xd:desc>
             <xd:p>This template is in charge of creating the figure/formula boxes.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template match="draw:frame[draw:text-box]">
+    <xsl:template match="draw:frame[draw:text-box and .//draw:frame]">
         <xsl:variable name="isFormula" select="exists(.//svg:desc[. = 'formula'])" as="xs:boolean" />
         <xsl:variable name="caption" 
             select="draw:text-box/text:p[text:sequence]" as="element()*" />
             
-        <div class="{if ($isFormula) then 'formula' else 'picture'}">
+        <figure role="{if ($isFormula) then 'formulabox' else 'picturebox'}">
             <xsl:call-template name="set.captioned.object.id">
                 <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
-            <p class="{if ($isFormula) then 'math_block' else 'img_block'}">
-                <xsl:apply-templates select=".//draw:frame" />
+            <p>
+                <xsl:apply-templates select=".//draw:frame" /> 
             </p>
             
             <xsl:if test="not($isFormula)">
@@ -211,7 +219,35 @@ Under the following terms:
                     <xsl:with-param name="caption" select="f:getCaptionNodes($caption)" as="node()*" />
                 </xsl:call-template>
             </xsl:if>
-        </div>
+        </figure>
+    </xsl:template>
+    
+    <xd:doc scope="draw:frame[draw:text-box and not(.//draw:frame)]">
+        <xd:desc>
+            <xd:p>This template is in charge of creating the listing boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="draw:frame[draw:text-box and not(.//draw:frame)]">
+        <xsl:variable name="caption" 
+            select="draw:text-box/text:p[text:sequence]" as="element()*" />
+        
+        <figure role="listingbox">
+            <xsl:call-template name="set.captioned.object.id">
+                <xsl:with-param name="caption" select="$caption" />
+            </xsl:call-template>
+            <pre><code>
+                <xsl:for-each select="draw:text-box/text:p[not(text:sequence)]">
+                    <xsl:apply-templates />
+                    <xsl:if test="position() != last()">
+                        <!-- Add a \n character if it is not the last paragraph -->
+                        <xsl:text>&#xa;</xsl:text>
+                    </xsl:if>
+                </xsl:for-each>
+            </code></pre>
+            <xsl:call-template name="add.caption">
+                <xsl:with-param name="caption" select="f:getCaptionNodes($caption)" as="node()*" />
+            </xsl:call-template>
+        </figure>
     </xsl:template>
     
     <xd:doc scope="draw:image">
@@ -252,13 +288,13 @@ Under the following terms:
         <xsl:choose>
             <!-- When a paragraph is defined in the ODT document without providing any particular structured organisation of it into a paper (such as defining headings), a section is created automatically in the final RASH document. -->
             <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
-                <div class="section">
+                <section>
                     <h1>No heading specified</h1>
                     <p>
                         <xsl:apply-templates /> 
                     </p>
                     <xsl:apply-templates select="following-sibling::element()" />
-                </div>
+                </section>
             </xsl:when>
             <!-- This is the basic case for the creation of paragraphs. -->
             <xsl:otherwise>
@@ -286,12 +322,12 @@ Under the following terms:
             <xsl:variable name="firstNonCode" 
                 select="following-sibling::element()[not(f:isPreformattedElement(.))][1]" as="element()*" />
             
-            <p class="code">
+            <pre><code>
                 <xsl:for-each select="(., $allCodes) except $firstNonCode/(.|following-sibling::element())">
                     <xsl:text>&#xa;</xsl:text>
                     <xsl:apply-templates />
                 </xsl:for-each>
-            </p>
+            </code></pre>
         </xsl:if>
     </xsl:template>
     
@@ -304,9 +340,9 @@ Under the following terms:
         starts-with(@text:style-name,'Quotations') or 
         (some $s in //style:style[@style:parent-style-name = 'Quotations']/@style:name 
             satisfies @text:style-name = $s)]">
-        <p class="quote">
+        <blockquote><p>
             <xsl:apply-templates />
-        </p>
+        </p></blockquote>
     </xsl:template>
     
     <xd:doc scope="text:list">
@@ -341,6 +377,9 @@ Under the following terms:
     <xsl:template match="text:list-item">
         <li>
             <xsl:call-template name="set.bookmarked.object.id" />
+            <xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::text:h[1])) = $content">
+                <xsl:attribute name="role">doc-biblioentry</xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates />
         </li>
     </xsl:template>
@@ -351,7 +390,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:note | text:note-ref">
-        <a class="footnote" href="#{@text:id | @text:ref-name}"><xsl:text> </xsl:text></a>
+        <a role="doc-noteref" href="#{@text:id | @text:ref-name}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="text:p">
@@ -360,11 +399,11 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:p[.//draw:object[parent::element()/svg:desc = 'formula'] and normalize-space(replace(., 'formula', '')) = '']">
-        <div class="formula">
-            <p class="math_block">
+        <figure role="formulabox">
+            <p>
                 <xsl:apply-templates />
             </p>
-        </div>
+        </figure>
     </xsl:template>
     
     <xd:doc scope="text:span">
@@ -439,7 +478,7 @@ Under the following terms:
     </xd:doc>
     <xsl:template match="table:table">
         <xsl:variable name="caption" select="following-sibling::text:p[normalize-space() != ''][1][(@text:style-name = 'Table') or (some $s in //style:style[@style:parent-style-name = 'Table']/@style:name satisfies @text:style-name = $s)]" as="element()?" />
-        <div class="table">
+        <figure role="tablebox">
             <xsl:call-template name="set.captioned.object.id">
                 <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
@@ -450,7 +489,7 @@ Under the following terms:
             <xsl:call-template name="add.caption">
                 <xsl:with-param name="caption" select="f:getCaptionNodes($caption)" />
             </xsl:call-template>
-        </div>
+        </figure>
     </xsl:template>
     
     <xd:doc scope="table:table-row">
@@ -494,13 +533,22 @@ Under the following terms:
         </td>
     </xsl:template>
     
-    <xd:doc scope="text:bookmark-ref">
+    <xd:doc scope="text:bookmark-ref | text:sequence-ref">
         <xd:desc>
-            <xd:p>This template creates all the references to dereferanceable objects (i.e., sections, figures with caption, formulas with caption, tables and items in the reference list).</xd:p>
+            <xd:p>This template creates all the references to dereferanceable objects in the document content (i.e., sections, figures with caption, formulas with caption, and tables).</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:bookmark-ref | text:sequence-ref">
-        <a href="#{@text:ref-name}" class="ref"><xsl:text> </xsl:text></a>
+        <a href="#{@text:ref-name}" role="ref"><xsl:text> </xsl:text></a>
+    </xsl:template>
+    
+    <xd:doc scope="text:bookmark-ref">
+        <xd:desc>
+            <xd:p>This template creates all the references to items in the reference list.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:bookmark-ref[some $ref in //text:bookmark-start satisfies $ref/@text:name = @text:ref-name and (some $content in $bibliography satisfies lower-case(normalize-space($ref/preceding::text:h[1])) = $content)]" priority="3">
+        <a href="#{@text:ref-name}" role="doc-biblioref"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="svg:desc">
@@ -585,11 +633,11 @@ Under the following terms:
                 </i>
             </xsl:when>
             <xsl:when test="$courier">
-                <span class="code">
+                <code>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="courier" tunnel="yes" as="xs:boolean" select="false()" />
                     </xsl:call-template>
-                </span>
+                </code>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates/>
@@ -606,13 +654,13 @@ Under the following terms:
         <xsl:variable name="footnotes" select="//text:note" />
         
         <xsl:if test="$footnotes">
-            <div class="footnotes">
+            <section role="doc-footnotes">
                 <xsl:for-each select="$footnotes">
-                    <div id="{./@text:id}">
+                    <section id="{./@text:id}" role="doc-footnote">
                         <xsl:apply-templates select="text:note-body/element()" />
-                    </div>
+                    </section>
                 </xsl:for-each>
-            </div>
+            </section>
         </xsl:if>
     </xsl:template>
     
@@ -721,7 +769,7 @@ Under the following terms:
     <xsl:template name="add.caption">
         <xsl:param name="caption" as="node()*" />
         <xsl:variable name="ftn" select="($caption//text())[1]" as="text()?" />
-        <p class="caption">
+        <figcaption>
             <xsl:choose>
                 <xsl:when test="$caption">
                     <xsl:for-each select="$caption">
@@ -734,7 +782,7 @@ Under the following terms:
                     No caption has been provided.
                 </xsl:otherwise>
             </xsl:choose>
-        </p>
+        </figcaption>
     </xsl:template>
     
     <xd:doc scope="set.section.type">
@@ -746,18 +794,15 @@ Under the following terms:
         <xsl:variable name="content" select="lower-case(normalize-space())" as="xs:string" />
         
         <xsl:choose>
-            <xsl:when test="$content = 'abstract' or $content = 'summary'">
-                <xsl:attribute name="class" select="'abstract'" />
+            <xsl:when test="some $item in $abstract satisfies $content = $item">
+                <xsl:attribute name="role" select="'doc-abstract'" />
             </xsl:when>
-            <xsl:when test="$content = 'acknowledgements' or $content = 'acknowledgement'">
-                <xsl:attribute name="class" select="'acknowledgements'" />
+            <xsl:when test="some $item in $acknowledgements satisfies $content = $item">
+                <xsl:attribute name="role" select="'doc-acknowledgements'" />
             </xsl:when>
-            <xsl:when test="$content = 'references' or $content = 'reference'">
-                <xsl:attribute name="class" select="'bibliography'" />
+            <xsl:when test="some $item in $bibliography satisfies $content = $item">
+                <xsl:attribute name="role" select="'doc-bibliography'" />
             </xsl:when>
-            <xsl:otherwise>
-                <xsl:attribute name="class" select="'section'" />
-            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     

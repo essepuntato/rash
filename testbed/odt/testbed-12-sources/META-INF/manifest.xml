@@ -2,18 +2,19 @@
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
  <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.text" manifest:version="1.2" manifest:full-path="/"/>
  <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Thumbnails/thumbnail.png"/>
+ <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="layout-cache"/>
+ <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000005BA0000010467019C00.png"/>
  <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/>
  <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="styles.xml"/>
- <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="settings.xml"/>
- <manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/10000201000005BA0000010467019C00.png"/>
  <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="meta.xml"/>
- <manifest:file-entry manifest:media-type="application/rdf+xml" manifest:full-path="manifest.rdf"/>
  <manifest:file-entry manifest:media-type="" manifest:full-path="Configurations2/accelerator/current.xml"/>
  <manifest:file-entry manifest:media-type="application/vnd.sun.xml.ui.configuration" manifest:full-path="Configurations2/"/>
+ <manifest:file-entry manifest:media-type="application/rdf+xml" manifest:full-path="manifest.rdf"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 1/content.xml"/>
  <manifest:file-entry manifest:media-type="" manifest:full-path="Object 1/Configurations2/accelerator/current.xml"/>
  <manifest:file-entry manifest:media-type="application/vnd.sun.xml.ui.configuration" manifest:full-path="Object 1/Configurations2/"/>
  <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 1/settings.xml"/>
- <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="Object 1/content.xml"/>
  <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.formula" manifest:version="1.2" manifest:full-path="Object 1/"/>
+ <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="settings.xml"/>
  <manifest:file-entry manifest:media-type="application/x-openoffice-gdimetafile;windows_formatname=&quot;GDIMetaFile&quot;" manifest:full-path="ObjectReplacements/Object 1"/>
 </manifest:manifest>

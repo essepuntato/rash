@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+RASH to LaTeX: container module - Version 0.4, October 24, 2015
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
 <xsl:stylesheet version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:iml="http://www.w3.org/1999/xhtml" 
@@ -64,7 +79,7 @@
         <xsl:text>}</xsl:text>
         
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="//iml:body/iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'abstract']"/>
+            <xsl:with-param name="select" select="//iml:body/iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']"/>
         </xsl:call-template>
         
         <!-- Add categories -->
@@ -74,7 +89,17 @@
         <xsl:call-template name="keywords" />
     </xsl:template>
 
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'abstract']">
+    <xsl:template match="iml:blockquote">
+        <xsl:call-template name="n" />
+        <xsl:call-template name="n" />
+        <xsl:text>\begin{quote}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:call-template name="next" />
+        <xsl:call-template name="n" />
+        <xsl:text>\end{quote}</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
         <xsl:text>\begin{abstract}</xsl:text>
@@ -83,7 +108,7 @@
         <xsl:text>\end{abstract}</xsl:text>
     </xsl:template>
 
-    <xsl:template match="iml:div">
+    <xsl:template match="iml:section">
         <xsl:call-template name="next-with-deep" />
     </xsl:template>
     
@@ -105,7 +130,7 @@
         <xsl:text>\maketitle</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnotes' and $token != 'abstract']|text()"
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-footnotes' and $token != 'doc-abstract']|text()"
                 as="node()*"/>
         </xsl:call-template>
         <xsl:call-template name="n" />
@@ -118,7 +143,16 @@
         <xsl:call-template name="next"/>
     </xsl:template>
 
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'picture']">
+    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'listingbox']">
+        <xsl:call-template name="next">
+            <xsl:with-param name="select" select="iml:pre" />
+            <xsl:with-param name="caption" select="iml:figcaption" as="element()" tunnel="yes" />
+            <xsl:with-param name="id" select="@id" as="xs:string" tunnel="yes" />
+            <xsl:with-param name="floating" select="true()" as="xs:boolean" tunnel="yes" />
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'picturebox']">
         <xsl:call-template name="n" />
         <xsl:text>\begin{figure}[h!]</xsl:text>
         <xsl:call-template name="n" />
@@ -133,7 +167,7 @@
         <xsl:call-template name="n" />
     </xsl:template>
     
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'formula']">
+    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
         <xsl:text>\begin{equation}</xsl:text>
@@ -147,14 +181,14 @@
         <xsl:call-template name="n" />
     </xsl:template>
     
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'table']">
+    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'tablebox']">
         <xsl:call-template name="n" />
         <xsl:text>\begin{table}[h!]</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\centering</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'caption']"/>
+            <xsl:with-param name="select" select="iml:figcaption"/>
         </xsl:call-template>
         <xsl:call-template name="n" />
         <xsl:text>\renewcommand{\tabularxcolumn}[1]{>{\arraybackslash}m{#1}}</xsl:text>
@@ -164,7 +198,7 @@
         <xsl:text>\newcolumntype{Z}{>{\arraybackslash}X}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element() except iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'caption']"/>
+            <xsl:with-param name="select" select="element() except iml:figcaption"/>
         </xsl:call-template>
         <xsl:call-template name="n" />
         <xsl:text>\label{</xsl:text>
@@ -175,7 +209,7 @@
         <xsl:call-template name="n" />
     </xsl:template>
   
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'bibliography']">
+    <xsl:template match="iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography']">
         <xsl:param name="bibtex" as="xs:boolean" tunnel="yes" />
         <xsl:call-template name="n" />
         
@@ -199,7 +233,7 @@
         <xsl:call-template name="n" />
     </xsl:template>
     
-    <xsl:template match="iml:div[some $token in tokenize(@class, ' ') satisfies $token = 'acknowledgements']">
+    <xsl:template match="iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-acknowledgements']">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
         <xsl:text>\subsubsection*{Acknowledgements.}</xsl:text>

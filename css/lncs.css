@@ -1,5 +1,5 @@
 /* 
-lncs.css - Version 0.1.1, March 23, 2015
+lncs.css - Version 0.2, October 23, 2015
 by Silvio Peroni
 
 based on
@@ -66,7 +66,7 @@ body{
     line-height:1.231;
 }
 
-div{
+section{
     text-align:justify;
 }
 
@@ -109,7 +109,7 @@ a{
 code,
 pre{
     font-family:"CMU Serif Monospace", monospace !important;
-    font-size:9pt;
+    font-size:8pt;
 }
 
 pre{
@@ -126,7 +126,7 @@ p{
     text-indent:1em;
 }
 
-div p:first-of-type{
+section p:first-of-type{
     text-indent:0;
 }
 /* /END Paragraphs */
@@ -197,18 +197,18 @@ h1{
 
 
 /* Abstract */
-.abstract{
+section[role=doc-abstract]{
     font-size:9pt;
     margin:0 2.3em 1em;
     margin-bottom:2.75em;
 }
 
-.abstract h1,
-.abstract > p:first-of-type{
+section[role=doc-abstract] h1,
+section[role=doc-abstract] > p:first-of-type{
     display:inline;
 }
 
-.abstract h1:after{
+section[role=doc-abstract] h1:after{
     content:". ";
 }
 /* /END Abstract */
@@ -220,8 +220,8 @@ h1{
 }
 
 .affiliation *,
-.abstract h1,
-.abstract p{
+section[role=doc-abstract] h1,
+section[role=doc-abstract] p{
     font-size:0.93em;
 }
 
@@ -299,14 +299,14 @@ img{
     max-width:100%;
     height:auto;
 }
-.img_block img {
+figure img {
     vertical-align:middle;
 }
 /* /END Images */
 
 
 /* Tables */
-.table{
+figure[role=tablebox] {
     margin-top:1em;
     margin-bottom:1em;
 }
@@ -357,13 +357,13 @@ body{
     counter-reset:h2;
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h1:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h1:before{
     counter-increment:h1;
     content:counter(h1);
     margin-right:1.5em;
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h2:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h2:before{
     counter-increment:h2;
     content:counter(h1) "." counter(h2);
     margin-right:1em;
@@ -394,7 +394,7 @@ li p:first-child{
 
 
 /* Pictures */
-.picture{
+figure[role=picturebox] {
     margin-top:1em;
     margin-bottom:1em;
     position:relative;
@@ -402,37 +402,49 @@ li p:first-child{
 }
 /* /END Pictures */
 
+/* Listing */
+figure[role=listingbox] {
+    margin-top:1em;
+    margin-bottom:1em;
+    position:relative;
+}
+
+figure[role=listingbox] > pre {
+    border: 1px solid black;
+    padding: 3px;
+}
+/* /END Listing */
 
 /* Formulas */
-.formula{
+figure[role=formulabox]{
     text-align:center;
     margin-top:1em;
     margin-bottom:1em;
 }
 
-.formula p{
+figure[role=formulabox]{
     text-align:center;
 }
 /* /END Formulas */
 
 /* Captions */
-.caption{
+figcaption{
     text-align:center;
     font-size:9pt;
 }
 /* /END Captions */
 
 /* Footnotes */
-.footnotes .hidden-print {
+section[role=doc-footnotes] .hidden-print {
     display: none;
 }
 
-.footnotes { 
+section[role=doc-footnotes] { 
     counter-reset: fn;
     font-size:9pt;
 }
 
-.footnotes > div:before {
+section[role=doc-footnotes] > section[role=doc-footnote]:before {
     counter-increment: fn;
     content: counter(fn);
     float: left;
@@ -446,9 +458,9 @@ html{
     min-height:100%;
 }
 
-div.footnotes{
+section[role=doc-footnotes] {
     /* Margin bottom by footer height */
-    margin-bottom:30px;
+    margin-bottom:90px;
 }
 
 .footer{
@@ -459,7 +471,7 @@ div.footnotes{
     display:block;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif !important;
     font-size:12px;
-    height:32px;
+    height:50px;
     line-height:22.85px;
     padding-bottom:5px;
     padding-left:5px;
@@ -474,6 +486,14 @@ div.footnotes{
     margin-left:7px;
 }
 
+.footer div{
+    float:right;
+}
+
+.footer div button{
+    height:100%;
+}
+
 #layoutselection{
     margin-left:0px;
     margin-right:5px;
@@ -483,6 +503,18 @@ div.footnotes{
     position:relative;
     vertical-align:middle;
     display:inline;
+}
+
+.footer > p {
+    float:left;
+    width:60%;
+    padding:0;
+    text-align:left;
+}
+
+.footer p span:first-of-type {
+    display:block;
+    margin-left:-4px;
 }
 
 .footer div button{

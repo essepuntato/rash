@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Research Articles in Simplified HTML (RASH) format - Version 0.4, October 27, 2015
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
+<grammar  
+    ns="http://www.w3.org/1999/xhtml"
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <ref name="html" />
+    </start>
+    
+    <!-- Elements -->
+    <define name="html">
+        <element name="html">
+            <attribute name="prefix">
+                <data type="string">
+                    <param name="pattern">[\s\S]*schema:\s+http://schema.org/[\s\S]*</param>
+                    <param name="pattern">[\s\S]*prism:\s+http://prismstandard.org/namespaces/basic/2.0/[\s\S]*</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_statements" />
+            <optional>
+                <ref name="aVocab" />
+            </optional>
+            <ref name="head" />
+            <ref name="body" />
+        </element>
+    </define>
+    
+    <define name="head">
+        <element name="head">
+            <ref name="attributes_html_element_no_role" />
+            <interleave>
+                <ref name="title" />
+                <oneOrMore>
+                    <choice>
+                        <ref name="cm_meta_author" />
+                        <zeroOrMore>
+                            <ref name="meta_keyword" />
+                        </zeroOrMore>
+                        <zeroOrMore>
+                            <ref name="meta_category" />
+                        </zeroOrMore>
+                        <zeroOrMore>
+                            <ref name="meta" />
+                        </zeroOrMore>
+                        <zeroOrMore>
+                            <ref name="script" />
+                        </zeroOrMore>
+                        <zeroOrMore>
+                            <ref name="link" />
+                        </zeroOrMore>
+                    </choice>
+                </oneOrMore>
+            </interleave>
+        </element>
+    </define>
+    
+    <define name="script">
+        <choice>
+            <element name="script">
+                <ref name="aSrc" />
+            </element>
+            <element name="script">
+                <attribute name="type">
+                    <choice>
+                        <value>text/turtle</value>
+                        <value>text/ld+json</value>
+                        <value>text/csv</value>
+                        <value>text/rdf+xml</value>
+                    </choice>
+                </attribute>
+                <text />
+            </element>
+        </choice>
+    </define>
+    
+    <define name="link">
+        <element name="link">
+            <optional>
+                <ref name="aHref" />
+            </optional>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_html_head_generic" />
+            <ref name="attributes_rdfa_syntax" />
+            <ref name="attributes_rdfa_subject" />
+            <optional>
+                <ref name="aProperty" />
+            </optional>
+            <optional>
+                <ref name="aRel" />
+            </optional>
+            <ref name="attributes_rdfa_resource" />
+            <ref name="attributes_rdfa_literal" />
+            <ref name="attributes_rdfa_macro" />
+        </element>
+    </define>
+    
+    <define name="meta">
+        <element name="meta">
+            <ref name="attributes_html_head_element" />
+        </element>
+    </define>
+    
+    <define name="meta_category">
+        <element name="meta">
+            <attribute name="name">
+                <value type="string">dcterms.subject</value>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+        </element>
+    </define>
+    
+    <define name="meta_keyword">
+        <element name="meta">
+            <attribute name="property">
+                <value type="string">prism:keyword</value>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
+        </element>
+    </define>
+    
+    <define name="meta_author_name">
+        <element name="meta">
+            <attribute name="about">
+                <text />
+            </attribute>
+            <attribute name="name">
+                <value type="string">dc.creator</value>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_about" />
+        </element>
+    </define>
+    
+    <define name="meta_author_email">
+        <element name="meta">
+            <attribute name="about">
+                <text />
+            </attribute>
+            <attribute name="property">
+                <value type="string">schema:email</value>
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
+        </element>
+    </define>
+    
+    <define name="link_author_affiliation">
+        <element name="link">
+            <attribute name="about">
+                <text />
+            </attribute>
+            <attribute name="property">
+                <value type="string">schema:affiliation</value>
+            </attribute>
+            <attribute name="href">
+                <data type="anyURI" />
+            </attribute>
+            <ref name="attributes_html_generic" />
+            <ref name="attributes_rdfa_no_property" />
+        </element>
+    </define>
+    
+    <define name="body">
+        <element name="body">
+            <ref name="attributes_html_element_no_role" />
+            <optional>
+                <ref name="abstract" />
+            </optional>
+            <oneOrMore>
+                <ref name="section" />
+            </oneOrMore>
+            <optional>
+                <ref name="acknowledgements" />
+            </optional>
+            <optional>
+                <ref name="references" />
+            </optional>
+            <optional>
+                <ref name="footnotes" />
+            </optional>
+        </element>
+    </define>
+    
+    <define name="li">
+        <element name="li">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_container" />
+        </element>
+    </define>
+    
+    <define name="li_biblioentry">
+        <element name="li">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">doc-biblioentry</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_container" />
+        </element>
+    </define>
+    
+    <define name="ul">
+        <element name="ul">
+            <ref name="attributes_html_element_no_role" />
+            <oneOrMore>
+                <ref name="li" />
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="ol">
+        <element name="ol">
+            <ref name="attributes_html_element_no_role" />
+            <oneOrMore>
+                <ref name="li" />
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="p">
+        <element name="p">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="pre">
+        <element name="pre">
+            <ref name="attributes_html_element_no_role" />
+            <element name="code">
+                <ref name="attributes_html_element_no_role" />
+                <ref name="cm_inline" />
+            </element>
+        </element>
+    </define>
+    
+    <define name="blockquote">
+        <element name="blockquote">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_container" />
+        </element>
+    </define>
+    
+    <define name="h1">
+        <element name="h1">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="title">
+        <element name="title">
+            <ref name="attributes_html_element_no_role" />
+            <text />
+        </element>
+    </define>
+    
+    <define name="table">
+        <element name="table">
+            <ref name="attributes_html_element_no_role" />
+            <oneOrMore>
+                <ref name="tr" />
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="tr">
+        <element name="tr">
+            <ref name="attributes_html_element_no_role" />
+            <oneOrMore>
+                <choice>
+                    <ref name="th" />
+                    <ref name="td" />
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="th">
+        <element name="th">
+            <ref name="attributes_html_element_no_role" />
+            <optional>
+                <ref name="aRowspan" />
+            </optional>
+            <optional>
+                <ref name="aColspan" />
+            </optional>
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="td">
+        <element name="td">
+            <ref name="attributes_html_element_no_role" />
+            <optional>
+                <ref name="aRowspan" />
+            </optional>
+            <optional>
+                <ref name="aColspan" />
+            </optional>
+            <ref name="cm_container" />
+        </element>
+    </define>
+    
+    <define name="abstract">
+        <element name="section">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">doc-abstract</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_sections" />
+        </element>
+    </define>
+    
+    <define name="section">
+        <element name="section">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_sections" />
+        </element>
+    </define>
+    
+    <define name="acknowledgements">
+        <element name="section">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">doc-acknowledgements</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_sections" />
+        </element>
+    </define>
+    
+    <define name="references">
+        <element name="section">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">doc-bibliography</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="h1" />
+            <choice>
+                <element name="ul">
+                    <ref name="attributes_html_element_no_role" />
+                    <oneOrMore>
+                        <ref name="li_biblioentry" />
+                    </oneOrMore>
+                </element>
+                <element name="ol">
+                    <ref name="attributes_html_element_no_role" />
+                    <oneOrMore>
+                        <ref name="li_biblioentry" />
+                    </oneOrMore>
+                </element>
+            </choice>
+        </element>
+    </define>
+    
+    <define name="footnotes">
+        <element name="section">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">doc-footnotes</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <oneOrMore>
+                <element name="section">
+                    <attribute name="role">
+                        <data type="string">
+                            <param name="pattern">doc-footnote</param>
+                        </data>
+                    </attribute>
+                    <ref name="attributes_html_element_no_role" />
+                    <ref name="cm_container" />
+                </element>
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="figurebox">
+        <element name="figure">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">picturebox</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="img_block" />
+            <ref name="caption" />
+        </element>
+    </define>
+    
+    <define name="listingbox">
+        <element name="figure">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">listingbox</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="pre" />
+            <ref name="caption" />
+        </element>
+    </define>
+    
+    <define name="tablebox">
+        <element name="figure">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">tablebox</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <ref name="table" />
+            <ref name="caption" />
+        </element>
+    </define>
+    
+    <define name="formulabox">
+        <element name="figure">
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">formulabox</param>
+                </data>
+            </attribute>
+            <ref name="attributes_html_element_no_role" />
+            <choice>
+                <ref name="img_block" />
+                <element name="p">
+                    <ref name="attributes_html_element_no_role" />
+                    <ref name="math" />
+                </element>
+            </choice>
+        </element>
+    </define>
+    
+    <define name="math">
+        <element name="math" ns="http://www.w3.org/1998/Math/MathML">
+            <oneOrMore>
+                <ref name="cm_mathml_element" />
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="a">
+        <element name="a">
+            <ref name="attributes_html_element_no_role" />
+            <optional>
+                <ref name="aHref" />
+            </optional>
+            <optional>
+                <ref name="aNameRef" />
+            </optional>
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="aRefFootnote">
+        <element name="a">
+            <ref name="attributes_html_element_no_role" />
+            <attribute name="role">
+                <data type="string">
+                    <param name="pattern">(ref|doc-noteref|doc-biblioref)</param>
+                </data>
+            </attribute>
+            <attribute name="href">
+                <data type="anyURI" />
+            </attribute>
+            <optional>
+                <ref name="aNameRef" />
+            </optional>
+        </element>
+    </define>
+    
+    <define name="i">
+        <element name="i">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="b">
+        <element name="b">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="q">
+        <element name="q">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="sup">
+        <element name="sup">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="sub">
+        <element name="sub">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="span">
+        <element name="span">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="code">
+        <element name="code">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="img">
+        <element name="img">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="aSrc" />
+            <ref name="aAlt" />
+        </element>
+    </define>
+    
+    <define name="caption">
+        <element name="figcaption">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="cm_inline" />
+        </element>
+    </define>
+    
+    <define name="img_block">
+        <element name="p">
+            <ref name="attributes_html_element_no_role" />
+            <ref name="img" />
+        </element>
+    </define>
+    <!-- /END Elements -->
+    
+    <!-- Attributes -->
+    <define name="aSrc">
+        <attribute name="src">
+            <data type="anyURI" />
+        </attribute>
+    </define>
+    
+    <define name="aAlt">
+        <attribute name="alt">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aHref">
+        <attribute name="href">
+            <data type="anyURI" />
+        </attribute>
+    </define>
+    
+    <define name="aNameRef">
+        <attribute name="name">
+            <data type="anyURI" />
+        </attribute>
+    </define>
+    
+    <define name="aRowspan">
+        <attribute name="rowspan" a:defaultValue="1">
+            <data type="integer" />
+        </attribute>
+    </define>
+    
+    <define name="aColspan">
+        <attribute name="colspan" a:defaultValue="1">
+            <data type="integer" />
+        </attribute>
+    </define>
+    
+    <define name="aName">
+        <attribute name="name">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aCharset">
+        <attribute name="charset">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aId">
+        <attribute name="id">
+            <data type="ID" />
+        </attribute>
+    </define>
+    
+    <define name="aLang">
+        <attribute name="lang">
+            <data type="language" />
+        </attribute>
+    </define>
+    
+    <define name="aValue">
+        <attribute name="value">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aClass">
+        <attribute name="class">
+            <data type="NMTOKENS" />
+        </attribute>
+    </define>
+    
+    <define name="aContent">
+        <attribute name="content">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aLevel">
+        <attribute name="level">
+            <data type="integer" />
+        </attribute>
+    </define>
+    <!-- /END Attributes -->
+    
+    <!-- RDFa specific -->
+    <define name="aVocab">
+        <attribute name="vocab">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aTypeof">
+        <attribute name="typeof">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aProperty">
+        <attribute name="property">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aResource">
+        <attribute name="resource">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aPrefix">
+        <attribute name="prefix">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aAbout">
+        <attribute name="about">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aRel">
+        <attribute name="rel">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aRev">
+        <attribute name="rev">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aDatatype">
+        <attribute name="datatype">
+            <data type="string" />
+        </attribute>
+    </define>
+    
+    <define name="aInlist">
+        <attribute name="inlist">
+            <data type="string" />
+        </attribute>
+    </define>
+    <!-- /END RDFa specific -->
+    
+    <!-- Content Models -->
+    <define name="cm_container">
+        <oneOrMore>
+            <choice>
+                <ref name="p" />
+                <ref name="pre" />
+                <ref name="blockquote" />
+                <ref name="ul" />
+                <ref name="ol" />
+                <ref name="tablebox" />
+                <ref name="figurebox" />
+                <ref name="formulabox" />
+                <ref name="listingbox" />
+            </choice>
+        </oneOrMore>
+    </define>
+    
+    <define name="cm_inline">
+        <zeroOrMore>
+            <choice>
+                <text />
+                <ref name="a" />
+                <ref name="aRefFootnote" />
+                <ref name="img" />
+                <ref name="math" />
+                <ref name="span" />
+                <ref name="code" />
+                <ref name="sub" />
+                <ref name="sup" />
+                <ref name="i" />
+                <ref name="b" />
+                <ref name="q" />
+            </choice>
+        </zeroOrMore>
+    </define>
+    
+    <define name="cm_sections">
+        <ref name="h1" />
+        <oneOrMore>
+            <choice>
+                <ref name="p" />
+                <ref name="pre" />
+                <ref name="blockquote" />
+                <ref name="ul" />
+                <ref name="ol" />
+                <ref name="tablebox" />
+                <ref name="figurebox" />
+                <ref name="formulabox" />
+                <ref name="listingbox" />
+                <ref name="section" />
+            </choice>
+        </oneOrMore>
+    </define>
+    
+    <define name="cm_mathml_element">
+        <element>
+            <nsName ns="http://www.w3.org/1998/Math/MathML" />
+            <zeroOrMore>
+                <choice>
+                    <attribute>
+                        <anyName />
+                    </attribute>
+                    <text/>
+                    <ref name="cm_mathml_element" />
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    
+    <define name="cm_meta_author">
+        <group>
+            <ref name="meta_author_name" />
+            <ref name="meta_author_email" />
+            <ref name="link_author_affiliation" />
+        </group>
+    </define>
+    
+    <!-- Content models for HTML attributes -->
+    <define name="attributes_html_head_element">
+        <ref name="attributes_html_generic" />
+        <ref name="attributes_html_head_generic" />
+        <ref name="attributes_rdfa" />
+    </define>
+    
+    <define name="attributes_html_head_generic">
+        <optional>
+            <ref name="aName" />
+        </optional>
+        <optional>
+            <ref name="aCharset" />
+        </optional>
+    </define>
+    
+    <define name="attributes_html_element_no_role">
+        <ref name="attributes_html_generic" />
+        <optional>
+            <ref name="aClass" />
+        </optional>
+        <ref name="attributes_rdfa" />
+    </define>
+    
+    <define name="attributes_html_generic">
+        <optional>
+            <ref name="aId" />
+        </optional>
+    </define>
+    
+    <!-- 
+        The following chategorisation of RDFa attributes has been taken 
+        from http://www.w3.org/TR/rdfa-syntax/#attribute_roles 
+    -->
+    <define name="attributes_rdfa">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_statements" />
+    </define>
+    
+    <define name="attributes_rdfa_statements">
+        <ref name="attributes_rdfa_subject" />
+        <ref name="attributes_rdfa_predicate" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
+    </define>
+    
+    <define name="attributes_rdfa_syntax">
+        <optional>
+            <ref name="aPrefix" />
+        </optional>
+        <optional>
+            <ref name="aVocab" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_subject">
+        <optional>
+            <ref name="aAbout" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_predicate">
+        <optional>
+            <ref name="aProperty" />
+        </optional>
+        <ref name="attributes_rdfa_rel_rev" />
+    </define>
+    
+    <define name="attributes_rdfa_rel_rev">
+        <optional>
+            <ref name="aRel" />
+        </optional>
+        <optional>
+            <ref name="aRev" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_resource">
+        <optional>
+            <ref name="aResource" />
+        </optional>
+        <!-- 
+            @href and @src are not included here since thay can be used in RDFa 
+            fashion only with those elements that include them 
+        -->
+    </define>
+    
+    <define name="attributes_rdfa_literal">
+        <optional>
+            <ref name="aLang" />
+        </optional>
+        <optional>
+            <ref name="aContent" />
+        </optional>
+        <optional>
+            <ref name="aDatatype" />
+        </optional>
+    </define>
+    
+    <define name="attributes_rdfa_macro">
+        <optional>
+            <ref name="aTypeof" />
+        </optional>
+        <optional>
+            <ref name="aInlist" />
+        </optional>
+    </define>
+    
+    <!-- It defines a particular restriction of use of RDFa without the attribute property -->
+    <define name="attributes_rdfa_no_about">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_predicate" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
+    </define>
+    
+    <define name="attributes_rdfa_no_property">
+        <ref name="attributes_rdfa_syntax" />
+        <ref name="attributes_rdfa_rel_rev" />
+        <ref name="attributes_rdfa_resource" />
+        <ref name="attributes_rdfa_literal" />
+        <ref name="attributes_rdfa_macro" />
+    </define>
+    <!-- /END Content Models -->
+</grammar>

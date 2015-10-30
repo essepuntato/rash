@@ -1,64 +1,56 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  prefix="
-    schema: http://schema.org/
-    prism: http://prismstandard.org/namespaces/basic/2.0/">
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><html xmlns="http://www.w3.org/1999/xhtml" prefix="     schema: http://schema.org/     prism: http://prismstandard.org/namespaces/basic/2.0/">
   <head>
     <!-- Visualisation requirements (mandatory for optimal reading) -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/rash.css" />
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/rash.js"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/rash.css"/>
+    <script src="../js/jquery.min.js"> </script>
+    <script src="../js/bootstrap.min.js"> </script>
+    <script src="../js/rash.js"> </script>
     <!-- /END Visualisation requirements (mandatory for optimal reading) -->
 
     <title>Evaluating citation functions in CiTO: cognitive issues -- Preprint of
       http://dx.doi.org/10.1007/978-3-319-07443-6_39</title>
 
     <!-- Author's data (one or more) -->
-    <meta about="pc" property="schema:name" name="dc.creator" content="Paolo Ciancarini" />
-    <meta about="pc" property="schema:email" content="ciancarini@cs.unibo.it" />
-    <link about="pc" property="schema:affiliation" href="cs-unibo" />
-    <link about="pc" property="schema:affiliation" href="stlab-cnr" />
+    <meta about="pc" property="schema:name" name="dc.creator" content="Paolo Ciancarini"/>
+    <meta about="pc" property="schema:email" content="ciancarini@cs.unibo.it"/>
+    <link about="pc" property="schema:affiliation" href="cs-unibo"/>
+    <link about="pc" property="schema:affiliation" href="stlab-cnr"/>
 
-    <meta about="adi" property="schema:name" name="dc.creator" content="Angelo Di Iorio" />
-    <meta about="adi" property="schema:email" content="diiorio@cs.unibo.it" />
-    <link about="adi" property="schema:affiliation" href="cs-unibo" />
+    <meta about="adi" property="schema:name" name="dc.creator" content="Angelo Di Iorio"/>
+    <meta about="adi" property="schema:email" content="diiorio@cs.unibo.it"/>
+    <link about="adi" property="schema:affiliation" href="cs-unibo"/>
 
-    <meta about="an" property="schema:name" name="dc.creator" content="Andrea Nuzzolese" />
-    <meta about="an" property="schema:email" content="nuzzoles@cs.unibo.it" />
-    <link about="an" property="schema:affiliation" href="cs-unibo" />
-    <link about="an" property="schema:affiliation" href="stlab-cnr" />
+    <meta about="an" property="schema:name" name="dc.creator" content="Andrea Nuzzolese"/>
+    <meta about="an" property="schema:email" content="nuzzoles@cs.unibo.it"/>
+    <link about="an" property="schema:affiliation" href="cs-unibo"/>
+    <link about="an" property="schema:affiliation" href="stlab-cnr"/>
 
-    <meta about="sp" property="schema:name" name="dc.creator" content="Silvio Peroni" />
-    <meta about="sp" property="schema:email" content="silvio.peroni@unibo.it" />
-    <link about="sp" property="schema:affiliation" href="cs-unibo" />
-    <link about="sp" property="schema:affiliation" href="stlab-cnr" />
+    <meta about="sp" property="schema:name" name="dc.creator" content="Silvio Peroni"/>
+    <meta about="sp" property="schema:email" content="silvio.peroni@unibo.it"/>
+    <link about="sp" property="schema:affiliation" href="cs-unibo"/>
+    <link about="sp" property="schema:affiliation" href="stlab-cnr"/>
 
-    <meta about="fv" property="schema:name" name="dc.creator" content="Fabio Vitali" />
-    <meta about="fv" property="schema:email" content="fabio@cs.unibo.it" />
-    <link about="fv" property="schema:affiliation" href="cs-unibo" />
+    <meta about="fv" property="schema:name" name="dc.creator" content="Fabio Vitali"/>
+    <meta about="fv" property="schema:email" content="fabio@cs.unibo.it"/>
+    <link about="fv" property="schema:affiliation" href="cs-unibo"/>
 
     <!-- Affiliations -->
-    <meta about="cs-unibo" property="schema:name"
-      content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy" />
-    <meta about="stlab-cnr" property="schema:name"
-      content="STLab-ISTC, Consiglio Nazionale delle Ricerche, Rome, Italy" />
+    <meta about="cs-unibo" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
+    <meta about="stlab-cnr" property="schema:name" content="STLab-ISTC, Consiglio Nazionale delle Ricerche, Rome, Italy"/>
 
     <!-- Paper keywords (one or more) -->
-    <meta property="prism:keyword" content="CiTO" />
-    <meta property="prism:keyword" content="citation functions" />
-    <meta property="prism:keyword" content="user testing session" />
-    <meta property="prism:keyword" content="mental models" />
-    <meta property="prism:keyword" content="human inter-rater agreement" />
-    <meta property="prism:keyword" content="usability" />
+    <meta property="prism:keyword" content="CiTO"/>
+    <meta property="prism:keyword" content="citation functions"/>
+    <meta property="prism:keyword" content="user testing session"/>
+    <meta property="prism:keyword" content="mental models"/>
+    <meta property="prism:keyword" content="human inter-rater agreement"/>
+    <meta property="prism:keyword" content="usability"/>
   </head>
   <body>
-    <div id="SectionAbstract" class="abstract">
+    <section id="SectionAbstract" role="doc-abstract">
       <h1>Abstract</h1>
       <p>Networks of citations are a key tool for referencing, disseminating and evaluating research
         results. The task of characterising the functional role of citations in scientific
@@ -70,36 +62,29 @@
         cognitive processes behind users' decisions in annotating papers with CITO, and provide
         initial ideas to refine future releases of CiTO and to simulate readers' behaviour within
         CiTaLO, a tool for automatic classification of citations. </p>
-    </div>
-    <div class="section">
+    </section>
+    <section>
       <h1>Introduction</h1>
       <p>The interest in alternative ways for publishing scientific results is rapidly increasing,
         especially for the Semantic Web community that is producing a lot of scientific data as
-        Linked datasets which can be browsed and reasoned on <a class="ref" href="#ZhuCitations"
-          ></a><a class="ref" href="#LinkedScience13Kauppinen"></a><a class="ref"
-          href="#LinkedScience12Gil"></a>. On the other hand, most of the current scientific
+        Linked datasets which can be browsed and reasoned on <a href="#ZhuCitations" role="doc-biblioref"> </a><a href="#LinkedScience13Kauppinen" role="doc-biblioref"> </a><a href="#LinkedScience12Gil" role="doc-biblioref"> </a>. On the other hand, most of the current scientific
         production is still disseminated by “traditional” papers, and citations remain the key
           <i>tools</i> to connect, explore and evaluate research works.</p>
-      <p>Citations are not all equal, as discussed by <a class="ref" href="#ZhuCitations"></a>. The
+      <p>Citations are not all equal, as discussed by <a href="#ZhuCitations" role="doc-biblioref"> </a>. The
         frequency a work is cited is a partial indicator of its relevance for a community. More
         effective results can be obtained by looking for the <i>citation functions</i>, i.e. “the
-        author's reasons for citing a given paper” <a class="ref" href="#TeufelAnnotationScheme"
-        ></a>. Yet, it is extremely difficult to characterise the nature of a citation univocally. </p>
-      <p>A fairly successful classification model is <i>CiTO</i> (<i>Citation Typing Ontology</i>)<a
-          class="footnote" href="#ftn6"></a>
-        <a class="ref" href="#PeroniCiTOFaBiO"></a>, an OWL ontology for describing factual as well
+        author's reasons for citing a given paper” <a href="#TeufelAnnotationScheme" role="doc-biblioref"> </a>. Yet, it is extremely difficult to characterise the nature of a citation univocally. </p>
+      <p>A fairly successful classification model is <i>CiTO</i> (<i>Citation Typing Ontology</i>)<a href="#ftn6" role="doc-noteref"> </a>
+        <a href="#PeroniCiTOFaBiO" role="doc-biblioref"> </a>, an OWL ontology for describing factual as well
         as rhetorical functions of citations in scientific articles and other scholarly works. CiTO
         defines forty-one properties that allow users to characterise precisely the semantics of a
-        citation act. CiTO has been successfully used in large projects like <i>CiteULike</i><a
-          class="footnote" href="#ftn7"></a> and <i>Data.open.ac.uk</i><a class="footnote"
-          href="#ftn8"></a> and several tools have been developed to annotate citations with CiTO
-        properties directly via browser<a class="footnote" href="#ftn9"></a> or CMS plugins<a
-          class="footnote" href="#ftn10"></a>.</p>
+        citation act. CiTO has been successfully used in large projects like <i>CiteULike</i><a href="#ftn7" role="doc-noteref"> </a> and <i>Data.open.ac.uk</i><a href="#ftn8" role="doc-noteref"> </a> and several tools have been developed to annotate citations with CiTO
+        properties directly via browser<a href="#ftn9" role="doc-noteref"> </a> or CMS plugins<a href="#ftn10" role="doc-noteref"> </a>.</p>
       <p>Despite (or possibly because of) the richness and variety of CiTO properties, most users
         actually employ a sub-set of these properties: a smaller set of properties is easier to
         memorise and handle, some properties are not perceived as precise in specific domains, some
         others are considered too similar to each others, and so on. For instance, Pensoft
-          Publishers<a class="footnote" href="#ftn11"></a> (to our knowledge, the first commercial
+          Publishers<a href="#ftn11" role="doc-noteref"> </a> (to our knowledge, the first commercial
         user of CiTO) are going to enable authors to annotate their citations according to six CiTO
         properties only. The <i>Link to Link Wordpress </i>plugin supports about ten properties.</p>
       <p>Clearly some work restructuring the ontology is in order. This paper in fact presents an
@@ -108,37 +93,33 @@
         specific subset, along with the feedback directly provided by the users. The goal is to
         validate and assess the usability of CiTO and to distill guidelines for a more effective use
         of the current ontology and for improvements to the future releases. Also, we want to study
-        user behaviour in order to simulate it within CiTalO<a class="footnote" href="#ftn12"></a>
-        <a class="ref" href="#CiTalO"></a>, a chain of tools for identifying automatically the
+        user behaviour in order to simulate it within CiTalO<a href="#ftn12" role="doc-noteref"> </a>
+        <a href="#CiTalO" role="doc-biblioref"> </a>, a chain of tools for identifying automatically the
         nature of citations.</p>
       <p>The most critical aspect identified by our tests is that opinions about the most
         appropriate CiTO properties are often misaligned. Apparently each reader relies on a
         different <i>mental model</i>, and the reader's model can be and often is different from the
         one of the authors of the CiTO annotation, which in turn can be and often is different from
         the one of the authors of the citation in the paper.</p>
-      <p>This paper is structured as follows: in <a class="ref" href="#SectionRelatedWorks"></a> we
-        review previous works on classification of citations. In <a class="ref" href="#SectionCiTO"
-        ></a> we present CiTO and relate it with users' mental models. In <a class="ref"
-          href="#SectionTest"></a> we introduce our experimental setting and findings. In <a
-          class="ref" href="#SectionDiscussion"></a> and <a class="ref" href="#SectionConclusions"
-        ></a> we discuss the lesson learnt and sketch out some possible developments of CiTO and
+      <p>This paper is structured as follows: in <a href="#SectionRelatedWorks" role="ref"> </a> we
+        review previous works on classification of citations. In <a href="#SectionCiTO" role="ref"> </a> we present CiTO and relate it with users' mental models. In <a href="#SectionTest" role="ref"> </a> we introduce our experimental setting and findings. In <a href="#SectionDiscussion" role="ref"> </a> and <a href="#SectionConclusions" role="ref"> </a> we discuss the lesson learnt and sketch out some possible developments of CiTO and
         CiTalO.</p>
-    </div>
-    <div id="SectionRelatedWorks" class="section">
+    </section>
+    <section id="SectionRelatedWorks">
       <h1>Related works</h1>
       <p>The analysis of networks of citations is gaining more and more attention. Copestake <i>et
-          al. </i><a class="ref" href="#CopestakeScientificText"></a> present an infrastructure,
+          al. </i><a href="#CopestakeScientificText" role="doc-biblioref"> </a> present an infrastructure,
         called SciBorg, based on NLP techniques that allows one to automatically extract semantic
         characterisations of scientific texts. In particular, they developed a module for discourse
         and citation analysis based on the approach proposed by Teufel <i>et al.</i>
-        <a class="ref" href="#TeufelArgumentationZone"></a> called <i>Argumentative Zoning</i>
+        <a href="#TeufelArgumentationZone" role="doc-biblioref"> </a> called <i>Argumentative Zoning</i>
           (<i>AZ</i>). AZ provides a procedural mechanism to annotate sentences of an article
         according to one out of seven classes of a given annotation scheme (i.e. <i>background</i>,
           <i>own</i>, <i>aim</i>, <i>textual</i>, <i>contrast</i>, <i>basis</i> and <i>other</i>),
         thus interpreting the intended authors' motivation behind scientific content and
         citations.</p>
-      <p>Teufel <i>et al. </i><a class="ref" href="#TeufelAutomaticClassification"></a>
-        <a class="ref" href="#TeufelAnnotationScheme"></a> study the <i>function</i> of citations –
+      <p>Teufel <i>et al. </i><a href="#TeufelAutomaticClassification" role="doc-biblioref"> </a>
+        <a href="#TeufelAnnotationScheme" role="doc-biblioref"> </a> study the <i>function</i> of citations –
         that they define as “author's reason for citing a given paper” – and provide a
         categorisation of possible citation functions organised in twelve classes, in turn clustered
         in <i>Negative</i>, <i>Neutral</i> and <i>Positive</i> rhetorical functions. In addition,
@@ -147,50 +128,46 @@
         automatic annotation of citation functions. The results were quite promising; however the
         agreement between human annotators (i.e. K = 0.72) is still higher than the one between the
         human annotators and the machine learning approach (i.e. K = 0.57).</p>
-      <p>Jorg <a class="ref" href="#JorgNatureCitations"></a> analysed the ACL Anthology Networks<a
-          class="footnote" href="#ftn13"></a> and found one hundred fifty <i>cue verbs</i>, i.e.
+      <p>Jorg <a href="#JorgNatureCitations" role="doc-biblioref"> </a> analysed the ACL Anthology Networks<a href="#ftn13" role="doc-noteref"> </a> and found one hundred fifty <i>cue verbs</i>, i.e.
         verbs usually used to carry important information about the nature of citations: <i>based
           </i><i>on</i>, <i>outperform</i>, <i>focus on</i>, <i>extend</i>, etc. She maps cue verbs
         to classes of citation functions according to the classification provided by Moravcsik <i>et
           al.</i>
-        <a class="ref" href="#MoravcsikFunctionCitation"></a> and makes the bases to the development
+        <a href="#MoravcsikFunctionCitation" role="doc-biblioref"> </a> and makes the bases to the development
         of a formal citation ontology. This works actually represent one of the sources of
         inspiration of <i>CiTO</i> (the <i>Citation Typing Ontology</i>) developed by Peroni <i>et
-          al. </i><a class="ref" href="#PeroniCiTOFaBiO"></a>, which is an ontology that permits the
+          al. </i><a href="#PeroniCiTOFaBiO" role="doc-biblioref"> </a>, which is an ontology that permits the
         motivations of an author when referring to another document to be captured and described by
         using Semantic Web technologies such as RDF and OWL.</p>
-      <p>Closely related to the annotation of citation functions, Athar <a class="ref"
-          href="#AtharSentimentAnalysis"></a> proposes a sentiment-analysis approach to citations,
+      <p>Closely related to the annotation of citation functions, Athar <a href="#AtharSentimentAnalysis" role="doc-biblioref"> </a> proposes a sentiment-analysis approach to citations,
         so as to identify whether a particular act of citing was done with positive (e.g. praising a
         previous work on a certain topic) or negative intentions (e.g. criticising the results
         obtained through a particular method). Starting from empirical results Athar <i>et al.
-          </i><a class="ref" href="#AtharContextEnhanced"></a> expand the above study and show how
+          </i><a href="#AtharContextEnhanced" role="doc-biblioref"> </a> expand the above study and show how
         the correct sentiment (in particular, a negative sentiment) of a particular citation usually
         does not emerge from the citation sentence – i.e. the sentence that contains the actual
         pointer to the bibliographic reference of the cited paper. Rather, it actually becomes
-        evident in the last part of the considered <i>context window</i><a class="footnote"
-          href="#ftn14"></a>
-        <a class="ref" href="#QazvinianNonExplicitCitingSentences"></a>.</p>
-      <p>Hou <i>et al.</i><a class="ref" href="#HouCountingCitation"></a> use an alternative
+        evident in the last part of the considered <i>context window</i><a href="#ftn14" role="doc-noteref"> </a>
+        <a href="#QazvinianNonExplicitCitingSentences" role="doc-biblioref"> </a>.</p>
+      <p>Hou <i>et al.</i><a href="#HouCountingCitation" role="doc-biblioref"> </a> use an alternative
         approach to understand the relevance (seen as a form of positive connotation/sentiment) of
         citations: the citation counting in a text. Paraphrasing the authors, the idea is that the
         more a paper is cited within a text, the more its scientific contribution is
         significative.</p>
-    </div>
-    <div id="SectionCiTO" class="section">
+    </section>
+    <section id="SectionCiTO">
       <h1>Users' adoption of CiTO</h1>
       <p>There are several reference models to characterise citations, as presented in the previous
-        section. One of the most used within the Semantic Web domain is CiTO <a class="ref"
-          href="#PeroniCiTOFaBiO"></a>. The ontology basically defines a property <i>cites</i> (and
+        section. One of the most used within the Semantic Web domain is CiTO <a href="#PeroniCiTOFaBiO" role="doc-biblioref"> </a>. The ontology basically defines a property <i>cites</i> (and
         its inverse <i>isCitedBy</i>) and 41 sub-properties (each of which has its own inverse) that
         describe the semantics of a citation act.</p>
       <p>The richness of properties is a key feature of CiTO. To the best of our knowledge, there is
         no other OWL ontology that provides a set of properties for annotating citation types as
         rich as CiTO. This aspect has contributed to the adoption of the ontology by the Semantic
-        Publishing <a class="ref" href="#ShottonSemanticPublishing"></a> community, which is
+        Publishing <a href="#ShottonSemanticPublishing" role="doc-biblioref"> </a> community, which is
         currently exploiting CiTO in projects like <i>CiteULike</i>, <i>Data.open.ac.uk</i>, and the
           <i>Open Citation Corpus</i>
-        <a class="ref" href="#ShottonOpenCitations"></a>.</p>
+        <a href="#ShottonOpenCitations" role="doc-biblioref"> </a>.</p>
       <p>On the other hand, the richness of CiTO is perceived as a hindrance by some annotators. We
         studied the actual adoption of the model within these projects and discovered that most
         tools actually employ a sub-set of the CiTO properties (CiTO-Ps on the rest of the text).
@@ -210,7 +187,7 @@
         perspective. This approach is complementary to the current CiTO development process and
         allows us to study how CiTO-Ps are actually perceived by users in the task of annotating
         citations. </p>
-      <div class="section">
+      <section>
         <h1>CiTO annotations and mental models</h1>
         <p>One of the most relevant issues we found is that multiple views coexist <b>and often
             conflict</b> when performing an annotation task with CiTO. We can see three steps in
@@ -219,14 +196,13 @@
           the creation of a mapping between the supposed function of a citation and the most
           appropriate CiTO property.</p>
         <p>For each step, each annotator creates her/his own <i>mental model</i>. Mental models were
-          introduced in 1943 by Craik <a class="ref" href="#Craik1943"></a> as <i>small-scale
+          introduced in 1943 by Craik <a href="#Craik1943" role="doc-biblioref"> </a> as <i>small-scale
             models</i> of reality that the humans' mind uses to anticipate events. For most
           cognitive scientists today, a mental model is an internal scale-model representation of an
           external reality. It is built on-the-fly, from knowledge of prior experience, schema
           segments, perception, and problem-solving strategies. In Human-Computer Interaction (HCI)
           mental models are detected for improving the usability of a system. It is commonly
-          accepted that humans interact with systems based on a set of beliefs<a class="footnote"
-            href="#ftn15"></a> about how a system works. </p>
+          accepted that humans interact with systems based on a set of beliefs<a href="#ftn15" role="doc-noteref"> </a> about how a system works. </p>
         <p>This also applies to CiTO processes: users annotate a citation based on a set of beliefs
           that they obtain by only interpreting the citation's context and finding an appropriate
           property in CiTO according to their interpretation of the ontology. Our goal is to study
@@ -236,9 +212,9 @@
           System Model, the mental model constructed by the ontology engineer while modelling
           CiTO-Ps, and the User Model, the mental model constructed by a user for understanding how
           to use CiTO-Ps.</p>
-      </div>
-    </div>
-    <div id="SectionTest" class="section">
+      </section>
+    </section>
+    <section id="SectionTest">
       <h1>Experimental analysis of CiTO use </h1>
       <p>In order to assess how CiTO is used to annotate scholarly articles, we compared the
         classifications performed by humans on a set of citations. The tests involved twenty users
@@ -273,49 +249,45 @@
       </ol>
       <p>Additionally, after the completion of the annotation task, we asked each user to fill two
         questionnaires: a multiple-choice questionnaire aimed at measuring the System Usability
-        Scale (SUS) <a class="ref" href="#BrookeSUS"></a>, and a second questionnaire with free-text
+        Scale (SUS) <a href="#BrookeSUS" role="doc-biblioref"> </a>, and a second questionnaire with free-text
         answers to capture the users' satisfaction in using CiTO-Ps for annotating citations.</p>
       <p>In order to simplify the task of annotating citations, we prepared and normalized how the
         citations were presented to the users. Identifying the boundaries of a citation, or better
         which boundaries are needed to capture the nature of that citation, is not a trivial task:
         the citation sentence, i.e. the sentence containing directly the citation, often is not
         enough. As confirmed by Athar <i>et al.</i>
-        <a class="ref" href="#AtharContextEnhanced"></a>, the actual intended sentiment and
+        <a href="#AtharContextEnhanced" role="doc-biblioref"> </a>, the actual intended sentiment and
         motivation of a citation might be explicated in other sentences close to the citation and
-        can refer implicitly (i.e. by means of <i>implicit citations </i><a class="ref"
-          href="#AtharImplicitCitations"></a>) to the cited work (through authors' names, project's
+        can refer implicitly (i.e. by means of <i>implicit citations </i><a href="#AtharImplicitCitations" role="doc-biblioref"> </a>) to the cited work (through authors' names, project's
         name, pronouns, etc.). This issue is known as the <i>identification of context window</i>
-        <a class="ref" href="#QazvinianNonExplicitCitingSentences"></a>. Even if there are multiple
+        <a href="#QazvinianNonExplicitCitingSentences" role="doc-biblioref"> </a>. Even if there are multiple
         techniques for automatic extraction of the context window, taking care also of implicit
         citations, in this experiment we identified them manually: we read the text and tried to
         understand which sequence of sentences around a particular citation conveyed its citation
         function at the best.</p>
-      <div class="section">
+      <section>
         <h1>Experimental setting</h1>
         <p>The test bed includes some scientific papers encoded in XML DocBook chosen among the
-          seventh volume of the proceedings Balisage Conference Series<a class="footnote"
-            href="#ftn16"></a>. We automatically extracted citation sentences, through an XSLT
-          transform (available at <span class="code"
-            >http://www.essepuntato.it/2013/citalo/xslt</span>). We took into account only those
+          seventh volume of the proceedings Balisage Conference Series<a href="#ftn16" role="doc-noteref"> </a>. We automatically extracted citation sentences, through an XSLT
+          transform (available at <code>http://www.essepuntato.it/2013/citalo/xslt</code>). We took into account only those
           papers for which the XSLT transform retrieved at least one citation (i.e. 18 papers
           written by different authors). The total number of citations retrieved was 377, for a mean
           of 20.94 citations per paper.</p>
         <p>We then filtered all the citation sentences that contain verbs (extends, discusses, etc.)
           and/or other grammatical structures (uses method in, uses data from, etc.) that carry
           explicitly a citation function. We considered that rule as a strict guideline as also
-          suggested by Teufel <i>et al.</i><a class="ref" href="#TeufelAutomaticClassification"
-          ></a>. We obtained 105 citations out of 377, obtaining at least one citation for each of
+          suggested by Teufel <i>et al.</i><a href="#TeufelAutomaticClassification" role="doc-biblioref"> </a>. We obtained 105 citations out of 377, obtaining at least one citation for each of
           the 18 paper used (a mean of 5.83 citations per paper). These citations are very
           heterogeneous and provide us a significative sample for out tests. Finally, we manually
           expanded each citation sentence (i.e. the sentence containing the reference to a
           bibliographic entity) selecting a context window that we think is useful to classify that
           citation, as explained above.</p>
         <p>The test was carried on by two groups, each one composed by ten users, by means of a Web
-            interface<a class="footnote" href="#ftn17"></a>. The first group could select properties
+            interface<a href="#ftn17" role="doc-noteref"> </a>. The first group could select properties
           out of the full list of 41 CiTO-Ps (<i>T41</i> from now on). Instead, the second one
-          performed the same task by only using 10 CiTO-Ps<a class="footnote" href="#ftn18"></a>
+          performed the same task by only using 10 CiTO-Ps<a href="#ftn18" role="doc-noteref"> </a>
             (<i>T10</i>). This reduced set of properties comes from a preliminary experiment we
-          undertook in <a class="ref" href="#AIC"></a> that showed that only these properties had a
+          undertook in <a href="#AIC" role="doc-biblioref"> </a> that showed that only these properties had a
           moderate inter-rater agreement (Fleiss' <i>k </i>&gt; 0.33). The goal in fact is to answer
           RQ4: does the number of properties affect the inter-rater agreement? </p>
         <p>Both groups were composed mainly by computer scientists (the main area of the Balisage
@@ -323,185 +295,181 @@
           separately, with its full context window, and had to select one CiTO-Ps for that sentence.
           Users could also revise their choices and perform the experiments off-line. There was no
           time constraint and users could freely access the CiTO documentation.</p>
-        <p>All the data collected were stored in RDF and we used R<a class="footnote" href="#ftn19"
-          ></a> to load the data and elaborate the results<a class="footnote" href="#ftn20"
-          ></a>.</p>
-      </div>
-      <div class="section">
+        <p>All the data collected were stored in RDF and we used R<a href="#ftn19" role="doc-noteref"> </a> to load the data and elaborate the results<a href="#ftn20" role="doc-noteref"> </a>.</p>
+      </section>
+      <section>
         <h1>Results</h1>
         <p>The experiments confirmed some of our hypotheses and highlighted some unexpected issues
           too. The first point to notice is that our users have selected 37 different CiTO
           properties over 41 in T41, with an average of 21.7 properties per user, while they have
           selected all the 10 properties in T10 (the mean by user is 10) (RQ1). Moreover, in T41 a
           few of these properties have been used many times, while most of them have been selected
-          in a small number of cases, as shown in <a class="ref" href="#TableCitationFuctionsHumans"
-          ></a> – this table answers to RQ2.</p>
-        <div class="table" id="TableCitationFuctionsHumans">
+          in a small number of cases, as shown in <a href="#TableCitationFuctionsHumans" role="ref"> </a> – this table answers to RQ2.</p>
+        <figure id="TableCitationFuctionsHumans" role="tablebox">
           <table>
             <tr>
-              <th>
+              <th rowspan="1" colspan="1">
                 CiTO property in T41
               </th>
-              <th>
+              <th rowspan="1" colspan="1">
                 # in T41
               </th>
-              <th>
+              <th rowspan="1" colspan="1">
                 CiTO property in T10
               </th>
-              <th>
+              <th rowspan="1" colspan="1">
                 # in T10
               </th>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesForInformation</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>151</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesForInformation</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>190</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsRelated</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>122</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>obtainsBackgroundFrom</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>152</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsAuthority</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>85</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsRelated</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>137</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsRecommendedReading</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>72</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsDataSource</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>126</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>usesMethodIn, citesAsSourceDocument, citesAsPotentialSolution, credits,
                   citesAsDataSource, citesAsEvidence,</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>&lt; 72</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsRecommendedReading</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>116</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>describes, obtainsSupportFrom, extends, obtainsBackgroundFrom, usesDataFrom,
                   agreesWith, critiques</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>&lt; 40</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>credits</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>86</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>discusses, usesConclusionsFrom, confirms, containsAssertionFrom,
                   includesQuotationFrom, supports, citesAsMetadataDocument, reviews, documents</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>&lt; 18</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsPotentialSolution, usesMethodIn</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>80</p>
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>updates, disputes, compiles, corrects, qualifies, disagreesWith,
                   includesExcerptFrom, refutes, speculatesOn, derides, retracts</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>&lt; 6</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>critiques, includesQuotationFrom</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>&lt; 80</p>
               </td>
             </tr>
           </table>
-          <p class="caption">The distribution of CiTO properties selected by the users on the
-            experimental dataset in T41 and T10.</p>
-        </div>
+          <figcaption>The distribution of CiTO properties selected by the users on the
+            experimental dataset in T41 and T10.</figcaption>
+        </figure>
         <p>In T41, there were 4 properties not selected by any user: <i>parodies</i>,
             <i>plagiarizes</i>, <i>repliesTo</i> and <i>ridicules</i>. This is not surprising
           considering the meaning of these properties. </p>
         <p>These data show that there is a great variety in the choices of humans. In fact, only 18
           citations in T41 and 24 citations in T10 (out of 105) have been classified with exactly
-          the same CiTO property by at least 6 users. These results are summarised in <a class="ref"
-            href="#TableAgreements"></a>, together with the list of selected properties for both T41
+          the same CiTO property by at least 6 users. These results are summarised in <a href="#TableAgreements" role="ref"> </a>, together with the list of selected properties for both T41
           and T10. We indicate how many citations of the dataset users agreed on, and the number of
           properties selected by the users.</p>
-        <div class="table" id="TableAgreements">
+        <figure id="TableAgreements" role="tablebox">
           <table>
             <tr>
-              <th>
+              <th rowspan="1" colspan="1">
                 Test
               </th>
-              <th>
+              <th rowspan="1" colspan="1">
                 # Citations in the dataset
               </th>
-              <th>
+              <th rowspan="1" colspan="1">
                 CiTO properties
               </th>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>T41</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>18</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesForInformation (28), citesAsRelated (26), citesAsPotentialSolution (21),
                   citesAsDataSource (19), citesAsRecommendedReading (17), citesAsAuthority (16),
                   usesDataFrom (7), agreesWith (6), citesAsSourceDocument (6), usesMethodIn (6),
@@ -510,24 +478,24 @@
               </td>
             </tr>
             <tr>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>T10</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>24</p>
               </td>
-              <td>
+              <td rowspan="1" colspan="1">
                 <p>citesAsDataSource (56), citesAsRecommendedReading (43), citesForInformation (35),
                   obtainsBackgroundFrom (30), citesAsRelated (26), includesQuotationFrom (16),
                   critiques (15), citesAsPotentialSolution (11), credits (5), usesMethodIn (3)</p>
               </td>
             </tr>
           </table>
-          <p class="caption">The distribution of citations and CiTO properties on which users
-            agreed.</p>
-        </div>
-      </div>
-      <div class="section">
+          <figcaption>The distribution of citations and CiTO properties on which users
+            agreed.</figcaption>
+        </figure>
+      </section>
+      <section>
         <h1>Data evaluation</h1>
         <p>Considering all the 105 citations, the agreement among humans was very poor in both T41
           and T10. In fact we measured the Fleiss' <i>k </i>(that assesses the reliability of
@@ -543,8 +511,7 @@
           answers to RQ5.</p>
         <p>In order to identify other properties that showed a partial positive local agreement
           among users, we filtered only the 18 (in T41) and 24 (in T10) citations on which at least
-          6 users used the same property, as mentioned earlier in <a class="ref"
-            href="#TableAgreements"></a>. The <i>k</i> value on that subset showed a moderate
+          6 users used the same property, as mentioned earlier in <a href="#TableAgreements" role="ref"> </a>. The <i>k</i> value on that subset showed a moderate
           positive agreement: <i>k </i>= 0.39 in T41 and <i>k</i> = 0.43 in T10. In addition, we had
             <i>k</i> &gt; 0.5 for 5 CiTO-Ps in T41 – i.e., <i>agreesWith</i> (<i>k</i> = 0.54),
             <i>citesAsDataSource</i> (<i>k</i> = 0.52), <i>citesAsPotentialSolution</i> (<i>k</i> =
@@ -555,7 +522,7 @@
         <p>Given this heterogeneity, we tried to identify clusters of properties and to understand
           whether the testers selected the same properties together. The goal is to found which
           properties have similar meaning according to users' annotation. To do so, we applied the
-          Chinese Whispers clustering algorithm <a class="ref" href="#BiemannChineseWhispers"></a>
+          Chinese Whispers clustering algorithm <a href="#BiemannChineseWhispers" role="doc-biblioref"> </a>
           to the graphs of collocates obtained by looking at the annotations provided by each user
           for each citation in T41. The graphs were built as follows. For each citation, we
           considered all the combinations of pairs of different CiTO-Ps as annotated by users,
@@ -584,74 +551,73 @@
           taxonomical, equivalence, etc.) among the CiTO-Ps of each cluster and, to some extent,
           they can be used in an interchangeable way when annotating the citations – this answer to
           RQ6.</p>
-      </div>
-    </div>
-    <div id="SectionDiscussion" class="section">
+      </section>
+    </section>
+    <section id="SectionDiscussion">
       <h1>Users' feedback: SUS and grounded analysis</h1>
       <p>At the end of the test, both groups of testers were asked to answer to a SUS questionnaire
         including some free-text answering fields – in order to get some feedback on CiTO. The
         usability score for CiTO-Ps was computed using the <i>System Usability Scale</i>
-        (<i>SUS</i>) <a class="ref" href="#BrookeSUS"></a>, a well-known metrics used for the
+        (<i>SUS</i>) <a href="#BrookeSUS" role="doc-biblioref"> </a>, a well-known metrics used for the
         perception of the usability of a system. It has the advantage of being technology
-        independent and it is reliable even with a very small sample size <a class="ref"
-          href="#SauroGuideSUS"></a>. In addition to the main SUS scale, we also were interested in
+        independent and it is reliable even with a very small sample size <a href="#SauroGuideSUS" role="doc-biblioref"> </a>. In addition to the main SUS scale, we also were interested in
         examining the sub-scales of pure <i>Usability</i> and pure <i>Learnability</i> of the
-        system, as proposed recently by Lewis and Sauro <a class="ref" href="#LewisSUS"></a>. As
-        shown in <a class="ref" href="#TableEvaluation"></a>, the mean SUS score for CiTO-Ps in T41
+        system, as proposed recently by Lewis and Sauro <a href="#LewisSUS" role="doc-biblioref"> </a>. As
+        shown in <a href="#TableEvaluation" role="ref"> </a>, the mean SUS score for CiTO-Ps in T41
         was 53.5 while in T10 was 62.5 (in a 0 to 100 range). The mean values for the SUS sub-scales
         Usability and Learnability were, respectively, 50.94 and 63.7 in T41 and 60.94 and 68.7 in
         T10. However, the only difference approaching the statistical significance (i.e., 0.05 &lt;
         p &lt; 0.1) was found between the Usability measures (i.e., p = 0.06), suggesting that the
         perceived usability of CiTO-Ps in T10 is better than that of CiTO-Ps in T41 – this answer to
         RQ7.</p>
-      <div class="table" id="TableEvaluation">
+      <figure id="TableEvaluation" role="tablebox">
         <table>
           <tr>
-            <th>
+            <th rowspan="1" colspan="1">
               CiTO-Ps
             </th>
-            <th>
+            <th rowspan="1" colspan="1">
               SUS mean
             </th>
-            <th>
+            <th rowspan="1" colspan="1">
               Usability mean
             </th>
-            <th>
+            <th rowspan="1" colspan="1">
               Learnability mean
             </th>
           </tr>
           <tr>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>CiTO-Ps in T41</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>53.5 (s.d. 14.5)</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>50.94 (s.d. 12.42)</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>63.7 (s.d. 25.99)</p>
             </td>
           </tr>
           <tr>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>CiTO-Ps in T10</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>62.5 (s.d. 11.79)</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>60.94 (s.d. 10.13)</p>
             </td>
-            <td>
+            <td rowspan="1" colspan="1">
               <p>68.7 (s.d. 25.85)</p>
             </td>
           </tr>
         </table>
-        <p class="caption">System Usability Scale values and related sub-measures (<i>s.d.</i>
-          stands for <i>standard deviation</i>).</p>
-      </div>
+        <figcaption>System Usability Scale values and related sub-measures (<i>s.d.</i>
+          stands for <i>standard deviation</i>).</figcaption>
+      </figure>
       <p>The final text questionnaire contained a few questions, two asking for positive aspects,
         and two for negative aspects of CITO, and orthogonally two asking for qualifications (i.e.,
         adjectives), and two for features (i.e., substantives) of the tool: </p>
@@ -682,7 +648,7 @@
       </ul>
       <p>All 20 (10 in T41 and 10 in T10) subjects produced relevant content for the questions.</p>
       <p>In order to obtain some meaningful results, we subjected the text answers to a <i>grounded
-          theory</i> analysis. Grounded theory <a class="ref" href="#StraussCorbin"></a> is a method
+          theory</i> analysis. Grounded theory <a href="#StraussCorbin" role="doc-biblioref"> </a> is a method
         often used in Social Science to extract relevant concepts from unstructured corpora of
         natural language resources (e.g., texts, interviews, or questionnaires). In opposition to
         traditional methods aiming at fitting (and sometimes forcing) the content of the resources
@@ -699,16 +665,15 @@
         answers.</p>
       <p>Coding was performed separately in T41 and T10, but a later effort to homogenise the
         concepts drawn from the two sets was performed, so that results from the two tests could be
-        compared. <a class="ref" href="#FigureGrounded"></a> shows the results of those codes that
+        compared. <a href="#FigureGrounded" role="ref"> </a> shows the results of those codes that
         were mentioned at least twice.</p>
-      <div id="FigureGrounded" class="picture">
-        <p class="img_block">
-          <img class="17cm-10.081cm" src="img/10000201000005400000031DAB58F407.png" 
-            alt="A graph describing the issues highlighted by users" />
+      <figure id="FigureGrounded" role="picturebox">
+        <p>
+          <img class="17cm-10.081cm" src="img/10000201000005400000031DAB58F407.png" alt="A graph describing the issues highlighted by users"/>
         </p>
-        <p class="caption">A chart of the most mentioned issues in the questionnaires, according to
-          grounded analysis</p>
-      </div>
+        <figcaption>A chart of the most mentioned issues in the questionnaires, according to
+          grounded analysis</figcaption>
+      </figure>
       <p>Some interesting suggestions came up from these data – this answers to RQ8.</p>
       <p><b>Need to improve labels.</b> The first question basically asked to identify the best
         between property label, property description and example, in conveying the best use of the
@@ -734,8 +699,8 @@
         one), or helping with the use of statistics (e.g., 30% of citations are request for
         information, 6% are credits, etc.) which also could provide guidance, if not for the best
         candidate property, at least for uniformity in choices between different annotators.</p>
-    </div>
-    <div id="SectionConclusions" class="section">
+    </section>
+    <section id="SectionConclusions">
       <h1>Lessons learnt and conclusions</h1>
       <p>The starting point of this paper was that the characterisation of citations is an extremely
         difficult task also for humans. We presented some experiments to investigate which are the
@@ -753,18 +718,18 @@
         negative judgements (<i>disagreesWith</i>, <i>disputes</i>, <i>parodies</i>,
           <i>plagiarizes</i>, <i>refutes</i>, <i>repliesTo</i>, <i>ridicules</i>, etc.) are less
         frequent than neutral and positive ones supports the findings of Teufel <i>et al.</i>
-        <a class="ref" href="#TeufelAutomaticClassification"></a> on this topic. Notice also that,
-        as highlighted by <a class="ref" href="#HornseySugaring"></a>, a criticism can be postponed
+        <a href="#TeufelAutomaticClassification" role="doc-biblioref"> </a> on this topic. Notice also that,
+        as highlighted by <a href="#HornseySugaring" role="doc-biblioref"> </a>, a criticism can be postponed
         far from the sentence containing the citation and can be prefaced with positive feedback;
         where ever the criticism occur, it can be “toned down, disguised, or redirected away from
-        important people” <a class="ref" href="#MacRobertsNegationalReference"></a>.</p>
+        important people” <a href="#MacRobertsNegationalReference" role="doc-biblioref"> </a>.</p>
       <p><b>Identify the most-used neutral properties.</b> Although we think the intended audience
         of the research articles one choose for such an experiment may bias the use of some
         properties, we also believe that some properties are actually shared among different
         scholarly domains. The property <i>citesForInformation</i> and <i>citesAsRelated</i> are a
         clear example. As expected, they were the most used properties, being the most neutral ones
         of CiTO<i>.</i> This is in line with the findings of Teufel <i>et al.</i>
-        <a class="ref" href="#TeufelAnnotationScheme"></a>, on the analysis of citations within
+        <a href="#TeufelAnnotationScheme" role="doc-biblioref"> </a>, on the analysis of citations within
         Linguistics scholarly literature. In that paper, the neutral category <i>Neut</i> was used
         for the majority of annotations by humans. Although their large adoption,
           <i>citesForInformation</i> and <i>citesAsRelated</i> had a very low positive local
@@ -794,16 +759,16 @@
         both tests. It seems that the number of CiTO-Ps and the kinds of users are not the main
         factors to take into account for that low agreement.</p>
       <p><b>Define explicit relations between CiTO properties.</b> since there is no hierarchical
-          structure<a class="footnote" href="#ftn21"></a>, each user followed its own mapping
+          structure<a href="#ftn21" role="doc-noteref"> </a>, each user followed its own mapping
         determined by the mental model built and ended up selecting very different values – probably
         because users' mental models differed largely between users. Our opinion is that a further
         investigation is needed on the structure of CiTO properties. To this end, the identification
         of clusters of properties, such as those introduced in the previous section, could be a
         possible way to follow, as well as the use of other approaches, i.e., pure statistical
         techniques for assessing collocates of CiTO-Ps (e.g., the use of chi-square test to analyse
-        bigrams of collocates <a class="ref" href="#ManningNLP"></a>) and empirical algorithms used
+        bigrams of collocates <a href="#ManningNLP" role="doc-biblioref"> </a>) and empirical algorithms used
         for identifying relations (taxonomical, equivalence, meronomy, etc.) among keywords (e.g.,
-        Klink <a class="ref" href="#OsborneKlink"></a>). These approaches could be useful, for
+        Klink <a href="#OsborneKlink" role="doc-biblioref"> </a>). These approaches could be useful, for
         instance, to suggest ways to separate general properties form more specific ones or to build
         one or multiple hierarchies over the list of properties.</p>
       <p><b>Add support for customised properties.</b> One of the aspects of CiTO that users
@@ -812,12 +777,12 @@
         mental model but they perceived this as a limitation of the model. To solve this issue, the
         latest release of CiTO – supported by our findings – includes an extension mechanism that
         allow users to use their own citation function. The syntax is briefly shown below:</p>
-      <p class="code"> @prefix cito: &lt;http://purl.org/spar/cito/&gt; . @prefix oa:
+      <pre><code> @prefix cito: &lt;http://purl.org/spar/cito/&gt; . @prefix oa:
         &lt;http://www.w3.org/ns/oa#&gt; . @prefix dcterms: &lt;http://purl.org/dc/terms/&gt; . [] a
         oa:Annotation ; oa:hasBody [ dcterms:description "The cited paper initiated a whole field of
         research" ] ; oa:hasTarget [ a cito:CitationAct ; cito:hasCitingEntity
         &lt;uri-citing-paper&gt; ; cito:hasCitationEvent cito:cites ; cito:hasCitedEntity
-        &lt;uri-cited-paper&gt; ] .</p>
+        &lt;uri-cited-paper&gt; ] .</code></pre>
       <p>The interesting aspect is that the overall organisation of the ontology (i.e., the TBox)
         does not change, while users are free to express precisely their characterisation capturing
         details and tones.</p>
@@ -826,231 +791,215 @@
         indicator of the need for improvements in examples shown in our tests. One possible way of
         improving them will be to use the citations with the highest agreement and create additional
         samples from them.</p>
-      <p>These findings will also provide a basis for improving CiTalO <a class="ref" href="#CiTalO"
-        ></a>, a tool for identifying automatically the nature of citations. In particular, we plan
+      <p>These findings will also provide a basis for improving CiTalO <a href="#CiTalO" role="doc-biblioref"> </a>, a tool for identifying automatically the nature of citations. In particular, we plan
         to in our ongoing work to investigate cognitive architecture in order to extend CiTalO to
         simulate users' behaviour determined by mental models.</p>
-    </div>
-    <div id="SectionAcknowledgements" class="acknowledgements">
+    </section>
+    <section id="SectionAcknowledgements" role="doc-acknowledgements">
       <h1>Acknowledgements</h1>
       <p>We would like to thank all the people who participated to our (intensive and stressing)
         evaluation.</p>
-    </div>
-    <div id="SectionReferences" class="bibliography">
+    </section>
+    <section id="SectionReferences" role="doc-bibliography">
       <h1>References</h1>
       <ul>
-        <li id="PeroniCiTOFaBiO">
+        <li id="PeroniCiTOFaBiO" role="doc-biblioentry">
           <p>Peroni, S., Shotton, D. (2012). FaBiO and CiTO: ontologies for describing bibliographic
             resources and citations. In Journal of Web Semantics, 17 (December 2012): 33-43. DOI:
             10.1016/j.websem.2012.08.001</p>
         </li>
-        <li id="HouCountingCitation">
+        <li id="HouCountingCitation" role="doc-biblioentry">
           <p>Hou, W., Li, M., Niu, D. (2011). Counting citations in texts rather than reference
             lists to improve the accuracy of assessing scientific contribution. In BioEssays, 33
             (10): 724-727. DOI: 10.1002/bies.201100067</p>
         </li>
-        <li id="CopestakeScientificText">
+        <li id="CopestakeScientificText" role="doc-biblioentry">
           <p>Copestake, A., Corbett, P., Murray-Rust, P., Rupp, C. J., Siddharthan, A., Teufel, S.,
             Waldron, B. (2006). An architecture for language processing for scientific text. In
             Proceedings of the UK e-Science All Hands Meeting 2006.</p>
         </li>
-        <li id="AtharContextEnhanced">
+        <li id="AtharContextEnhanced" role="doc-biblioentry">
           <p>Athar, A., Teufel, S. (2012). Context-Enhanced Citation Sentiment Detection. In
             Proceedings of Human Language Technologies: Conference of the North American Chapter of
             the Association of Computational Linguistics 2012: 597-601.</p>
         </li>
-        <li id="AtharSentimentAnalysis">
+        <li id="AtharSentimentAnalysis" role="doc-biblioentry">
           <p>Athar, A. (2011). Sentiment Analysis of Citations using Sentence Structure-Based
             Features. In Proceedings of the 49th Annual Meeting of the Association for Computational
             Linguistics: Human Language Technologies: 81-87.</p>
         </li>
-        <li id="TeufelAutomaticClassification">
+        <li id="TeufelAutomaticClassification" role="doc-biblioentry">
           <p>Teufel, S., Siddharthan, A., Tidhar, D. (2006). Automatic classification of citation
             function. In Proceedings of the 2006 Conference on Empirical Methods in Natural Language
             Processing: 103-110.</p>
         </li>
-        <li id="TeufelAnnotationScheme">
+        <li id="TeufelAnnotationScheme" role="doc-biblioentry">
           <p>Teufel, S., Siddharthan, A., Tidhar, D. (2009). An annotation scheme for citation
             function. In Proceedings of the 7th SIGdial Workshop on Discourse and Dialogue:
             80-87.</p>
         </li>
-        <li id="JorgNatureCitations">
+        <li id="JorgNatureCitations" role="doc-biblioentry">
           <p>Jorg, B. (2008). Towards the Nature of Citations. In Poster Proceedings of the 5th
             International Conference on Formal Ontology in Information Systems.</p>
         </li>
-        <li id="TeufelArgumentationZone">
+        <li id="TeufelArgumentationZone" role="doc-biblioentry">
           <p>Teufel, S., Carletta, J., Moens, M. (1999). An annotation scheme for discourse-level
             argumentation in research articles. In Proceedings of the 9th Conference of the European
             Chapter of the Association for Computational Linguistics: 110-117.</p>
         </li>
-        <li id="MoravcsikFunctionCitation">
+        <li id="MoravcsikFunctionCitation" role="doc-biblioentry">
           <p>Moravcsik, M. J., Murugesan, P. (1975). Some Results on the Function and Quality of
             Citations. In Social Studies of Science, 5 (1): 86-92.</p>
         </li>
-        <li id="QazvinianNonExplicitCitingSentences">
+        <li id="QazvinianNonExplicitCitingSentences" role="doc-biblioentry">
           <p>Qazvinian, V., Radev, D. R. (2010). Identifying non-explicit citing sentences for
             citation-based summarization. In Proceedings of the 48th Annual Meeting of the
             Association for Computational Linguistics: 555-564.</p>
         </li>
-        <li id="AtharImplicitCitations">
+        <li id="AtharImplicitCitations" role="doc-biblioentry">
           <p>Athar, A., Teufel, S. (2012). Detection of implicit citations for sentiment detection.
             In Proceedings of the 50th Annual Meeting of the Association for Computational
             Linguistics: 18-26.</p>
         </li>
-        <li id="Craik1943">
+        <li id="Craik1943" role="doc-biblioentry">
           <p>Craik, K. J. W. (1967). The nature of explanation. Cambridge University Press. ISBN:
             0521094453</p>
         </li>
-        <li id="CiTalO">
+        <li id="CiTalO" role="doc-biblioentry">
           <p>Di Iorio, A., Nuzzolese, A. G., &amp; Peroni, S. (2013). Towards the automatic
             identification of the nature of citations. In Proceedings of 3rd Workshop on Semantic
             Publishing (SePublica 2013): 63-74. Retrieved from
             http://ceur-ws.org/Vol-994/paper-06.pdf (last visited Jan 13, 2013)</p>
         </li>
-        <li id="AIC">
+        <li id="AIC" role="doc-biblioentry">
           <p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., &amp; Vitali, F. (2013).
             Characterising citations in scholarly articles: an experiment. In Proceedings of 1st
             International Workshop on Artificial Intelligence and Cognition (AIC 2013): 124-129.
             Retrieved from http://ceur-ws.org/Vol-1100/paper13.pdf (last visited Jan 13, 2013)</p>
         </li>
-        <li id="SauroGuideSUS">
+        <li id="SauroGuideSUS" role="doc-biblioentry">
           <p>Sauro, J. (2011). A Practical Guide to the System Usability Scale: Background,
             Benchmarks &amp; Best Practices. CreateSpace. ISBN: 1461062707</p>
         </li>
-        <li id="LewisSUS">
+        <li id="LewisSUS" role="doc-biblioentry">
           <p>Lewis, J. R., &amp; Sauro, J. (2009). The Factor Structure of the System Usability
             Scale. In Proceedings of the 1st International Conference on Human Centered Design (HCD
             2009): 94-103. DOI: 10.1007/978-3-642-02806-9_12</p>
         </li>
-        <li id="StraussCorbin">
+        <li id="StraussCorbin" role="doc-biblioentry">
           <p>Strauss, A. Corbin, J. (1998). Basics of Qualitative Research Techniques and Procedures
             for Developing Grounded Theory (2nd edition). Sage Publications. ISBN: 0803959408</p>
         </li>
-        <li id="BrookeSUS">
+        <li id="BrookeSUS" role="doc-biblioentry">
           <p>Brooke, J. (1996). SUS: a “quick and dirty” usability scale. In Usability Evaluation in
             Industry: 189-194.</p>
         </li>
-        <li id="ZhuCitations">
+        <li id="ZhuCitations" role="doc-biblioentry">
           <p>Zhu, X., Turney, P., Lemire, D., &amp; Vellino, A. (2014). Measuring academic
             influence: Not all citations are equal. To appear in Journal of the American Society for
             Information Science and Technology. Preprint available at
             http://lemire.me/fr/documents/publications/citationjasist2013.pdf (last visited Jan 13,
             2013)</p>
         </li>
-        <li id="ShottonSemanticPublishing">
+        <li id="ShottonSemanticPublishing" role="doc-biblioentry">
           <p>Shotton, D. (2009). Semantic publishing: the coming revolution in scientific journal
             publishing. Learned Publishing, 22(2): 85-94. DOI: 10.1087/2009202</p>
         </li>
-        <li id="HornseySugaring">
+        <li id="HornseySugaring" role="doc-biblioentry">
           <p>Hornsey, M. J., Robson, E., Smith, J., Esposo, S., Sutton, R. M. (2008). Sugaring the
             Pill: Assessing Rhetorical Strategies Designed to Minimize Defensive Reactions to Group
             Criticism: Strategies to Soften Criticism. Human Communication Research, 34(1): 70-98.
             DOI: 10.1111/j.1468-2958.2007.00314.x</p>
         </li>
-        <li id="MacRobertsNegationalReference">
+        <li id="MacRobertsNegationalReference" role="doc-biblioentry">
           <p>MacRoberts, M. H., MacRoberts, B. R. (1984). The Negational Reference: Or the Art of
             Dissembling. Social Studies of Science, 14(1): 91-94</p>
         </li>
-        <li id="BiemannChineseWhispers">
+        <li id="BiemannChineseWhispers" role="doc-biblioentry">
           <p>Biemann, C. (2006). Chinese whispers: an efficient graph clustering algorithm and its
             application to natural language processing problems. In Proceedings of the 1st Workshop
             on Graph Based Methods for Natural Language Processing (TextGraph 2006): 73-80</p>
         </li>
-        <li id="ManningNLP">
+        <li id="ManningNLP" role="doc-biblioentry">
           <p>Manning, C. D., &amp; Schütze, H. (1999). Foundations of statistical natural language
             processing. MIT Press. ISBN: 0262133601</p>
         </li>
-        <li id="OsborneKlink">
+        <li id="OsborneKlink" role="doc-biblioentry">
           <p>Osborne, F., &amp; Motta, E. (2012). Mining Semantic Relations between Research Areas.
             In Proceedings of the 11th International Semantic Web Conference (ISWC 2012): 410-426.
             DOI: 10.1007/978-3-642-35176-1_26</p>
         </li>
-        <li id="LinkedScience13Kauppinen">
+        <li id="LinkedScience13Kauppinen" role="doc-biblioentry">
           <p>Kauppinen, T., Baglatzi, A., &amp; Keßler, C. (2013). Linked Science: interconnecting
             scientific assets. In Data Intensive Science. CRC Press.</p>
         </li>
-        <li id="LinkedScience12Gil">
+        <li id="LinkedScience12Gil" role="doc-biblioentry">
           <p>Gil, Y., Ratnakar, V., &amp; Hanson, P. C. (2012). Organic data publishing: a novel
             approach to scientific data sharing. In Proceedings of the 2nd International Workshop on
             Linked Science (LISC 2012). http://ceur-ws.org/Vol-951/paper1.pdf (last visited Jan 13,
             2013)</p>
         </li>
-        <li id="ShottonOpenCitations">
+        <li id="ShottonOpenCitations" role="doc-biblioentry">
           <p>Shotton, D. (2013). Publishing: Open citations. Nature, 502 (7471): 295-297. DOI:
             10.1038/502295a</p>
         </li>
       </ul>
-    </div>
-    <div class="footnotes">
-      <div id="ftn6">
+    </section>
+    <section role="doc-footnotes">
+      <section id="ftn6" role="doc-footnote">
         <p>CiTO: <a href="http://purl.org/spar/cito">http://purl.org/spar/cito</a>.</p>
-      </div>
-      <div id="ftn7">
+      </section>
+      <section id="ftn7" role="doc-footnote">
         <p>CiteULike homepage: <a href="http://www.citeulike.org/">http://www.citeulike.org</a>.</p>
-      </div>
-      <div id="ftn8">
-        <p>Open Linked Data from The Open University: <a href="http://data.open.ac.uk/"
-            >http://data.open.ac.uk</a>.</p>
-      </div>
-      <div id="ftn9">
-        <p>CiTO Reference Annotation Tools for Google Chrome: <a
-            href="https://chrome.google.com/webstore/detail/annotate-journal-citation/geajighoohelnjnhfmhbcaddbcgcbphn"
-            >https://chrome.google.com/webstore/detail/annotate-journal-citation/geajighoohelnjnhfmhbcaddbcgcbphn</a>.
+      </section>
+      <section id="ftn8" role="doc-footnote">
+        <p>Open Linked Data from The Open University: <a href="http://data.open.ac.uk/">http://data.open.ac.uk</a>.</p>
+      </section>
+      <section id="ftn9" role="doc-footnote">
+        <p>CiTO Reference Annotation Tools for Google Chrome: <a href="https://chrome.google.com/webstore/detail/annotate-journal-citation/geajighoohelnjnhfmhbcaddbcgcbphn">https://chrome.google.com/webstore/detail/annotate-journal-citation/geajighoohelnjnhfmhbcaddbcgcbphn</a>.
         </p>
-      </div>
-      <div id="ftn10">
-        <p>Link to Link Wordpress plugin: <a href="http://wordpress.org/plugins/link-to-link/"
-            >http://wordpress.org/plugins/link-to-link/</a>. </p>
-      </div>
-      <div id="ftn11">
-        <p>PenSoft Publishers homepage: <a href="http://www.pensoft.net/"
-            >http://www.pensoft.net/</a>. </p>
-      </div>
-      <div id="ftn12">
-        <p>CiTalO homepage: <a href="http://wit.istc.cnr.it:8080/tools/citalo"
-            >http://wit.istc.cnr.it:8080/tools/citalo</a>.</p>
-      </div>
-      <div id="ftn13">
-        <p>ACL Anthology Network: <a href="http://clair.eecs.umich.edu/aan/index.php"
-            >http://clair.eecs.umich.edu/aan/index.php</a>. </p>
-      </div>
-      <div id="ftn14">
+      </section>
+      <section id="ftn10" role="doc-footnote">
+        <p>Link to Link Wordpress plugin: <a href="http://wordpress.org/plugins/link-to-link/">http://wordpress.org/plugins/link-to-link/</a>. </p>
+      </section>
+      <section id="ftn11" role="doc-footnote">
+        <p>PenSoft Publishers homepage: <a href="http://www.pensoft.net/">http://www.pensoft.net/</a>. </p>
+      </section>
+      <section id="ftn12" role="doc-footnote">
+        <p>CiTalO homepage: <a href="http://wit.istc.cnr.it:8080/tools/citalo">http://wit.istc.cnr.it:8080/tools/citalo</a>.</p>
+      </section>
+      <section id="ftn13" role="doc-footnote">
+        <p>ACL Anthology Network: <a href="http://clair.eecs.umich.edu/aan/index.php">http://clair.eecs.umich.edu/aan/index.php</a>. </p>
+      </section>
+      <section id="ftn14" role="doc-footnote">
         <p>The <i>context window</i>
-          <a class="ref" href="#QazvinianNonExplicitCitingSentences"></a> of a citation is a chain
+          <a href="#QazvinianNonExplicitCitingSentences" role="doc-biblioref"> </a> of a citation is a chain
           of sentences implicitly referring to the citation itself, which usually starts from the
           citation sentence and involves few more subsequent sentences where that citation is still
-          implicit <a class="ref" href="#AtharImplicitCitations"></a>.</p>
-      </div>
-      <div id="ftn15">
+          implicit <a href="#AtharImplicitCitations" role="doc-biblioref"> </a>.</p>
+      </section>
+      <section id="ftn15" role="doc-footnote">
         <p>This set of beliefs corresponds to the a user's mental model.</p>
-      </div>
-      <div id="ftn16">
-        <p>Proceedings of Balisage 2011: <a href="http://balisage.net/Proceedings/vol7/cover.html"
-            >http://balisage.net/Proceedings/vol7/cover.html</a>.</p>
-      </div>
-      <div id="ftn17">
-        <p>It is available for review purposes at <a
-            href="http://www.cs.unibo.it/~nuzzoles/cito_1/?user=reviewer"
-            >http://www.cs.unibo.it/~nuzzoles/cito_1/?user=reviewer</a>.</p>
-      </div>
-      <div id="ftn18">
-        <p>They are available at <a
-            href="http://www.cs.unibo.it/~nuzzoles/cito_2/materials/cito_props.html"
-            >http://www.cs.unibo.it/~nuzzoles/cito_2/materials/cito_props.html</a>.</p>
-      </div>
-      <div id="ftn19">
-        <p>R project for statistical computing: <a href="http://www.r-project.org/"
-            >http://www.r-project.org/</a>.</p>
-      </div>
-      <div id="ftn20">
-        <p>All the data collected and related material are available online at <a
-            href="http://www.essepuntato.it/2014/eswc/test"
-            >http://www.essepuntato.it/2014/eswc/test</a>. </p>
-      </div>
-      <div id="ftn21">
+      </section>
+      <section id="ftn16" role="doc-footnote">
+        <p>Proceedings of Balisage 2011: <a href="http://balisage.net/Proceedings/vol7/cover.html">http://balisage.net/Proceedings/vol7/cover.html</a>.</p>
+      </section>
+      <section id="ftn17" role="doc-footnote">
+        <p>It is available for review purposes at <a href="http://www.cs.unibo.it/~nuzzoles/cito_1/?user=reviewer">http://www.cs.unibo.it/~nuzzoles/cito_1/?user=reviewer</a>.</p>
+      </section>
+      <section id="ftn18" role="doc-footnote">
+        <p>They are available at <a href="http://www.cs.unibo.it/~nuzzoles/cito_2/materials/cito_props.html">http://www.cs.unibo.it/~nuzzoles/cito_2/materials/cito_props.html</a>.</p>
+      </section>
+      <section id="ftn19" role="doc-footnote">
+        <p>R project for statistical computing: <a href="http://www.r-project.org/">http://www.r-project.org/</a>.</p>
+      </section>
+      <section id="ftn20" role="doc-footnote">
+        <p>All the data collected and related material are available online at <a href="http://www.essepuntato.it/2014/eswc/test">http://www.essepuntato.it/2014/eswc/test</a>. </p>
+      </section>
+      <section id="ftn21" role="doc-footnote">
         <p>The authors of CiTO decided on purpose to avoid a taxonomical organisation, since they
           thought it could be difficult to reach a global agreement.</p>
-      </div>
-    </div>
+      </section>
+    </section>
   </body>
 </html>

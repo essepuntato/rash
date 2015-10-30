@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.0, June 30, 2015
+From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.1, October 25, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -34,19 +34,19 @@ Under the following terms:
         indent="no" />
     <xsl:strip-space elements="*"/>
     
-    <!-- Template per la preparazione della pagina -->
+    <!-- Template for possible languages -->
     <xsl:variable name="v_all.languages" select="('it','en','en-s')" as="xs:string*" />
     
-    <!-- Variabile per la dimensione massima delle immagini e relativa riduzione in percentuale -->
+    <!-- Variables of the maximum size for images (instable) -->
     <xsl:variable name="img.content.width" select="'15cm'" as="xs:string" />
     <xsl:variable name="img.default.width" select="'14cm'" as="xs:string" />
     
-    <!-- Variabile per usare BibTeX -->
+    <!-- Variable specifying if BibTeX should be used (instable) -->
     <xsl:param name="bibtex" select="false()" as="xs:boolean" />
     
-    <!-- Template per l'inizio dell'elaborazione -->
+    <!-- Main template -->
     <xsl:template match="/">
-        <!-- Classe dello stile da usare (specificare magari dal file principale, come parametro) -->
+        <!-- LaTeX style -->
         <xsl:text>\documentclass[runningheads,a4paper]{llncs}</xsl:text>
         <xsl:call-template name="standard_packages" />
         <xsl:call-template name="verbatim_text" />
@@ -169,11 +169,11 @@ Under the following terms:
         <xsl:text>\maketitle</xsl:text>
         
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="//iml:body/iml:div[@class = 'abstract']"/>
+            <xsl:with-param name="select" select="//iml:body/iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']"/>
         </xsl:call-template>
     </xsl:template>
     
-    <xsl:template match="iml:div[@class = 'abstract']" priority="0.7">
+    <xsl:template match="iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']" priority="3.0">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
         <xsl:text>\begin{abstract}</xsl:text>
@@ -196,14 +196,14 @@ Under the following terms:
         <xsl:text>\end{abstract}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:body" priority="0.7">
+    <xsl:template match="iml:body" priority="3.0">
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@class, ' ') satisfies $token != 'footnotes' and $token != 'abstract']|text()" />
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-footnotes' and $token != 'doc-abstract']|text()" />
         </xsl:call-template>
     </xsl:template>
     
-    <xsl:template match="iml:ol[empty(ancestor::iml:div[@class = 'bibliography'])]" priority="0.7">
+    <xsl:template match="iml:ol[empty(ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography'])]" priority="3.0">
         <xsl:call-template name="n" />
         <xsl:text>\begin{enumerate}</xsl:text>
         <xsl:call-template name="next" />
@@ -211,7 +211,7 @@ Under the following terms:
         <xsl:text>\end{enumerate}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:ul[empty(ancestor::iml:div[@class = 'bibliography'])]" priority="0.7">
+    <xsl:template match="iml:ul[empty(ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography'])]" priority="3.0">
         <xsl:call-template name="n" />
         <xsl:text>\begin{itemize}</xsl:text>
         <xsl:call-template name="next" />

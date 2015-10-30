@@ -1,3 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+RASH to LaTeX: MathML module - Version 0.4, October 25, 2015
+by Silvio Peroni
+
+A small adaptation of the some sources of the Web-XSLT project by David Carlisle 
+available on GitHub at https://github.com/davidcarlisle/web-xslt.  
+
+Copyright of the original work by David Carlisle 2001, 2002, 2008, 2009, 2013-2015.
+This work is licensed under a W3C Software Notice and License 
+(http://www.w3.org/Consortium/Legal/copyright-software-19980720).
+
+THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
+
+COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF ANY USE OF THE SOFTWARE OR DOCUMENTATION.
+-->
 <xsl:stylesheet version="2.0" 
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:m="http://www.w3.org/1998/Math/MathML" 
@@ -5,7 +21,7 @@
  xmlns:xs="http://www.w3.org/2001/XMLSchema"
  exclude-result-prefixes="m xs">
  
- <xsl:template mode="pmml2tex" match="m:math[ancestor::iml:p[some $token in tokenize(@class, ' ') satisfies $token = 'math_block']]">\let\par\empty <xsl:apply-templates mode="pmml2tex"
+ <xsl:template mode="pmml2tex" match="m:math[ancestor::iml:figure[1][some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']]">\let\par\empty <xsl:apply-templates mode="pmml2tex"
   /></xsl:template>
  
  <xsl:template mode="pmml2tex" match="m:math">$\let\par\empty <xsl:apply-templates mode="pmml2tex"

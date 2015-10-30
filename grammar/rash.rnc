@@ -1,4 +1,4 @@
-# Research Articles in Simplified HTML (RASH) format - Version 0.3.4, March 24, 2015
+# Research Articles in Simplified HTML (RASH) format - Version 0.4, October 27, 2015
 # by Silvio Peroni
 # 
 # This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -35,7 +35,7 @@ html =
   }
 head =
   element head {
-    attributes_html_element_no_class,
+    attributes_html_element_no_role,
     (title
      & (cm_meta_author
         | meta_keyword*
@@ -47,7 +47,9 @@ head =
 script =
   element script { aSrc }
   | element script {
-      attribute type { "text/turtle" },
+      attribute type {
+        "text/turtle" | "text/ld+json" | "text/csv" | "text/rdf+xml"
+      },
       text
     }
 link =
@@ -67,7 +69,7 @@ meta = element meta { attributes_html_head_element }
 meta_category =
   element meta {
     attribute name { xsd:string "dcterms.subject" },
-    attributes_html_element_no_class
+    attributes_html_element_no_role
   }
 meta_keyword =
   element meta {
@@ -99,152 +101,147 @@ link_author_affiliation =
   }
 body =
   element body {
-    attributes_html_element_no_class,
-    div_abstract?,
-    div_section+,
-    div_acknowledgements?,
-    div_references?,
-    div_footnotes?
+    attributes_html_element_no_role,
+    abstract?,
+    section+,
+    acknowledgements?,
+    references?,
+    footnotes?
   }
-li = element li { attributes_html_element, cm_container }
-ul = element ul { attributes_html_element, li+ }
-ol = element ol { attributes_html_element, li+ }
-p = element p { attributes_html_element, cm_inline }
-p_code =
-  element p {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*code.*" }
+li = element li { attributes_html_element_no_role, cm_container }
+li_biblioentry =
+  element li {
+    attribute role {
+      xsd:string { pattern = "doc-biblioentry" }
     },
-    attributes_html_element_no_class,
-    cm_inline
+    attributes_html_element_no_role,
+    cm_container
   }
-p_quote =
-  element p {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*quote.*" }
-    },
-    attributes_html_element_no_class,
-    cm_inline
+ul = element ul { attributes_html_element_no_role, li+ }
+ol = element ol { attributes_html_element_no_role, li+ }
+p = element p { attributes_html_element_no_role, cm_inline }
+pre =
+  element pre {
+    attributes_html_element_no_role,
+    element code { attributes_html_element_no_role, cm_inline }
   }
-h1 = element h1 { attributes_html_element_no_class, cm_inline }
-title = element title { attributes_html_element_no_class, text }
-table = element table { attributes_html_element, tr+ }
-tr = element tr { attributes_html_element, (th | td)+ }
+blockquote =
+  element blockquote { attributes_html_element_no_role, cm_container }
+h1 = element h1 { attributes_html_element_no_role, cm_inline }
+title = element title { attributes_html_element_no_role, text }
+table = element table { attributes_html_element_no_role, tr+ }
+tr = element tr { attributes_html_element_no_role, (th | td)+ }
 th =
   element th {
-    attributes_html_element, aRowspan?, aColspan?, cm_inline
+    attributes_html_element_no_role, aRowspan?, aColspan?, cm_inline
   }
 td =
   element td {
-    attributes_html_element, aRowspan?, aColspan?, cm_container
+    attributes_html_element_no_role, aRowspan?, aColspan?, cm_container
   }
-div_abstract =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*abstract.*" }
+abstract =
+  element section {
+    attribute role {
+      xsd:string { pattern = "doc-abstract" }
     },
-    attributes_html_element_no_class,
+    attributes_html_element_no_role,
     cm_sections
   }
-div_section =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*section.*" }
+section =
+  element section { attributes_html_element_no_role, cm_sections }
+acknowledgements =
+  element section {
+    attribute role {
+      xsd:string { pattern = "doc-acknowledgements" }
     },
-    attributes_html_element_no_class,
+    attributes_html_element_no_role,
     cm_sections
   }
-div_acknowledgements =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*acknowledgements.*" }
+references =
+  element section {
+    attribute role {
+      xsd:string { pattern = "doc-bibliography" }
     },
-    attributes_html_element_no_class,
-    cm_sections
-  }
-div_references =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*bibliography.*" }
-    },
-    attributes_html_element_no_class,
+    attributes_html_element_no_role,
     h1,
-    (ul | ol)
+    (element ul { attributes_html_element_no_role, li_biblioentry+ }
+     | element ol { attributes_html_element_no_role, li_biblioentry+ })
   }
-div_footnotes =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*footnotes.*" }
+footnotes =
+  element section {
+    attribute role {
+      xsd:string { pattern = "doc-footnotes" }
     },
-    attributes_html_element_no_class,
-    element div { attributes_html_element, cm_container }+
+    attributes_html_element_no_role,
+    element section {
+      attribute role {
+        xsd:string { pattern = "doc-footnote" }
+      },
+      attributes_html_element_no_role,
+      cm_container
+    }+
   }
-div_figure =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*picture.*" }
+figurebox =
+  element figure {
+    attribute role {
+      xsd:string { pattern = "picturebox" }
     },
-    attributes_html_element_no_class,
-    cm_img_block,
-    cm_caption
+    attributes_html_element_no_role,
+    img_block,
+    caption
   }
-div_table =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*table.*" }
+listingbox =
+  element figure {
+    attribute role {
+      xsd:string { pattern = "listingbox" }
     },
-    attributes_html_element_no_class,
+    attributes_html_element_no_role,
+    pre,
+    caption
+  }
+tablebox =
+  element figure {
+    attribute role {
+      xsd:string { pattern = "tablebox" }
+    },
+    attributes_html_element_no_role,
     table,
-    cm_caption
+    caption
   }
-div_formula =
-  element div {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*formula.*" }
+formulabox =
+  element figure {
+    attribute role {
+      xsd:string { pattern = "formulabox" }
     },
-    attributes_html_element_no_class,
-    (cm_img_block
-     | element p {
-         attribute class {
-           xsd:NMTOKENS { pattern = ".*math_block.*" }
-         },
-         attributes_html_element_no_class,
-         math
-       })
+    attributes_html_element_no_role,
+    (img_block
+     | element p { attributes_html_element_no_role, math })
   }
 math = element ns1:math { cm_mathml_element+ }
 a =
   element a {
-    attributes_html_element_no_class,
-    attribute class { (xsd:NMTOKENS - ("ref" | "footnote")) }?,
-    aHref?,
-    aNameRef?,
-    cm_inline
+    attributes_html_element_no_role, aHref?, aNameRef?, cm_inline
   }
 aRefFootnote =
   element a {
-    attributes_html_element_no_class,
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*(ref|footnote).*" }
+    attributes_html_element_no_role,
+    attribute role {
+      xsd:string { pattern = "(ref|doc-noteref|doc-biblioref)" }
     },
     attribute href { xsd:anyURI },
     aNameRef?
   }
-i = element i { attributes_html_element, cm_inline }
-b = element b { attributes_html_element, cm_inline }
-q = element q { attributes_html_element, cm_inline }
-sup = element sup { attributes_html_element, cm_inline }
-sub = element sub { attributes_html_element, cm_inline }
-span = element span { attributes_html_element, cm_inline }
-span_code =
-  element span {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*code.*" }
-    },
-    attributes_html_element_no_class,
-    cm_inline
-  }
-img = element img { attributes_html_element, aSrc, aAlt }
+i = element i { attributes_html_element_no_role, cm_inline }
+b = element b { attributes_html_element_no_role, cm_inline }
+q = element q { attributes_html_element_no_role, cm_inline }
+sup = element sup { attributes_html_element_no_role, cm_inline }
+sub = element sub { attributes_html_element_no_role, cm_inline }
+span = element span { attributes_html_element_no_role, cm_inline }
+code = element code { attributes_html_element_no_role, cm_inline }
+img = element img { attributes_html_element_no_role, aSrc, aAlt }
+caption =
+  element figcaption { attributes_html_element_no_role, cm_inline }
+img_block = element p { attributes_html_element_no_role, img }
 # /END Elements
 
 # Attributes
@@ -280,13 +277,14 @@ aInlist = attribute inlist { xsd:string }
 # Content Models
 cm_container =
   (p
-   | p_code
-   | p_quote
+   | pre
+   | blockquote
    | ul
    | ol
-   | div_table
-   | div_figure
-   | div_formula)+
+   | tablebox
+   | figurebox
+   | formulabox
+   | listingbox)+
 cm_inline =
   (text
    | a
@@ -294,7 +292,7 @@ cm_inline =
    | img
    | math
    | span
-   | span_code
+   | code
    | sub
    | sup
    | i
@@ -303,34 +301,20 @@ cm_inline =
 cm_sections =
   h1,
   (p
+   | pre
+   | blockquote
    | ul
    | ol
-   | table
-   | div_section
-   | div_figure
-   | div_formula
-   | div_table)+
+   | tablebox
+   | figurebox
+   | formulabox
+   | listingbox
+   | section)+
 cm_mathml_element =
   element ns1:* {
     (attribute * { text }
      | text
      | cm_mathml_element)*
-  }
-cm_caption =
-  element p {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*caption.*" }
-    },
-    attributes_html_element_no_class,
-    cm_inline
-  }
-cm_img_block =
-  element p {
-    attribute class {
-      xsd:NMTOKENS { pattern = ".*img_block.*" }
-    },
-    attributes_html_element_no_class,
-    img
   }
 cm_meta_author =
   meta_author_name, meta_author_email, link_author_affiliation
@@ -338,9 +322,8 @@ cm_meta_author =
 attributes_html_head_element =
   attributes_html_generic, attributes_html_head_generic, attributes_rdfa
 attributes_html_head_generic = aName?, aCharset?
-attributes_html_element = attributes_html_element_no_class, aClass?
-attributes_html_element_no_class =
-  attributes_html_generic, attributes_rdfa
+attributes_html_element_no_role =
+  attributes_html_generic, aClass?, attributes_rdfa
 attributes_html_generic = aId?
 # The following chategorisation of RDFa attributes has been taken 
 # from http://www.w3.org/TR/rdfa-syntax/#attribute_roles 

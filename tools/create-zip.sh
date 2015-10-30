@@ -1,14 +1,15 @@
 #!/bin/bash
 # This script creates the zip package of the current distribution of RASH.
-mkdir rash
-mkdir rash/documentation
-cp ../documentation/index.html rash/documentation
-cp -rf ../documentation/img rash/documentation
-cp -rf ../examples rash
-cp -rf ../fonts rash
-cp -rf ../css rash
-cp -rf ../js rash
-mkdir rash/grammar
-cp ../grammar/rash.rn* rash/grammar
-zip -r ../rash.zip rash
-rm -rf rash
+SCRIPTPATH=`dirname $0`
+mkdir $SCRIPTPATH/rash
+mkdir $SCRIPTPATH/rash/documentation
+cp $SCRIPTPATH/../documentation/index.html $SCRIPTPATH/rash/documentation
+cp -rf $SCRIPTPATH/../documentation/img $SCRIPTPATH/rash/documentation
+cp -rf $SCRIPTPATH/../examples $SCRIPTPATH/rash
+cp -rf $SCRIPTPATH/../fonts $SCRIPTPATH/rash
+cp -rf $SCRIPTPATH/../css $SCRIPTPATH/rash
+cp -rf $SCRIPTPATH/../js $SCRIPTPATH/rash
+mkdir $SCRIPTPATH/rash/grammar
+cp $SCRIPTPATH/../grammar/rash.rn* $SCRIPTPATH/rash/grammar
+zip -r $SCRIPTPATH/../rash.zip $SCRIPTPATH/rash
+rm -rf $SCRIPTPATH/rash

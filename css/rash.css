@@ -1,5 +1,5 @@
 /* 
-rash.css - Version 0.2.1, March 23, 2015
+rash.css - Version 0.3, October 23, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -14,14 +14,16 @@ Under the following terms:
 * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 */
 
+@namespace mathml url(http://www.w3.org/1998/Math/MathML);
+
 /* Font */
 body { font-size: 12pt; }
 /* /END Font */
 
 /* Footnote counters */
 body { counter-reset: fn_pointer; }
-.footnotes { counter-reset: fn; }
-.footnotes > div:before {
+section[role=doc-footnotes] { counter-reset: fn; }
+section[role=doc-footnotes] > section[role=doc-footnote]:before {
     counter-increment: fn;
     content: counter(fn);
     float: left;
@@ -39,21 +41,25 @@ table {
     max-width:90%;
 }
 
-.picture, .table, .formula {
+figure {
     margin-top: 2em;
     margin-bottom: 2em;
     text-align:center;
 }
 
-.img_block {
+figure > p:not(mathml|math) {
     margin-bottom:0px;
 }
 
-.picture img {
+figure[role=picturebox] img {
     border: 1px solid black;
 }
 
-.caption {
+figure[role=listingbox] pre {
+    text-align:left;
+}
+
+figcaption {
     margin-top:5px;
 }
 
@@ -84,32 +90,32 @@ body { counter-reset: h1; }
 .h4 { counter-reset: h5; }
 .h5 { counter-reset: h6; }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h1:before {
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h1:before {
     counter-increment: h1;
     content: counter(h1) ". ";
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h2:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h2:before{
     counter-increment: h2;
     content: counter(h1) "." counter(h2) ". ";
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h3:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h3:before{
     counter-increment: h3;
     content: counter(h1) "." counter(h2) "." counter(h3) ". ";
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h4:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h4:before{
     counter-increment: h4;
     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". ";
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h5:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h5:before{
     counter-increment: h5;
     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". ";
 }
 
-div:not(.abstract):not(.bibliography):not(.acknowledgements):not(.footnotes):not(.appendix) .h6:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h6:before{
     counter-increment: h6;
     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". ";
 }
@@ -190,11 +196,11 @@ body {
         text-align:justify;
     }
     
-    p.code {
+    pre {
         text-align:left;
     }
     
-    p.caption , p.img_block , p.math_block {
+    figcaption , figure > p {
         text-align:center;
     }
     

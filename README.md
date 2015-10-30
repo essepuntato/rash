@@ -7,6 +7,8 @@ Please use the hashtag *#rashfwk* for referring to any of the items defined in t
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework).
 
 ## Venues that have adopted RASH as submission format
+* [2016 International Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD 2016)](http://cs.unibo.it/save-sd/2016/index.html), held during the [25th International World Wide Web Conference (WWW 2016)](http://www.www2016.ca/)
+
 * [2015 International Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD 2015)](http://cs.unibo.it/save-sd/2015/index.html), held during the [24th International World Wide Web Conference (WWW 2015)](http://www.www2015.it/)
 
 * [2015 International Workshop on Learning in the Cloud (LC2015)](http://lc2015.dibris.unige.it/), held during the [26th ACM Conference on Hypertext and Social Media (Hypertex 2015)](http://ht.acm.org/ht2015/)

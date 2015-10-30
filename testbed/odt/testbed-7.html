@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="./rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
    <head>
       <meta charset="UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      <link rel="stylesheet" href="./bootstrap.min.css"/>
-      <link rel="stylesheet" href="./rash.css"/>
-      <script src="./jquery.min.js"> </script>
-      <script src="./bootstrap.min.js"> </script>
-      <script src="./rash.js"> </script>
+      <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../css/rash.css"/>
+      <script src="../../js/jquery.min.js"> </script>
+      <script src="../../js/bootstrap.min.js"> </script>
+      <script src="../../js/rash.js"> </script>
       <title>No title specified</title>
    </head>
    <body>
-      <div class="section">
+      <section>
          <h1>Formulas</h1>
          <p>In this example we want to introduce how to use formulas within the text.</p>
-         <div class="section">
+         <section>
             <h1>Inline formula</h1>
             <p>Inline formulas are created using the formula editor of OpenOffice: <math xmlns="http://www.w3.org/1998/Math/MathML">
                   <semantics>
@@ -37,12 +37,12 @@
                      <annotation encoding="StarMath 5.0">a - b = neg c </annotation>
                   </semantics>
                </math>.</p>
-         </div>
-         <div class="section">
+         </section>
+         <section>
             <h1>Formula box</h1>
             <p>Formula boxes are created by simply including them in a new paragraph with a caption and without any other textual element in it, as follows.</p>
-            <div class="formula">
-               <p class="math_block">
+            <figure role="formulabox">
+               <p>
                   <math xmlns="http://www.w3.org/1998/Math/MathML">
                      <semantics>
                         <mrow>
@@ -63,8 +63,8 @@
                      </semantics>
                   </math>
                </p>
-            </div>
-         </div>
-      </div>
+            </figure>
+         </section>
+      </section>
    </body>
 </html>

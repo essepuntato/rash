@@ -13,35 +13,35 @@
       <title>No title specified</title>
    </head>
    <body>
-      <div class="abstract">
+      <section role="doc-abstract">
          <h1>Abstract</h1>
          <p>It is possible to specify some special sections if their headings contains specific words. In particular, if the first section of the document is named <q>Abstract</q>, then it actually represents the abstract of the paper.</p>
          <p>Similarly, if the last section of the document is named <q>References</q> and contains an ordered list, then it actually represents the bibliography of the paper.</p>
-      </div>
-      <div class="section">
+      </section>
+      <section>
          <h1>Common section</h1>
          <p>This is just a common section as shown in previous testbeds.</p>
-      </div>
-      <div class="acknowledgements">
+      </section>
+      <section role="doc-acknowledgements">
          <h1>Acknowledgements</h1>
          <p>Another special section is the <q>Acknowledgements</q> one, which is used to thank people involved (to some extent) in the work. Usually, this section is placed before the reference section.</p>
-      </div>
-      <div class="bibliography">
+      </section>
+      <section role="doc-bibliography">
          <h1>References</h1>
          <ol>
-            <li>
+            <li role="doc-biblioentry">
                <p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a> 
                </p>
             </li>
-            <li>
+            <li role="doc-biblioentry">
                <p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a> 
                </p>
             </li>
-            <li>
+            <li role="doc-biblioentry">
                <p>Prud'hommeaux, E., Carothers, G. (2014). RDF 1.1 Turtle: Terse RDF Triple Language. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a> 
                </p>
             </li>
          </ol>
-      </div>
+      </section>
    </body>
 </html>
