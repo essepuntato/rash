@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH update XSLT file - Version 0.4, October 24, 2015
+RASH update XSLT file - Version 0.4.1, October 30, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -29,7 +29,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     
-    <xsl:output encoding="UTF-8" indent="no" method="xml" />
+    <xsl:output encoding="UTF-8" indent="no" method="xml" cdata-section-elements="script" />
     
     <!-- 
         From 0.3.5 to last version
@@ -255,7 +255,7 @@ Under the following terms:
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="script">
+    <xsl:template match="script[normalize-space() = '']">
         <script>
             <xsl:call-template name="copy-attrs-no-class" />
             <xsl:text> </xsl:text>
