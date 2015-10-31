@@ -70,7 +70,94 @@
         <!-- /END Metadata -->
         
         <!-- Other RDF statements -->
-        <script type="text/turtle"> </script>
+        <script type="text/turtle">
+        <![CDATA[
+            @prefix a: <http://www.essepuntato.it/2015/sepublica/> .
+            @prefix p: <http://www.essepuntato.it/person/> .
+            @prefix fabio: <http://purl.org/spar/fabio/> .
+            @prefix pro: <http://purl.org/spar/pro/> .
+            @prefix frbr: <http://purl.org/vocab/frbr/core#> .
+            @prefix r: <http://www.essepuntato.it/role/> .
+            @prefix o: <http://www.essepuntato.it/organisation/> .
+            
+            a:rash-framework a fabio:ResearchPaper ;
+                frbr:realization a:version-of-record ;
+                frbr:creator p:adi, p:an, p:fo, p:essepuntato, p:fp, p:ms, p:fv, p:jz .
+               
+            a:version-of-record a fabio:WorkshopPaper ;
+                frbr:embodiment a:html-format .
+            
+            a:html-format a fabio:WebPage ;
+                frbr:exemplar <http://www.essepuntato.it/2015/sepublica/rash-sepublica2015.html> .
+            
+            p:adi pro:holdsRoleInTime r:adi-author-of-rash-framework , r:adi-affiliation .
+            p:an pro:holdsRoleInTime r:an-author-of-rash-framework , r:an-affiliation .
+            p:fo pro:holdsRoleInTime r:fo-author-of-rash-framework , r:fo-affiliation .
+            p:essepuntato pro:holdsRoleInTime r:essepuntato-author-of-rash-framework , r:essepuntato-affiliation .
+            p:fp pro:holdsRoleInTime r:fp-author-of-rash-framework , r:fp-affiliation .
+            p:ms pro:holdsRoleInTime r:ms-author-of-rash-framework , r:ms-affiliation .
+            p:fv pro:holdsRoleInTime r:fv-author-of-rash-framework , r:fv-affiliation .
+            p:jz pro:holdsRoleInTime r:jz-author-of-rash-framework , r:jz-affiliation .
+            
+            r:adi-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:an-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:fo-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:essepuntato-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:fp-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:ms-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:fv-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            r:jz-author-of-rash-framework a pro:RoleInTime ;
+                pro:withRole pro:author ;
+                pro:relatesToDocument a:rash-framework .
+            
+            r:adi-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:cs-unibo .
+            r:an-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:cs-unibo , o:stlab-cnr .
+            r:fo-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:kmi-open .
+            r:essepuntato-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:cs-unibo , o:stlab-cnr .
+            r:fp-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:cs-unibo .
+            r:ms-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:w3c-tokyo .
+            r:fv-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:cs-unibo .
+            r:jz-affiliation a pro:RoleInTime ;
+                pro:withRole pro:affiliate ;
+                pro:relatesToDocument a:rash-framework ;
+                pro:relatesToOrganization o:sc-lanc .
+            ]]>
+        </script>
     </head>
     <body>
         <!-- Abstract -->
