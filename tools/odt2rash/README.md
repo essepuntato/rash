@@ -1,6 +1,6 @@
 # ODT2RASH Executable
 
-The odt2rash.jar executable converts an odt file into the RASH format.
+The odt2rash.jar executable converts an ODT file into the RASH format. The conversion is based on a [particular XSLT document](https://github.com/essepuntato/rash/blob/master/xslt/from-odt.xsl) and allows one to convert OpenOffice documents, written according to [specific guidelines](https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt) using only basic features of OpenOffice, into RASH documents automatically.
 
 ## Usage
 The usage of the JAR is the following
