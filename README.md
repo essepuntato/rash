@@ -1,8 +1,8 @@
 # RASH Framework
 
-This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles.
+This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles. RASH has been released with its own [documentation](https://rawgit.com/essepuntato/rash/master/documentation/index.html), which is a descriptive document that introduces the language and explains how to write research article by using it. In addition, there exist also [guidelines](https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt) for OpenOffice that explain how to write a scholarly paper, by using the basic features available in OpenOffice Writer, in a way that it can be converted into RASH by means of an [appropriate conversion tool](https://github.com/essepuntato/rash/tree/master/tools/odt2rash).
 
-A brief introduction of all the tools is provided in the [related page](https://github.com/essepuntato/rash/tree/master/tools), that includes also usage information.
+A brief introduction of all the tools included in the Framework is provided in the [related page](https://github.com/essepuntato/rash/tree/master/tools), that includes also usage information.
 
 Please use the hashtag *#rashfwk* for referring to any of the entities defined in the RASH Framework via Twitter or other social platforms.
 
