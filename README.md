@@ -2,7 +2,9 @@
 
 This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles.
 
-Please use the hashtag *#rashfwk* for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.
+A brief introduction of all the tools is provided in the [related page](https://github.com/essepuntato/rash/tree/master/tools), that includes also usage information.
+
+Please use the hashtag *#rashfwk* for referring to any of the entities defined in the RASH Framework via Twitter or other social platforms.
 
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework).
 

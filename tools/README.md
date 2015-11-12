@@ -1,6 +1,6 @@
 # Tools for RASH
 
-The tools included in this directory allows to process RASH documents in order to check its validity against the formal grammar, convert it from/to different formats, and enhance it with additional RDF statements. In this page only the "sh" scripts are described, while the tools included in the various directories have their proper README file.
+The tools included in this directory allows to process RASH documents in order to check its validity against the formal grammar, convert it from/to different formats, and enhance it with additional RDF statements. In this page only the "sh" scripts are described, while the tools included in the various directories, i.e., the [*ODT2RASH* converter](https://github.com/essepuntato/rash/tree/master/tools/odt2rash) (for converting OpenOffice documents into RASH) and the [*SPAR Xtractor*](https://github.com/essepuntato/rash/tree/master/tools/spar-xtractor) (for enhancing RASH documents with additional RDFa about the structure of the paper), have their proper README file.
 
 ## create-zip.sh
 
