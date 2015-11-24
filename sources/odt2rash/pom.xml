@@ -38,6 +38,9 @@
 							<!-- <outputFileName>ciccio.html</outputFileName> -->
 							<!-- default target location, just to demonstrate the parameter -->
 							<outputDirectory>${project.basedir}/src/main/resources/xslt/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+							<!-- <md5>df65b5642f33676313ebe4d5b69a3fff</md5> -->
 						</configuration>
 					</execution>
 					<execution>
@@ -49,6 +52,8 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/css/bootstrap.min.css</url>
 							<outputDirectory>${project.basedir}/src/main/resources/css/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -60,6 +65,8 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/css/rash.css</url>
 							<outputDirectory>${project.basedir}/src/main/resources/css/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -71,6 +78,8 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/css/lncs.css</url>
 							<outputDirectory>${project.basedir}/src/main/resources/css/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -82,6 +91,8 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/js/bootstrap.min.js</url>
 							<outputDirectory>${project.basedir}/src/main/resources/js/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -93,6 +104,8 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/js/jquery.min.js</url>
 							<outputDirectory>${project.basedir}/src/main/resources/js/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 					<execution>
@@ -104,6 +117,125 @@
 						<configuration>
 							<url>https://raw.githubusercontent.com/essepuntato/rash/master/js/rash.js</url>
 							<outputDirectory>${project.basedir}/src/main/resources/js/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunbi</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunbi.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunbx</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunbx.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunbxo</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunbxo.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunrm</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunrm.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunsi</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunsi.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunss</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunss.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunsx</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunsx.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmunti</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmunti.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-font-cmuntt</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://raw.githubusercontent.com/essepuntato/rash/master/fonts/cmuntt.otf</url>
+							<outputDirectory>${project.basedir}/src/main/resources/fonts/</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 				</executions>
