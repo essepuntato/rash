@@ -1,32 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<!DOCTYPE html>
-<html
-    xmlns="http://www.w3.org/1999/xhtml"
-    prefix="
-        a: http://www.essepuntato.it/paper/iswc2015/demo/
-        c: http://www.essepuntato.it/cited-by/iswc2015/demo/
-        p: http://www.essepuntato.it/person/
-        o: http://www.essepuntato.it/organisation/
-        r: http://www.essepuntato.it/role/
-        fabio: http://purl.org/spar/fabio/
-        cito: http://purl.org/spar/cito/
-        pro: http://purl.org/spar/pro/
-        schema: http://schema.org/
-        prism: http://prismstandard.org/namespaces/basic/2.0/
-        frbr: http://purl.org/vocab/frbr/core#
-        dcterms: http://purl.org/dc/terms/">
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><html xmlns="http://www.w3.org/1999/xhtml" prefix="         a: http://www.essepuntato.it/paper/iswc2015/demo/         c: http://www.essepuntato.it/cited-by/iswc2015/demo/         p: http://www.essepuntato.it/person/         o: http://www.essepuntato.it/organisation/         r: http://www.essepuntato.it/role/         fabio: http://purl.org/spar/fabio/         cito: http://purl.org/spar/cito/         pro: http://purl.org/spar/pro/         schema: http://schema.org/         prism: http://prismstandard.org/namespaces/basic/2.0/         frbr: http://purl.org/vocab/frbr/core#         dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
-        <meta charset="UTF-8"></meta>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         
-        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../css/bootstrap.min.css"/>
         <link rel="stylesheet" href="../css/rash.css"/>
         
-        <script src="../js/jquery.min.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
-        <script src="../js/rash.js"></script>
+        <script src="../js/jquery.min.js"> </script>
+        <script src="../js/bootstrap.min.js"> </script>
+        <script src="../js/rash.js"> </script>
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
@@ -34,60 +17,48 @@
         
         <!-- Author's data (one or more) -->
         <meta about="p:adi" typeof="schema:Person" name="dc.creator" property="schema:name" content="Angelo Di Iorio"/>
-        <meta about="p:adi" property="schema:email" content="angelo.diiorio@unibo.it" />
-        <link about="p:adi" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo" />
+        <meta about="p:adi" property="schema:email" content="angelo.diiorio@unibo.it"/>
+        <link about="p:adi" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo"/>
         
         <meta about="p:an" typeof="schema:Person" name="dc.creator" property="schema:name" content="Andrea Giovanni Nuzzolese"/>
-        <meta about="p:an" property="schema:email" content="andrea.nuzzolese@istc.cnr.it" />
-        <link about="p:an" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo" />
-        <link about="p:an" property="schema:affiliation" href="http://www.essepuntato.it/organisation/stlab-cnr" />
+        <meta about="p:an" property="schema:email" content="andrea.nuzzolese@istc.cnr.it"/>
+        <link about="p:an" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo"/>
+        <link about="p:an" property="schema:affiliation" href="http://www.essepuntato.it/organisation/stlab-cnr"/>
         
         <meta about="p:fo" typeof="schema:Person" name="dc.creator" property="schema:name" content="Francesco Osborne"/>
-        <meta about="p:fo" property="schema:email" content="francesco.osborne@open.ac.uk" />
-        <link about="p:fo" property="schema:affiliation" href="http://www.essepuntato.it/organisation/kmi-open" />
+        <meta about="p:fo" property="schema:email" content="francesco.osborne@open.ac.uk"/>
+        <link about="p:fo" property="schema:affiliation" href="http://www.essepuntato.it/organisation/kmi-open"/>
         
         <meta about="p:essepuntato" typeof="schema:Person" name="dc.creator" property="schema:name" content="Silvio Peroni"/>
-        <meta about="p:essepuntato" property="schema:email" content="silvio.peroni@unibo.it" />
-        <link about="p:essepuntato" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo" />
-        <link about="p:essepuntato" property="schema:affiliation" href="http://www.essepuntato.it/organisation/stlab-cnr" />
+        <meta about="p:essepuntato" property="schema:email" content="silvio.peroni@unibo.it"/>
+        <link about="p:essepuntato" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo"/>
+        <link about="p:essepuntato" property="schema:affiliation" href="http://www.essepuntato.it/organisation/stlab-cnr"/>
         
         <meta about="p:fp" typeof="schema:Person" name="dc.creator" property="schema:name" content="Francesco Poggi"/>
-        <meta about="p:fp" property="schema:email" content="francesco.poggi@unibo.it" />
-        <link about="p:fp" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo" />
+        <meta about="p:fp" property="schema:email" content="francesco.poggi@unibo.it"/>
+        <link about="p:fp" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo"/>
         
         <meta about="p:ms" typeof="schema:Person" name="dc.creator" property="schema:name" content="Michael Smith"/>
-        <meta about="p:ms" property="schema:email" content="mike@w3.org" />
-        <link about="p:ms" property="schema:affiliation" href="http://www.essepuntato.it/organisation/w3c-tokyo" />
-        <link about="p:ms" property="schema:affiliation" href="http://www.essepuntato.it/organisation/media-keio" />
+        <meta about="p:ms" property="schema:email" content="mike@w3.org"/>
+        <link about="p:ms" property="schema:affiliation" href="http://www.essepuntato.it/organisation/w3c-tokyo"/>
+        <link about="p:ms" property="schema:affiliation" href="http://www.essepuntato.it/organisation/media-keio"/>
         
         <meta about="p:fv" typeof="schema:Person" name="dc.creator" property="schema:name" content="Fabio Vitali"/>
-        <meta about="p:fv" property="schema:email" content="fabio.vitali@unibo.it" />
-        <link about="p:fv" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo" />
+        <meta about="p:fv" property="schema:email" content="fabio.vitali@unibo.it"/>
+        <link about="p:fv" property="schema:affiliation" href="http://www.essepuntato.it/organisation/cs-unibo"/>
         
         <meta about="p:jz" typeof="schema:Person" name="dc.creator" property="schema:name" content="Jun Zhao"/>
-        <meta about="p:jz" property="schema:email" content="j.zhao5@lancaster.ac.uk" />
-        <link about="p:jz" property="schema:affiliation" href="http://www.essepuntato.it/organisation/sc-lanc" />
+        <meta about="p:jz" property="schema:email" content="j.zhao5@lancaster.ac.uk"/>
+        <link about="p:jz" property="schema:affiliation" href="http://www.essepuntato.it/organisation/sc-lanc"/>
         
         
         <!-- Affiliations -->
-        <meta 
-            about="http://www.essepuntato.it/organisation/cs-unibo" property="schema:name" typeof="schema:Organization" 
-            content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy" />
-        <meta 
-            about="http://www.essepuntato.it/organisation/stlab-cnr" property="schema:name" typeof="schema:Organization"
-            content="Semantic Technology Laboratory, Institute of Cognitive Sciences and Technologies, Italian National Research Council, Rome, Italy" />
-        <meta 
-            about="http://www.essepuntato.it/organisation/kmi-open" property="schema:name" typeof="schema:Organization" 
-            content="Knowledge Media Institute, The Open University, Milton Keynes, United Kingdom" />
-        <meta 
-            about="http://www.essepuntato.it/organisation/sc-lanc" property="schema:name" typeof="schema:Organization" 
-            content="School of Computing and Communications, Lancaster University, Lancaster, United Kingdom" />
-        <meta 
-            about="http://www.essepuntato.it/organisation/w3c-tokyo" property="schema:name" typeof="schema:Organization" 
-            content="World Wide Web Consortium, Shinjuku, Tokyo, Japan" />
-        <meta 
-            about="http://www.essepuntato.it/organisation/media-keio" property="schema:name" typeof="schema:Organization" 
-            content="Graduate School of Media and Governance, Keio University, Fujisawa, Kanagawa, Japan" />
+        <meta about="http://www.essepuntato.it/organisation/cs-unibo" property="schema:name" typeof="schema:Organization" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
+        <meta about="http://www.essepuntato.it/organisation/stlab-cnr" property="schema:name" typeof="schema:Organization" content="Semantic Technology Laboratory, Institute of Cognitive Sciences and Technologies, Italian National Research Council, Rome, Italy"/>
+        <meta about="http://www.essepuntato.it/organisation/kmi-open" property="schema:name" typeof="schema:Organization" content="Knowledge Media Institute, The Open University, Milton Keynes, United Kingdom"/>
+        <meta about="http://www.essepuntato.it/organisation/sc-lanc" property="schema:name" typeof="schema:Organization" content="School of Computing and Communications, Lancaster University, Lancaster, United Kingdom"/>
+        <meta about="http://www.essepuntato.it/organisation/w3c-tokyo" property="schema:name" typeof="schema:Organization" content="World Wide Web Consortium, Shinjuku, Tokyo, Japan"/>
+        <meta about="http://www.essepuntato.it/organisation/media-keio" property="schema:name" typeof="schema:Organization" content="Graduate School of Media and Governance, Keio University, Fujisawa, Kanagawa, Japan"/>
         
         <!-- Paper keywords (one or more) -->
         <meta about="a:version-of-record" property="prism:keyword" content="RASH"/>
@@ -100,7 +71,7 @@
         
         <!-- Other RDF statements -->
         <script type="text/turtle">
-            <![CDATA[
+        <![CDATA[
             @prefix a: <http://www.essepuntato.it/paper/iswc2015/demo/> .
             @prefix p: <http://www.essepuntato.it/person/> .
             @prefix fabio: <http://purl.org/spar/fabio/> .
@@ -193,76 +164,76 @@
     </head>
     <body>
         <!-- Abstract -->
-        <div class="abstract">
+        <section role="doc-abstract">
             <h1>Abstract</h1>
             <p>This paper introduces the <i>RASH Framework</i>, i.e., a set of specifications and tools for writing academic articles in <i>RASH</i>, a simplified version of HTML. RASH focuses strictly on writing the content of the paper leaving all the issues about its validation, visualisation, conversion, and data extraction to the tools developed within the framework.</p>
-        </div>
+        </section>
         <!-- Sections -->
-        <div class="section" id="sec_introduction">
+        <section id="sec_introduction">
             <h1>Introduction</h1>
-            <p>In the last months of 2014, several posts within technical mailing lists of the <a href="https://lists.w3.org/Archives/Public/public-lod/2014Nov/0003.html">Web</a> and <a href="https://lists.w3.org/Archives/Public/public-lod/2014Oct/0058.html">Semantic Web</a> community have discussed an evergreen topic in scholarly communication, i.e., how authors of research papers could submit their works in HTML rather than, say, PDF, MS Word or LaTeX. Besides the obvious justification of simplification and unification of data formats for drafting, submission and publication, an additional underlying rationale is that the adoption of HTML in the context of scientific publications would ease the embedding of semantic annotations, thus making a step towards the improvement of research communications thanks to already existing W3C standards such as RDFa and Turtle. The adoption of Web-first formats in scientific literature, i.e., HTML and RDF, is a necessary step towards the complex (and exciting) scenarios that the Semantic Publishing has promised us <a href="#force11" class="ref"></a> <a class="ref" href="#shotton-sempub"></a>. However, such formats should support the needs of the actors involved in the production/delivery/use of scholarly articles.</p>
-            <p>Along the lines of other existing works on this topic (e.g., <i><a href="https://github.com/csarven/linked-research">Linked Research</a></i> project <a href="#linked-research" class="ref"></a> and <i><a href="http://scholarlymarkdown.com/">ScholarlyMarkdown</a></i> <a href="#scholmd" class="ref"></a>), in this paper we introduce the <i>RASH Framework</i>, i.e., a set of specifications and tools for writing academic articles in <i>RASH</i> (an HTML+RDF-based markup language for writing scholarly documents) which aims at addressing all the aforementioned issues.</p>
-            <p>The rest of the paper is structured as follows. In <a class="ref" href="#sec_rationale"></a> we introduce the rationale for the RASH Framework. In <a class="ref" href="#sec_tools"></a> we provide a quick overview of all its tools, that are available in the <a href="https://github.com/essepuntato/rash">Framework repository</a>. Finally, in <a class="ref" href="#sec_conclusions"></a> we conclude the paper sketching out some future developments.</p>
-        </div>
-        <div class="section" id="sec_rationale">
+            <p>In the last months of 2014, several posts within technical mailing lists of the <a href="https://lists.w3.org/Archives/Public/public-lod/2014Nov/0003.html">Web</a> and <a href="https://lists.w3.org/Archives/Public/public-lod/2014Oct/0058.html">Semantic Web</a> community have discussed an evergreen topic in scholarly communication, i.e., how authors of research papers could submit their works in HTML rather than, say, PDF, MS Word or LaTeX. Besides the obvious justification of simplification and unification of data formats for drafting, submission and publication, an additional underlying rationale is that the adoption of HTML in the context of scientific publications would ease the embedding of semantic annotations, thus making a step towards the improvement of research communications thanks to already existing W3C standards such as RDFa and Turtle. The adoption of Web-first formats in scientific literature, i.e., HTML and RDF, is a necessary step towards the complex (and exciting) scenarios that the Semantic Publishing has promised us <a href="#force11" role="doc-biblioref"> </a> <a href="#shotton-sempub" role="doc-biblioref"> </a>. However, such formats should support the needs of the actors involved in the production/delivery/use of scholarly articles.</p>
+            <p>Along the lines of other existing works on this topic (e.g., <i><a href="https://github.com/csarven/linked-research">Linked Research</a></i> project <a href="#linked-research" role="doc-biblioref"> </a> and <i><a href="http://scholarlymarkdown.com/">ScholarlyMarkdown</a></i> <a href="#scholmd" role="doc-biblioref"> </a>), in this paper we introduce the <i>RASH Framework</i>, i.e., a set of specifications and tools for writing academic articles in <i>RASH</i> (an HTML+RDF-based markup language for writing scholarly documents) which aims at addressing all the aforementioned issues.</p>
+            <p>The rest of the paper is structured as follows. In <a href="#sec_rationale" role="ref"> </a> we introduce the rationale for the RASH Framework. In <a href="#sec_tools" role="ref"> </a> we provide a quick overview of all its tools, that are available in the <a href="https://github.com/essepuntato/rash">Framework repository</a>. Finally, in <a href="#sec_conclusions" role="ref"> </a> we conclude the paper sketching out some future developments.</p>
+        </section>
+        <section id="sec_rationale">
             <h1>A <q>Web-first</q> framework for research articles</h1>
-            <p>Some works, e.g., Capadisli <i>et al.</i> <a class="ref" href="#linked-research"></a>, suggest not to force any particular HTML structure for research papers. In this way, the author of a paper is free to use any possible kinds of HTML <i>linearisations</i> for writing a scholarly text. This freedom could, however, results in two main kinds of issues:</p>
+            <p>Some works, e.g., Capadisli <i>et al.</i> <a href="#linked-research" role="doc-biblioref"> </a>, suggest not to force any particular HTML structure for research papers. In this way, the author of a paper is free to use any possible kinds of HTML <i>linearisations</i> for writing a scholarly text. This freedom could, however, results in two main kinds of issues:</p>
             <ul>
                 <li><p><i>visualisation bottleneck</i> – it may affect the correct use of existing, well-developed and pretty standard CSSs;</p></li>
                 <li><p><i>less focus on the research content</i> – the fact that a certain paper is not visualised in a browser very well could bring the author to work on the presentation of the text, rather than on its research content.</p></li>
             </ul>
             <p>A further complication to an already complex scenario comes from the <i>necessary</i> involvement of publishers. Leaving the authors free of using their own HTML format could be also counterproductive from a publisher's perspective, in particular when we speaking about the possibility of adopting such HTML formats for regular conference/journal camera-ready submissions.</p>
-            <p>The RASH Framework<a href="#fn1" class="footnote"></a> has been proposed in order to address all the aforementioned issues. It is a set of specifications and tools for writing academic articles in <i>RASH</i> - a summary of the whole framework is introduced in <a href="#fig_framework" class="ref"></a>.</p>
-            <p>The <i>Research Articles in Simplified HTML</i> (<i>RASH</i>) format is a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <i>25 elements</i> for writing academic research articles, and it is entirely based on a strong theory on <i>structural patterns</i> for XML documents <a href="#patterns" class="ref"></a>. It allows authors to use <a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations within any element of the language. In addition, RASH allows the use of elements <span class="code">script</span> (with the attribute <span class="code">type</span> set to <q>text/turtle</q> or to <q>application/ld+json</q>) within the element <span class="code">head</span> for adding plain Turtle or JSON-LD content. Any RASH documents begins as a simple (X)HTML5 document<a href="#fn4" class="footnote"></a>, by specifying the document element <span class="code">html</span> (with the usual namespace) that contains the element <span class="code">head</span> for defining metadata of the document, and the element <span class="code">body</span> for including the whole content of the document.</p>
-            <div id="fig_framework" class="picture">
-                <p class="img_block">
-                    <img src="img/rash-demo-iswc2015-framework.png" alt="The RASH Framework"></img>
+            <p>The RASH Framework<a href="#fn1" role="doc-noteref"> </a> has been proposed in order to address all the aforementioned issues. It is a set of specifications and tools for writing academic articles in <i>RASH</i> - a summary of the whole framework is introduced in <a href="#fig_framework" role="ref"> </a>.</p>
+            <p>The <i>Research Articles in Simplified HTML</i> (<i>RASH</i>) format is a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <i>25 elements</i> for writing academic research articles, and it is entirely based on a strong theory on <i>structural patterns</i> for XML documents <a href="#patterns" role="doc-biblioref"> </a>. It allows authors to use <a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations within any element of the language. In addition, RASH allows the use of elements <code>script</code> (with the attribute <code>type</code> set to <q>text/turtle</q> or to <q>application/ld+json</q>) within the element <code>head</code> for adding plain Turtle or JSON-LD content. Any RASH documents begins as a simple (X)HTML5 document<a href="#fn4" role="doc-noteref"> </a>, by specifying the document element <code>html</code> (with the usual namespace) that contains the element <code>head</code> for defining metadata of the document, and the element <code>body</code> for including the whole content of the document.</p>
+            <figure id="fig_framework" role="picturebox">
+                <p>
+                    <img src="img/rash-demo-iswc2015-framework.png" alt="The RASH Framework"/>
                 </p>
-                <p class="caption">The RASH Framework and its components addressing needs of different users.</p>
-            </div>
-        </div>
+                <figcaption>The RASH Framework and its components addressing needs of different users.</figcaption>
+            </figure>
+        </section>
         
-        <div class="section" id="sec_tools">
+        <section id="sec_tools">
             <h1>Tools in the Framework</h1>
-            <p>In this section we introduce all the tools shown in <a href="#fig_framework" class="ref"></a> that we have developed in order to support users in adopting RASH - all the tools are distributed under an <a href="http://opensource.org/licenses/ISC">ISC License</a> or a <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 International License</a>.</p>
+            <p>In this section we introduce all the tools shown in <a href="#fig_framework" role="ref"> </a> that we have developed in order to support users in adopting RASH - all the tools are distributed under an <a href="http://opensource.org/licenses/ISC">ISC License</a> or a <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 International License</a>.</p>
             <p><b>Validation.</b> All the markup items in RASH are defined as a <a href="http://relaxng.org/">RelaxNG</a> grammar and are compatible with HTML5. We have developed a script to enable RASH users to check their documents simultaneously both against the specific requirements in the RelaxNG grammar and also against the full set of HTML checks that the <a href="http://validator.w3.org/nu/">W3C Nu HTML Checker</a> does for all HTML documents.</p>
             
             <p><b>Visualisation.</b> The visualisation of RASH documents is rendered by the browser in the current form by means of appropriate <a href="http://www.w3.org/Style/CSS/specs.en.html">CSS3</a> stylesheets and javascript scripts developed for this purpose. We are actually using some external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>, in order to guarantee the current clear visualisation and for adding additional tools to the user. As an example, the RASH version of this paper is available at <a href="https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html">https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html</a>.</p>
             
-            <p><b>Conversion</b>. We have spent some efforts in preparing XSLT 2.0 documents for converting RASH documents into different LaTeX styles, such as <a href="http://www.acm.org/sigs/publications/proceedings-templates">ACM ICPS</a> and <a href="http://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Springer LNCS</a>. This is, actually, one of the crucial steps to guarantee the use of RASH within international events<a href="#fn3" class="footnote"></a> and to be able to publish RASH documents in the official LaTeX format as required by the organisation committee of such events. In addition, we have already developed another XSLT 2.0 document to perform conversions from OpenOffice documents into RASH documents, which allows authors to write a paper through the OpenOffice editor and then converting the related ODT file into RASH automatically.</p>
+            <p><b>Conversion</b>. We have spent some efforts in preparing XSLT 2.0 documents for converting RASH documents into different LaTeX styles, such as <a href="http://www.acm.org/sigs/publications/proceedings-templates">ACM ICPS</a> and <a href="http://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Springer LNCS</a>. This is, actually, one of the crucial steps to guarantee the use of RASH within international events<a href="#fn3" role="doc-noteref"> </a> and to be able to publish RASH documents in the official LaTeX format as required by the organisation committee of such events. In addition, we have already developed another XSLT 2.0 document to perform conversions from OpenOffice documents into RASH documents, which allows authors to write a paper through the OpenOffice editor and then converting the related ODT file into RASH automatically.</p>
             
-            <p><b>Enhancement.</b> A recent development of the RASH Framework has concerned the automatic enrichment of RASH documents with RDFa annotations defining the actual structure of such documents in terms of the <a href="http://purl.org/spar/doco">Document Component Ontology (DoCO)</a> <a href="#doco" class="ref"></a>. In particular, a Java application called <i>SPAR Xtractor suite</i> has been developed: it takes a RASH document as input and returns a new RASH document where all its markup elements have been annotated with their actual (structural) semantics.</p>
-        </div>
+            <p><b>Enhancement.</b> A recent development of the RASH Framework has concerned the automatic enrichment of RASH documents with RDFa annotations defining the actual structure of such documents in terms of the <a href="http://purl.org/spar/doco">Document Component Ontology (DoCO)</a> <a href="#doco" role="doc-biblioref"> </a>. In particular, a Java application called <i>SPAR Xtractor suite</i> has been developed: it takes a RASH document as input and returns a new RASH document where all its markup elements have been annotated with their actual (structural) semantics.</p>
+        </section>
         
-        <div class="section" id="sec_conclusions">
+        <section id="sec_conclusions">
             <h1>Conclusions</h1>
             <p>In this paper we have introduced the <i>RASH Framework</i>, i.e., a set of specifications and tools for writing academic articles in <i>RASH</i>. We have discussed the rationale behind the development of RASH, and we have presented the language with all the validation/visualisation/conversion/extraction tools we have developed so far. As immediate future developments, we plan to create additional scripts for extracting RDF statements from RASH documents according to SPAR Ontologies (<a href="http://www.sparontologies.net">http://www.sparontologies.net</a>), and to develop additional XSLT documents in order to convert DOCX documents into RASH and to convert RASH documents into several formats for scholarly communications, such as EPUB, DocBook, and LaTeX IEEE styles.</p>
-        </div>
+        </section>
         
         <!-- References -->
-        <div class="bibliography">
+        <section role="doc-bibliography">
             <h1>References</h1>
             <ol about="a:version-of-record" rel="cito:cites">
-                <li id="shotton-sempub" about="c:shotton-sempub-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:shotton-sempub-work"><p about="c:shotton-sempub-expression" property="dcterms:bibliographicCitation">Shotton, D., Portwin, K., Klyne, G., &amp; Miles, A. (2009). Adventures in Semantic Publishing: Exemplar Semantic Enhancements of a Research Article. PLoS Computational Biology, 5(4): e1000361. <a about="c:shotton-sempub-work" typeof="fabio:ResearchPaper" href="http://dx.doi.org/10.1371/journal.pcbi.1000361">http://dx.doi.org/<span about="c:shotton-sempub-expression" property="prism:doi">10.1371/journal.pcbi.1000361</span></a></p></li>
-                <li id="patterns" about="c:patterns-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:patterns-work"><p about="c:patterns-expression" property="dcterms:bibliographicCitation">Di Iorio, A., Peroni, S., Poggi, F., &amp; Vitali, F. (2014). Dealing with structural patterns of XML documents. Journal of the American Society for Information Science and Technology, 65(9): 1884–1900. <a about="c:patterns-work" typeof="fabio:ResearchPaper" href="http://dx.doi.org/10.1002/asi.23088">http://dx.doi.org/<span about="c:patterns-expression" property="prism:doi">10.1002/asi.23088</span></a></p></li>
-                <li id="doco" about="c:doco-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:doco-work"><p about="c:doco-expression" property="dcterms:bibliographicCitation">Constantin, A., Peroni, S., Pettifer, S., Shotton, D., &amp; Vitali, F. (in press). The Document Component Ontology (DoCO). To appear in Semantic Web. <span about="c:doco-work" typeof="fabio:ResearchPaper">OA version available at <a about="c:doco-expression" property="fabio:hasRepresentation"  href="http://www.semantic-web-journal.net/system/files/swj1016.pdf">http://www.semantic-web-journal.net/system/files/swj1016.pdf</a></span></p></li>
-                <li id="linked-research" about="c:linked-research-expression" typeof="fabio:ConferencePaper" property="frbr:realizationOf" resource="c:linked-research-work"><p about="c:linked-research-expression" property="dcterms:bibliographicCitation">Capadisli, S., Riedl, R., &amp; Auer, S. (2015). Enabling Accessible Knowledge. In Proc. of CeDEM 2015. <span about="c:linked-research-work" typeof="fabio:ResearchPaper">OA version available at <a about="c:linked-research-expression" property="fabio:hasRepresentation"  href="http://csarven.ca/enabling-accessible-knowledge">http://csarven.ca/enabling-accessible-knowledge</a></span></p></li>
-                <li id="scholmd" about="c:scholmd-expression" typeof="fabio:WebContent" property="frbr:realizationOf" resource="c:scholmd-work"><p about="c:scholmd-expression" property="dcterms:bibliographicCitation">Lin, T. T. Y., &amp; Beales, G. (2015). ScholarlyMarkdown Syntax Guide. Guide, 31 January 2015. <a about="c:scholmd-work" typeof="fabio:InstructionalWork" property="fabio:hasURL" content="http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html" href="http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html">http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html</a></p></li>
-                <li id="force11" about="c:force11-expression" typeof="fabio:WhitePaper" property="frbr:realizationOf" resource="c:force11-work"><p about="c:force11-expression" property="dcterms:bibliographicCitation">Bourne, P. E., Clark, T., Dale, R., de Waard, A., Herman, I., Hovy, E. H., &amp; Shotton, D. (2011). FORCE11 White Paper: Improving The Future of Research Communications and e-Scholarship. White paper, 28 October 2011. FORCE11. <a about="c:force11-work" typeof="fabio:MeetingReport" property="fabio:hasURL" content="https://www.force11.org/white_paper" href="https://www.force11.org/white_paper">https://www.force11.org/white_paper</a></p></li>
+                <li id="shotton-sempub" about="c:shotton-sempub-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:shotton-sempub-work" role="doc-biblioentry"><p about="c:shotton-sempub-expression" property="dcterms:bibliographicCitation">Shotton, D., Portwin, K., Klyne, G., &amp; Miles, A. (2009). Adventures in Semantic Publishing: Exemplar Semantic Enhancements of a Research Article. PLoS Computational Biology, 5(4): e1000361. <a about="c:shotton-sempub-work" typeof="fabio:ResearchPaper" href="http://dx.doi.org/10.1371/journal.pcbi.1000361">http://dx.doi.org/<span about="c:shotton-sempub-expression" property="prism:doi">10.1371/journal.pcbi.1000361</span></a></p></li>
+                <li id="patterns" about="c:patterns-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:patterns-work" role="doc-biblioentry"><p about="c:patterns-expression" property="dcterms:bibliographicCitation">Di Iorio, A., Peroni, S., Poggi, F., &amp; Vitali, F. (2014). Dealing with structural patterns of XML documents. Journal of the American Society for Information Science and Technology, 65(9): 1884–1900. <a about="c:patterns-work" typeof="fabio:ResearchPaper" href="http://dx.doi.org/10.1002/asi.23088">http://dx.doi.org/<span about="c:patterns-expression" property="prism:doi">10.1002/asi.23088</span></a></p></li>
+                <li id="doco" about="c:doco-expression" typeof="fabio:JournalArticle" property="frbr:realizationOf" resource="c:doco-work" role="doc-biblioentry"><p about="c:doco-expression" property="dcterms:bibliographicCitation">Constantin, A., Peroni, S., Pettifer, S., Shotton, D., &amp; Vitali, F. (in press). The Document Component Ontology (DoCO). To appear in Semantic Web. <span about="c:doco-work" typeof="fabio:ResearchPaper">OA version available at <a about="c:doco-expression" property="fabio:hasRepresentation" href="http://www.semantic-web-journal.net/system/files/swj1016.pdf">http://www.semantic-web-journal.net/system/files/swj1016.pdf</a></span></p></li>
+                <li id="linked-research" about="c:linked-research-expression" typeof="fabio:ConferencePaper" property="frbr:realizationOf" resource="c:linked-research-work" role="doc-biblioentry"><p about="c:linked-research-expression" property="dcterms:bibliographicCitation">Capadisli, S., Riedl, R., &amp; Auer, S. (2015). Enabling Accessible Knowledge. In Proc. of CeDEM 2015. <span about="c:linked-research-work" typeof="fabio:ResearchPaper">OA version available at <a about="c:linked-research-expression" property="fabio:hasRepresentation" href="http://csarven.ca/enabling-accessible-knowledge">http://csarven.ca/enabling-accessible-knowledge</a></span></p></li>
+                <li id="scholmd" about="c:scholmd-expression" typeof="fabio:WebContent" property="frbr:realizationOf" resource="c:scholmd-work" role="doc-biblioentry"><p about="c:scholmd-expression" property="dcterms:bibliographicCitation">Lin, T. T. Y., &amp; Beales, G. (2015). ScholarlyMarkdown Syntax Guide. Guide, 31 January 2015. <a about="c:scholmd-work" typeof="fabio:InstructionalWork" property="fabio:hasURL" content="http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html" href="http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html">http://scholarlymarkdown.com/Scholarly-Markdown-Guide.html</a></p></li>
+                <li id="force11" about="c:force11-expression" typeof="fabio:WhitePaper" property="frbr:realizationOf" resource="c:force11-work" role="doc-biblioentry"><p about="c:force11-expression" property="dcterms:bibliographicCitation">Bourne, P. E., Clark, T., Dale, R., de Waard, A., Herman, I., Hovy, E. H., &amp; Shotton, D. (2011). FORCE11 White Paper: Improving The Future of Research Communications and e-Scholarship. White paper, 28 October 2011. FORCE11. <a about="c:force11-work" typeof="fabio:MeetingReport" property="fabio:hasURL" content="https://www.force11.org/white_paper" href="https://www.force11.org/white_paper">https://www.force11.org/white_paper</a></p></li>
             </ol>
-        </div>
+        </section>
         
         <!-- Footnotes -->
-        <div class="footnotes">
-            <div id="fn1">
-                <p>The full project is available at <a href="https://github.com/essepuntato/rash/">https://github.com/essepuntato/rash/</a>. Please use the hashtag <span class="code">#rashfwk</span> for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.</p>
-            </div>
-            <div id="fn3">
+        <section role="doc-footnotes">
+            <section id="fn1" role="doc-footnote">
+                <p>The full project is available at <a href="https://github.com/essepuntato/rash/">https://github.com/essepuntato/rash/</a>. Please use the hashtag <code>#rashfwk</code> for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.</p>
+            </section>
+            <section id="fn3" role="doc-footnote">
                 <p><a href="https://github.com/essepuntato/rash/#venues-that-have-adopted-rash-as-submission-format">https://github.com/essepuntato/rash/#venues-that-have-adopted-rash-as-submission-format</a></p>
-            </div>
-            <div id="fn4">
+            </section>
+            <section id="fn4" role="doc-footnote">
                 <p>Please refer to the official RASH documentation, available at <a href="http://cs.unibo.it/save-sd/rash">http://cs.unibo.it/save-sd/rash</a>, for a complete introduction of all the elements and attributes that can be used in RASH documents.</p>
-            </div>
-        </div>
+            </section>
+        </section>
     </body>
 </html>

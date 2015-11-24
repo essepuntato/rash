@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.4, October 27, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.4.1, November 5, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -36,7 +36,7 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4, October 22, 2015</title>
+        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.1, November 5, 2015</title>
         
         <!-- Author's data (one or more) -->
         <meta about="sp" name="dc.creator" content="Silvio Peroni"/>
@@ -449,14 +449,14 @@ Under the following terms:
                 <p>For instance the formulas shown in <a href="#formula_1" role="ref"></a> and <a href="#formula_2" role="ref"></a> are defined in RASH through the following code.</p>
                 <pre><code>
 &lt;!-- Formula defined as an image --&gt;
-&lt;figure id="formula_1" role="formula"&gt;
+&lt;figure id="formula_1" role="formulabox"&gt;
     &lt;p&gt;
         &lt;img src="formula.png"/&gt;
     &lt;/p&gt;
 &lt;/figure&gt;
 
 &lt;!-- Formula defined using the MathML specification --&gt;
-&lt;figure id="formula_2" role="formula"&gt;
+&lt;figure id="formula_2" role="formulabox"&gt;
     &lt;p&gt;
         &lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;
             &lt;mrow&gt;

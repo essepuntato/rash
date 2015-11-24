@@ -1,8 +1,12 @@
 # RASH Framework
 
-This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles.
+This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles. RASH has been released with its own [documentation](https://rawgit.com/essepuntato/rash/master/documentation/index.html), which is a descriptive document that introduces the language and explains how to write research article by using it. In addition, there exist also [guidelines](https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt) for OpenOffice that explain how to write a scholarly paper, by using the basic features available in OpenOffice Writer, in a way that it can be converted into RASH by means of an [appropriate conversion tool](https://github.com/essepuntato/rash/tree/master/tools/odt2rash).
 
-Please use the hashtag *#rashfwk* for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.
+An online conversion tool called *ROCS* (*RASH Online Conversion Service*) is available at http://dasplab.cs.unibo.it/rocs. It allows one to convert an ODT document written according to the [aforementioned guidelines](https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt) into RASH, which also includes the converted LaTeX document compliant with the [Springer LNCS LaTeX class](https://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0).
+
+A brief introduction of all the tools included in the Framework is provided in the [related page](https://github.com/essepuntato/rash/tree/master/tools), that includes also usage information.
+
+Please use the hashtag *#rashfwk* for referring to any of the entities defined in the RASH Framework via Twitter or other social platforms.
 
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework).
 
@@ -27,7 +31,7 @@ Please feel free to adopt RASH for accepting HTML submissions in your academic e
 
 > RASH is part of a framework (https://github.com/essepuntato/rash/) for facilitating the creation of HTML research articles and their publication in research venues. In particular, RASH is composed by a few of the available HTML tags and allows one to add RDFa annotations to any element.
 
-> The current version of the RASH format is fully introduced in its documentation page (http://cs.unibo.it/save-sd/rash/documentation/index.html), which includes several examples. The complete RelaxNG grammar of the language is available online (http://cs.unibo.it/save-sd/rash/grammar/rash.rng). The whole style package of this format (which includes the documentation, the examples and the grammar) is also available as a ZIP archive (http://cs.unibo.it/save-sd/rash/rash.zip).
+> The current version of the RASH format is fully introduced in its documentation page (https://rawgit.com/essepuntato/rash/master/documentation/index.html), which includes several examples. The complete RelaxNG grammar of the language is available online (https://rawgit.com/essepuntato/rash/master/grammar/rash.rng). The whole style package of this format (which includes the documentation, the examples and the grammar) is also available as a ZIP archive (https://rawgit.com/essepuntato/rash/master/rash.zip).
 
 > We encourage to use the earliest version of browsers for guaranteeing the best visualisation of the RASH documents. In addition, the translation from your RASH submission into the appropriate publishing format (either LaTeX Springer LNCS or LaTeX ACM ICPS) and the related creation of the PDF of your Camera Ready version that will be used in the official proceedings of the workshop will be totally handled by us through a semi-automatic process.
 
