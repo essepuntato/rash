@@ -5,15 +5,33 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.JarURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+
+
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+
 
 
 //import javax.xml.transform.Transformer;
@@ -28,6 +46,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class ODT2RASH {
 
@@ -43,7 +65,7 @@ public class ODT2RASH {
 	
 	private static final Logger log = Logger.getLogger(ODT2RASH.class.getName());
 	
-	public static void main(String[] args) throws IOException, IllegalArgumentException {
+	public static void main(String[] args) throws IOException, IllegalArgumentException, URISyntaxException {
 		
 		// DISABLE LOGGING TO STDOUT
 		//log.setUseParentHandlers(false);
@@ -104,15 +126,7 @@ public class ODT2RASH {
 		if (picturesDir.exists()) {
 			FileUtils.copyDirectory(picturesDir, new File(OUTPUT_FLD + File.separator + "img"));
 		}
-/*
-		URL ujs = ODT2RASH.class.getClassLoader().getResource("js/");
-        File js = new File(ujs.getPath());
-        FileUtils.copyDirectory(js, new File(OUTPUT_FLD + File.separator + "js"));
-		URL ucss = ODT2RASH.class.getClassLoader().getResource("css/");
-        File css = new File(ucss.getPath());
-        FileUtils.copyDirectory(css, new File(OUTPUT_FLD + File.separator + "css"));
-*/
-		
+
 		ArrayList<String> css2include = new ArrayList<String>();
 		css2include.add("rash.css");
 		css2include.add("lncs.css");
@@ -129,7 +143,23 @@ public class ODT2RASH {
 		for (String file : js2include) {
 			InputStream is = ODT2RASH.class.getClassLoader().getResourceAsStream("js/" + file);
 			FileUtils.copyInputStreamToFile(is, new File(OUTPUT_FLD + File.separator + "js" + File.separator + file));	
-		}  
+		}
+		
+		ArrayList<String> fonts2include = new ArrayList<String>();
+		fonts2include.add("cmunbi.otf");
+		fonts2include.add("cmunbxo.otf");
+		fonts2include.add("cmunbx.otf");
+		fonts2include.add("cmunrm.otf");
+		fonts2include.add("cmunsi.otf");
+		fonts2include.add("cmunss.otf");
+		fonts2include.add("cmunsx.otf");
+		fonts2include.add("cmunti.otf");
+		fonts2include.add("cmuntt.otf");
+		for (String file : fonts2include) {
+			InputStream is = ODT2RASH.class.getClassLoader().getResourceAsStream("fonts/" + file);
+			FileUtils.copyInputStreamToFile(is, new File(OUTPUT_FLD + File.separator + "fonts/" + File.separator + file));	
+		}
+		
 		try {
 
             TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
@@ -138,7 +168,8 @@ public class ODT2RASH {
             Transformer transformer =
                     tFactory.newTransformer(xslStream);
 
-            transformer.setParameter("dir", OUTPUT_FLD + File.separator + tempFolderName + File.separator);
+            //transformer.setParameter("dir", OUTPUT_FLD + File.separator + tempFolderName + File.separator);
+            transformer.setParameter("dir", OUTPUT_FLD + "/" + tempFolderName + "/");
             transformer.setParameter("basecss", "css/");
             transformer.setParameter("basejs", "js/");
             //transformer.setParameter("baserng", );
