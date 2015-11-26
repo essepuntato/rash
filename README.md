@@ -47,7 +47,7 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 
 * Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
 
-## Rash papers accepted in scholarly venues
+## RASH papers accepted in scholarly venues
 
 ### 14th International Semantic Web Conference ([ISWC 2015](http://iswc2015.semanticweb.org/)), poster and demo
 
