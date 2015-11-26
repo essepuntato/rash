@@ -63,8 +63,8 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 
 * Anna Tordai, [*A Model for Copyright and Licensing: Elsevier’s Copyright Model*](http://cs.unibo.it/save-sd/2015/papers/html/tordai-savesd2015.html)
 
-* Paul Groth, [*Increasing the Productivity of Scholarship: The Case for Knowledge Graphs*](http://cs.unibo.it/save-sd/2015/papers/html/groth-savesd2015.html)
-
 * Patrick Golden and Ryan Shaw, [*Period assertion as nanopublication*](http://cs.unibo.it/save-sd/2015/papers/html/golden-savesd2015.html)
+
+* Paul Groth, [*Increasing the Productivity of Scholarship: The Case for Knowledge Graphs*](http://cs.unibo.it/save-sd/2015/papers/html/groth-savesd2015.html)
 
 * Tobias Kuhn, [*Science Bots: A Model for the Future of Scientific Computation?*](http://cs.unibo.it/save-sd/2015/papers/html/kuhn-savesd2015.html)
