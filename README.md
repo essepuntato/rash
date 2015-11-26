@@ -6,9 +6,9 @@ An online conversion tool called *ROCS* (*RASH Online Conversion Service*) is av
 
 A brief introduction of all the tools included in the Framework is provided in the [related page](https://github.com/essepuntato/rash/tree/master/tools), that includes also usage information.
 
-Please use the hashtag *#rashfwk* for referring to any of the entities defined in the RASH Framework via Twitter or other social platforms.
+Please use the hashtag *#rashfwk* for referring to any of the entities defined in the RASH Framework via Twitter or other social platforms. There is also available a [Gitter room](https://gitter.im/essepuntato/rash) for discussing about the project.
 
-A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework).
+A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
 * [2016 International Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD 2016)](http://cs.unibo.it/save-sd/2016/index.html), held during the [25th International World Wide Web Conference (WWW 2016)](http://www.www2016.ca/)
@@ -47,3 +47,24 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 
 * Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
 
+## Rash papers accepted in scholarly venues
+
+### 14th International Semantic Web Conference ([ISWC 2015](http://iswc2015.semanticweb.org/)), poster and demo
+
+* Angelo Di Iorio, Andrea Giovanni Nuzzolese, Francesco Osborne, Silvio Peroni, Francesco Poggi, Michael Smith, Fabio Vitali, Juhn Zhao, [*The RASH Framework: enabling HTML+RDF submissions in scholarly venues*](https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html)
+
+### 2015 Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data ([SAVE-SD 2015](http://cs.unibo.it/save-sd/2015/index.html))
+
+* Alessia Bardi and Paolo Manghi, [*Enhanced Publication Management Systems. A systemic approach towards modern scientific communication*](http://cs.unibo.it/save-sd/2015/papers/html/bardi-savesd2015.html)
+
+* Angelo Di Iorio, Raffaele Giannella, Francesco Poggi and Fabio Vitali, [*Exploring bibliographies for research-related tasks*](http://cs.unibo.it/save-sd/2015/papers/html/diiorio-savesd2015.html)
+
+* Anna Lisa Gentile, Maribel Acosta, Luca Costabello, Andrea Giovanni Nuzzolese, Valentina Presutti and Diego Reforgiato, [*Conference Live: Accessible and Sociable Conference Semantic Data*](http://cs.unibo.it/save-sd/2015/papers/html/gentile-savesd2015.html)
+
+* Anna Tordai, [*A Model for Copyright and Licensing: Elsevier’s Copyright Model*](http://cs.unibo.it/save-sd/2015/papers/html/tordai-savesd2015.html)
+
+* Paul Groth, [*Increasing the Productivity of Scholarship: The Case for Knowledge Graphs*](http://cs.unibo.it/save-sd/2015/papers/html/groth-savesd2015.html)
+
+* Patrick Golden and Ryan Shaw, [*Period assertion as nanopublication*](http://cs.unibo.it/save-sd/2015/papers/html/golden-savesd2015.html)
+
+* Tobias Kuhn, [*Science Bots: A Model for the Future of Scientific Computation?*](http://cs.unibo.it/save-sd/2015/papers/html/kuhn-savesd2015.html)
