@@ -1,6 +1,4 @@
-# RASH Framework
-
-[![Join the chat at https://gitter.im/essepuntato/rash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/essepuntato/rash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# RASH Framework [![Join the chat at https://gitter.im/essepuntato/rash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/essepuntato/rash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This project includes all the documents and source codes related to the **RASH Framework**, i.e., a set of specifications and writing/conversion/extraction tools for writing academic articles in [*RASH*](https://github.com/essepuntato/rash/tree/master/grammar), i.e., a markup language defined as a subset of HTML for writing scientific articles. RASH has been released with its own [documentation](https://rawgit.com/essepuntato/rash/master/documentation/index.html), which is a descriptive document that introduces the language and explains how to write research article by using it. In addition, there exist also [guidelines](https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt) for OpenOffice that explain how to write a scholarly paper, by using the basic features available in OpenOffice Writer, in a way that it can be converted into RASH by means of an [appropriate conversion tool](https://github.com/essepuntato/rash/tree/master/tools/odt2rash).
 
