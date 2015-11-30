@@ -10,6 +10,11 @@ The documentation (version 0.4) is available online at https://rawgit.com/essepu
 Please use the hashtag *#rashtodo* for suggesting bugs or additional features for RASH via Twitter or other social platforms.
 
 
+### List of HTML elements used
+
+<code>a</code>, <code>b</code>, <code>blockquote</code>, <code>body</code>, <code>code</code>, <code>figcaption</code>, <code>figure</code>, <code>h1</code>, <code>head</code>, <code>html</code>, <code>i</code>, <code>img</code>, <code>li</code>, <code>link</code>, <code>math</code>, <code>meta</code>, <code>ol</code>, <code>p</code>, <code>pre</code>, <code>q</code>, <code>script</code>, <code>section</code>, <code>span</code>, <code>sub</code>, <code>sup</code>, <code>table</code>, <code>td</code>, <code>th</code>, <code>title</code>, <code>tr</code>, <code>ul</code>
+
+
 ### Change log
 * Version 0.4
   * Now it is possible to creating refereanceable listing boxes by means of the element 'figure' with attribute '@role' set to 'listingbox'.
