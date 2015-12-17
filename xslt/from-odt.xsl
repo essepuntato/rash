@@ -724,7 +724,7 @@ Under the following terms:
             <!-- Affiliations -->
             <xsl:variable name="aff" as="xs:string*">
                 <xsl:variable name="afflist" as="xs:string*">
-                    <xsl:for-each select="$meta//meta:user-defined[@meta:name='Author']">
+                    <xsl:for-each select="$meta//meta:user-defined[matches(@meta:name, '^ *author', 'i')]">
                         <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
                         <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
                         <xsl:if test="$len > 2">
