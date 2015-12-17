@@ -514,7 +514,14 @@ Under the following terms:
         (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Heading$')]/@style:name 
             satisfies @text:style-name = $s)])]">
         <th>
-            <xsl:apply-templates select="text:p/node()" />
+            <xsl:choose>
+                <xsl:when test="normalize-space() = ''">
+                    <p><xsl:text> </xsl:text></p>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="text:p/node()" />
+                </xsl:otherwise>
+            </xsl:choose>
         </th>
     </xsl:template>
     
@@ -529,7 +536,14 @@ Under the following terms:
         (some $s in //style:style[matches(@style:parent-style-name,'^Table.*Contents')]/@style:name 
             satisfies @text:style-name = $s)])]">
         <td>
-            <xsl:apply-templates />
+            <xsl:choose>
+                <xsl:when test="normalize-space() = ''">
+                    <p><xsl:text> </xsl:text></p>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
         </td>
     </xsl:template>
     
@@ -576,19 +590,22 @@ Under the following terms:
     <xsl:template name="get.following.content.elements">
         <xsl:param name="curlev" select="1" as="xs:integer" />
         
-        <xsl:variable name="seq" select="for $v in (1 to $curlev) return string($v)" as="xs:string+" />
+        <xsl:variable name="seq" select="for $v in (1 to $curlev) return $v" as="xs:integer+" />
         <xsl:variable name="level" select="string($curlev)" as="xs:string" />
+        <xsl:apply-templates select="(following-sibling::text:h|following-sibling::text:p[starts-with(@text:style-name, 'Heading')])[some $l in $seq satisfies f:getLevel(.) = $l][1][f:getLevel(.) = $curlev]"></xsl:apply-templates>
         
+        <!--
         <xsl:apply-templates select="
             (
                 following-sibling::text:h[some $l in $seq 
-                    satisfies @text:outline-level = $l] |
+                    satisfies f:getLevel(.) = xs:integer($l)] |
                 following-sibling::text:p[starts-with(@text:style-name, 'Heading') 
                     and (some $l in $seq 
-                        satisfies substring(@text:style-name,string-length(@text:style-name)) = $l)])[1][
+                        satisfies f:getLevel(.) = xs:integer($l))])[1][
                 if (self::text:p) 
-                    then substring(@text:style-name,string-length(@text:style-name)) = $level 
+                    then  f:getLevel(.) = xs:integer($level) 
                 else @text:outline-level = $level]" />
+        -->
     </xsl:template>
     
     <xd:doc scope="add.inline">
@@ -839,7 +856,22 @@ Under the following terms:
     </xd:doc>
     <xsl:function name="f:getLevel" as="xs:integer">
         <xsl:param name="curel" as="element()" />
-        <xsl:value-of select="xs:integer(if ($curel/self::text:p) then substring($curel/@text:style-name,string-length($curel/@text:style-name)) else $curel/@text:outline-level)"/>
+        <xsl:variable name="value" as="xs:integer">
+            <xsl:choose>
+                <xsl:when test="$curel[starts-with(@text:style-name,'Heading_')][1]">
+                    <xsl:value-of select="xs:integer(substring($curel/@text:style-name,string-length($curel/@text:style-name)))" />
+                </xsl:when>
+                <xsl:when test="starts-with($curel/@text:style-name, 'P')">
+                    <xsl:variable name="curstyle" select="root($curel)//style:style[@style:name=$curel/@text:style-name]" as="element()" />
+                    <xsl:value-of select="
+                        xs:integer(substring($curstyle/@style:parent-style-name,string-length($curstyle/@style:parent-style-name)))" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="xs:integer($curel/@text:outline-level)" />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="$value" />
     </xsl:function>
     
     <xsl:function name="f:getContentChildElements" as="element()*">
