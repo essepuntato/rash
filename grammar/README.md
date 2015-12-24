@@ -16,6 +16,9 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
 
 
 ### Change log
+* Version 0.4.1
+  * Corrected the mimetype for JSON-LD (now it is "application/ld+json").
+  
 * Version 0.4
   * Now it is possible to creating refereanceable listing boxes by means of the element 'figure' with attribute '@role' set to 'listingbox'.
   * The structural semantics that was provided by means of specific element classes (specified with the attribute '@class') is now defined by means of the attribute '@role'. 
