@@ -639,7 +639,6 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
             <p>An example of use of such element for Turtle and JSON-LD statements in introduced in the following excerpt.</p>
             <pre><code>
 &lt;script type="text/turtle"&gt;
-    &lt;![CDATA[
     @prefix pro: &lt;http://purl.org/spar/pro/&gt; .
     @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
     &lt;#sp&gt; a foaf:Person ;
@@ -651,10 +650,8 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
             pro:withRole pro:author ;
             pro:relatesToDocument &lt;&gt;
         ] .
-    ]]&gt;
 &lt;/script&gt;
 &lt;script type="text/ld+json"&gt;
-    &lt;![CDATA[
         {
             "@context":
                 {
@@ -663,7 +660,6 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
             "@id": "#sp",
             "nick": ["S.", "essepuntato"]
         }
-    ]]&gt;
 &lt;/script&gt;
             </code></pre>
             <p>For a complete introduction of Turtle <a href="#Turtle2014" role="doc-biblioref"></a>, JSON-LD <a href="#JSONLD2014" role="doc-biblioref"></a> and RDF/XML <a href="#RDFXML2014" role="doc-biblioref"></a> please read the official documentation.</p>
