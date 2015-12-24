@@ -20,7 +20,6 @@ Under the following terms:
         schema: http://schema.org/
         prism: http://prismstandard.org/namespaces/basic/2.0/
         cito: http://purl.org/spar/cito/
-        rash: http://cs.unibo.it/save-sd/rash/
         dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
@@ -609,14 +608,12 @@ Under the following terms:
             <p>RASH has been developed in order to allow anyone to add <a property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations to any element of the document. For instance, we have injected the following triples (in Turtle) within the above paragraph.</p>
             <pre><code>
 @prefix cito: &lt;http://purl.org/spar/cito/&gt; .
-@prefix rash: &lt;http://cs.unibo.it/save-sd/rash/&gt; .
 
 &lt;&gt; cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
             <p>That was possible by adding RDFa annotations by using the appropriate attribute within the paragraph content, while the prefixes were defined in the element <code>html</code>, as shown in the following excerpt.</p>
             <pre><code>
 &lt;html prefix="
-    cito: http://purl.org/spar/cito/
-    rash: http://cs.unibo.it/save-sd/rash/"&gt;
+    cito: http://purl.org/spar/cito/"&gt;
     ...
     &lt;p&gt;
         RASH has been developed in order to allow anyone to add 
