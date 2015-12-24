@@ -19,9 +19,9 @@ Under the following terms:
     prefix="
         schema: http://schema.org/
         prism: http://prismstandard.org/namespaces/basic/2.0/
-        fabio: http://purl.org/spar/fabio/
         cito: http://purl.org/spar/cito/
-        rash: http://cs.unibo.it/save-sd/rash/">
+        rash: http://cs.unibo.it/save-sd/rash/
+        dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
         <meta charset="UTF-8"/>
@@ -36,7 +36,7 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.2, December 24, 2015</title>
+        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.2, December 24, 2015</title>
         
         <!-- Author's data (one or more) -->
         <meta about="#sp" name="dc.creator" content="Silvio Peroni"/>
@@ -606,7 +606,7 @@ Under the following terms:
         
         <section id="rdfa">
             <h1>Specifying RDF data</h1>
-            <p>RASH has been developed in order to allow anyone to add <a about="rash:expression" typeof="fabio:InstructionManual" property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations to any element of the document. For instance, we have injected the following triples (in Turtle) within the above paragraph.</p>
+            <p>RASH has been developed in order to allow anyone to add <a property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations to any element of the document. For instance, we have injected the following triples (in Turtle) within the above paragraph.</p>
             <pre><code>
 @prefix cito: &lt;http://purl.org/spar/cito/&gt; .
 @prefix fabio: &lt;http://purl.org/spar/fabio/&gt; .
@@ -623,8 +623,8 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
     ...
     &lt;p&gt;
         RASH has been developed in order to allow anyone to add 
-        &lt;a about="rash:expression" typeof="fabio:InstructionManual" 
-            rel="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/"&gt;
+        &lt;a 
+            property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/"&gt;
             RDFa&lt;/a&gt; annotations to any element of the document.&lt;/p&gt;
     ...
 &lt;/html&gt;
