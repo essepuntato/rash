@@ -737,12 +737,12 @@ Under the following terms:
             </xsl:variable>
             <xsl:variable name="afflen" select="count($aff) div 2" as="xs:integer" />
             <xsl:for-each select="$aff[position() > $afflen]">
-                <meta about="affiliation-{position()}" property="schema:name" content="{.}" />
+                <meta about="#affiliation-{position()}" property="schema:name" content="{.}" />
             </xsl:for-each>
             
             <!-- Author -->
             <xsl:for-each select="$meta//meta:user-defined[matches(@meta:name, '^ *author', 'i')]">
-                <xsl:variable name="authiri" select="concat('author-', position())" as="xs:string" />
+                <xsl:variable name="authiri" select="concat('#author-', position())" as="xs:string" />
                 <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
                 <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
                 <xsl:if test="$len > 0">
@@ -755,7 +755,7 @@ Under the following terms:
                                 select="index-of($aff, lower-case(normalize-space($tokens[3])))" as="xs:integer*" />
                             <xsl:if test="$idx">
                                 <link about="{$authiri}" property="schema:affiliation" 
-                                    href="affiliation-{$idx[1]}" />
+                                    href="#affiliation-{$idx[1]}" />
                             </xsl:if>
                         </xsl:if>
                     </xsl:if>

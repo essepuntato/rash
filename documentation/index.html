@@ -87,7 +87,7 @@ Under the following terms:
         <!-- Abstract -->
         <section role="doc-abstract">
             <h1>Abstract</h1>
-            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i><code>RASH</code></i>) <a role="doc-biblioref" href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.4</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i><code>RASH</code></i>) <a role="doc-biblioref" href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.4.1</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </section>
         
@@ -627,7 +627,7 @@ Under the following terms:
             <p>In addition to RDFa, RASH makes available another way to add RDF statements to the document, i.e., the use of an element <code>script</code> (within the element <code>head</code>):</p>
                 <ul>
                     <li><p>with the attribute <code>type</code> set to <q>text/turtle</q> for adding plain <a href="http://www.w3.org/TR/turtle/">Turtle</a> content;</p></li>
-                    <li><p>with the attribute <code>type</code> set to <q>text/ld+json</q> for adding plain <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a> content;</p></li>
+                    <li><p>with the attribute <code>type</code> set to <q>application/ld+json</q> for adding plain <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a> content;</p></li>
                     <li><p>with the attribute <code>type</code> set to <q>application/rdf+xml</q> for adding plain <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> content.</p></li>
                 </ul>
             <p>An example of use of such element for Turtle and JSON-LD statements in introduced in the following excerpt.</p>
@@ -645,7 +645,7 @@ Under the following terms:
             pro:relatesToDocument &lt;&gt;
         ] .
 &lt;/script&gt;
-&lt;script type="text/ld+json"&gt;
+&lt;script type="application/ld+json"&gt;
         {
             "@context":
                 {

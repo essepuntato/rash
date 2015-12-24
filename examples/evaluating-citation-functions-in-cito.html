@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><html xmlns="http://www.w3.org/1999/xhtml" prefix="     schema: http://schema.org/     prism: http://prismstandard.org/namespaces/basic/2.0/">
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html 
+  xmlns="http://www.w3.org/1999/xhtml" 
+  prefix="
+    schema: http://schema.org/
+    prism: http://prismstandard.org/namespaces/basic/2.0/
+    dcterms: http://purl.org/dc/terms/">
   <head>
     <!-- Visualisation requirements (mandatory for optimal reading) -->
     <meta charset="UTF-8"/>
@@ -10,35 +16,35 @@
     <script src="../js/rash.js"> </script>
     <!-- /END Visualisation requirements (mandatory for optimal reading) -->
 
-    <title>Evaluating citation functions in CiTO: cognitive issues -- Preprint of
+    <title property="dcterms:title">Evaluating citation functions in CiTO: cognitive issues -- Preprint of
       http://dx.doi.org/10.1007/978-3-319-07443-6_39</title>
 
     <!-- Author's data (one or more) -->
-    <meta about="pc" property="schema:name" name="dc.creator" content="Paolo Ciancarini"/>
-    <meta about="pc" property="schema:email" content="ciancarini@cs.unibo.it"/>
-    <link about="pc" property="schema:affiliation" href="cs-unibo"/>
-    <link about="pc" property="schema:affiliation" href="stlab-cnr"/>
+    <meta about="#pc" property="schema:name" name="dc.creator" content="Paolo Ciancarini"/>
+    <meta about="#pc" property="schema:email" content="ciancarini@cs.unibo.it"/>
+    <link about="#pc" property="schema:affiliation" href="#cs-unibo"/>
+    <link about="#pc" property="schema:affiliation" href="#stlab-cnr"/>
 
-    <meta about="adi" property="schema:name" name="dc.creator" content="Angelo Di Iorio"/>
-    <meta about="adi" property="schema:email" content="diiorio@cs.unibo.it"/>
-    <link about="adi" property="schema:affiliation" href="cs-unibo"/>
+    <meta about="#adi" property="schema:name" name="dc.creator" content="Angelo Di Iorio"/>
+    <meta about="#adi" property="schema:email" content="diiorio@cs.unibo.it"/>
+    <link about="#adi" property="schema:affiliation" href="#cs-unibo"/>
 
-    <meta about="an" property="schema:name" name="dc.creator" content="Andrea Nuzzolese"/>
-    <meta about="an" property="schema:email" content="nuzzoles@cs.unibo.it"/>
-    <link about="an" property="schema:affiliation" href="cs-unibo"/>
-    <link about="an" property="schema:affiliation" href="stlab-cnr"/>
+    <meta about="#an" property="schema:name" name="dc.creator" content="Andrea Nuzzolese"/>
+    <meta about="#an" property="schema:email" content="nuzzoles@cs.unibo.it"/>
+    <link about="#an" property="schema:affiliation" href="#cs-unibo"/>
+    <link about="#an" property="schema:affiliation" href="#stlab-cnr"/>
 
-    <meta about="sp" property="schema:name" name="dc.creator" content="Silvio Peroni"/>
-    <meta about="sp" property="schema:email" content="silvio.peroni@unibo.it"/>
-    <link about="sp" property="schema:affiliation" href="cs-unibo"/>
-    <link about="sp" property="schema:affiliation" href="stlab-cnr"/>
+    <meta about="#sp" property="schema:name" name="dc.creator" content="Silvio Peroni"/>
+    <meta about="#sp" property="schema:email" content="silvio.peroni@unibo.it"/>
+    <link about="#sp" property="schema:affiliation" href="#cs-unibo"/>
+    <link about="#sp" property="schema:affiliation" href="#stlab-cnr"/>
 
-    <meta about="fv" property="schema:name" name="dc.creator" content="Fabio Vitali"/>
-    <meta about="fv" property="schema:email" content="fabio@cs.unibo.it"/>
-    <link about="fv" property="schema:affiliation" href="cs-unibo"/>
+    <meta about="#fv" property="schema:name" name="dc.creator" content="Fabio Vitali"/>
+    <meta about="#fv" property="schema:email" content="fabio@cs.unibo.it"/>
+    <link about="#fv" property="schema:affiliation" href="#cs-unibo"/>
 
     <!-- Affiliations -->
-    <meta about="cs-unibo" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
+    <meta about="#cs-unibo" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
     <meta about="stlab-cnr" property="schema:name" content="STLab-ISTC, Consiglio Nazionale delle Ricerche, Rome, Italy"/>
 
     <!-- Paper keywords (one or more) -->

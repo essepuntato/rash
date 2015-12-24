@@ -1,4 +1,4 @@
-# Research Articles in Simplified HTML (RASH) format - Version 0.4, October 27, 2015
+# Research Articles in Simplified HTML (RASH) format - Version 0.4.1, December 24, 2015
 # by Silvio Peroni
 # 
 # This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -48,7 +48,10 @@ script =
   element script { aSrc }
   | element script {
       attribute type {
-        "text/turtle" | "text/ld+json" | "text/csv" | "text/rdf+xml"
+        "text/turtle"
+        | "application/ld+json"
+        | "text/csv"
+        | "text/rdf+xml"
       },
       text
     }
