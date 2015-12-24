@@ -11,6 +11,8 @@ Please use the hashtag *#rashfwk* for referring to any of the entities defined i
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
+* [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org/)
+
 * [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
 
 * [2016 International Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD 2016)](http://cs.unibo.it/save-sd/2016/index.html), held during the [25th International World Wide Web Conference (WWW 2016)](http://www.www2016.ca/)
