@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.4.1, November 5, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.4.2, December 24, 2015
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -36,15 +36,15 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.1, November 5, 2015</title>
+        <title>RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.2, December 24, 2015</title>
         
         <!-- Author's data (one or more) -->
-        <meta about="sp" name="dc.creator" content="Silvio Peroni"/>
-        <meta about="sp" property="schema:email" content="silvio.peroni@unibo.it"/>
-        <link about="sp" property="schema:affiliation" href="cs-unibo"/>
+        <meta about="#sp" name="dc.creator" content="Silvio Peroni"/>
+        <meta about="#sp" property="schema:email" content="silvio.peroni@unibo.it"/>
+        <link about="#sp" property="schema:affiliation" href="#cs-unibo"/>
         
         <!-- Affiliations -->
-        <meta about="cs-unibo" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
+        <meta about="#cs-unibo" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
         
         <!-- Paper keywords (one or more) -->
         <meta property="prism:keyword" content="format for scholarly papers"/>
@@ -61,7 +61,7 @@ Under the following terms:
         <script type="text/turtle">
             @prefix pro: &lt;http://purl.org/spar/pro/&gt; .
             @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-            &lt;sp&gt; a foaf:Person ;
+            &lt;#sp&gt; a foaf:Person ;
                 foaf:givenName "Silvio" ;
                 foaf:familyName "Peroni" ;
                 foaf:homepage &lt;http://www.essepuntato.it&gt; ;
@@ -72,21 +72,16 @@ Under the following terms:
                 ] .
             
         </script>
-        <script type="text/ld+json">
-            
+        <!-- Adding JSON-LD to the document -->
+        <script type="application/ld+json">
                 {
                     "@context":
-                    {
-                      "nick": "http://xmlns.com/foaf/0.1/nick",
-                      "homepage": {
-                        "@id": "http://xmlns.com/foaf/0.1/homepage",
-                        "@type": "@id"
-                      }
-                    },
-                    "nick": ["S.", "essepuntato"],
-                    "homepace": "http://www.essepuntato.it"
+                        {
+                          "nick": "http://xmlns.com/foaf/0.1/nick"
+                        },
+                    "@id": "#sp",
+                    "nick": ["S.", "essepuntato"]
                 }
-            
         </script>
     </head>
     <body>
@@ -148,26 +143,26 @@ Under the following terms:
             
             <section id="author">
                 <h1>Authors</h1>
-                <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using three distinct elements, two <code>meta</code>s and one <code>link</code>. Each of these elements must have must have the attribute <code>about</code> set to the same value, which is a unique identifier for the author. Each of these elements allows us to specify different kinds of information, i.e.:</p>
+                <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using three distinct elements, two <code>meta</code>s and one <code>link</code>. Each of these elements must have must have the attribute <code>about</code> set to the same value (i.e., a URL), which is a unique identifier for the author. Each of these elements allows us to specify different kinds of information, i.e.:</p>
                 <ul>
                     <li><p>the <b>full name</b> of the author as it should appear in the paper - through an element <code>meta</code> having the attribute <code>name</code> set to <q>dc.creator</q>, and the attribute <code>content</code> specifying the actual name;</p></li>
                     <li><p>the <b>email address</b> of the author - through an element <code>meta</code> having the attribute <code>property</code> set to <q>schema:email</q>, and the attribute <code>content</code> specifying the actual author's email;</p></li>
-                    <li><p>the <b>affiliations</b> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier for a particular affiliation (see <a href="#affiliation" role="ref"></a>).</p></li>
+                    <li><p>the <b>affiliations</b> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier (i.e., a URL) for a particular affiliation (see <a href="#affiliation" role="ref"></a>).</p></li>
                 </ul>
                 <p>An example of how to create all these author's information is shown in the following excerpt.</p>
                 <pre><code>
-&lt;meta about="sp" name="dc.creator" content="Silvio Peroni" /&gt;
-&lt;meta about="sp" property="schema:email" 
+&lt;meta about="#sp" name="dc.creator" content="Silvio Peroni" /&gt;
+&lt;meta about="#sp" property="schema:email" 
     content="silvio.peroni@unibo.it" /&gt;
-&lt;link about="sp" property="schema:affiliation" href="cs-unibo" /&gt;</code></pre>
+&lt;link about="#sp" property="schema:affiliation" href="#cs-unibo" /&gt;</code></pre>
                 <p>Of course, it is possible to specify additional affiliations for an author by adding the appropriate number of elements <code>link</code>, as shown in the following excerpt.</p>
                 <pre><code>
-&lt;meta about="an" name="dc.creator" 
+&lt;meta about="#an" name="dc.creator" 
     content="Andrea Giovanni Nuzzolese" /&gt;
-&lt;meta about="an" property="schema:email" 
+&lt;meta about="#an" property="schema:email" 
     content="nuzzoles@cs.unibo.it" /&gt;
-&lt;link about="an" property="schema:affiliation" href="cs-unibo" /&gt;
-&lt;link about="an" property="schema:affiliation" href="stlab-cnr" /&gt;</code></pre>
+&lt;link about="#an" property="schema:affiliation" href="#cs-unibo" /&gt;
+&lt;link about="#an" property="schema:affiliation" href="#stlab-cnr" /&gt;</code></pre>
             </section>
             
             <section id="affiliation">
@@ -182,7 +177,7 @@ Under the following terms:
                 <pre><code>
 &lt;!-- Affiliations (one or more) --&gt;
 &lt;meta 
-    about="cs-unibo" property="schema:name" 
+    about="#cs-unibo" property="schema:name" 
     content="Department of Computer Science and Engineering, 
              University of Bologna, Bologna, Italy" /&gt;</code></pre>
             </section>
@@ -647,7 +642,7 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
     &lt;![CDATA[
     @prefix pro: &lt;http://purl.org/spar/pro/&gt; .
     @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-    &lt;sp&gt; a foaf:Person ;
+    &lt;#sp&gt; a foaf:Person ;
         foaf:givenName "Silvio" ;
         foaf:familyName "Peroni" ;
         foaf:homepage &lt;http://www.essepuntato.it&gt; ;
@@ -663,14 +658,10 @@ cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
         {
             "@context":
                 {
-                    "nick": "http://xmlns.com/foaf/0.1/nick",
-                    "homepage": {
-                    "@id": "http://xmlns.com/foaf/0.1/homepage",
-                    "@type": "@id"
-                    }
+                    "nick": "http://xmlns.com/foaf/0.1/nick"
                 },
-            "nick": ["S.", "essepuntato"],
-            "homepace": "http://www.essepuntato.it"
+            "@id": "#sp",
+            "nick": ["S.", "essepuntato"]
         }
     ]]&gt;
 &lt;/script&gt;
