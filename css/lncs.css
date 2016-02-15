@@ -78,19 +78,19 @@ section{
 
 
 /* Inlines */
-b{
+strong{
     font-family:"CMU Serif Bold", serif !important;
 }
 
-i{
+em{
     font-family:"CMU Serif Italic", serif !important;
 }
 
-.h1 i,
-.h2 i,
-.h3 i,
-b i,
-i b{
+.h1 em,
+.h2 em,
+.h3 em,
+strong em,
+em strong{
     font-family:"CMU Serif Bold Italic", serif !important;
 }
 /* /END Inlines */

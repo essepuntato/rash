@@ -87,15 +87,15 @@ Under the following terms:
         <!-- Abstract -->
         <section role="doc-abstract">
             <h1>Abstract</h1>
-            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <i>Research Articles in Simplified HTML</i> (<i><code>RASH</code></i>) <a role="doc-biblioref" href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.4.1</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a role="doc-biblioref" href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.4.1</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </section>
         
         <!-- Sections -->
         <section>
             <h1>Introduction</h1>
-            <p>This paper introduces the <i>Research Articles in Simplified HTML</i> (<i><code>RASH</code></i>) format <a role="doc-biblioref" href="#RASH2015"></a>, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <b>31 elements</b> for writing academic research articles. It is possible to includes also <b><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</b> within any element of the language, and also allows one to specify other RDF annotations in <a href="http://www.w3.org/TR/turtle/">Turtle</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. In addition, RASH strictly follows the <a href="https://rawgit.com/w3c/aria/master/aria/dpub.html">Digital Publishing WAI-ARIA Module 1.0</a> (which is currently an editor draft) for expressing structural semantics on various markup elements used.</p>
-            <p>Concerning its theoretical foundations, RASH is entirely based on a strong theory on <i>structural patterns</i> for XML documents <a href="#Patterns2014" role="doc-biblioref"></a>. The systematic use of these structural patterns is an added value in all stages of the documents' lifecycle: they can be guidelines for creating well-engineered documents and vocabularies, rules to extract structural components from legacy documents, indicators to study to what extent documents share design principles and community guidelines.</p>
+            <p>This paper introduces the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) format <a role="doc-biblioref" href="#RASH2015"></a>, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <strong>31 elements</strong> for writing academic research articles. It is possible to includes also <strong><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</strong> within any element of the language, and also allows one to specify other RDF annotations in <a href="http://www.w3.org/TR/turtle/">Turtle</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. In addition, RASH strictly follows the <a href="https://rawgit.com/w3c/aria/master/aria/dpub.html">Digital Publishing WAI-ARIA Module 1.0</a> (which is currently an editor draft) for expressing structural semantics on various markup elements used.</p>
+            <p>Concerning its theoretical foundations, RASH is entirely based on a strong theory on <em>structural patterns</em> for XML documents <a href="#Patterns2014" role="doc-biblioref"></a>. The systematic use of these structural patterns is an added value in all stages of the documents' lifecycle: they can be guidelines for creating well-engineered documents and vocabularies, rules to extract structural components from legacy documents, indicators to study to what extent documents share design principles and community guidelines.</p>
             <p>Note that this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easily access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
             <p>Any RASH documents begins as a simple (X)HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <code>html</code> with the usual namespace and with additional (and mandatory) prefix declarations (through the attribute <code>prefix</code>). The element <code>html</code> contains the element <code>head</code>, for defining metadata of the document, and the element <code>body</code>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
             <pre><code>
@@ -144,9 +144,9 @@ Under the following terms:
                 <h1>Authors</h1>
                 <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using three distinct elements, two <code>meta</code>s and one <code>link</code>. Each of these elements must have must have the attribute <code>about</code> set to the same value (i.e., a URL), which is a unique identifier for the author. Each of these elements allows us to specify different kinds of information, i.e.:</p>
                 <ul>
-                    <li><p>the <b>full name</b> of the author as it should appear in the paper - through an element <code>meta</code> having the attribute <code>name</code> set to <q>dc.creator</q>, and the attribute <code>content</code> specifying the actual name;</p></li>
-                    <li><p>the <b>email address</b> of the author - through an element <code>meta</code> having the attribute <code>property</code> set to <q>schema:email</q>, and the attribute <code>content</code> specifying the actual author's email;</p></li>
-                    <li><p>the <b>affiliations</b> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier (i.e., a URL) for a particular affiliation (see <a href="#affiliation" role="ref"></a>).</p></li>
+                    <li><p>the <strong>full name</strong> of the author as it should appear in the paper - through an element <code>meta</code> having the attribute <code>name</code> set to <q>dc.creator</q>, and the attribute <code>content</code> specifying the actual name;</p></li>
+                    <li><p>the <strong>email address</strong> of the author - through an element <code>meta</code> having the attribute <code>property</code> set to <q>schema:email</q>, and the attribute <code>content</code> specifying the actual author's email;</p></li>
+                    <li><p>the <strong>affiliations</strong> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier (i.e., a URL) for a particular affiliation (see <a href="#affiliation" role="ref"></a>).</p></li>
                 </ul>
                 <p>An example of how to create all these author's information is shown in the following excerpt.</p>
                 <pre><code>
@@ -226,7 +226,7 @@ Under the following terms:
             <section id="lists">
                 <h1>Lists</h1>
                 <p>The list are self-contained blocks that must be used outside paragraphs and that allow us to structure test as a sequence of item. The elements for defining lists are <code>ul</code> (for unordered lists) and <code>ol</code> (for ordered lists).</p>
-                <p>Each list element can contain only <code>li</code> elements, i.e., list items; the latter ones <b>cannot</b> contain text directly, but can contain other blocks (see <a href="#paragraphs" role="ref"></a>) and sections (see <a href="#sections" role="ref"></a>).</p>
+                <p>Each list element can contain only <code>li</code> elements, i.e., list items; the latter ones <strong>cannot</strong> contain text directly, but can contain other blocks (see <a href="#paragraphs" role="ref"></a>) and sections (see <a href="#sections" role="ref"></a>).</p>
                 <p>An example of these two kinds of list is shown in the following excerpt.</p>
                 <pre><code>
 &lt;!-- An unordered list --&gt;
@@ -258,7 +258,7 @@ Under the following terms:
             <section id="inlines">
                 <h1>Inline elements</h1>
                 <p>In addition to blocks, it is possible to describe small parts of a text with inline elements defining particular functions on such text, such as emphasis, inline quotation, super- and sub- scripts, and the like.</p>
-                <p>We can use two different kinds of emphases, the <i>normal one</i> and the <b>strong one</b>, created by using the elements <code>i</code> and <code>b</code> respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by using the element <code>q</code>, while <sup>superscripts</sup> and <sub>subscripts</sub> are described by the elements <code>sup</code> and <code>sub</code> respectively. In addition, it is possible to describe a piece of text as an <code>inline source code</code> by using the element <code>code</code>.</p>
+                <p>We can use two different kinds of emphases, the <em>normal one</em> and the <strong>strong one</strong>, created by using the elements <code>em</code> and <code>strong</code> respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by using the element <code>q</code>, while <sup>superscripts</sup> and <sub>subscripts</sub> are described by the elements <code>sup</code> and <code>sub</code> respectively. In addition, it is possible to describe a piece of text as an <code>inline source code</code> by using the element <code>code</code>.</p>
                 <p>The element <code>span</code> is very useful for associating neutral classes to part of the text and for pushing RDFa annotations (see <a href="#rdfa" role="ref"></a> for more details).</p>
                 <p>It is also possible to insert images and formulas as part of the text inside a paragraph. For images, the element to use is <code>img</code> with the attribute <code>src</code> set to the URL of the image. In addition, we can use the whole <a href="http://www.w3.org/TR/MathML3/">MathML specification</a> for defining well-formed formulas<a href="#fn5" role="doc-noteref"></a> like
                     <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -275,8 +275,8 @@ Under the following terms:
                 <pre><code>
 &lt;p&gt;
     The text contained in this paragraph is annotated with markup for 
-    inline elements. In particular we have &lt;i&gt;normal&lt;/i&gt; and 
-    &lt;b&gt;strong&lt;/b&gt; emphasis, &lt;q&gt;quotations&lt;/q&gt;, 
+    inline elements. In particular we have &lt;em&gt;normal&lt;/m&gt; and 
+    &lt;strong&gt;strong&lt;/strong&gt; emphasis, &lt;q&gt;quotations&lt;/q&gt;, 
     &lt;sup&gt;superscripts&lt;/sup&gt; and &lt;sub&gt;subscripts&lt;/sub&gt;, 
     &lt;code&gt;source code&lt;/code&gt; and
     &lt;a href="https://en.wikipedia.org/wiki/Hyperlink"&gt;hyperlinks&lt;/a&gt;.
@@ -524,7 +524,7 @@ Under the following terms:
         
         <section id="references">
             <h1>References</h1>
-            <p>All the references are organised in a list within a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-bibliography</q>. They are usually put at the end of the document <b>before</b> the footnotes section (cf. <a href="#footnotes" role="ref"></a>).</p>
+            <p>All the references are organised in a list within a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-bibliography</q>. They are usually put at the end of the document <strong>before</strong> the footnotes section (cf. <a href="#footnotes" role="ref"></a>).</p>
             <p>This special section must have an heading (element <code>h1</code>) and only one list (cf. <a href="#lists" role="ref"></a>) containing a bibliographic reference for each list item (i.e., the element <code>li</code> accompanied by the attribute <code>id</code> for referencing to it within the text and the attribute <code>role</code> set to <q>doc-biblioentry</q>).</p>
             <p>For instance, the reference section in <a href="#bibreflist" role="ref"></a> is defined in RASH through the following code.</p>
             <pre><code>
@@ -567,7 +567,7 @@ Under the following terms:
         
         <section id="footnotes">
             <h1>Footnotes</h1>
-            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-footnotes</q>. They are usually put at the end of the document <b>after</b> the reference section (cf. <a href="#references" role="ref"></a>).</p>
+            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-footnotes</q>. They are usually put at the end of the document <strong>after</strong> the reference section (cf. <a href="#references" role="ref"></a>).</p>
             <p>This special section contains a sequence of elements <code>section</code>. Each of these elements is accompanied by the attribute <code>role</code> with value <q>doc-footnote</q>, by the attribute <code>id</code> (for referencing to the particular footnote within the text), and can contain block elements containing text, i.e., a paragraph, a list, a code block, a block quotation or any of the structures described in <a href="#floatings" role="ref"></a>.</p>
             <p>For instance, the footnote section in <a href="#fnlist" role="ref"></a> is defined in RASH through the following code.</p>
             <pre><code>
@@ -585,7 +585,7 @@ Under the following terms:
         
         <section id="referencing">
             <h1>Referencing things</h1>
-            <p>All the sections (e.g., <a href="#sections" role="ref"></a>), figures (e.g., <a href="#figure_1" role="ref"></a>), tables (e.g., <a href="#table_1" role="ref"></a>), formulas (e.g., <a href="#formula_1" role="ref"></a>), bibliographic references (e.g., <a href="#Per2014" role="doc-biblioref"></a>), footnotes (e.g., <a href="#fn3" role="doc-noteref"></a>) and even multiple footnotes (e.g., <a href="#fn5" role="doc-noteref"></a><a href="#fn4" role="doc-noteref"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <b>empty</b> element <code>a</code>. It must have the attribute <code>href</code> pointing to an element <code>id</code> of the document (preceded by the character <q>#</q>), and the attribute <code>role</code> set to <q>doc-noteref</q> for referring to footnotes, to <q>doc-biblioref</q> for referring to bibliographic entries, and to <q>ref</q> in the other cases.</p>
+            <p>All the sections (e.g., <a href="#sections" role="ref"></a>), figures (e.g., <a href="#figure_1" role="ref"></a>), tables (e.g., <a href="#table_1" role="ref"></a>), formulas (e.g., <a href="#formula_1" role="ref"></a>), bibliographic references (e.g., <a href="#Per2014" role="doc-biblioref"></a>), footnotes (e.g., <a href="#fn3" role="doc-noteref"></a>) and even multiple footnotes (e.g., <a href="#fn5" role="doc-noteref"></a><a href="#fn4" role="doc-noteref"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>. It must have the attribute <code>href</code> pointing to an element <code>id</code> of the document (preceded by the character <q>#</q>), and the attribute <code>role</code> set to <q>doc-noteref</q> for referring to footnotes, to <q>doc-biblioref</q> for referring to bibliographic entries, and to <q>ref</q> in the other cases.</p>
             <p>For instance, the reference pointers introduced in the above paragraph are defined in RASH through the following code.</p>
             <pre><code>
 &lt;p&gt;
@@ -680,7 +680,7 @@ Under the following terms:
         <!-- Acknowledgements -->
         <section role="doc-acknowledgements">
             <h1>Acknowledgments</h1>
-            <p>The acknowledgements of a document are organised in a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-acknowledgements</q>. They are usually put just <b>after</b> the section concluding the document (i.e., <a href="#visualisation" role="ref"></a> in this case) and <b>before</b> the reference section.</p>
+            <p>The acknowledgements of a document are organised in a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-acknowledgements</q>. They are usually put just <strong>after</strong> the section concluding the document (i.e., <a href="#visualisation" role="ref"></a> in this case) and <strong>before</strong> the reference section.</p>
         </section>
         
         <!-- References -->

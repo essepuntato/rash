@@ -325,11 +325,11 @@ $(function() {
     /* Captions */
     $("figure[role=picturebox] figcaption").each(function() {
         var cur_number = $(this).parent().findNumber("figure[role=picturebox]");
-        $(this).html("<b>Figure " + cur_number + ".</b> " + $(this).html());
+        $(this).html("<strong>Figure " + cur_number + ".</strong> " + $(this).html());
     });
     $("figure[role=tablebox] figcaption").each(function() {
         var cur_number = $(this).parent().findNumber("figure[role=tablebox]");
-        $(this).html("<b>Table " + cur_number + ".</b> " + $(this).html());
+        $(this).html("<strong>Table " + cur_number + ".</strong> " + $(this).html());
     });
     $("figure[role=formulabox] p").each(function() {
         var cur_number = $(this).parent().findNumber("figure[role=formulabox]");
@@ -337,7 +337,7 @@ $(function() {
     });
     $("figure[role=listingbox] figcaption").each(function() {
         var cur_number = $(this).parent().findNumber("figure[role=listingbox]");
-        $(this).html("<b>Listing " + cur_number + ".</b> " + $(this).html());
+        $(this).html("<strong>Listing " + cur_number + ".</strong> " + $(this).html());
     });
     /* /END Captions */
     
