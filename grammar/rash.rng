@@ -495,15 +495,15 @@ Under the following terms:
         </element>
     </define>
     
-    <define name="i">
-        <element name="i">
+    <define name="em">
+        <element name="em">
             <ref name="attributes_html_element_no_role" />
             <ref name="cm_inline" />
         </element>
     </define>
     
-    <define name="b">
-        <element name="b">
+    <define name="strong">
+        <element name="strong">
             <ref name="attributes_html_element_no_role" />
             <ref name="cm_inline" />
         </element>
@@ -744,8 +744,8 @@ Under the following terms:
                 <ref name="code" />
                 <ref name="sub" />
                 <ref name="sup" />
-                <ref name="i" />
-                <ref name="b" />
+                <ref name="em" />
+                <ref name="strong" />
                 <ref name="q" />
             </choice>
         </zeroOrMore>

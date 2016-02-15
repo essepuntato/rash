@@ -234,8 +234,8 @@ aRefFootnote =
     attribute href { xsd:anyURI },
     aNameRef?
   }
-i = element i { attributes_html_element_no_role, cm_inline }
-b = element b { attributes_html_element_no_role, cm_inline }
+em = element em { attributes_html_element_no_role, cm_inline }
+strong = element strong { attributes_html_element_no_role, cm_inline }
 q = element q { attributes_html_element_no_role, cm_inline }
 sup = element sup { attributes_html_element_no_role, cm_inline }
 sub = element sub { attributes_html_element_no_role, cm_inline }
@@ -298,8 +298,8 @@ cm_inline =
    | code
    | sub
    | sup
-   | i
-   | b
+   | em
+   | strong
    | q)*
 cm_sections =
   h1,
