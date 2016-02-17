@@ -21,8 +21,8 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
   * Removed the roles 'figurebox', 'tablebox', 'listingbox', and 'formulabox' - the correct visualisation and conversion is still guaranteed by looking at the actual elements the element ``figure`` contains.
   * The element ``img`` can have the role 'math' specified if it actually represents a mathematical formula.
   * The element ``span``, with the attribute ``role`` set to 'math', can be used to include LaTeX formulas within a RASH document.
-  * Added the support to [MathJax](http://mathjax.org) so as to render correctly both LaTeX and MathML formulas in all browsers.
-  * Added the support to SVG (element ``svg``) for specifying images.
+  * Added the support for [MathJax](http://mathjax.org) so as to render correctly both LaTeX and MathML formulas in all browsers.
+  * Added the support for SVG (element ``svg``) for specifying images.
   * Removed the role for internal references (i.e., 'ref', 'doc-noteref', and 'doc-biblioref'), and substituted by means of the use of an empty element ``a`` linking to the element one wants to refer to.
 
 * Version 0.4.1
