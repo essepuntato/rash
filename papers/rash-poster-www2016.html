@@ -1,77 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="./rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
+<?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml" prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
    <head>
       <meta charset="UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <link rel="stylesheet" href="../css/bootstrap.min.css"/>
       <link rel="stylesheet" href="../css/rash.css"/>
-      <script src="../js/jquery.min.js"> </script>
-      <script src="../js/bootstrap.min.js"> </script>
-      <script src="../js/rash.js"> </script>
+      <script src="../js/jquery.min.js"><![CDATA[ ]]></script>
+      <script src="../js/bootstrap.min.js"><![CDATA[ ]]></script>
+      <script src="../js/rash.js"><![CDATA[ ]]></script>
       <title>It ROCS! -- The RASH Online Conversion Service</title>
-      <meta about="#affiliation-1"
-            property="schema:name"
-            content="Department of Computer Science and Engineering, University of Bologna, Italy"/>
-      <meta about="#affiliation-2"
-            property="schema:name"
-            content="Oxford e-Research Centre, University of Oxford, UK"/>
-      <meta about="#affiliation-3"
-            property="schema:name"
-            content="Knowledge Media Institute, Open University, UK"/>
-      <meta about="#author-1"
-            name="dc.creator"
-            property="schema:name"
-            content="Angelo Di Iorio"/>
-      <meta about="#author-1"
-            property="schema:email"
-            content="angelo.diiorio@unibo.it"/>
+      <meta about="#affiliation-1" property="schema:name" content="Department of Computer Science and Engineering, University of Bologna, Italy"/>
+      <meta about="#affiliation-2" property="schema:name" content="Oxford e-Research Centre, University of Oxford, UK"/>
+      <meta about="#affiliation-3" property="schema:name" content="Knowledge Media Institute, Open University, UK"/>
+      <meta about="#author-1" name="dc.creator" property="schema:name" content="Angelo Di Iorio"/>
+      <meta about="#author-1" property="schema:email" content="angelo.diiorio@unibo.it"/>
       <link about="#author-1" property="schema:affiliation" href="#affiliation-1"/>
-      <meta about="#author-2"
-            name="dc.creator"
-            property="schema:name"
-            content="Alejandra Gonzalez-Beltran"/>
-      <meta about="#author-2"
-            property="schema:email"
-            content="alejandra.gonzalezbeltran@oerc.ox.ac.uk"/>
+      <meta about="#author-2" name="dc.creator" property="schema:name" content="Alejandra Gonzalez-Beltran"/>
+      <meta about="#author-2" property="schema:email" content="alejandra.gonzalezbeltran@oerc.ox.ac.uk"/>
       <link about="#author-2" property="schema:affiliation" href="#affiliation-2"/>
-      <meta about="#author-3"
-            name="dc.creator"
-            property="schema:name"
-            content="Francesco Osborne"/>
-      <meta about="#author-3"
-            property="schema:email"
-            content="francesco.osborne@open.ac.uk"/>
+      <meta about="#author-3" name="dc.creator" property="schema:name" content="Francesco Osborne"/>
+      <meta about="#author-3" property="schema:email" content="francesco.osborne@open.ac.uk"/>
       <link about="#author-3" property="schema:affiliation" href="#affiliation-3"/>
-      <meta about="#author-4"
-            name="dc.creator"
-            property="schema:name"
-            content="Silvio Peroni"/>
-      <meta about="#author-4"
-            property="schema:email"
-            content="silvio.peroni@unibo.it"/>
+      <meta about="#author-4" name="dc.creator" property="schema:name" content="Silvio Peroni"/>
+      <meta about="#author-4" property="schema:email" content="silvio.peroni@unibo.it"/>
       <link about="#author-4" property="schema:affiliation" href="#affiliation-1"/>
-      <meta about="#author-5"
-            name="dc.creator"
-            property="schema:name"
-            content="Francesco Poggi"/>
-      <meta about="#author-5"
-            property="schema:email"
-            content="francesco.poggi5@unibo.it"/>
+      <meta about="#author-5" name="dc.creator" property="schema:name" content="Francesco Poggi"/>
+      <meta about="#author-5" property="schema:email" content="francesco.poggi5@unibo.it"/>
       <link about="#author-5" property="schema:affiliation" href="#affiliation-1"/>
-      <meta about="#author-6"
-            name="dc.creator"
-            property="schema:name"
-            content="Fabio Vitali"/>
-      <meta about="#author-6"
-            property="schema:email"
-            content="fabio.vitali@unibo.it"/>
+      <meta about="#author-6" name="dc.creator" property="schema:name" content="Fabio Vitali"/>
+      <meta about="#author-6" property="schema:email" content="fabio.vitali@unibo.it"/>
       <link about="#author-6" property="schema:affiliation" href="#affiliation-1"/>
       <meta property="prism:keyword" content="HTML-based format"/>
       <meta property="prism:keyword" content="Scholarly HTML"/>
       <meta property="prism:keyword" content="RASH"/>
-   </head>
+   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><![CDATA[ ]]></script></head>
    <body>
       <section role="doc-abstract">
          <h1>Abstract</h1>
@@ -79,34 +42,34 @@
       </section>
       <section>
          <h1>Introduction</h1>
-         <p>The use of HTML as format for writing scholarly papers and submitting them to scholarly venues is a very popular, discussed and trendy topic within the scholarly domain. This is demonstrated by the existence of several posts within technical mailing lists of the Web community<a role="doc-noteref" href="#ftn0"> </a>, by the birth of W3C community groups on such topic<a role="doc-noteref" href="#ftn3"> </a>, by the development of HTML-based formats for scholarly articles<a role="doc-noteref" href="#ftn4"> </a>, and by the increasing number of events that are experimenting with HTML-based formats for submissions, such as the SAVE-SD<a role="doc-noteref" href="#ftn5"> </a> and LDOW<a role="doc-noteref" href="#ftn6"> </a> workshops at WWW 2016, and the Extended Semantic Web Conference<a role="doc-noteref" href="#ftn7"> </a>.</p>
+         <p>The use of HTML as format for writing scholarly papers and submitting them to scholarly venues is a very popular, discussed and trendy topic within the scholarly domain. This is demonstrated by the existence of several posts within technical mailing lists of the Web community<a href="#ftn0"> </a>, by the birth of W3C community groups on such topic<a href="#ftn3"> </a>, by the development of HTML-based formats for scholarly articles<a href="#ftn4"> </a>, and by the increasing number of events that are experimenting with HTML-based formats for submissions, such as the SAVE-SD<a href="#ftn5"> </a> and LDOW<a href="#ftn6"> </a> workshops at WWW 2016, and the Extended Semantic Web Conference<a href="#ftn7"> </a>.</p>
          <p>In order to foster a wider adoption of these formats, frameworks for HTML-based papers should support the needs of all the actors involved in the production, delivery and fruition of scholarly articles, with particular regards to authors and publishers. Hence, this solution calls for a number of requirements that go well beyond those used on the Web. </p>
          <p>First of all, it is vital to support authors with a variety of tools to provide for an easy transition to the new format. To this end, authors should be allowed to keep using well-known current word processors rather than adopting HTML and/or pure text editors. We thus need to support the conversion from the main word processor formats (e.g., ODT and OOXML) to HTML formats, in particular when authors use only basic features, such as standard styles for paragraphs and tables. In addition, authors should be given the option to focus on the content and let appropriate tools handle the presentation layer after the conversion into the HTML-based format.</p>
          <p>Second, frameworks for HTML-based papers should enable papers to be processed in a way that is compliant with existing and well-established publication workflows. Hence, they should be able to be easily formatted according to publishers' guidelines. Of course, publishers, conference, workshop organisers, and even authors would find easier to work with formats they are familiar with, such as LaTeX. To this end, modern HTML formats for research papers should also allow to be converted to standard formats currently adopted by publishers (e.g., LaTeX) and to support specific layouts (e.g., ACM ICPS).</p>
          <p>In order to address the aforementioned requirements, we developed the <em>RASH Framework</em> 
-            <a href="#__RefNumPara__2213_824787510" role="doc-biblioref"> </a>. This framework includes a set of specifications and writing/conversion/extraction tools for writing academic articles in <em>RASH</em>, i.e., a markup language defined as a subset of HTML for writing scientific articles. In this poster we introduce the <em>RASH Online Conversion Service</em> (<em>ROCS</em>), i.e., a Web application that allows converting ODT documents into RASH, and then RASH documents into LaTeX according to some well-established layouts in the scholarly domain, i.e., Springer LNCS and ACM ICPS.</p>
-         <p>The rest of the paper is structured as follows. After a brief introduction of the RASH Framework in <a href="#__RefHeading__2267_824787510" role="ref"> </a>, in <a href="#__RefHeading__2265_824787510" role="ref"> </a> we illustrate the main features of ROCS. Finally, in <a href="#__RefHeading__2269_824787510" role="ref"> </a>, we conclude the paper sketching out some future works.</p>
+            <a href="#__RefNumPara__2213_824787510"> </a>. This framework includes a set of specifications and writing/conversion/extraction tools for writing academic articles in <em>RASH</em>, i.e., a markup language defined as a subset of HTML for writing scientific articles. In this poster we introduce the <em>RASH Online Conversion Service</em> (<em>ROCS</em>), i.e., a Web application that allows converting ODT documents into RASH, and then RASH documents into LaTeX according to some well-established layouts in the scholarly domain, i.e., Springer LNCS and ACM ICPS.</p>
+         <p>The rest of the paper is structured as follows. After a brief introduction of the RASH Framework in <a href="#__RefHeading__2267_824787510"> </a>, in <a href="#__RefHeading__2265_824787510"> </a> we illustrate the main features of ROCS. Finally, in <a href="#__RefHeading__2269_824787510"> </a>, we conclude the paper sketching out some future works.</p>
       </section>
       <section id="__RefHeading__2267_824787510">
          <h1>The RASH Framework</h1>
-         <p>The RASH Framework<a role="doc-noteref" href="#ftn1"> </a> includes a set of specifications and writing/conversion/extraction tools for writing academic articles in HTML by means of the RASH format<a role="doc-noteref" href="#ftn8"> </a>. RASH is a markup language for writing research articles that restricts the use of HTML elements to only 31 elements. It is possible to include also RDF statements as RDFa annotations and/or as Turtle, JSON-LD and RDF/XML triples by using the tag <q>script</q>. In addition, RASH strictly follows the Digital Publishing WAI-ARIA Module 1.0 <a href="#__RefNumPara__2338_824787510" role="doc-biblioref"> </a> for expressing structural semantics on various markup elements used.</p>
+         <p>The RASH Framework<a href="#ftn1"> </a> includes a set of specifications and writing/conversion/extraction tools for writing academic articles in HTML by means of the RASH format<a href="#ftn8"> </a>. RASH is a markup language for writing research articles that restricts the use of HTML elements to only 31 elements. It is possible to include also RDF statements as RDFa annotations and/or as Turtle, JSON-LD and RDF/XML triples by using the tag <q>script</q>. In addition, RASH strictly follows the Digital Publishing WAI-ARIA Module 1.0 <a href="#__RefNumPara__2338_824787510"> </a> for expressing structural semantics on various markup elements used.</p>
          <p>RASH is accompanied by a series of tools for helping the creation/conversion/enrichment of such documents from/into different formats. In addition to the converters, which will be introduced in the following section, the RASH Framework also includes: </p>
          <ul>
             <li>
                <p>a script to enable users to check RASH documents against the specific requirements in the RASH RelaxNG grammar and also against the full set of HTML checks;</p>
             </li>
             <li>
-               <p>a visualisation tool for showing RASH documents on browsers with two different layouts (Web-based and Springer LNCS – the latter is partially based on Linked Research <a href="#__RefNumPara__2437_824787510" role="doc-biblioref"> </a> CCSs);</p>
+               <p>a visualisation tool for showing RASH documents on browsers with two different layouts (Web-based and Springer LNCS – the latter is partially based on Linked Research <a href="#__RefNumPara__2437_824787510"> </a> CCSs);</p>
             </li>
             <li>
-               <p>a suite that automatically annotates RASH elements with their actual (structural) semantics according to the Document Components Ontology (DoCO) <a href="#__RefNumPara__2517_824787510" role="doc-biblioref"> </a>.</p>
+               <p>a suite that automatically annotates RASH elements with their actual (structural) semantics according to the Document Components Ontology (DoCO) <a href="#__RefNumPara__2517_824787510"> </a>.</p>
             </li>
          </ul>
-         <p>All the converters and the aforementioned tools are all available on the RASH Framework repository on GitHub. It is worth mentioning that RASH was already proposed as one of the possible formats for HTML submissions in several academic events<a role="doc-noteref" href="#ftn9"> </a>.</p>
+         <p>All the converters and the aforementioned tools are all available on the RASH Framework repository on GitHub. It is worth mentioning that RASH was already proposed as one of the possible formats for HTML submissions in several academic events<a href="#ftn9"> </a>.</p>
       </section>
       <section id="__RefHeading__2265_824787510">
          <h1>RASH online conversion tool</h1>
-         <p>We created an online conversion tool called <em>ROCS</em> (<em>RASH Online Conversion Service</em>) for supporting authors in writing RASH documents and preparing submissions to be easily processed by current journals, workshops and conferences (e.g., the Extended Semantic Web Conference 2016). The abstract architecture of the tool is shown in <a href="#refIllustration0" role="ref"> </a>, while the tool is available at <a href="http://dasplab.cs.unibo.it/rocs">http://dasplab.cs.unibo.it/rocs</a>. ROCS allows converting an ODT document, written according to specific guidelines, into RASH and, then, into LaTeX according to either the Springer LNCS or ACM IPCS layouts. Such ODT guidelines<a role="doc-noteref" href="#ftn2"> </a> are very simple and use only the basic features available in OpenOffice Writer, without using any external tool or plugin.</p>
+         <p>We created an online conversion tool called <em>ROCS</em> (<em>RASH Online Conversion Service</em>) for supporting authors in writing RASH documents and preparing submissions to be easily processed by current journals, workshops and conferences (e.g., the Extended Semantic Web Conference 2016). The abstract architecture of the tool is shown in <a href="#refIllustration0"> </a>, while the tool is available at <a href="http://dasplab.cs.unibo.it/rocs">http://dasplab.cs.unibo.it/rocs</a>. ROCS allows converting an ODT document, written according to specific guidelines, into RASH and, then, into LaTeX according to either the Springer LNCS or ACM IPCS layouts. Such ODT guidelines<a href="#ftn2"> </a> are very simple and use only the basic features available in OpenOffice Writer, without using any external tool or plugin.</p>
          <p>ROCS is actually based on several other software artefacts that are included in the RASH Framework, i.e.:</p>
          <ul>
             <li>
@@ -119,10 +82,9 @@
                <p>XSLT 2.0 files for converting RASH documents into LaTeX according to the ACM ICPS and Springer LNCS styles.</p>
             </li>
          </ul>
-         <figure role="picturebox" id="refIllustration0">
+         <figure id="refIllustration0">
             <p>
-               <img src="img/100002010000048C000003124922A012.png"
-                    alt="The architecture of ROCS."/>
+               <img src="img/100002010000048C000003124922A012.png" alt="The architecture of ROCS."/>
             </p>
             <figcaption>The architecture of ROCS.</figcaption>
          </figure>
@@ -131,7 +93,7 @@
       </section>
       <section id="__RefHeading__2269_824787510">
          <h1>Conclusions</h1>
-         <p>In this poster paper we introduced <em>ROCS</em>, the <em>RASH Online Conversion Service</em> that allows the conversion of ODT documents to RASH, an HTML-based format, and LaTeX. ROCS, as well as RASH, is part of a larger Framework that includes a set of specifications and tools for writing academic articles in HTML+RDF. We are currently developing additional XSLT documents in order to convert DOCX documents into RASH and to convert RASH documents into several different LaTeX and XML-based formats for scholarly communications, such as ACM journals and EPUB3 <a href="#__RefNumPara__2978_824787510" role="doc-biblioref"> </a>. We are also studying possible strategies for the development of conversion tools from LaTeX files, in particular compliant with the Springer LNCS and the ACM ICPS layouts, into RASH documents.</p>
+         <p>In this poster paper we introduced <em>ROCS</em>, the <em>RASH Online Conversion Service</em> that allows the conversion of ODT documents to RASH, an HTML-based format, and LaTeX. ROCS, as well as RASH, is part of a larger Framework that includes a set of specifications and tools for writing academic articles in HTML+RDF. We are currently developing additional XSLT documents in order to convert DOCX documents into RASH and to convert RASH documents into several different LaTeX and XML-based formats for scholarly communications, such as ACM journals and EPUB3 <a href="#__RefNumPara__2978_824787510"> </a>. We are also studying possible strategies for the development of conversion tools from LaTeX files, in particular compliant with the Springer LNCS and the ACM ICPS layouts, into RASH documents.</p>
       </section>
       <section role="doc-bibliography">
          <h1>References</h1>

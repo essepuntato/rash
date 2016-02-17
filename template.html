@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
 Basic RASH template - Version 1.0, February 17, 2016
 by Silvio Peroni
@@ -109,7 +110,7 @@ Under the following terms:
                 <li><p><sup>superscripts</sup></p></li>
                 <li><p><sub>subscripts</sub></p></li>
                 <li><p><code>inline source code</code></p></li>
-                <li><p>images, like <img src="https://avatars0.githubusercontent.com/u/3869247?v=3&s=20" /></p></li>
+                <li><p>images, like <img src="https://avatars0.githubusercontent.com/u/3869247?v=3&amp;s=20" alt="alternative text" /></p></li>
                 <li><p>SVG images, like <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="7" stroke="green" stroke-width="1" fill="yellow" /></svg></p></li>
                 <li><p>MathML formulas, like 
                     <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -131,7 +132,7 @@ Under the following terms:
             
             <figure id="figure_1">
                 <p>
-                    <img src="https://rawgit.com/essepuntato/rash/master/documentation/img/rash.png" />
+                    <img src="https://rawgit.com/essepuntato/rash/master/documentation/img/rash.png" alt="alternative text" />
                 </p>
                 <figcaption>Caption of the figure inserted through the element <code>img</code>.</figcaption>
             </figure>
@@ -237,7 +238,7 @@ Under the following terms:
         
         <section id="referencing">
             <h1>Referencing things</h1>
-            <p>All the sections (e.g., <a href="#first_section"></a>), figures (e.g., <a href="#figure_1"></a>), tables (e.g., <a href="#table_1"></a>), formulas (e.g., <a href="#formula_1"></a>), listings (e.g., <a href="#listing_1"></a>), bibliographic references (e.g., <a href="#Per2014"></a>), footnotes (e.g., <a href="#fn1"></a>) and even multiple footnotes (e.g., <a href="#fn2"></a><a href="#fn3"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>.
+            <p>All the sections (e.g., <a href="#first_section"></a>), figures (e.g., <a href="#figure_1"></a>), tables (e.g., <a href="#table_1"></a>), formulas (e.g., <a href="#formula_1"></a>), listings (e.g., <a href="#listing_1"></a>), bibliographic references (e.g., <a href="#Per2014"></a>), footnotes (e.g., <a href="#fn1"></a>) and even multiple footnotes (e.g., <a href="#fn2"></a><a href="#fn3"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>.</p>
         </section>
         
         <!-- Acknowledgements -->

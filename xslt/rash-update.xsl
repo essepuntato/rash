@@ -153,6 +153,20 @@ Under the following terms:
         </p>
     </xsl:template>
     
+    <!-- i -> em -->
+    <xsl:template match="i">
+        <em>
+            <xsl:call-template name="copy-no-class" />
+        </em>
+    </xsl:template>
+    
+    <!-- b -> strong -->
+    <xsl:template match="b">
+        <strong>
+            <xsl:call-template name="copy-no-class" />
+        </strong>
+    </xsl:template>
+    
     <!-- span[@class = 'code'] -> code -->
     <xsl:template match="span[index-of(tokenize(@class, ' '), 'code') > 0]">
         <code>
@@ -304,20 +318,13 @@ Under the following terms:
     </xsl:template>
     
     <!-- (i|b|a|sup|sub|q)[@class = 'code'] -> code -->
-    <xsl:template match="i|b|a|sup|sub|q">
+    <xsl:template match="i[index-of(tokenize(@class, ' '), 'code') > 0]|b[index-of(tokenize(@class, ' '), 'code') > 0]|a[index-of(tokenize(@class, ' '), 'code') > 0]|sup[index-of(tokenize(@class, ' '), 'code') > 0]|sub[index-of(tokenize(@class, ' '), 'code') > 0]|q[index-of(tokenize(@class, ' '), 'code') > 0]">
         <xsl:copy>
-            <xsl:choose>
-                <xsl:when test="index-of(tokenize(@class, ' '), 'code') > 0">
-                    <code>
-                        <xsl:call-template name="copy-no-class">
-                            <xsl:with-param name="class" select="'code'" />
-                        </xsl:call-template>
-                    </code>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="@*|node()"/>
-                </xsl:otherwise>
-            </xsl:choose>
+            <code>
+                <xsl:call-template name="copy-no-class">
+                    <xsl:with-param name="class" select="'code'" />
+                </xsl:call-template>
+            </code>
         </xsl:copy>
     </xsl:template>
     
@@ -338,7 +345,7 @@ Under the following terms:
     <!-- @role with remove value -->
     <xsl:template match="@role" mode="remove-value">
         <xsl:param name="role" as="xs:string?" />
-        <xsl:if test="role">
+        <xsl:if test="$role">
             <xsl:variable name="values" select="tokenize(., ' ')" as="xs:string*" />
             <xsl:variable name="values-no-role" select="remove($values, index-of($values, $role))" as="xs:string*" />
             <xsl:if test="$values-no-role">

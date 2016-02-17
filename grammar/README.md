@@ -12,7 +12,7 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
 
 ### List of HTML elements used
 
-<code>a</code>, <code>blockquote</code>, <code>body</code>, <code>code</code>, <code>em</code>, <code>figcaption</code>, <code>figure</code>, <code>h1</code>, <code>head</code>, <code>html</code>, <code>img</code>, <code>li</code>, <code>link</code>, <code>math</code>, <code>meta</code>, <code>ol</code>, <code>p</code>, <code>pre</code>, <code>q</code>, <code>script</code>, <code>section</code>, <code>span</code>, <code>strong</code>, <code>sub</code>, <code>sup</code>, <code>table</code>, <code>td</code>, <code>th</code>, <code>title</code>, <code>tr</code>, <code>ul</code>
+<code>a</code>, <code>blockquote</code>, <code>body</code>, <code>code</code>, <code>em</code>, <code>figcaption</code>, <code>figure</code>, <code>h1</code>, <code>head</code>, <code>html</code>, <code>img</code>, <code>li</code>, <code>link</code>, <code>math</code>, <code>meta</code>, <code>ol</code>, <code>p</code>, <code>pre</code>, <code>q</code>, <code>script</code>, <code>section</code>, <code>span</code>, <code>strong</code>, <code>sub</code>, <code>sup</code>, <code>svg</code>, <code>table</code>, <code>td</code>, <code>th</code>, <code>title</code>, <code>tr</code>, <code>ul</code>
 
 
 ### Change log
