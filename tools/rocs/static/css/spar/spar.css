@@ -1,0 +1,29 @@
+.additional-margin {
+    margin-top: 60px;
+}
+
+.examples blockquote {
+    font-size: 100%;
+}
+
+.cite {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.cite p {
+    margin-bottom:0px;
+}
+
+a.anchor {
+    display: block;
+    position: relative;
+    top: -55px;
+    visibility: hidden;
+}
+
+@media (max-width: 1000px) {
+    .navbar-default .navbar-nav > li > a {
+        font-size:50% !important;
+    }
+}

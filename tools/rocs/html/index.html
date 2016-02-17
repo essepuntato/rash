@@ -1,0 +1,105 @@
+$def with (error)
+
+<!DOCTYPE HTML>
+<!--
+RASH online conversion service - November 13, 2015
+by Silvio Peroni
+
+This page is based on the jQuery File Upload Plugin Basic Demo
+available at https://github.com/blueimp/jQuery-File-Upload
+
+Copyright 2013, Sebastian Tschan
+https://blueimp.net
+
+Licensed under the MIT license:
+http://www.opensource.org/licenses/MIT
+-->
+<html lang="en">
+    <head>
+        <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+        <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+        <meta charset="utf-8">
+        <title>RASH online conversion service</title>
+        <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support and progress bar for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap styles -->
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <!-- Generic page styles -->
+        <link rel="stylesheet" href="/static/css/fileupload/style.css">
+        <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+        <link rel="stylesheet" href="/static/css/fileupload/jquery.fileupload.css">
+    </head>
+    <body id="top">
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-fixed-top .navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/rocs">RASH online conversion service</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a target="_blank" href="https://github.com/essepuntato/rash">What is RASH</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <h1>RASH online conversion service</h1>
+
+            <p class="lead">Select a file and run the conversion process to get your RASH + LaTeX!<br>
+
+            <!-- The fileinput-button span is used to style the file input field as button -->
+            <div>
+                <form
+                        method="POST" enctype="multipart/form-data"
+                        action="/rocs/process" accept-charset="utf-8">
+                    <p>
+                        <label for="file">Choose a file (.zip, .html, .odt)</label>:
+                        <input style="display:inline" id="file" type="file" name="file" required="required" />
+                    </p>
+                    <p>
+                        <label for="latex">Choose the LaTeX style</label>
+                         <select id="latex" name="latex">
+                             <option selected="selected" value="lncs">Springer LNCS</option>
+                             <option value="icps">ACM ICPS</option>
+                         </select>
+                    </p>
+                    <p>
+                        <input type="submit" class="btn btn-default" value="Run conversion process" />
+                    </p>
+                </form>
+                $if error is not None:
+                    <p class="bg-danger">Error: $error</p>
+            </div>
+
+    <div style="margin-top:30px" class="panel panel-default text-left">
+        <div class="panel-heading">
+            <h3 class="panel-title">Notes</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>The maximum file size for uploads is <strong>5 MB</strong>.</li>
+                <li>Only OpenOffice Document files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt">simple guidelines</a>), HTML files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) and ZIP files containing an HTML compliant with RASH are allowed.</li>
+                <li>All the input RASH file must be well-formed XHTML documents.</li>
+                <li>The conversion will try always to generate a LaTeX file, result of the conversion of a RASH file, compliant with the <a href="https://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Springer LNCS LaTeX class</a> or the <a href="http://www.acm.org/publications/article-templates/proceedings-template.html">ACM ICPS LaTeX class</a>.</li>
+                <li>The LaTeX file result of the conversion <b>must be compiled by using <a href="https://en.wikipedia.org/wiki/XeTeX">XeTeX</a></b>, which is a TeX typesetting engine using Unicode. It is already included in <a href="http://pages.uoregon.edu/koch/texshop/">TexShop</a> and <a href="https://www.tug.org/texworks/">TexWorks</a>.</li>
+                <li>When an <b>OpenOffice Document file</b> is used, the converter will return a ZIP archive containing such file and a directory called <q>rash</q> that contains a RASH file (extension <q>.html</q>), the related LaTeX document result of the conversion (extension <q>.tex</q>), and all the other imported files (css, javascript, LaTeX class and styles, fonts).</li>
+                <li>When a <b>ZIP archive</b> (containing and HTML file compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) is used, the converter will return a ZIP archive containing the sources in the input archive, a LaTeX document result of the conversion (extension <q>.tex</q>) in the same directory where the RASH file is contained in the input archive, and all the other imported LaTeX-related resources (LaTeX class and styles, fonts).</li>
+                <li>When an <b>HTML file</b> (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) is used, the converter will return a ZIP archive containing such file, the LaTeX document result of the conversion (extension <q>.tex</q>), and all the other imported LaTeX-related resources (LaTeX class and styles, fonts).</li>
+            </ul>
+            <p class="bg-info" style="padding: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;">Please don't hesitate to <a href="mailto:essepuntato@gmail.com">contact us</a> for highlighting issues and asking for additional information.</p>
+        </div>
+    </div>
+
+</div>
+<script src="/static/js/jquery.min.js"></script>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="/static/js/jquery.ui.widget.js"></script>
+<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+<script src="/static/js/bootstrap.min.js"></script>
+    </body>
+</html>
