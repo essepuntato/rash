@@ -117,6 +117,7 @@ Under the following terms:
                 <script src="{$basejs}jquery.min.js"><xsl:text> </xsl:text></script>
                 <script src="{$basejs}bootstrap.min.js"><xsl:text> </xsl:text></script>
                 <script src="{$basejs}rash.js"><xsl:text> </xsl:text></script>
+                <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><xsl:text> </xsl:text></script>
                 <!-- /END Visualisation requirements (mandatory for optimal reading) -->
                 
                 <xsl:call-template name="add.title" />
