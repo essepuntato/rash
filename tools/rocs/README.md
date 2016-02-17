@@ -8,6 +8,7 @@ For running the service, one has to call the script ``start.sh`` followed by the
 
 For using the service, open a browser and access to the URL ``http://localhost:[port]/rocs``. If you call the service as suggested above on the port 9000, the URL to access with the browser will be ``http://localhost:9000/rocs``.
 
+Please run the script ``stop.sh`` to stop the service.
 
 ## Online version
 
