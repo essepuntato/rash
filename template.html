@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!-- 
+Basic RASH template - Version 1.0, February 17, 2016
+by Silvio Peroni
+
+This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
+You are free to:
+* Share - copy and redistribute the material in any medium or format
+* Adapt - remix, transform, and build upon the material
+for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+* Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+-->
+<html 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    prefix="
+        schema: http://schema.org/
+        prism: http://prismstandard.org/namespaces/basic/2.0/">
+    <head>
+        <!-- Visualisation requirements (mandatory for optimal reading) -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/rash.css"/>
+        
+        <script src="js/jquery.min.js"> </script>
+        <script src="js/bootstrap.min.js"> </script>
+        <script src="js/rash.js"> </script>
+        
+        <!-- MathJax for multi-browser support of LaTeX formulas and MathML -->
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+        <!-- /END Visualisation requirements (mandatory for optimal reading) -->
+        
+        <!-- Metadata -->
+        <title property="dcterms:title">Title -- Subtitle</title>
+        
+        <!-- Author's data (one or more) -->
+        <meta about="#author-1" name="dc.creator" content="John Doe"/>
+        <meta about="#author-1" property="schema:email" content="john.doe@example.com"/>
+        <link about="#author-1" property="schema:affiliation" href="#organization-1"/>
+        
+        <meta about="#author-2" name="dc.creator" content="Jane Doe"/>
+        <meta about="#author-2" property="schema:email" content="jane.doe@example.com"/>
+        <link about="#author-2" property="schema:affiliation" href="#organization-1"/>
+        <link about="#author-2" property="schema:affiliation" href="#organization-2"/>
+        
+        <!-- Affiliations -->
+        <meta about="#organization-1" property="schema:name" content="My own company, UK"/>
+        <meta about="#organization-2" property="schema:name" content="Your own company, USA"/>
+        
+        <!-- Paper keywords (one or more) -->
+        <meta property="prism:keyword" content="keyword 1"/>
+        <meta property="prism:keyword" content="keyword 2"/>
+        <meta property="prism:keyword" content="keyword 3"/>
+        
+        <!-- ACM category (one or more) -->
+        <meta name="dcterms.subject" content="Applied computing,Document management and text processing,Document preparation,Markup languages"/>
+        <meta name="dcterms.subject" content="Applied computing,Document management and text processing,Document preparation,Annotation"/>
+        <!-- /END Metadata -->
+    </head>
+    <body>
+        <!-- Abstract -->
+        <section role="doc-abstract">
+            <h1>Abstract</h1>
+            <p>The text of the abstract.</p>
+            <p>Even if multiple paragraphs.</p>
+        </section>
+        
+        <!-- Sections -->
+        <section id="first_section">
+            <h1>First level title</h1>
+            <p>A paragraph.</p>
+            <p>Another paragraph.</p>
+            <section>
+                <h1>Second level title</h1>
+                <pre><code>A listing block.</code></pre>
+                <section>
+                    <h1>Third level title</h1>
+                    <blockquote><p>This is a block quotation.</p></blockquote>
+                    <section>
+                        <h1>Fourth level title</h1>
+                        <ul>
+                            <li><p>An item in an unordered list</p></li>
+                            <li><p>Another item in an unordered list</p></li>
+                        </ul>
+                    </section>
+                </section>
+            </section>
+            <section>
+                <h1>Another second level title</h1>
+                <ol>
+                    <li><p>An item in an ordered list</p></li>
+                    <li><p>Another item in an ordered list</p></li>
+                </ol>
+            </section>
+        </section>
+        
+        <section id="textualelements">
+            <h1>Inline elements</h1>
+            <p>We can define:</p>
+            <ul>
+                <li><p><em>emphasis</em></p></li>
+                <li><p><strong>strong emphasis</strong></p></li>
+                <li><p><q>inline quotations</q></p></li>
+                <li><p><sup>superscripts</sup></p></li>
+                <li><p><sub>subscripts</sub></p></li>
+                <li><p><code>inline source code</code></p></li>
+                <li><p>images, like <img src="https://avatars0.githubusercontent.com/u/3869247?v=3&s=20" /></p></li>
+                <li><p>SVG images, like <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="7" stroke="green" stroke-width="1" fill="yellow" /></svg></p></li>
+                <li><p>MathML formulas, like 
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mi>π<!-- π --></mi>
+                        <mo>⁢<!-- &InvisibleTimes; --></mo>
+                        <msup>
+                            <mi>r</mi>
+                            <mn>2</mn>
+                        </msup>
+                    </math>
+                </p></li>
+                <li><p>LaTeX formulas, like <span role="math">\pi r^2</span></p></li>
+                <li><p><a href="https://en.wikipedia.org/wiki/Hyperlink">hyperlinks</a></p></li>
+            </ul>
+        </section>
+        
+        <section id="floatings">
+            <h1>Boxes for figures, tables, formulas and listings</h1>
+            
+            <figure id="figure_1">
+                <p>
+                    <img src="https://rawgit.com/essepuntato/rash/master/documentation/img/rash.png" />
+                </p>
+                <figcaption>Caption of the figure inserted through the element <code>img</code>.</figcaption>
+            </figure>
+        
+            <figure id="figure_2">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="540" height="200" viewBox="0 0 270 100">
+                        <defs>
+                            <radialGradient id="radial" cx="50%" cy="50%" fx="25%" fy="25%">
+                                <stop offset="0%" stop-color="#60bafc" />
+                                <stop offset="50%" stop-color="#409adc" />
+                                <stop offset="100%" stop-color="#005a9c" />
+                            </radialGradient>
+                            <path id="curve" d="M18,60 C100,10 180,110 264,60" fill="none"/>
+                        </defs>
+                        
+                        <circle cx="138" cy="50" r="38" fill="url(#radial)" stroke="#005a9c" />
+                        
+                        <text font-family="Verdana" font-size="20" fill="#ff9900">
+                            <textPath xlink:href="#curve" method="stretch" style="visibility: visible;">
+                                Scalable <tspan fill="white">Vector</tspan> Graphics
+                            </textPath>
+                        </text>
+                    </svg>
+                </p>
+                <figcaption>Caption of the figure inserted through the element <code>svg</code>.</figcaption>
+            </figure>
+                
+            <figure id="table_1">
+                <table>
+                    <tr>
+                        <th rowspan="1" colspan="1">Heading cell 1</th>
+                        <th rowspan="1" colspan="1">Heading cell 2</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"><p>Data cell 1</p></td>
+                        <td rowspan="1" colspan="1"><p>Data cell 2</p></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1">
+                            <p>Data cell 3</p>
+                            <p>With multiple paragraphs</p>
+                        </td>
+                        <td rowspan="1" colspan="1"><p>Data cell 4</p></td>
+                    </tr>
+                </table>
+                <figcaption>Caption of the table.</figcaption>
+            </figure>
+            
+            <figure id="formula_1">
+                <p>
+                    <img role="math" src="https://rawgit.com/essepuntato/rash/master/documentation/img/formula.png" alt="[a + b]^260 + {a + b}_i"/>
+                </p>
+            </figure>
+            <figure id="formula_2">
+                <p>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mrow>
+                            <msup>
+                                <mfenced open="[" close="]">
+                                    <mrow>
+                                        <mi>a</mi>
+                                        <mo>+</mo>
+                                        <mi>b</mi>
+                                    </mrow>
+                                </mfenced>
+                                <mn>260</mn>
+                            </msup>
+                            <mo>+</mo>
+                            <msub>
+                                <mfenced open="{" close="}">
+                                    <mrow>
+                                        <mi>a</mi>
+                                        <mo>+</mo>
+                                        <mi>b</mi>
+                                    </mrow>
+                                </mfenced>
+                                <mi>i</mi>
+                            </msub>
+                        </mrow>
+                    </math>
+                </p>
+            </figure>
+            <figure id="formula_3">
+                <p>
+                    <span role="math">[a + b]^{260} + \{a + b\}_i</span>
+                </p>
+            </figure>
+            <figure id="listing_1">
+                <pre><code>
+&lt;define name="listingbox"&gt;
+&lt;element name="figure"&gt;
+    &lt;ref name="attributes_html_element_no_role" /&gt;
+    &lt;ref name="pre" /&gt;
+    &lt;ref name="caption" /&gt;
+&lt;/element&gt;
+&lt;/define&gt;</code></pre>
+                <figcaption>Caption of the listing.</figcaption>
+            </figure>
+        </section>
+        
+        <section id="referencing">
+            <h1>Referencing things</h1>
+            <p>All the sections (e.g., <a href="#first_section"></a>), figures (e.g., <a href="#figure_1"></a>), tables (e.g., <a href="#table_1"></a>), formulas (e.g., <a href="#formula_1"></a>), listings (e.g., <a href="#listing_1"></a>), bibliographic references (e.g., <a href="#Per2014"></a>), footnotes (e.g., <a href="#fn1"></a>) and even multiple footnotes (e.g., <a href="#fn2"></a><a href="#fn3"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>.
+        </section>
+        
+        <!-- Acknowledgements -->
+        <section role="doc-acknowledgements">
+            <h1>Acknowledgments</h1>
+            <p>The acknowledgements of a document.</p>
+        </section>
+        
+        <!-- References -->
+        <section id="bibreflist" role="doc-bibliography">
+            <h1>References</h1>
+            <ol>
+                <li id="Per2014" role="doc-biblioentry"><p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a></p></li>
+                <li id="ParagraphWikipedia" role="doc-biblioentry"><p>Wikipedia entry <q>Paragraph</q>. <a href="https://en.wikipedia.org/wiki/Paragraph">https://en.wikipedia.org/wiki/Paragraph</a> (last visited, December 17, 2014).</p></li>
+            </ol>
+        </section>
+        
+        <!-- Footnotes -->
+        <section id="fnlist" role="doc-footnotes">
+            <section id="fn1" role="doc-footnote">
+                <p>Footnote 1.</p>
+            </section>
+            <section id="fn2" role="doc-footnote">
+                <p>Footnote 2.</p>
+            </section>
+            <section id="fn3" role="doc-footnote">
+                <p>Footnote 3.</p>
+            </section>
+        </section>
+    </body>
+</html>

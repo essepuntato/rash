@@ -2,6 +2,7 @@
 # This script creates the zip package of the current distribution of RASH.
 SCRIPTPATH=`dirname $0`
 mkdir $SCRIPTPATH/rash
+cp $SCRIPTPATH/../template.html $SCRIPTPATH/rash
 mkdir $SCRIPTPATH/rash/documentation
 cp $SCRIPTPATH/../documentation/index.html $SCRIPTPATH/rash/documentation
 cp -rf $SCRIPTPATH/../documentation/img $SCRIPTPATH/rash/documentation
