@@ -1,4 +1,4 @@
-**Citation:** Di Iorio, A., Gonzalez-Beltran, A. G., Osborne, F., Peroni, S., Poggi, F., Vitali, F. (2016). It ROCS! The RASH Online Conversion Service. To appear in the Companion Volume of the Proceedings of the 25th International World Wide Web Conference (WWW 2016). Available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html) and [PDF](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.pdf).
+**Citation:** Di Iorio, A., Gonzalez-Beltran, A. G., Osborne, F., Peroni, S., Poggi, F., Vitali, F. (2016). It ROCS! The RASH Online Conversion Service. To appear in the Companion Volume of the Proceedings of the [25th International World Wide Web Conference (WWW 2016)](http://www2016.ca/). Available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html) and [PDF](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.pdf).
 
 # The RASH Online Conversion Service (ROCS)
 
