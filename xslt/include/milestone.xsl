@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: milestone module - Version 0.4, October 25, 2015
+RASH to LaTeX: milestone module - Version 0.5, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -28,14 +28,14 @@ Under the following terms:
         indent="no" />
     <xsl:strip-space elements="*"/>
     
-    <xsl:template match="iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-noteref']">
+    <xsl:template match="iml:a[@href and normalize-space() = ''][some $id in substring-after(@href, '#') satisfies exists(//iml:section[@id = $id][some $token in tokenize(@role, ' ') satisfies $token = 'doc-footnote'])]" priority="3">
         <xsl:variable name="curID" select="substring-after(@href, '#')" as="xs:string" />
         
         <xsl:if test="
             preceding::node()[self::element() or (self::text() and normalize-space() != '')][1]
             [
                 not(self::text()) and 
-                not(self::a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-noteref'])]">
+                not(self::a[some $id in substring-after(@href, '#') satisfies exists(//iml:section[@id = $id][some $token in tokenize(@role, ' ') satisfies $token = 'doc-footnote'])])]">
             <xsl:text>\textsuperscript{,}</xsl:text>
         </xsl:if>
         
@@ -46,13 +46,13 @@ Under the following terms:
         <xsl:text>}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-index']">
+    <xsl:template match="iml:a[normalize-space() = ''][some $token in tokenize(@role, ' ') satisfies $token = 'doc-index']" priority="3">
         <xsl:text>\index{</xsl:text>
         <xsl:value-of select="@name" />
         <xsl:text>}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref']">
+    <xsl:template match="iml:a[@href and normalize-space() = ''][some $id in substring-after(@href, '#') satisfies exists(//iml:li[@id = $id][some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioentry'])]" priority="3">
         <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
         
         <xsl:variable name="curID" select="substring-after(@href, '#')" as="xs:string" />
@@ -71,7 +71,7 @@ Under the following terms:
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'ref']">
+    <xsl:template match="iml:a[@href and normalize-space() = '']" priority="2">
         <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
         
         <xsl:variable name="curID" select="substring-after(@href, '#')" as="xs:string" />

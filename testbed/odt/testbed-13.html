@@ -11,17 +11,19 @@
       <script src="../../js/bootstrap.min.js"> </script>
       <script src="../../js/rash.js"> </script>
       <title>RASH in ODT -- Documentation - Version 0.2, October 30, 2015</title>
-      <meta about="affiliation-1"
+      <meta about="#affiliation-1"
             property="schema:name"
             content="Department of Computer Science and Engineering, University of Bologna, Bologna, Italy"/>
-      <meta about="author-1"
+      <meta about="#author-1"
             name="dc.creator"
             property="schema:name"
             content="Silvio Peroni"/>
-      <meta about="author-1"
+      <meta about="#author-1"
             property="schema:email"
             content="silvio.peroni@unibo.it"/>
-      <link about="author-1" property="schema:affiliation" href="affiliation-1"/>
+      <link about="#author-1"
+            property="schema:affiliation"
+            href="#affiliation-1"/>
       <meta property="prism:keyword" content="OpenOffice"/>
       <meta property="prism:keyword" content="ODT to RASH"/>
       <meta property="prism:keyword" content="Scholarly Article"/>
@@ -35,9 +37,9 @@
       </section>
       <section>
          <h1>Introduction</h1>
-         <p>This paper introduces how to use OpenOffice in order to write scientific articles that are easily convertible into <em>RASH</em>, the <em>Research Articles in Simplified HTML</em> format <a href="#__RefNumPara__5348_179964520" role="doc-biblioref"> </a>. RASH is a markup language that restricts the use of HTML elements to only 25 elements for writing academic research articles and that allows us to include also RDFa annotations within any element of the language.</p>
+         <p>This paper introduces how to use OpenOffice in order to write scientific articles that are easily convertible into <em>RASH</em>, the <em>Research Articles in Simplified HTML</em> format <a href="#__RefNumPara__5348_179964520"> </a>. RASH is a markup language that restricts the use of HTML elements to only 25 elements for writing academic research articles and that allows us to include also RDFa annotations within any element of the language.</p>
          <p>The whole conversion approach has been proposed in order to provide authors with a good free and open source word-processor for writing documents such as OpenOffice without caring about the particular HTML tags to use for defining particular blocks of text and metadata. In addition, this is a meta-document (and, thus, a sort of template for scientific documents), since it uses all the admissible functionalities of OpenOffice that still allow one to easily converted it into RASH by using the tools we introduce at the end of the document. This document basically explains how to use OpenOffice default styles and tools for expressing the various elements that form a scientific paper. It is worth mentioning that, in order to have the best conversion into RASH, <strong>only the default styles (with no modifications) and the listed tools should be used</strong>. In particular, please do not care how the various elements will be shown in the ODT document, since OpenOffice should be used only for writing the content of the paper rather than presenting such content. All the presentational layout of the text will be handled by other external tools after converting the paper into RASH.</p>
-         <p>The rest of the document is organised as follows. In <a href="#__RefHeading__140_179964520" role="ref"> </a> we explain how to specify the metadata of the article, such as titles, authors, affiliations, keywords and ACM categories. In <a href="#__RefHeading__146_179964520" role="ref"> </a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines. In <a href="#__RefHeading__148_179964520" role="ref"> </a> we present the hierarchical structures for organising the text, e.g., the sections. In <a href="#__RefHeading__150_179964520" role="ref"> </a> we show how to create figures (both inlines and as separate blocks), tables and formulas (both inlines and as separate blocks). In <a href="#__RefHeading__152_179964520" role="ref"> </a> we introduce how to define the bibliographic reference of a paper. In <a href="#__RefHeading__154_179964520" role="ref"> </a> we show how to define footnotes related to a document. In <a href="#__RefHeading__156_179964520" role="ref"> </a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc. Finally, in <a href="#__RefHeading__158_179964520" role="ref"> </a> we present the tools for converting ODT documents into RASH.</p>
+         <p>The rest of the document is organised as follows. In <a href="#__RefHeading__140_179964520"> </a> we explain how to specify the metadata of the article, such as titles, authors, affiliations, keywords and ACM categories. In <a href="#__RefHeading__146_179964520"> </a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines. In <a href="#__RefHeading__148_179964520"> </a> we present the hierarchical structures for organising the text, e.g., the sections. In <a href="#__RefHeading__150_179964520"> </a> we show how to create figures (both inlines and as separate blocks), tables and formulas (both inlines and as separate blocks). In <a href="#__RefHeading__152_179964520"> </a> we introduce how to define the bibliographic reference of a paper. In <a href="#__RefHeading__154_179964520"> </a> we show how to define footnotes related to a document. In <a href="#__RefHeading__156_179964520"> </a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc. Finally, in <a href="#__RefHeading__158_179964520"> </a> we present the tools for converting ODT documents into RASH.</p>
       </section>
       <section id="__RefHeading__140_179964520">
          <h1>Metadata</h1>
@@ -45,8 +47,8 @@
          <section>
             <h1>Title and subtitle</h1>
             <p>We can specify the title of the paper by using the style <em>Title</em>, and the subtitle by using the style <em>Subtitle</em>. The style panel is shown when clicking on the button <img src="./testbed-13-sources/Pictures/100002010000002400000024FE536FB2.png"
-                    alt="No alternate description has been provided."/> on the OpenOffice toolbar, or pressing <em>CTRL+T</em> (Win) or <em>CMD+T</em> (Mac). In <a href="#refIllustration0" role="ref"> </a> the <q>Style and Formatting</q> panel is shown. You can select the new style for the paragraph currently containing the cursor by double clicking on the style name of interest (in the figure, the style <q>Title</q> is selected). In order to have all the styles available for selection, it is important to choose the <q>All Styles</q> option from the drop-down menu in the bottom part of the panel.</p>
-            <figure role="picturebox" id="refIllustration0">
+                    alt="No alternate description has been provided."/> on the OpenOffice toolbar, or pressing <em>CTRL+T</em> (Win) or <em>CMD+T</em> (Mac). In <a href="#refIllustration0"> </a> the <q>Style and Formatting</q> panel is shown. You can select the new style for the paragraph currently containing the cursor by double clicking on the style name of interest (in the figure, the style <q>Title</q> is selected). In order to have all the styles available for selection, it is important to choose the <q>All Styles</q> option from the drop-down menu in the bottom part of the panel.</p>
+            <figure id="refIllustration0">
                <p>
                   <img src="./testbed-13-sources/Pictures/1000020100000248000003BA7A5D749D.png"
                        alt="The style and formatting panel, which allows one to select any style for the block of text in the document."/>
@@ -56,21 +58,21 @@
          </section>
          <section>
             <h1>Authors and affiliations</h1>
-            <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using a particular user-defined metadata of the document containing a string defining her name, email, and affiliation. In order to do that, one has to open the properties of the current document by clicking on <q>File</q> and then <q>Properties...</q>, as shown in <a href="#refIllustration1" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration1">
+            <p>The authors of a document and all their related information (i.e., name, email, and affiliation) can be defined by using a particular user-defined metadata of the document containing a string defining her name, email, and affiliation. In order to do that, one has to open the properties of the current document by clicking on <q>File</q> and then <q>Properties...</q>, as shown in <a href="#refIllustration1"> </a>.</p>
+            <figure id="refIllustration1">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000001B4000003DCC25508F9.png"
                        alt="The file menu, which allows the access to the properties of the document."/>
                </p>
                <figcaption>The file menu, which allows the access to the properties of the document.</figcaption>
             </figure>
-            <p>In the <q>Custom Properties</q> panel, we can add additional metadata to the document by clicking on the button <q>Add</q> – see <a href="#refIllustration2" role="ref"> </a>. The information about an author must be specified by using the property starting with <em>Author</em> (e.g., Author_1) having type <em>Text</em>, and by specifying a particular string of tokens separated by <q>--</q> as a value of such property. For instance, for specifying the author <q>Silvio Peroni</q> having email <q>silvio.peroni@unibo.it</q> and affiliation <q>Department of Computer Science and Engineering, University of Bologna, Bologna, Italy</q>, we should use the following string as value of the property:</p>
+            <p>In the <q>Custom Properties</q> panel, we can add additional metadata to the document by clicking on the button <q>Add</q> – see <a href="#refIllustration2"> </a>. The information about an author must be specified by using the property starting with <em>Author</em> (e.g., Author_1) having type <em>Text</em>, and by specifying a particular string of tokens separated by <q>--</q> as a value of such property. For instance, for specifying the author <q>Silvio Peroni</q> having email <q>silvio.peroni@unibo.it</q> and affiliation <q>Department of Computer Science and Engineering, University of Bologna, Bologna, Italy</q>, we should use the following string as value of the property:</p>
             <pre>
                <code>
 Silvio Peroni -- silvio.peroni@unibo.it -- Department of Computer Science and Engineering, University of Bologna, Bologna, Italy</code>
             </pre>
-            <p>Once added all the authors, we can proceed by clicking on <q>OK</q>. In case more than one authors must be specified, one can simply add additional <q>Author</q> properties with different indexes, e.g., <em>Author_2</em>, <em>Author_3</em>, <em>Author_4</em>, as shown in <a href="#refIllustration2" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration2">
+            <p>Once added all the authors, we can proceed by clicking on <q>OK</q>. In case more than one authors must be specified, one can simply add additional <q>Author</q> properties with different indexes, e.g., <em>Author_2</em>, <em>Author_3</em>, <em>Author_4</em>, as shown in <a href="#refIllustration2"> </a>.</p>
+            <figure id="refIllustration2">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000004FA000003BC65FCBB0B.png"
                        alt="The panel for adding custom properties with keywords and categories specified."/>
@@ -90,8 +92,8 @@ Silvio Peroni -- silvio.peroni@unibo.it -- Department of Computer Science and En
                   <p>the property <em>Categories</em> (having type <em>Text</em>) can be used to add an <a href="http://www.acm.org/about/class/class/2012">ACM subject category</a> related with the article (use <q>--</q> as separator).</p>
                </li>
             </ul>
-            <p>An example of how to create all these information is shown in <a href="#refIllustration3" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration3">
+            <p>An example of how to create all these information is shown in <a href="#refIllustration3"> </a>.</p>
+            <figure id="refIllustration3">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000004FC000003BA5CACC304.png"
                        alt="The panel for adding custom properties with keywords and categories specified."/>
@@ -106,7 +108,7 @@ Silvio Peroni -- silvio.peroni@unibo.it -- Department of Computer Science and En
          <section id="__RefHeading__2767_1578839946">
             <h1>Paragraphs</h1>
             <p>First of all, there are the paragraphs, i.e., <q>a self-contained unit of a discourse in writing dealing with a particular point or idea</q> 
-               <a href="#__RefNumPara__775_179964520" role="doc-biblioref"> </a>. A paragraph is the simplest block structure containing text and, among the blocks, the only kind of element in the body where you can use the text.</p>
+               <a href="#__RefNumPara__775_179964520"> </a>. A paragraph is the simplest block structure containing text and, among the blocks, the only kind of element in the body where you can use the text.</p>
             <p>There exist three different kinds of paragraphs: normal (as this one), paragraphs containing codes and paragraphs with quotes.</p>
             <p>The normal paragraphs are defined by means of the standard style <em>Text body</em>, which is usually selected as default by OpenOffice. In addition, even the <em>Default</em> style can be used for defining common paragraphs.</p>
             <p>Then we have paragraphs containing source code. They are defined by using the style <em>Preformatted Text</em> available in the <q>Style and Formatting</q> panel (CTRL+T for Windows users, CMD+T for Apple users), as shown as follows.</p>
@@ -148,8 +150,8 @@ This is another one</code>
             <p>In addition to blocks, it is possible to describe small parts of a text with inline elements defining particular functions on such text, such as emphasis, inline quotation, super- and sub- scripts, and the like.</p>
             <p>We can use two different kinds of emphases, the <em>normal one</em> and the <strong>strong one</strong>, created by using the button <img src="./testbed-13-sources/Pictures/10000201000000280000002CF6504391.png"
                     alt="No alternate description has been provided."/> (CTRL+I on Windows or CMD+I on Mac) and the button <img src="./testbed-13-sources/Pictures/100002010000002A0000002C1FCAF6F9.png"
-                    alt="No alternate description has been provided."/> (CTRL+B on Windows or CMD+B on Mac) respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by simply writing the opening and closing quotations. While <sup>superscripts</sup> and <sub>subscripts</sub> are defined by selecting the sequence of characters of interest, and then clicking on the appropriate option on the <q>Position</q> tab in the <q>Character</q> panel accessible from the menu <q>Format</q>, as shown in <a href="#refIllustration4" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration4">
+                    alt="No alternate description has been provided."/> (CTRL+B on Windows or CMD+B on Mac) respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by simply writing the opening and closing quotations. While <sup>superscripts</sup> and <sub>subscripts</sub> are defined by selecting the sequence of characters of interest, and then clicking on the appropriate option on the <q>Position</q> tab in the <q>Character</q> panel accessible from the menu <q>Format</q>, as shown in <a href="#refIllustration4"> </a>.</p>
+            <figure id="refIllustration4">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000006AC000003C261CBA649.png"
                        alt="The position tab of the character panel, which allows one to convert selected characters in super- or sub-scripts."/>
@@ -157,22 +159,22 @@ This is another one</code>
                <figcaption>The position tab of the character panel, which allows one to convert selected characters in super- or sub-scripts.</figcaption>
             </figure>
             <p>This paragraph contains a simple example of <code>inline code</code>, created by means of the default style for characters <em>Source Text</em>. Alternatively, it is possible to directly use the <code>Courier font style</code> and the <code>Courier New font style</code> for having the same effect.</p>
-            <p>It is also possible to insert images and formulas as part of the text inside a paragraph. For images, one should click on <q>From file...</q> available in the option <q>Picture</q> in the <q>Insert</q> menu as shown in <a href="#refIllustration5" role="ref"> </a>. In addition, in order to place the image in the right position within a paragraph, it is important to anchor it as a character. This is possible by right-clicking on the image and then selecting the option <q>As Character</q> in the menu <q>Anchor</q>, as shown in <a href="#refIllustration6" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration5">
+            <p>It is also possible to insert images and formulas as part of the text inside a paragraph. For images, one should click on <q>From file...</q> available in the option <q>Picture</q> in the <q>Insert</q> menu as shown in <a href="#refIllustration5"> </a>. In addition, in order to place the image in the right position within a paragraph, it is important to anchor it as a character. This is possible by right-clicking on the image and then selecting the option <q>As Character</q> in the menu <q>Anchor</q>, as shown in <a href="#refIllustration6"> </a>.</p>
+            <figure id="refIllustration5">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000002A2000004603B14F738.png"
                        alt="The insert menu and the option for adding images to a paragraph."/>
                </p>
                <figcaption>The insert menu and the option for adding images to a paragraph.</figcaption>
             </figure>
-            <figure role="picturebox" id="refIllustration6">
+            <figure id="refIllustration6">
                <p>
                   <img src="./testbed-13-sources/Pictures/100002010000021A000002045D02B7BD.png"
                        alt="The panel that allows one to anchor an image as character within a paragraph."/>
                </p>
                <figcaption>The panel that allows one to anchor an image as character within a paragraph.</figcaption>
             </figure>
-            <p>For formulas, one should access the <q>Object</q> option in the <q>Insert</q> menu, and then clicking on <q>Formula</q> (see <a href="#refIllustration7" role="ref"> </a>). Now one can use the panel for mathematical formulas in order to create the formula such as <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <p>For formulas, one should access the <q>Object</q> option in the <q>Insert</q> menu, and then clicking on <q>Formula</q> (see <a href="#refIllustration7"> </a>). Now one can use the panel for mathematical formulas in order to create the formula such as <math xmlns="http://www.w3.org/1998/Math/MathML">
                   <semantics>
                      <mrow>
                         <mo stretchy="false">π</mo>
@@ -183,15 +185,15 @@ This is another one</code>
                      </mrow>
                      <annotation encoding="StarMath 5.0">%pi r^2</annotation>
                   </semantics>
-               </math>, as shown in <a href="#refIllustration8" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration7">
+               </math>, as shown in <a href="#refIllustration8"> </a>.</p>
+            <figure id="refIllustration7">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000002CE00000470FEBBD248.png"
                        alt="The menu for inserting a new formula."/>
                </p>
                <figcaption>The menu for inserting a new formula.</figcaption>
             </figure>
-            <figure role="picturebox" id="refIllustration8">
+            <figure id="refIllustration8">
                <p>
                   <img src="./testbed-13-sources/Pictures/1000020100000834000001BA10B7D0BB.png"
                        alt="The mathematical editor in OpenOffice."/>
@@ -199,8 +201,8 @@ This is another one</code>
                <figcaption>The mathematical editor in OpenOffice.</figcaption>
             </figure>
             <p>Finally, the <a href="http://github.com/essepuntato/rash">hyperlinks</a> can be created by clicking on the button <img src="./testbed-13-sources/Pictures/10000201000000300000002E021D57DE.png"
-                    alt="No alternate description has been provided."/> and by specifying the target URL, the content of the link through the appropriate panel, as shown in <a href="#refIllustration9" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration9">
+                    alt="No alternate description has been provided."/> and by specifying the target URL, the content of the link through the appropriate panel, as shown in <a href="#refIllustration9"> </a>.</p>
+            <figure id="refIllustration9">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000006140000030E54D308A3.png"
                        alt="The panel for creating hypertextual links."/>
@@ -219,16 +221,16 @@ This is another one</code>
          <p>In a scientific article, figures, tables and formulas as usually contained within appropriate blocks accompanied by a caption that allow one to refer to such items easily within the text. In OpenOffice, all these boxes are defined easily by inserting the object of interest and then by associating a caption to it.</p>
          <section id="__RefHeading__1919_179964520">
             <h1>Figure boxes</h1>
-            <p>We can define a figure box containing an image with a caption by adding a new picture in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520" role="ref"> </a>) and then by right-clicking on the added picture and selecting the field <q>Caption...</q>, as shown in <a href="#refIllustration10" role="ref"> </a>.</p>
-            <p>Then one can simply add the text of the caption by using the panel <q>Caption</q> shown in <a href="#refIllustration11" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration10">
+            <p>We can define a figure box containing an image with a caption by adding a new picture in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520"> </a>) and then by right-clicking on the added picture and selecting the field <q>Caption...</q>, as shown in <a href="#refIllustration10"> </a>.</p>
+            <p>Then one can simply add the text of the caption by using the panel <q>Caption</q> shown in <a href="#refIllustration11"> </a>.</p>
+            <figure id="refIllustration10">
                <p>
                   <img src="./testbed-13-sources/Pictures/100002010000011C00000208AECC7231.png"
                        alt="The menu for adding captions to objects."/>
                </p>
                <figcaption>The menu for adding captions to objects.</figcaption>
             </figure>
-            <figure role="picturebox" id="refIllustration11">
+            <figure id="refIllustration11">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000004AC00000260311FC380.png"
                        alt="The panel for adding the text of the caption to the selected object."/>
@@ -239,9 +241,9 @@ This is another one</code>
          <section>
             <h1>Table boxes</h1>
             <p>We can define a table box containing a table with a caption by clicking on the button <img src="./testbed-13-sources/Pictures/10000201000000280000002411A0BFDC.png"
-                    alt="No alternate description has been provided."/> when the cursor is on an empty paragraph and then selecting how many rows and columns are needed for the table. The caption can be added by right-clicking on the added table and selecting the field <q>Caption...</q>, as also shown for figures in <a href="#__RefHeading__1919_179964520" role="ref"> </a>.</p>
-            <p>As shown in <a href="#refTable0" role="ref"> </a>, table cells can have associated basically two different styles. In particular, all the table cells are initialised with the style <em>Table Contents</em> associated. In order to set some cells as heading cells of the table, one should change their style in <em>Table Heading</em>.</p>
-            <figure role="tablebox" id="refTable0">
+                    alt="No alternate description has been provided."/> when the cursor is on an empty paragraph and then selecting how many rows and columns are needed for the table. The caption can be added by right-clicking on the added table and selecting the field <q>Caption...</q>, as also shown for figures in <a href="#__RefHeading__1919_179964520"> </a>.</p>
+            <p>As shown in <a href="#refTable0"> </a>, table cells can have associated basically two different styles. In particular, all the table cells are initialised with the style <em>Table Contents</em> associated. In order to set some cells as heading cells of the table, one should change their style in <em>Table Heading</em>.</p>
+            <figure id="refTable0">
                <table>
                   <tr>
                      <th>Types of cells</th>
@@ -269,16 +271,16 @@ This is another one</code>
          </section>
          <section>
             <h1>Listing boxes</h1>
-            <p>We can define a listing box containing text with a caption by adding a new frame in an empty paragraphs as shown in <a href="#refIllustration15" role="ref"> </a>. Then the caption can be added by right-clicking on the added frame and selecting the field <q>Caption...</q>, similar to what has been shown in <a href="#refIllustration10" role="ref"> </a>.</p>
-            <figure role="picturebox" id="refIllustration15">
+            <p>We can define a listing box containing text with a caption by adding a new frame in an empty paragraphs as shown in <a href="#refIllustration15"> </a>. Then the caption can be added by right-clicking on the added frame and selecting the field <q>Caption...</q>, similar to what has been shown in <a href="#refIllustration10"> </a>.</p>
+            <figure id="refIllustration15">
                <p>
                   <img src="./testbed-13-sources/Pictures/10000201000006AE000003EC794ACC9A.png"
                        alt="This is the menu where to select the option &#34;Frame&#34; and the related panel for adding a text frame for a listing."/>
                </p>
                <figcaption>This is the menu where to select the option "Frame" and the related panel for adding a text frame for a listing.</figcaption>
             </figure>
-            <p>As shown in <a href="#refText0" role="ref"> </a>, the content of the frame should be only textual, it is possible to use multiple paragraph and does not matter what particular style for the paragraph one want to use. However, as a sort of guideline, we strongly suggest to use the <em>Preformatted Text</em> available in the <q>Style and Formatting</q> panel (CTRL+T for Windows users, CMD+T for Apple users) as also shown in <a href="#__RefHeading__2767_1578839946" role="ref"> </a>.</p>
-            <figure role="listingbox" id="refText0">
+            <p>As shown in <a href="#refText0"> </a>, the content of the frame should be only textual, it is possible to use multiple paragraph and does not matter what particular style for the paragraph one want to use. However, as a sort of guideline, we strongly suggest to use the <em>Preformatted Text</em> available in the <q>Style and Formatting</q> panel (CTRL+T for Windows users, CMD+T for Apple users) as also shown in <a href="#__RefHeading__2767_1578839946"> </a>.</p>
+            <figure id="refText0">
                <pre>
                   <code>This is a paragraph to put in listings.
 It is not important which font you use here, even if it is common to use the Preformatted Text style.</code>
@@ -288,9 +290,9 @@ It is not important which font you use here, even if it is common to use the Pre
          </section>
          <section>
             <h1>Formula boxes</h1>
-            <p>We can define a formula box (useful for allowing formulas to be referenced within the text) containing a formula with an <em>empty</em> caption by adding a new formula in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520" role="ref"> </a>) and then by right-clicking on the added formula and selecting the field <q>Caption...</q> as shown for figures in <a href="#__RefHeading__1919_179964520" role="ref"> </a> without specifying any text associated.</p>
-            <p>For instance the formula introduced in <a href="#__RefHeading__1790_179964520" role="ref"> </a> can be expressed in a formula box as shown in <a href="#refIllustration12" role="ref"> </a>.</p>
-            <figure role="formulabox" id="refIllustration12">
+            <p>We can define a formula box (useful for allowing formulas to be referenced within the text) containing a formula with an <em>empty</em> caption by adding a new formula in an empty paragraphs (as introduced in <a href="#__RefHeading__1790_179964520"> </a>) and then by right-clicking on the added formula and selecting the field <q>Caption...</q> as shown for figures in <a href="#__RefHeading__1919_179964520"> </a> without specifying any text associated.</p>
+            <p>For instance the formula introduced in <a href="#__RefHeading__1790_179964520"> </a> can be expressed in a formula box as shown in <a href="#refIllustration12"> </a>.</p>
+            <figure id="refIllustration12">
                <p>
                   <math xmlns="http://www.w3.org/1998/Math/MathML">
                      <semantics>
@@ -306,7 +308,7 @@ It is not important which font you use here, even if it is common to use the Pre
                   </math>
                </p>
             </figure>
-            <p>It is worth mentioning that OpenOffice describes captions of formulas as they are common pictures. However, the translation of the document into RASH (briefly introduced in <a href="#__RefHeading__158_179964520" role="ref"> </a>) will be able to understand the difference, and it will put formulas in the appropriate boxes.</p>
+            <p>It is worth mentioning that OpenOffice describes captions of formulas as they are common pictures. However, the translation of the document into RASH (briefly introduced in <a href="#__RefHeading__158_179964520"> </a>) will be able to understand the difference, and it will put formulas in the appropriate boxes.</p>
          </section>
       </section>
       <section id="__RefHeading__152_179964520">
@@ -316,8 +318,8 @@ It is not important which font you use here, even if it is common to use the Pre
       </section>
       <section id="__RefHeading__154_179964520">
          <h1>Footnotes</h1>
-         <p>All the footnotes like<a role="doc-noteref" href="#ftn1"> </a> can be defined by opening the menu <q>Insert</q>, selecting the option <q>Footnote/Endnote...</q>, and then clicking on the button <q>OK</q> in the footnote/endnote panel shown in <a href="#refIllustration13" role="ref"> </a>, taking care that the type selected is <q>Footnote</q>.</p>
-         <figure role="picturebox" id="refIllustration13">
+         <p>All the footnotes like<a href="#ftn1"> </a> can be defined by opening the menu <q>Insert</q>, selecting the option <q>Footnote/Endnote...</q>, and then clicking on the button <q>OK</q> in the footnote/endnote panel shown in <a href="#refIllustration13"> </a>, taking care that the type selected is <q>Footnote</q>.</p>
+         <figure id="refIllustration13">
             <p>
                <img src="./testbed-13-sources/Pictures/10000201000002F6000001B805DE747D.png"
                     alt="The panel for creating new footnotes."/>
@@ -327,9 +329,9 @@ It is not important which font you use here, even if it is common to use the Pre
       </section>
       <section id="__RefHeading__156_179964520">
          <h1>Referring things</h1>
-         <p>All the sections (e.g., <a href="#__RefHeading__140_179964520" role="ref"> </a>), figures (e.g., <a href="#refIllustration0" role="ref"> </a>), tables (e.g., <a href="#refTable0" role="ref"> </a>), listings (e.g., <a href="#refText0" role="ref"> </a>), formulas (e.g., <a href="#refIllustration12" role="ref"> </a>), bibliographic references (e.g., <a href="#__RefNumPara__775_179964520" role="doc-biblioref"> </a>), footnotes (e.g., <a role="doc-noteref" href="#ftn1"> </a>) can be referenced within the text by using the OpenOffice cross-reference tool available by selecting the menu <q>Insert</q> and then clicking on <q>Cross-reference...</q>. The panel that will be opened (shown in <a href="#refIllustration14" role="ref"> </a>), allows us to specify to what particular object we want to refer to (section <q>Type</q>), which object of the selected type should be referenced (section <q>Selection</q>), and which referencing style should be used within the document (section <q>Insert reference to</q>).</p>
-         <p>While different option for including referencing in the document are possible, we suggest to use specific referencing style according to the object that is referenced. Our suggestion are described in <a href="#refTable1" role="ref"> </a> – of course the user can choose to adopt the preferred referencing style that differs with our suggestions.</p>
-         <figure role="tablebox" id="refTable1">
+         <p>All the sections (e.g., <a href="#__RefHeading__140_179964520"> </a>), figures (e.g., <a href="#refIllustration0"> </a>), tables (e.g., <a href="#refTable0"> </a>), listings (e.g., <a href="#refText0"> </a>), formulas (e.g., <a href="#refIllustration12"> </a>), bibliographic references (e.g., <a href="#__RefNumPara__775_179964520"> </a>), footnotes (e.g., <a href="#ftn1"> </a>) can be referenced within the text by using the OpenOffice cross-reference tool available by selecting the menu <q>Insert</q> and then clicking on <q>Cross-reference...</q>. The panel that will be opened (shown in <a href="#refIllustration14"> </a>), allows us to specify to what particular object we want to refer to (section <q>Type</q>), which object of the selected type should be referenced (section <q>Selection</q>), and which referencing style should be used within the document (section <q>Insert reference to</q>).</p>
+         <p>While different option for including referencing in the document are possible, we suggest to use specific referencing style according to the object that is referenced. Our suggestion are described in <a href="#refTable1"> </a> – of course the user can choose to adopt the preferred referencing style that differs with our suggestions.</p>
+         <figure id="refTable1">
             <table>
                <tr>
                   <th>Object</th>
@@ -417,7 +419,7 @@ It is not important which font you use here, even if it is common to use the Pre
             <figcaption>The objects that can be referenced in the document (and that will be correctly converted in RASH) with their type and referencing style suggested.</figcaption>
          </figure>
          <p/>
-         <figure role="picturebox" id="refIllustration14">
+         <figure id="refIllustration14">
             <p>
                <img src="./testbed-13-sources/Pictures/10000201000004F8000003B8EE358BAF.png"
                     alt="The panel for adding cross-references to objects of the document."/>
@@ -435,7 +437,7 @@ java -jar odt2rash.jar -i &lt;input-odt-file&gt; -o &lt;new-output-directory&gt;
       </section>
       <section role="doc-acknowledgements">
          <h1>Acknowledgements</h1>
-         <p>The acknowledgements of a document are organised in a special section defined by the actual content of the heading of such section. In particular all sections having heading either <q>Acknowledgement</q> or <q>Acknowledgements</q> are intended as acknowledgements sections. Acknowledgements are usually put just after the section concluding the document (i.e., <a href="#__RefHeading__158_179964520" role="ref"> </a> in this case) and before the reference section.</p>
+         <p>The acknowledgements of a document are organised in a special section defined by the actual content of the heading of such section. In particular all sections having heading either <q>Acknowledgement</q> or <q>Acknowledgements</q> are intended as acknowledgements sections. Acknowledgements are usually put just after the section concluding the document (i.e., <a href="#__RefHeading__158_179964520"> </a> in this case) and before the reference section.</p>
       </section>
       <section role="doc-bibliography">
          <h1>References</h1>

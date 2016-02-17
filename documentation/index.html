@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.4.3, December 29, 2015
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.5, February 15, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -32,10 +32,20 @@ Under the following terms:
         <script src="../js/jquery.min.js"> </script>
         <script src="../js/bootstrap.min.js"> </script>
         <script src="../js/rash.js"> </script>
+        
+        <!-- MathJax for multi-browser support of LaTeX formulas and MathML -->
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+        <!-- 
+            The rendering of the LaTeX/MathML formulas is guarenteed if there is internet connection. 
+            However, for offline rendering, one should store the whole MathJax package 
+            (see https://docs.mathjax.org/en/v2.5-latest/installation.html) locally and
+            should refer to it by means of a relative path, e.g.:
+            <script src="[local-dir]/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+        -->
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.4.3, December 29, 2015</title>
+        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.5, February 15, 2016</title>
         
         <!-- Author's data (one or more) -->
         <meta about="#sp" name="dc.creator" content="Silvio Peroni"/>
@@ -87,15 +97,15 @@ Under the following terms:
         <!-- Abstract -->
         <section role="doc-abstract">
             <h1>Abstract</h1>
-            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a role="doc-biblioref" href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.4.1</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.5</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </section>
         
         <!-- Sections -->
         <section>
             <h1>Introduction</h1>
-            <p>This paper introduces the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) format <a role="doc-biblioref" href="#RASH2015"></a>, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <strong>31 elements</strong> for writing academic research articles. It is possible to includes also <strong><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</strong> within any element of the language, and also allows one to specify other RDF annotations in <a href="http://www.w3.org/TR/turtle/">Turtle</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. In addition, RASH strictly follows the <a href="https://rawgit.com/w3c/aria/master/aria/dpub.html">Digital Publishing WAI-ARIA Module 1.0</a> (which is currently an editor draft) for expressing structural semantics on various markup elements used.</p>
-            <p>Concerning its theoretical foundations, RASH is entirely based on a strong theory on <em>structural patterns</em> for XML documents <a href="#Patterns2014" role="doc-biblioref"></a>. The systematic use of these structural patterns is an added value in all stages of the documents' lifecycle: they can be guidelines for creating well-engineered documents and vocabularies, rules to extract structural components from legacy documents, indicators to study to what extent documents share design principles and community guidelines.</p>
+            <p>This paper introduces the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) format <a href="#RASH2015"></a>, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <strong>31 elements</strong> for writing academic research articles. It is possible to includes also <strong><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</strong> within any element of the language, and also allows one to specify other RDF annotations in <a href="http://www.w3.org/TR/turtle/">Turtle</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. In addition, RASH strictly follows the <a href="https://rawgit.com/w3c/aria/master/aria/dpub.html">Digital Publishing WAI-ARIA Module 1.0</a> (which is currently an editor draft) for expressing structural semantics on various markup elements used.</p>
+            <p>Concerning its theoretical foundations, RASH is entirely based on a strong theory on <em>structural patterns</em> for XML documents <a href="#Patterns2014"></a>. The systematic use of these structural patterns is an added value in all stages of the documents' lifecycle: they can be guidelines for creating well-engineered documents and vocabularies, rules to extract structural components from legacy documents, indicators to study to what extent documents share design principles and community guidelines.</p>
             <p>Note that this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easily access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
             <p>Any RASH documents begins as a simple (X)HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <code>html</code> with the usual namespace and with additional (and mandatory) prefix declarations (through the attribute <code>prefix</code>). The element <code>html</code> contains the element <code>head</code>, for defining metadata of the document, and the element <code>body</code>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
             <pre><code>
@@ -113,22 +123,22 @@ Under the following terms:
         &lt;-- Content of the document --&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-            <p>This document presents which elements are specifiable in each of the two document blocks, i.e., metadata and content. In <a href="#metadata" role="ref"></a> we explain how to specify the metadata of the article as appropriate elements within <code>head</code>, while the rest of the document mainly pertains elements within the element <code>body</code>. In particular:</p>
+            <p>This document presents which elements are specifiable in each of the two document blocks, i.e., metadata and content. In <a href="#metadata"></a> we explain how to specify the metadata of the article as appropriate elements within <code>head</code>, while the rest of the document mainly pertains elements within the element <code>body</code>. In particular:</p>
             <ul>
-                <li><p>in <a href="#textualelements" role="ref"></a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines;</p></li>
-                <li><p>in <a href="#sections" role="ref"></a> we present the hierarchical structures for organising the text, e.g., the sections;</p></li>
-                <li><p>in <a href="#floatings" role="ref"></a> we show how to create boxes with figures, tables, formulas, and listings;</p></li>
-                <li><p>in <a href="#references" role="ref"></a> we introduce how to define the bibliographic reference of a paper;</p></li>
-                <li><p>in <a href="#footnotes" role="ref"></a> we show how to define footnotes related to a document;</p></li>
-                <li><p>in <a href="#referencing" role="ref"></a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc.;</p></li>
-                <li><p>in <a href="#rdfa" role="ref"></a> we present how to add RDF annotations and even comma-separated value data on the papers in RASH format.</p></li>
+                <li><p>in <a href="#textualelements"></a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines;</p></li>
+                <li><p>in <a href="#sections"></a> we present the hierarchical structures for organising the text, e.g., the sections;</p></li>
+                <li><p>in <a href="#floatings"></a> we show how to create boxes with figures, tables, formulas, and listings;</p></li>
+                <li><p>in <a href="#references"></a> we introduce how to define the bibliographic reference of a paper;</p></li>
+                <li><p>in <a href="#footnotes"></a> we show how to define footnotes related to a document;</p></li>
+                <li><p>in <a href="#referencing"></a> we explain how to create references to all the other objects defined with an article, for instance in-text reference pointers, footnote pointers, etc.;</p></li>
+                <li><p>in <a href="#rdfa"></a> we present how to add RDF annotations and even comma-separated value data on the papers in RASH format.</p></li>
             </ul>
-            <p>Finally, in <a href="#visualisation" role="ref"></a> we discuss how RASH files are actually rendered by the browser, by means of using external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://jquery.com/">JQuery</a>.</p>
+            <p>Finally, in <a href="#visualisation"></a> we discuss how RASH files are actually rendered by the browser, by means of using external libraries, i.e., <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a>, and <a href="http://mathjax.org">MathJax</a>.</p>
         </section>
         
         <section id="metadata">
             <h1>Metadata</h1>
-            <p>The element <code>head</code> of a RASH document must include some elements, i.e., the paper title and at least one author, while the other elements are left as optional<a href="#fn3" role="doc-noteref"></a>.</p> 
+            <p>The element <code>head</code> of a RASH document must include some elements, i.e., the paper title and at least one author, while the other elements are left as optional<a href="#fn3"></a>.</p> 
             
             <section id="title">
                 <h1>Title and subtitle</h1>
@@ -146,7 +156,7 @@ Under the following terms:
                 <ul>
                     <li><p>the <strong>full name</strong> of the author as it should appear in the paper - through an element <code>meta</code> having the attribute <code>name</code> set to <q>dc.creator</q>, and the attribute <code>content</code> specifying the actual name;</p></li>
                     <li><p>the <strong>email address</strong> of the author - through an element <code>meta</code> having the attribute <code>property</code> set to <q>schema:email</q>, and the attribute <code>content</code> specifying the actual author's email;</p></li>
-                    <li><p>the <strong>affiliations</strong> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier (i.e., a URL) for a particular affiliation (see <a href="#affiliation" role="ref"></a>).</p></li>
+                    <li><p>the <strong>affiliations</strong> of the author for this paper - through one (or more) element(s) <code>link</code> having the attribute <code>property</code> set to <q>schema:affiliation</q>, and the attribute <code>href</code> specifying the identifier (i.e., a URL) for a particular affiliation (see <a href="#affiliation"></a>).</p></li>
                 </ul>
                 <p>An example of how to create all these author's information is shown in the following excerpt.</p>
                 <pre><code>
@@ -166,7 +176,7 @@ Under the following terms:
             
             <section id="affiliation">
                 <h1>Affiliations</h1>
-                <p>All the affiliation used by the authors (introduced in <a href="#author" role="ref"></a>) must be defined through an appropriate element <code>meta</code> having:</p>
+                <p>All the affiliation used by the authors (introduced in <a href="#author"></a>) must be defined through an appropriate element <code>meta</code> having:</p>
                 <ul>
                     <li><p>the attribute <code>about</code> set to the same identifier used by the author's metadata for referring to the particular affiliation;</p></li>
                     <li><p>the attribute <code>property</code> set to <q>schema:name</q>;</p></li>
@@ -207,8 +217,8 @@ Under the following terms:
             
             <section id="paragraphs">
                 <h1>Paragraphs</h1>
-                <p>First of all, there are the paragraphs, i.e., <q>a self-contained unit of a discourse in writing dealing with a particular point or idea</q><a href="#ParagraphWikipedia" role="doc-biblioref"></a>. A paragraph is the simplest block structure containing text and, among the blocks, the only kind of element in the body where you can use the text.</p>
-                <p>There exist three different kinds of paragraphs: normal (as this one), paragraphs containing codes (as those used in <a href="#metadata" role="ref"></a>) and paragraphs with quotes.</p>
+                <p>First of all, there are the paragraphs, i.e., <q>a self-contained unit of a discourse in writing dealing with a particular point or idea</q> <a href="#ParagraphWikipedia"></a>. A paragraph is the simplest block structure containing text and, among the blocks, the only kind of element in the body where you can use the text.</p>
+                <p>There exist three different kinds of paragraphs: normal (as this one), paragraphs containing codes (as those used in <a href="#metadata"></a>) and paragraphs with quotes.</p>
                 <p>The common paragraphs are described by the element <code>p</code>, as used as follows.</p>
                 <pre><code>
 &lt;p&gt;This is the text forming a paragraph&lt;/p&gt;</code></pre>
@@ -216,7 +226,7 @@ Under the following terms:
             
             <section id="blockcode">
                 <h1>Code blocks</h1>
-                <p>All the block of codes, such as the latest block in <a role="ref" href="#paragraphs"></a>, can be defined by using the element <code>pre</code> plus the element <code>code</code>, as shown as follows:</p>
+                <p>All the block of codes, such as the latest block in <a href="#paragraphs"></a>, can be defined by using the element <code>pre</code> plus the element <code>code</code>, as shown as follows:</p>
                 <pre><code>
 &lt;pre&gt;&lt;code&gt;
     &amp;lt;p&amp;gt;This is the text forming a paragraph&amp;lt;/p&amp;gt;
@@ -226,7 +236,7 @@ Under the following terms:
             <section id="lists">
                 <h1>Lists</h1>
                 <p>The list are self-contained blocks that must be used outside paragraphs and that allow us to structure test as a sequence of item. The elements for defining lists are <code>ul</code> (for unordered lists) and <code>ol</code> (for ordered lists).</p>
-                <p>Each list element can contain only <code>li</code> elements, i.e., list items; the latter ones <strong>cannot</strong> contain text directly, but can contain other blocks (see <a href="#paragraphs" role="ref"></a>) and sections (see <a href="#sections" role="ref"></a>).</p>
+                <p>Each list element can contain only <code>li</code> elements, i.e., list items; the latter ones <strong>cannot</strong> contain text directly, but can contain other blocks (see <a href="#paragraphs" ></a>) and sections (see <a href="#sections"></a>).</p>
                 <p>An example of these two kinds of list is shown in the following excerpt.</p>
                 <pre><code>
 &lt;!-- An unordered list --&gt;
@@ -259,8 +269,9 @@ Under the following terms:
                 <h1>Inline elements</h1>
                 <p>In addition to blocks, it is possible to describe small parts of a text with inline elements defining particular functions on such text, such as emphasis, inline quotation, super- and sub- scripts, and the like.</p>
                 <p>We can use two different kinds of emphases, the <em>normal one</em> and the <strong>strong one</strong>, created by using the elements <code>em</code> and <code>strong</code> respectively. Inline quotations, e.g., <q>Alice was beginning to get very tired of sitting by her sister on the bank</q>, are possible by using the element <code>q</code>, while <sup>superscripts</sup> and <sub>subscripts</sub> are described by the elements <code>sup</code> and <code>sub</code> respectively. In addition, it is possible to describe a piece of text as an <code>inline source code</code> by using the element <code>code</code>.</p>
-                <p>The element <code>span</code> is very useful for associating neutral classes to part of the text and for pushing RDFa annotations (see <a href="#rdfa" role="ref"></a> for more details).</p>
-                <p>It is also possible to insert images and formulas as part of the text inside a paragraph. For images, the element to use is <code>img</code> with the attribute <code>src</code> set to the URL of the image. In addition, we can use the whole <a href="http://www.w3.org/TR/MathML3/">MathML specification</a> for defining well-formed formulas<a href="#fn5" role="doc-noteref"></a> like
+                <p>The element <code>span</code> is very useful for associating neutral classes to part of the text and for pushing RDFa annotations (see <a href="#rdfa"></a> for more details).</p>
+                <p>It is also possible to insert images as part of the text inside a paragraph. There are two ways for specify images in the document. The first one is to use the element <code>img</code> with the attribute <code>src</code> set to the URL of the image – and the attribute <code>alt</code> for providing an alternative description of the image. Alternatively, it is possible to use also the element <code>svg</code> compliant with the <a href="https://www.w3.org/TR/SVG/">SVG specification</a>, such as the following circle: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="7" stroke="green" stroke-width="1" fill="yellow" /></svg>. In this case, the SVG namespace (i.e., <code>http://www.w3.org/2000/svg</code>) must be explicitly specified.</p>
+                <p>Mathematical formulas can be specified as well, by means of three different elements. First of all, we can use the whole <a href="http://www.w3.org/TR/MathML3/">MathML specification</a> (i.e., the element <code>math</code> of namespace <code>http://www.w3.org/1998/Math/MathML</code>) for defining well-formed formulas<a href="#fn5"></a> like
                     <math xmlns="http://www.w3.org/1998/Math/MathML">
                         <mi>π<!-- π --></mi>
                         <mo>⁢<!-- &InvisibleTimes; --></mo>
@@ -268,7 +279,7 @@ Under the following terms:
                             <mi>r</mi>
                             <mn>2</mn>
                         </msup>
-                    </math>.
+                    </math>. In addition, one can specify formulas through an image, by using the element <code>img</code> with the attribute <code>role</code> set to <q>math</q>, and specifying the formula through the attribute <code>src</code>, remembering to use the attribute <code>alt</code> for providing an alternative description of it. It is also possible to create formulas by means of the LaTeX syntax, by using the element <code>span</code> with the attribute <code>role</code> specified to <q>math</q>, e.g., <span role="math">\pi r^2</span>. 
                 </p>
                 <p>Finally, the usual element <code>a</code>, accompanied by the attribute <code>href</code>, is used for defining <a href="https://en.wikipedia.org/wiki/Hyperlink">hyperlinks</a> to external pages.</p>
                 <p>In the following excerpt, we summarise the use of all these elements.</p>
@@ -281,8 +292,11 @@ Under the following terms:
     &lt;code&gt;source code&lt;/code&gt; and
     &lt;a href="https://en.wikipedia.org/wiki/Hyperlink"&gt;hyperlinks&lt;/a&gt;.
     In addition to pure textual elements, we can also add images, 
-    like &lt;img src="logo.svg" alt="Picture with a logo" /&gt;, 
-    and formulas by using the MathML specification, like
+    like &lt;img src="logo.svg" alt="Picture with a logo" /&gt;, or
+    &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"&gt;
+    &lt;circle cx="8" cy="8" r="7" stroke="green" stroke-width="1" 
+    fill="yellow" /&gt;&lt;/svg&gt;.
+    Formulas can be specified by using the MathML specification, like
     &lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;
         &lt;mi&gt;&amp;#x03C0;&lt;!-- π --&gt;&lt;/mi&gt;
         &lt;mo&gt;&amp;#x2062;&lt;!-- &amp;InvisibleTimes; --&gt;&lt;/mo&gt;
@@ -290,14 +304,16 @@ Under the following terms:
             &lt;mi&gt;r&lt;/mi&gt;
             &lt;mn&gt;2&lt;/mn&gt;
         &lt;/msup&gt;
-    &lt;/math&gt;.
+    &lt;/math&gt;, by means of an image such as 
+    &lt;img role="math" src="formula.png" alt="r^2" /&gt;, or by using
+    LaTeX, e.g., &lt;span role="math"&gt;\pi r^2&lt;/span&gt;.
 &lt;/p&gt;</code></pre>
             </section>
         </section>
         
         <section id="sections">
             <h1>Sections</h1>
-            <p>Sections are pure structural constructs that cannot contain text directly and allow one to organise the various textual blocks of a document according to appropriate hierarchies. Any section is defined by using the element <code>section</code>. In addition, it must contain an header (element <code>h1</code><a href="#fn4" role="doc-noteref"></a>) as first child and at least another block element containing text, i.e., a paragraph, a list, a blockquote, a code block or any of the structures described in <a href="#floatings" role="ref"></a>. The following excerpt shows how to create a section in RASH.</p>
+            <p>Sections are pure structural constructs that cannot contain text directly and allow one to organise the various textual blocks of a document according to appropriate hierarchies. Any section is defined by using the element <code>section</code>. In addition, it must contain an header (element <code>h1</code><a href="#fn4"></a>) as first child and at least another block element containing text, i.e., a paragraph, a list, a blockquote, a code block or any of the structures described in <a href="#floatings"></a>. The following excerpt shows how to create a section in RASH.</p>
             <pre><code>
 &lt;section&gt;
     &lt;h1&gt;Title of the section&lt;/h1&gt;
@@ -319,31 +335,98 @@ Under the following terms:
         
         <section id="floatings">
             <h1>Boxes for figures, tables, formulas and listings</h1>
-            <p>In a scientific article, figures, tables and formulas as usually contained within appropriate boxes (some accompanied by a caption) that allow one to refer to such items easily within the text. In RASH, all these boxes are defined by the element <code>figure</code> with the attribute <code>role</code> set to one of the following four values: <q>picturebox</q>, <q>tablebox</q>, <q>formulabox</q>, and <q>listingbox</q>.</p>
+            <p>In a scientific article, figures, tables and formulas as usually contained within appropriate boxes (some accompanied by a caption) that allow one to refer to such items easily within the text. In RASH, all these boxes are defined by the element <code>figure</code>.</p>
             
             <section>
                 <h1>Figure boxes</h1>
-                <p>We can define a figure box containing an image with a caption by using the element <code>figure</code> with the attribute <code>role</code> set to <q>picturebox</q> and the attribute <code>id</code> set to some value in order to refer to this item.</p>
-                <figure id="figure_1" role="picturebox">
+                <p>We can define a figure box containing an image with a caption by using the element <code>figure</code> with an element <code>p</code> that can contain one of the following inline elements (see <a href="#inlines"></a> for more details):</p> 
+                <ul>
+                    <li><p>an element <code>img</code>;</p></li>
+                    <li><p>an element <code>svg</code> (with namespace <code>http://www.w3.org/2000/svg</code>).</p></li>
+                </ul>
+                <figure id="figure_1">
                     <p>
                         <img src="img/rash.png" alt="The RASH logo!"/>
                     </p>
-                    <figcaption>Caption of the figure.</figcaption>
+                    <figcaption>Caption of the figure inserted through the element <code>img</code>.</figcaption>
                 </figure>
-                <p>Each figure box is composed by two distinct and mandatory elements: the element <code>p</code> that contains the actual image specified through the element <code>img</code> as introduced in <a href="#inlines" role="ref"></a>, while the element <code>figcaption</code> defines a caption for the figure. For instance the figure shown in <a href="#figure_1" role="ref"></a> is defined in RASH through the following code.</p>
+                <figure id="figure_2">
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="540" height="200" viewBox="0 0 270 100">
+                            <defs>
+                                <radialGradient id="radial" cx="50%" cy="50%" fx="25%" fy="25%">
+                                    <stop offset="0%" stop-color="#60bafc" />
+                                    <stop offset="50%" stop-color="#409adc" />
+                                    <stop offset="100%" stop-color="#005a9c" />
+                                </radialGradient>
+                                <path id="curve" d="M18,60 C100,10 180,110 264,60" fill="none"/>
+                            </defs>
+                            
+                            <circle cx="138" cy="50" r="38" fill="url(#radial)" stroke="#005a9c" />
+                            
+                            <text font-family="Verdana" font-size="20" fill="#ff9900">
+                                <textPath xlink:href="#curve" method="stretch" style="visibility: visible;">
+                                    Scalable <tspan fill="white">Vector</tspan> Graphics
+                                </textPath>
+                            </text>
+                        </svg>
+                    </p>
+                    <figcaption>Caption of the figure inserted through the element <code>svg</code>.</figcaption>
+                </figure>
+                <p>Each figure box should have the attribute <code>id</code> set to some value in order to be referenced and must contain the element <code>figcaption</code> for defining the caption of the figure. For instance the figures shown in <a href="#figure_1"></a> and <a href="#figure_2"></a> are defined in RASH through the following code.</p>
                 <pre><code>
-&lt;figure id="figure_1" role="picturebox"&gt;
+&lt;figure id="figure_1"&gt;
     &lt;p&gt;
-        &lt;img src="rash.png" alt="The RASH logo!"&gt;&lt;/img&gt;
+        &lt;img src="img/rash.png" alt="The RASH logo!"/&gt;
     &lt;/p&gt;
-    &lt;figcaption&gt;Caption of the figure.&lt;/figcaption&gt;
+    &lt;figcaption&gt;
+        Caption of the figure inserted through the element 
+        &lt;code&gt;img&lt;/code&gt;.
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure id="figure_2"&gt;
+    &lt;p&gt;
+        &lt;svg xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="540" height="200" viewBox="0 0 270 100"&gt;
+            &lt;defs&gt;
+                &lt;radialGradient id="radial" 
+                    cx="50%" cy="50%" fx="25%" fy="25%"&gt;
+                    &lt;stop offset="0%" stop-color="#60bafc" /&gt;
+                    &lt;stop offset="50%" stop-color="#409adc" /&gt;
+                    &lt;stop offset="100%" stop-color="#005a9c" /&gt;
+                &lt;/radialGradient&gt;
+                &lt;path id="curve" d="M18,60 C100,10 180,110 264,60" 
+                    fill="none"/&gt;
+            &lt;/defs&gt;
+            
+            &lt;circle cx="138" cy="50" r="38" 
+                fill="url(#radial)" stroke="#005a9c" /&gt;
+            
+            &lt;text font-family="Verdana" font-size="20" 
+                fill="#ff9900"&gt;
+                &lt;textPath xlink:href="#curve" 
+                    method="stretch" style="visibility: visible;"&gt;
+                    Scalable 
+                    &lt;tspan fill="white"&gt;Vector&lt;/tspan&gt; Graphics
+                &lt;/textPath&gt;
+            &lt;/text&gt;
+        &lt;/svg&gt;
+    &lt;/p&gt;
+    &lt;figcaption&gt;
+        Caption of the figure inserted through the element 
+        &lt;code&gt;svg&lt;/code&gt;.
+    &lt;/figcaption&gt;
 &lt;/figure&gt;</code></pre>
             </section>
             
             <section id="tables">
                 <h1>Table boxes</h1>
-                <p>We can define a table box containing a table with a caption by using the element <code>figure</code> with the attribute <code>role</code> set to <q>tablebox</q> and the attribute <code>id</code> set to some value in order to refer to this item.</p>
-                <figure id="table_1" role="tablebox">
+                <p>We can define a table box containing a table with a caption by using the element <code>figure</code> containing an element <code>table</code> with the attribute <code>id</code> set to some value in order to refer to this item.</p>
+                <figure id="table_1">
                     <table>
                         <tr>
                             <th rowspan="1" colspan="1">Heading cell 1</th>
@@ -368,15 +451,15 @@ Under the following terms:
                     <li>
                         <p><code>table</code>, which must contain at least one table row (i.e., the element <code>tr</code>) composed by one or more table cells, that can be</p> 
                         <ul>
-                            <li><p>heading cells (element <code>th</code>) that can contains text and inline elements as introduced in <a href="#inlines" role="ref"></a>;</p></li>
-                            <li><p>data cells (element <code>td</code>) that can contains one or more paragraphs (cf. <a href="#paragraphs" role="ref"></a>).</p></li>
+                            <li><p>heading cells (element <code>th</code>) that can contains text and inline elements as introduced in <a href="#inlines"></a>;</p></li>
+                            <li><p>data cells (element <code>td</code>) that can contains one or more paragraphs (cf. <a href="#paragraphs"></a>).</p></li>
                         </ul>
                     </li>
                     <li><p><code>figcaption</code> that defines a caption for the table.</p></li>
                 </ul>
-                <p>For instance the table shown in <a href="#table_1" role="ref"></a> is defined in RASH through the following code.</p>
+                <p>For instance the table shown in <a href="#table_1"></a> is defined in RASH through the following code.</p>
                 <pre><code>
-&lt;figure id="table_1" role="tablebox"&gt;
+&lt;figure id="table_1"&gt;
     &lt;table&gt;
         &lt;tr&gt;
             &lt;th&gt;Heading cell 1&lt;/th&gt;
@@ -400,13 +483,13 @@ Under the following terms:
             
             <section>
                 <h1>Formula boxes</h1>
-                <p>We can define a formula box containing a formula by using the element <code>figure</code> with the attribute <code>role</code> set to <q>formulabox</q> and the attribute <code>id</code> set to some value in order to refer to this item.</p>
-                <figure id="formula_1" role="formulabox">
+                <p>We can define a formula box containing a formula by using the element <code>figure</code> with an element <code>p</code> that can contain either an element <code>img</code>, an element <code>math</code>, or an element <code>span</code>, and the attribute <code>id</code> set to some value in order to refer to this item.</p>
+                <figure id="formula_1">
                     <p>
-                        <img src="img/formula.png" alt="[a + b]^260 + [a + b]_i"/>
+                        <img role="math" src="img/formula.png" alt="[a + b]^260 + {a + b}_i"/>
                     </p>
                 </figure>
-                <figure id="formula_2" role="formulabox">
+                <figure id="formula_2">
                     <p>
                         <math xmlns="http://www.w3.org/1998/Math/MathML">
                             <mrow>
@@ -435,22 +518,28 @@ Under the following terms:
                         </math>
                     </p>
                 </figure>
+                <figure id="formula_3">
+                    <p>
+                        <span role="math">[a + b]^{260} + \{a + b\}_i</span>
+                    </p>
+                </figure>
                 <p>Each formula box is composed by a mandatory element <code>p</code> that can contain a formula by means of:</p>
                 <ul>
-                    <li><p>an element <code>img</code> as introduced in <a href="#inlines" role="ref"></a>;</p></li>
-                    <li><p>an element <code>math</code> (with namespace <code>http://www.w3.org/1998/Math/MathML</code>) of the MathML specification as introduced in <a href="#inlines" role="ref"></a>.</p></li>
+                    <li><p>an element <code>img</code> with role <q>math</q> as introduced in <a href="#inlines"></a>;</p></li>
+                    <li><p>an element <code>math</code> (with namespace <code>http://www.w3.org/1998/Math/MathML</code>) of the MathML specification as introduced in <a href="#inlines"></a>.</p></li>
+                    <li><p>an element <code>span</code> with role <q>math</q> introduced in <a href="#inlines"></a>.</p></li>
                 </ul>
-                <p>For instance the formulas shown in <a href="#formula_1" role="ref"></a> and <a href="#formula_2" role="ref"></a> are defined in RASH through the following code.</p>
+                <p>For instance the formulas shown in <a href="#formula_1"></a>, <a href="#formula_2"></a>, and <a href="#formula_3"></a> are defined in RASH through the following code.</p>
                 <pre><code>
 &lt;!-- Formula defined as an image --&gt;
-&lt;figure id="formula_1" role="formulabox"&gt;
+&lt;figure id="formula_1"&gt;
     &lt;p&gt;
         &lt;img src="formula.png"/&gt;
     &lt;/p&gt;
 &lt;/figure&gt;
 
 &lt;!-- Formula defined using the MathML specification --&gt;
-&lt;figure id="formula_2" role="formulabox"&gt;
+&lt;figure id="formula_2"&gt;
     &lt;p&gt;
         &lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;
             &lt;mrow&gt;
@@ -478,21 +567,23 @@ Under the following terms:
             &lt;/mrow&gt;
         &lt;/math&gt;
     &lt;/p&gt;
+&lt;/figure&gt;
+
+&lt;!-- Formula defined through LaTeX --&gt;
+&lt;figure id="formula_3"&gt;
+    &lt;p&gt;
+        &lt;span role="math"&gt;[a + b]^{260} + \{a + b\}_i&lt;/span&gt;
+    &lt;/p&gt;
 &lt;/figure&gt;</code></pre>
             </section>
             
             <section>
                 <h1>Listing boxes</h1>
-                <p>We can define a listing box containing an image with a caption by using the element <code>figure</code> with the attribute <code>role</code> set to <q>listingbox</q> and the attribute <code>id</code> set to some value in order to refer to this item.</p>
-                <figure id="listing_1" role="listingbox">
+                <p>We can define a listing box containing a code excerpt with a caption by using the element <code>figure</code> containing the element <code>pre</code>, and with the attribute <code>id</code> set to some value in order to refer to this item.</p>
+                <figure id="listing_1">
                     <pre><code>
 &lt;define name="listingbox"&gt;
     &lt;element name="figure"&gt;
-        &lt;attribute name="role"&gt;
-            &lt;data type="string"&gt;
-                &lt;param name="pattern"&gt;listingbox&lt;/param&gt;
-            &lt;/data&gt;
-        &lt;/attribute&gt;
         &lt;ref name="attributes_html_element_no_role" /&gt;
         &lt;ref name="pre" /&gt;
         &lt;ref name="caption" /&gt;
@@ -500,17 +591,12 @@ Under the following terms:
 &lt;/define&gt;</code></pre>
                     <figcaption>Caption of the listing.</figcaption>
                 </figure>
-                <p>Each figure box is composed by two distinct and mandatory elements: the element <code>pre</code> that contains the content of the listing specified through the element <code>code</code> as introduced in <a href="#blockcode" role="ref"></a>, while the element <code>figcaption</code> defines a caption for the listing. For instance the listing shown in <a href="#listing_1" role="ref"></a> is defined in RASH through the following code.</p>
+                <p>The element <code>pre</code> must contain the content of the listing in an element <code>code</code>, as introduced in <a href="#blockcode"></a>. In addition, a mandatory element <code>figcaption</code> must be specified and defines a caption for the listing. For instance the listing shown in <a href="#listing_1"></a> is defined in RASH through the following code.</p>
                 <pre><code>
-&lt;figure id="listing_1" role="listingbox"&gt;
+&lt;figure id="listing_1"&gt;
     &lt;pre&gt;&lt;code&gt;
 &amp;lt;define name="listingbox"&amp;gt;
     &amp;lt;element name="figure"&amp;gt;
-        &amp;lt;attribute name="role"&amp;gt;
-            &amp;lt;data type="string"&amp;gt;
-                &amp;lt;param name="pattern"&amp;gt;listingbox&amp;lt;/param&amp;gt;
-            &amp;lt;/data&amp;gt;
-        &amp;lt;/attribute&amp;gt;
         &amp;lt;ref name="attributes_html_element_no_role" /&amp;gt;
         &amp;lt;ref name="pre" /&amp;gt;
         &amp;lt;ref name="caption" /&amp;gt;
@@ -524,9 +610,9 @@ Under the following terms:
         
         <section id="references">
             <h1>References</h1>
-            <p>All the references are organised in a list within a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-bibliography</q>. They are usually put at the end of the document <strong>before</strong> the footnotes section (cf. <a href="#footnotes" role="ref"></a>).</p>
-            <p>This special section must have an heading (element <code>h1</code>) and only one list (cf. <a href="#lists" role="ref"></a>) containing a bibliographic reference for each list item (i.e., the element <code>li</code> accompanied by the attribute <code>id</code> for referencing to it within the text and the attribute <code>role</code> set to <q>doc-biblioentry</q>).</p>
-            <p>For instance, the reference section in <a href="#bibreflist" role="ref"></a> is defined in RASH through the following code.</p>
+            <p>All the references are organised in a list within a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-bibliography</q>. They are usually put at the end of the document <strong>before</strong> the footnotes section (cf. <a href="#footnotes"></a>).</p>
+            <p>This special section must have an heading (element <code>h1</code>) and only one list (cf. <a href="#lists"></a>) containing a bibliographic reference for each list item (i.e., the element <code>li</code> accompanied by the attribute <code>id</code> for referencing to it within the text and the attribute <code>role</code> set to <q>doc-biblioentry</q>).</p>
+            <p>For instance, the reference section in <a href="#bibreflist"></a> is defined in RASH through the following code.</p>
             <pre><code>
 &lt;section id="bibreflist" role="doc-bibliography"&gt;
     &lt;h1&gt;References&lt;/h1&gt;
@@ -567,9 +653,9 @@ Under the following terms:
         
         <section id="footnotes">
             <h1>Footnotes</h1>
-            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-footnotes</q>. They are usually put at the end of the document <strong>after</strong> the reference section (cf. <a href="#references" role="ref"></a>).</p>
-            <p>This special section contains a sequence of elements <code>section</code>. Each of these elements is accompanied by the attribute <code>role</code> with value <q>doc-footnote</q>, by the attribute <code>id</code> (for referencing to the particular footnote within the text), and can contain block elements containing text, i.e., a paragraph, a list, a code block, a block quotation or any of the structures described in <a href="#floatings" role="ref"></a>.</p>
-            <p>For instance, the footnote section in <a href="#fnlist" role="ref"></a> is defined in RASH through the following code.</p>
+            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-footnotes</q>. They are usually put at the end of the document <strong>after</strong> the reference section (cf. <a href="#references"></a>).</p>
+            <p>This special section contains a sequence of elements <code>section</code>. Each of these elements is accompanied by the attribute <code>role</code> with value <q>doc-footnote</q>, by the attribute <code>id</code> (for referencing to the particular footnote within the text), and can contain block elements containing text, i.e., a paragraph, a list, a code block, a block quotation or any of the structures described in <a href="#floatings"></a>.</p>
+            <p>For instance, the footnote section in <a href="#fnlist"></a> is defined in RASH through the following code.</p>
             <pre><code>
 &lt;section id="fnlist" role="doc-footnotes"&gt;
     &lt;section role="doc-footnote" id="fn1"&gt;
@@ -585,18 +671,18 @@ Under the following terms:
         
         <section id="referencing">
             <h1>Referencing things</h1>
-            <p>All the sections (e.g., <a href="#sections" role="ref"></a>), figures (e.g., <a href="#figure_1" role="ref"></a>), tables (e.g., <a href="#table_1" role="ref"></a>), formulas (e.g., <a href="#formula_1" role="ref"></a>), bibliographic references (e.g., <a href="#Per2014" role="doc-biblioref"></a>), footnotes (e.g., <a href="#fn3" role="doc-noteref"></a>) and even multiple footnotes (e.g., <a href="#fn5" role="doc-noteref"></a><a href="#fn4" role="doc-noteref"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>. It must have the attribute <code>href</code> pointing to an element <code>id</code> of the document (preceded by the character <q>#</q>), and the attribute <code>role</code> set to <q>doc-noteref</q> for referring to footnotes, to <q>doc-biblioref</q> for referring to bibliographic entries, and to <q>ref</q> in the other cases.</p>
+            <p>All the sections (e.g., <a href="#sections"></a>), figures (e.g., <a href="#figure_1"></a>), tables (e.g., <a href="#table_1"></a>), formulas (e.g., <a href="#formula_1"></a>), listings (e.g., <a href="#listing_1"></a>), bibliographic references (e.g., <a href="#Per2014"></a>), footnotes (e.g., <a href="#fn3"></a>) and even multiple footnotes (e.g., <a href="#fn5"></a><a href="#fn4"></a>, that will be automatically separated through a <q><sup>,</sup></q>) can be referenced within the text by using the <strong>empty</strong> element <code>a</code>. It must have the attribute <code>href</code> pointing to an element <code>id</code> of the document (preceded by the character <q>#</q>).</p>
             <p>For instance, the reference pointers introduced in the above paragraph are defined in RASH through the following code.</p>
             <pre><code>
 &lt;p&gt;
-    All the sections (e.g., &lt;a role="ref" href="#sections"&gt;&lt;/a&gt;), 
-    figures (e.g., &lt;a role="ref" href="#figure_1"&gt;&lt;/a&gt;), tables (e.g., 
-    &lt;a role="ref" href="#table_1"&gt;&lt;/a&gt;), formulas (e.g., 
-    &lt;a role="ref" href="#formula_1"&gt;&lt;/a&gt;), bibliographic references 
-    (e.g., &lt;a role="doc-biblioref" href="#Per2014"&gt;&lt;/a&gt;), footnotes 
-    (e.g., &lt;a role="doc-noteref" href="#fn3"&gt;&lt;/a&gt;) and even multiple 
-    footnotes (e.g., &lt;a role="doc-noteref" href="#fn5"&gt;&lt;/a&gt;
-    &lt;a role="doc-noteref" href="#fn4"&gt;&lt;/a&gt;, that will be 
+    All the sections (e.g., &lt;a href="#sections"&gt;&lt;/a&gt;), 
+    figures (e.g., &lt;a href="#figure_1"&gt;&lt;/a&gt;), tables (e.g., 
+    &lt;a href="#table_1"&gt;&lt;/a&gt;), formulas (e.g., 
+    &lt;a href="#formula_1"&gt;&lt;/a&gt;), bibliographic references 
+    (e.g., &lt;a href="#Per2014"&gt;&lt;/a&gt;), footnotes 
+    (e.g., &lt;a href="#fn3"&gt;&lt;/a&gt;) and even multiple 
+    footnotes (e.g., &lt;a href="#fn5"&gt;&lt;/a&gt;
+    &lt;a href="#fn4"&gt;&lt;/a&gt;, that will be 
     automatically separated through a &lt;q&gt;&lt;sup&gt;,&lt;/sup&gt;&lt;/q&gt;) 
     can be referenced within the text by using the &lt;b&gt;empty&lt;/b&gt;
     element &lt;code&gt;a&lt;code&gt;.
@@ -612,18 +698,19 @@ Under the following terms:
 &lt;&gt; cito:credits &lt;http://www.w3.org/TR/rdfa-syntax/&gt; .</code></pre>
             <p>That was possible by adding RDFa annotations by using the appropriate attribute within the paragraph content, while the prefixes were defined in the element <code>html</code>, as shown in the following excerpt.</p>
             <pre><code>
-&lt;html prefix="
-    cito: http://purl.org/spar/cito/"&gt;
+&lt;html prefix="cito: http://purl.org/spar/cito/"&gt;
     ...
     &lt;p&gt;
         RASH has been developed in order to allow anyone to add 
         &lt;a 
-            property="cito:credits" href="http://www.w3.org/TR/rdfa-syntax/"&gt;
-            RDFa&lt;/a&gt; annotations to any element of the document.&lt;/p&gt;
+            property="cito:credits" 
+            href="http://www.w3.org/TR/rdfa-syntax/"&gt;RDFa&lt;/a&gt; 
+        annotations to any element of the document.
+    &lt;/p&gt;
     ...
 &lt;/html&gt;
             </code></pre>
-            <p>For a complete introduction of RDFa within HTML documents, please read the official documentation <a href="#RDFa2013" role="doc-biblioref"></a>.</p>
+            <p>For a complete introduction of RDFa within HTML documents, please read the official documentation <a href="#RDFa2013"></a>.</p>
             <p>In addition to RDFa, RASH makes available another way to add RDF statements to the document, i.e., the use of an element <code>script</code> (within the element <code>head</code>):</p>
                 <ul>
                     <li><p>with the attribute <code>type</code> set to <q>text/turtle</q> for adding plain <a href="http://www.w3.org/TR/turtle/">Turtle</a> content;</p></li>
@@ -645,6 +732,7 @@ Under the following terms:
             pro:relatesToDocument &lt;&gt;
         ] .
 &lt;/script&gt;
+
 &lt;script type="application/ld+json"&gt;
         {
             "@context":
@@ -656,7 +744,7 @@ Under the following terms:
         }
 &lt;/script&gt;
             </code></pre>
-            <p>For a complete introduction of Turtle <a href="#Turtle2014" role="doc-biblioref"></a>, JSON-LD <a href="#JSONLD2014" role="doc-biblioref"></a> and RDF/XML <a href="#RDFXML2014" role="doc-biblioref"></a> please read the official documentation.</p>
+            <p>For a complete introduction of Turtle <a href="#Turtle2014"></a>, JSON-LD <a href="#JSONLD2014"></a> and RDF/XML <a href="#RDFXML2014"></a> please read the official documentation.</p>
             <p>Finally, it is also possible to specify comma-separated values within the element <code>script</code> by specifying <q>text/csv</q> as value of the attribute <code>type</code>.</p>
         </section>
         
@@ -666,21 +754,29 @@ Under the following terms:
             <p>In order to permit a correct visualisation of RASH documents, it is needed to add few line of HTML code at the very beginning of the document, within the element <code>head</code>, as shown in the following excerpt.</p>
             <pre><code>
 &lt;!-- Visualisation requirements (mandatory for optimal reading) --&gt;
-&lt;meta charset="UTF-8"&gt;&lt;/meta&gt;
+&lt;meta charset="UTF-8" /&gt;
 &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 &lt;link href="bootstrap.min.css" rel="stylesheet" /&gt;
-&lt;link rel="stylesheet" href="rash.css"/&gt;
-&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
-&lt;script src="bootstrap.min.js"&gt;&lt;/script&gt;
-&lt;script src="rash.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="rash.css" /&gt;
+&lt;script src="jquery.min.js"&gt; &lt;/script&gt;
+&lt;script src="bootstrap.min.js"&gt; &lt;/script&gt;
+&lt;script src="rash.js"&gt; &lt;/script&gt;
+
+&lt;!-- MathJax for multi-browser support of LaTeX formulas and MathML --&gt;
+&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; &lt;/script&gt;
 &lt;!-- /END Visualisation requirements (mandatory for optimal reading) --&gt;</code></pre>
-            <p>Note that the RASH file you are writing must be placed in the same location where the aforementioned scripts and stylesheets are. We have made available a <a href="../rash.zip">ZIP package</a> containing all these files with this documentation and a full example of a real research article <a href="#CDN2014" role="doc-biblioref"></a> written in RASH format.</p>
+            <p>Note that the RASH file you are writing must be placed in the same location where the aforementioned scripts and stylesheets are. We have made available a <a href="../rash.zip">ZIP package</a> containing all these files with this documentation and a full example of a real research article <a href="#CDN2014"></a> written in RASH format.</p>
+            <p>In addition to these Javascript files, we also suggest the use of <a href="https://www.mathjax.org/">MathJax</a>, which is a Javascript display engine for mathematics that works in all browsers. It is used for rendering particular elements used in RASH, i.e., MathML formulas (by means of the element <code>math</code>) as well as LaTeX formulas (through the element <code>span</code> with the attribute <code>role</code> set to <q>math</q>), as shown in <a href="#inlines"></a>. Please note that the use of MathJax as introduced in the excerpt above is guaranteed only if there is internet connection. However, for offline rendering, one should store the whole <a href="https://docs.mathjax.org/en/v2.5-latest/installation.html">MathJax package</a> locally and should refer to it by means of a relative path, as shown in the following excerpt.</p>
+            <pre><code>
+&lt;script 
+    src="[local-dir]/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; &lt;/script&gt;
+            </code></pre>
         </section>
         
         <!-- Acknowledgements -->
         <section role="doc-acknowledgements">
             <h1>Acknowledgments</h1>
-            <p>The acknowledgements of a document are organised in a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-acknowledgements</q>. They are usually put just <strong>after</strong> the section concluding the document (i.e., <a href="#visualisation" role="ref"></a> in this case) and <strong>before</strong> the reference section.</p>
+            <p>The acknowledgements of a document are organised in a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-acknowledgements</q>. They are usually put just <strong>after</strong> the section concluding the document (i.e., <a href="#visualisation"></a> in this case) and <strong>before</strong> the reference section.</p>
         </section>
         
         <!-- References -->
@@ -702,13 +798,13 @@ Under the following terms:
         <!-- Footnotes -->
         <section id="fnlist" role="doc-footnotes">
             <section id="fn3" role="doc-footnote">
-                <p>Note that other elements should be added for visualisation purposes. Please refer to <a href="#visualisation" role="ref"></a> for additional details.</p>
+                <p>Note that other elements should be added for visualisation purposes. Please refer to <a href="#visualisation"></a> for additional details.</p>
             </section>
             <section id="fn4" role="doc-footnote">
-                <p>Note that <code>h1</code> has the same content model of the element <code>p</code>, which means that all the inline elements described in <a href="#inlines" role="ref"></a> can be used within such element.</p>
+                <p>Note that <code>h1</code> has the same content model of the element <code>p</code>, which means that all the inline elements described in <a href="#inlines"></a> can be used within such element.</p>
             </section>
             <section id="fn5" role="doc-footnote">
-                <p>Only some browsers (e.g., Firefox) fully support MathML. For an updated list of such browsers please refer to the <a href="http://caniuse.com/#feat=mathml">Can I Use</a> website.</p>
+                <p>The full support of MathML is guaranteed by means of <a href="https://www.mathjax.org">MathJax</a>.</p>
             </section>
         </section>
     </body>

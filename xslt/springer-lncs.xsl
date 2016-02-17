@@ -18,7 +18,7 @@ Under the following terms:
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
     xmlns:iml="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:f="http://www.essepuntato.it/XSLT/fuction"
+    xmlns:f="http://www.essepuntato.it/XSLT/function"
     exclude-result-prefixes="iml xs f">
     
     <xsl:include href="include/container.xsl"/>

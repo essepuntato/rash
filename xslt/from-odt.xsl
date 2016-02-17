@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From ODT to RASH XSLT transformation file - Version 1.1, October 24, 2015
+From ODT to RASH XSLT transformation file - Version 1.2, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -206,7 +206,7 @@ Under the following terms:
         <xsl:variable name="caption" 
             select="draw:text-box/text:p[text:sequence]" as="element()*" />
             
-        <figure role="{if ($isFormula) then 'formulabox' else 'picturebox'}">
+        <figure>
             <xsl:call-template name="set.captioned.object.id">
                 <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
@@ -231,7 +231,7 @@ Under the following terms:
         <xsl:variable name="caption" 
             select="draw:text-box/text:p[text:sequence]" as="element()*" />
         
-        <figure role="listingbox">
+        <figure>
             <xsl:call-template name="set.captioned.object.id">
                 <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
@@ -390,7 +390,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:note | text:note-ref">
-        <a role="doc-noteref" href="#{@text:id | @text:ref-name}"><xsl:text> </xsl:text></a>
+        <a href="#{@text:id | @text:ref-name}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="text:p">
@@ -399,7 +399,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:p[.//draw:object[parent::element()/svg:desc = 'formula'] and normalize-space(replace(., 'formula', '')) = '']">
-        <figure role="formulabox">
+        <figure>
             <p>
                 <xsl:apply-templates />
             </p>
@@ -478,7 +478,7 @@ Under the following terms:
     </xd:doc>
     <xsl:template match="table:table">
         <xsl:variable name="caption" select="following-sibling::text:p[normalize-space() != ''][1][(@text:style-name = 'Table') or (some $s in //style:style[@style:parent-style-name = 'Table']/@style:name satisfies @text:style-name = $s)]" as="element()?" />
-        <figure role="tablebox">
+        <figure>
             <xsl:call-template name="set.captioned.object.id">
                 <xsl:with-param name="caption" select="$caption" />
             </xsl:call-template>
@@ -553,7 +553,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:bookmark-ref | text:sequence-ref">
-        <a href="#{@text:ref-name}" role="ref"><xsl:text> </xsl:text></a>
+        <a href="#{@text:ref-name}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="text:bookmark-ref">
@@ -562,7 +562,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:bookmark-ref[some $ref in //text:bookmark-start satisfies $ref/@text:name = @text:ref-name and (some $content in $bibliography satisfies lower-case(normalize-space($ref/preceding::text:h[1])) = $content)]" priority="3">
-        <a href="#{@text:ref-name}" role="doc-biblioref"><xsl:text> </xsl:text></a>
+        <a href="#{@text:ref-name}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="svg:desc">
@@ -636,18 +636,18 @@ Under the following terms:
                 </sub>
             </xsl:when>
             <xsl:when test="$bold">
-                <b>
+                <strong>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="bold" tunnel="yes" as="xs:boolean" select="false()" />
                     </xsl:call-template>
-                </b>
+                </strong>
             </xsl:when>
             <xsl:when test="$italic">
-                <i>
+                <em>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="italic" tunnel="yes" as="xs:boolean" select="false()" />
                     </xsl:call-template>
-                </i>
+                </em>
             </xsl:when>
             <xsl:when test="$courier">
                 <code>

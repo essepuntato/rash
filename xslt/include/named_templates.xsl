@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: table module - Version 0.4, October 25, 2015
+RASH to LaTeX: table module - Version 0.5, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -20,7 +20,8 @@ Under the following terms:
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" 
     xmlns:m="http://www.w3.org/1998/Math/MathML"
-    xmlns:f="http://www.essepuntato.it/XSLT/fuction">
+    xmlns:f="http://www.essepuntato.it/XSLT/function"
+    xmlns:svg="http://www.w3.org/2000/svg">
 
     <xsl:import href="mathml.xsl"/>
 
@@ -83,6 +84,8 @@ Under the following terms:
         <xsl:text>\usepackage{fancyvrb}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\VerbatimFootnotes</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{cprotect}</xsl:text>
         <xsl:call-template name="n" />
     </xsl:template>
     
@@ -165,6 +168,9 @@ Under the following terms:
                 <xsl:when test="self::m:math">
                     <xsl:apply-templates select="." mode="pmml2tex" />
                 </xsl:when>
+                <xsl:when test="self::svg:svg">
+                    <xsl:text>[ERROR: SVG images are not handled]</xsl:text>
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates select=".">
                         <xsl:with-param name="lang"
@@ -215,6 +221,10 @@ Under the following terms:
         </xsl:if>
     </xsl:template>
     
+    <xsl:template match="text()[ancestor::iml:span[some $token in tokenize(@role, ' ') satisfies $token = 'math']]" priority="3">
+        <xsl:value-of select="." />
+    </xsl:template>
+    
     <xsl:template match="text()[empty(ancestor::iml:code)]">
         <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
         <xsl:choose>
@@ -240,8 +250,6 @@ Under the following terms:
     </xsl:template>
     
     <xsl:template match="text()[exists(ancestor::iml:code)]">
-        <!-- TODO: bisogna eliminare anche quelli che fanno parte di una sequenza iniziale o finale vuota -->
-        <!-- TODO: il last non empty dovrebbe entrare anche dentro il blocco del first non empty nel caso sia entrambi -->
         <xsl:param name="isInline" as="xs:boolean" tunnel="yes" />
         <xsl:variable name="isInInitialEmptySequence" select="normalize-space() = '' and (every $text in (ancestor::iml:code//text() intersect preceding::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
         <xsl:variable name="isInFinalEmptySequence" select="normalize-space() = '' and (every $text in (ancestor::iml:code//text() intersect following::text()) satisfies normalize-space($text) = '')" as="xs:boolean" />
@@ -360,7 +368,7 @@ Under the following terms:
         <xsl:variable name="i" select="index-of($all.languages,$lang)" as="xs:integer*"/>
         
         <xsl:choose>
-            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'listingbox']">
+            <xsl:when test="$el[self::iml:figure/iml:pre]">
                 <xsl:variable name="str" select="('Listato','Listing','Listing')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -369,7 +377,7 @@ Under the following terms:
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'tablebox']">
+            <xsl:when test="$el[self::iml:figure/iml:table]">
                 <xsl:variable name="str" select="('Tabella','Table','Table')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -378,7 +386,7 @@ Under the following terms:
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'picturebox']">
+            <xsl:when test="$el[self::iml:figure/iml:p/(svg:svg|iml:img[every $token in tokenize(@role, ' ') satisfies $token != 'math'])]">
                 <xsl:variable name="str" select="('Figura','Figure','Fig.')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>
@@ -387,7 +395,7 @@ Under the following terms:
                 <xsl:value-of select="$id" />
                 <xsl:text>}</xsl:text>
             </xsl:when>
-            <xsl:when test="$el[some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']">
+            <xsl:when test="$el[self::iml:figure/iml:p/(m:math|(iml:span|iml:img)[some $token in tokenize(@role, ' ') satisfies $token = 'math'])]">
                 <xsl:variable name="str" select="('Formula','Formula','Formula')" as="xs:string*"/>
                 <xsl:value-of select="$str[$i]"/>
                 <xsl:text>~\</xsl:text>

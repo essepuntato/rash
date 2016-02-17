@@ -1,5 +1,7 @@
-# Research Articles in Simplified HTML (RASH) format - Version 0.4.1, December 24, 2015
+# Research Articles in Simplified HTML (RASH) format - Version 0.5, February 15, 2016
 # by Silvio Peroni
+# 
+# with precious contributions by Mike Smith and Ruben Verborgh.
 # 
 # This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
 # You are free to:
@@ -15,6 +17,7 @@
 default namespace = "http://www.w3.org/1999/xhtml"
 namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
 namespace ns1 = "http://www.w3.org/1998/Math/MathML"
+namespace ns2 = "http://www.w3.org/2000/svg"
 
 start = html
 # Elements
@@ -186,51 +189,28 @@ footnotes =
   }
 figurebox =
   element figure {
-    attribute role {
-      xsd:string { pattern = "picturebox" }
-    },
     attributes_html_element_no_role,
-    img_block,
+    element p { attributes_html_element_no_role, (img | svg) },
     caption
   }
 listingbox =
-  element figure {
-    attribute role {
-      xsd:string { pattern = "listingbox" }
-    },
-    attributes_html_element_no_role,
-    pre,
-    caption
-  }
+  element figure { attributes_html_element_no_role, pre, caption }
 tablebox =
-  element figure {
-    attribute role {
-      xsd:string { pattern = "tablebox" }
-    },
-    attributes_html_element_no_role,
-    table,
-    caption
-  }
+  element figure { attributes_html_element_no_role, table, caption }
 formulabox =
   element figure {
-    attribute role {
-      xsd:string { pattern = "formulabox" }
-    },
     attributes_html_element_no_role,
-    (img_block
-     | element p { attributes_html_element_no_role, math })
+    (element p { attributes_html_element_no_role, img_math }
+     | element p { attributes_html_element_no_role, math }
+     | element p { attributes_html_element_no_role, span_latex })
   }
-math = element ns1:math { cm_mathml_element+ }
 a =
   element a {
     attributes_html_element_no_role, aHref?, aNameRef?, cm_inline
   }
-aRefFootnote =
+aRef =
   element a {
     attributes_html_element_no_role,
-    attribute role {
-      xsd:string { pattern = "(ref|doc-noteref|doc-biblioref)" }
-    },
     attribute href { xsd:anyURI },
     aNameRef?
   }
@@ -244,7 +224,23 @@ code = element code { attributes_html_element_no_role, cm_inline }
 img = element img { attributes_html_element_no_role, aSrc, aAlt }
 caption =
   element figcaption { attributes_html_element_no_role, cm_inline }
-img_block = element p { attributes_html_element_no_role, img }
+img_math =
+  element img {
+    attribute role { "math" },
+    attributes_html_element_no_role,
+    aSrc,
+    aAlt
+  }
+math = element ns1:math { cm_mathml_element }
+mathml_element = element ns1:* { cm_mathml_element }
+svg = element ns2:svg { cm_svg_element }
+svg_element = element ns2:* { cm_svg_element }
+span_latex =
+  element span {
+    attribute role { "math" },
+    attributes_html_element_no_role,
+    text
+  }
 # /END Elements
 
 # Attributes
@@ -291,9 +287,12 @@ cm_container =
 cm_inline =
   (text
    | a
-   | aRefFootnote
+   | aRef
    | img
+   | svg
    | math
+   | img_math
+   | span_latex
    | span
    | code
    | sub
@@ -314,11 +313,13 @@ cm_sections =
    | listingbox
    | section)+
 cm_mathml_element =
-  element ns1:* {
-    (attribute * { text }
-     | text
-     | cm_mathml_element)*
-  }
+  (attribute * { text }
+   | text
+   | mathml_element)*
+cm_svg_element =
+  (attribute * { text }
+   | text
+   | svg_element)*
 cm_meta_author =
   meta_author_name, meta_author_email, link_author_affiliation
 # Content models for HTML attributes

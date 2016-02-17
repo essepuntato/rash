@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: container module - Version 0.4, October 24, 2015
+RASH to LaTeX: container module - Version 0.5, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -19,7 +19,9 @@ Under the following terms:
     xmlns:iml="http://www.w3.org/1999/xhtml" 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" 
-    xmlns:f="http://www.essepuntato.it/XSLT/fuction">
+    xmlns:f="http://www.essepuntato.it/XSLT/function"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:mathml="http://www.w3.org/1998/Math/MathML">
 
     <xsl:import href="named_templates.xsl"/>
 
@@ -143,7 +145,7 @@ Under the following terms:
         <xsl:call-template name="next"/>
     </xsl:template>
 
-    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'listingbox']">
+    <xsl:template match="iml:figure[iml:pre]">
         <xsl:call-template name="next">
             <xsl:with-param name="select" select="iml:pre" />
             <xsl:with-param name="caption" select="iml:figcaption" as="element()" tunnel="yes" />
@@ -152,7 +154,10 @@ Under the following terms:
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'picturebox']">
+    <!-- SVG images are not handled directly and thus are not included -->
+    <xsl:template match="iml:figure[iml:p/svg:svg]" />
+
+    <xsl:template match="iml:figure[iml:p/iml:img[every $token in tokenize(@role, ' ') satisfies $token != 'math']]">
         <xsl:call-template name="n" />
         <xsl:text>\begin{figure}[h!]</xsl:text>
         <xsl:call-template name="n" />
@@ -167,7 +172,7 @@ Under the following terms:
         <xsl:call-template name="n" />
     </xsl:template>
     
-    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']">
+    <xsl:template match="iml:figure[iml:p/(mathml:math | (iml:img|iml:span)[some $token in tokenize(@role, ' ') satisfies $token = 'math'])]">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
         <xsl:text>\begin{equation}</xsl:text>
@@ -181,7 +186,7 @@ Under the following terms:
         <xsl:call-template name="n" />
     </xsl:template>
     
-    <xsl:template match="iml:figure[some $token in tokenize(@role, ' ') satisfies $token = 'tablebox']">
+    <xsl:template match="iml:figure[iml:table]">
         <xsl:call-template name="n" />
         <xsl:text>\begin{table}[h!]</xsl:text>
         <xsl:call-template name="n" />

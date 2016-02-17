@@ -21,7 +21,7 @@ COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL OR CONSEQ
  xmlns:xs="http://www.w3.org/2001/XMLSchema"
  exclude-result-prefixes="m xs">
  
- <xsl:template mode="pmml2tex" match="m:math[ancestor::iml:figure[1][some $token in tokenize(@role, ' ') satisfies $token = 'formulabox']]">\let\par\empty <xsl:apply-templates mode="pmml2tex"
+ <xsl:template mode="pmml2tex" match="m:math[ancestor::iml:figure]">\let\par\empty <xsl:apply-templates mode="pmml2tex"
   /></xsl:template>
  
  <xsl:template mode="pmml2tex" match="m:math">$\let\par\empty <xsl:apply-templates mode="pmml2tex"

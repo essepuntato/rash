@@ -1,5 +1,5 @@
 /* 
-lncs.css - Version 0.2, October 23, 2015
+lncs.css - Version 0.3, February 17, 2016
 by Silvio Peroni
 
 based on
@@ -86,9 +86,9 @@ em{
     font-family:"CMU Serif Italic", serif !important;
 }
 
-.h1 em,
-.h2 em,
-.h3 em,
+h1 em,
+h2 em,
+h3 em,
 strong em,
 em strong{
     font-family:"CMU Serif Bold Italic", serif !important;
@@ -144,53 +144,53 @@ h1{
     text-align:left;
 }
 
-.h1,
-.h2{
+h1,
+h2{
     overflow:hidden;
     font-family:"CMU Serif Bold", serif !important;
 }
 
-.h1{
+h1{
     font-size:12pt;
     margin-top:1.5em;
     margin-bottom:0.9em;
 }
 
-.h2{
+h2{
     font-size:10pt;
     margin-top:1.35em;
     margin-bottom:0.75em;
 }
 
-.h3,
-.h4,
-.h5,
-.h6{
+h3,
+h4,
+h5,
+h6{
     display:inline;
     font-size:10pt;
 }
 
-.h3:after{
+h3:after{
     font-weight:bold;
     content:". ";
 }
 
-.h4,
-.h5,
-.h6{
+h4,
+h5,
+h6{
     font-weight:normal;
 }
 
-.h4:after,
-.h5:after,
-.h6:after{
+h4:after,
+h5:after,
+h6:after{
     content:". ";
 }
 
-.h3 + p,
-.h4 + p,
-.h5 + p,
-.h6 + p{
+h3 + p,
+h4 + p,
+h5 + p,
+h6 + p{
     display:inline;
 }
 /* /END Headings */
@@ -293,13 +293,13 @@ section[role=doc-abstract] p{
 /* /END Front matter */
 
 /* Images */
-img{
+img, svg{
     border:0;
     page-break-inside:avoid;
     max-width:100%;
     height:auto;
 }
-figure img {
+figure img, figure svg {
     vertical-align:middle;
 }
 /* /END Images */
@@ -353,17 +353,17 @@ table p {
 body{
     counter-reset:h1;
 }
-.h1{
+h1{
     counter-reset:h2;
 }
 
-section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h1:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) h1:before{
     counter-increment:h1;
     content:counter(h1);
     margin-right:1.5em;
 }
 
-section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) .h2:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) h2:before{
     counter-increment:h2;
     content:counter(h1) "." counter(h2);
     margin-right:1em;
@@ -392,40 +392,24 @@ li p:first-child{
 }
 /* /END Lists */
 
-
-/* Pictures */
-figure[role=picturebox] {
+/* Figure (any) */
+figure {
     margin-top:1em;
     margin-bottom:1em;
     position:relative;
+}
+
+figure > p {
     text-align:center;
 }
-/* /END Pictures */
+/* /END Figure (any) */
 
 /* Listing */
-figure[role=listingbox] {
-    margin-top:1em;
-    margin-bottom:1em;
-    position:relative;
-}
-
-figure[role=listingbox] > pre {
+figure > pre {
     border: 1px solid black;
     padding: 3px;
 }
 /* /END Listing */
-
-/* Formulas */
-figure[role=formulabox]{
-    text-align:center;
-    margin-top:1em;
-    margin-bottom:1em;
-}
-
-figure[role=formulabox]{
-    text-align:center;
-}
-/* /END Formulas */
 
 /* Captions */
 figcaption{
@@ -701,7 +685,7 @@ section[role=doc-footnotes] {
         display:none;
     }
     
-    .h1, .h2{
+    h1, h2{
         page-break-after:avoid;
     }
     

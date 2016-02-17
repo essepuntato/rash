@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH update XSLT file - Version 0.4.1, October 30, 2015
+RASH update XSLT file - Version 0.5, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -24,16 +24,27 @@ Under the following terms:
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Oct 18, 2015</xd:p>
+            <xd:p><xd:b>Last modified on:</xd:b> Feb 17, 2016</xd:p>
             <xd:p><xd:b>Author:</xd:b> Silvio Peroni</xd:p>
-            <xd:p>This XSLT document allows one to update the RASH version (starting from version 0.3.5) of a given document into the earliest available version of the language.</xd:p>
+            <xd:p>This XSLT document allows one to update the RASH version (starting from version 0.3.5) of a given document into the earliest available version of the language (0.5).</xd:p>
         </xd:desc>
     </xd:doc>
     
     <xsl:output encoding="UTF-8" indent="no" method="xml" cdata-section-elements="script" />
     
     <!-- 
-        From 0.3.5 to last version
+        From 0.3.5 to last version (0.5)
     -->
+    
+    <!-- head with no MathJax -> head/script for MathJax -->
+    <xsl:template match="head[every $s in script/@src satisfies not(contains($s, 'MathJax.js?config=TeX-AMS-MML_HTMLorMML'))]">
+        <head>
+            <xsl:call-template name="copy-no-class" />
+            <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+                <xsl:text> </xsl:text>
+            </script>
+        </head>
+    </xsl:template>
     
     <!-- div[@class = 'abstract'] -> section[@role = 'doc-abstract'] -->
     <xsl:template match="div[index-of(tokenize(@class, ' '), 'abstract') > 0]">
@@ -151,22 +162,47 @@ Under the following terms:
         </code>
     </xsl:template>
     
-    <!-- div[@class = 'picture'] -> figure[@role = 'picturebox'] -->
-    <xsl:template match="div[index-of(tokenize(@class, ' '), 'picture') > 0]">
-        <figure>
-            <xsl:call-template name="copy-no-class">
-                <xsl:with-param name="class" select="'picture'" />
-                <xsl:with-param name="role" select="'picturebox'" />
-            </xsl:call-template>
-        </figure>
-    </xsl:template>
-    
     <!-- div[@class = 'formula'] -> figure[@role = 'formulabox'] -->
     <xsl:template match="div[index-of(tokenize(@class, ' '), 'formula') > 0]">
         <figure>
             <xsl:call-template name="copy-no-class">
                 <xsl:with-param name="class" select="'formula'" />
+            </xsl:call-template>
+        </figure>
+    </xsl:template>
+    
+    <!-- figure[@role = 'formulabox'] -> figure -->
+    <xsl:template match="figure[index-of(tokenize(@role, ' '), 'formulabox') > 0]">
+        <figure>
+            <xsl:call-template name="copy-no-class-no-role">
                 <xsl:with-param name="role" select="'formulabox'" />
+            </xsl:call-template>
+        </figure>
+    </xsl:template>
+    
+    <!-- (div[@class = 'formula']|figure[@role = 'formulabox'])/p/img -> img[@role = 'math'] -->
+    <xsl:template match="div[index-of(tokenize(@class, ' '), 'formula') > 0]/p/img | figure[index-of(tokenize(@role, ' '), 'formulabox') > 0]/p/img">
+        <img>
+            <xsl:call-template name="copy-no-class">
+                <xsl:with-param name="role" select="'math'" />
+            </xsl:call-template>
+        </img>
+    </xsl:template>
+    
+    <!-- div[@class = 'picture'] -> figure[@role = 'picturebox'] -->
+    <xsl:template match="div[index-of(tokenize(@class, ' '), 'picture') > 0]">
+        <figure>
+            <xsl:call-template name="copy-no-class">
+                <xsl:with-param name="class" select="'picture'" />
+            </xsl:call-template>
+        </figure>
+    </xsl:template>
+    
+    <!-- figure[@role = 'picturebox'] -> figure -->
+    <xsl:template match="figure[index-of(tokenize(@role, ' '), 'picturebox') > 0]">
+        <figure>
+            <xsl:call-template name="copy-no-class-no-role">
+                <xsl:with-param name="class" select="'picturebox'" />
             </xsl:call-template>
         </figure>
     </xsl:template>
@@ -176,7 +212,24 @@ Under the following terms:
         <figure>
             <xsl:call-template name="copy-no-class">
                 <xsl:with-param name="class" select="'table'" />
+            </xsl:call-template>
+        </figure>
+    </xsl:template>
+    
+    <!-- figure[@role = 'tablebox'] -> figure -->
+    <xsl:template match="figure[index-of(tokenize(@role, ' '), 'tablebox') > 0]">
+        <figure>
+            <xsl:call-template name="copy-no-class-no-role">
                 <xsl:with-param name="role" select="'tablebox'" />
+            </xsl:call-template>
+        </figure>
+    </xsl:template>
+    
+    <!-- figure[@role = 'listingbox'] -> figure -->
+    <xsl:template match="figure[index-of(tokenize(@role, ' '), 'listingbox') > 0]">
+        <figure>
+            <xsl:call-template name="copy-no-class-no-role">
+                <xsl:with-param name="role" select="'listingbox'" />
             </xsl:call-template>
         </figure>
     </xsl:template>
@@ -195,6 +248,15 @@ Under the following terms:
         <a>
             <xsl:call-template name="copy-attrs-no-class">
                 <xsl:with-param name="class" select="'footnote'" />
+            </xsl:call-template>
+            <xsl:text> </xsl:text>
+        </a>
+    </xsl:template>
+    
+    <!-- a[@role = 'doc-noteref'] -> a -->
+    <xsl:template match="a[index-of(tokenize(@role, ' '), 'doc-noteref') > 0]">
+        <a>
+            <xsl:call-template name="copy-attrs-no-class-no-role">
                 <xsl:with-param name="role" select="'doc-noteref'" />
             </xsl:call-template>
             <xsl:text> </xsl:text>
@@ -206,6 +268,15 @@ Under the following terms:
         <a>
             <xsl:call-template name="copy-attrs-no-class">
                 <xsl:with-param name="class" select="'ref'" />
+            </xsl:call-template>
+            <xsl:text> </xsl:text>
+        </a>
+    </xsl:template>
+    
+    <!-- a[@role = 'doc-biblioref'] -> a -->
+    <xsl:template match="a[index-of(tokenize(@role, ' '), 'doc-biblioref') > 0]">
+        <a>
+            <xsl:call-template name="copy-attrs-no-class-no-role">
                 <xsl:with-param name="role" select="'doc-biblioref'" />
             </xsl:call-template>
             <xsl:text> </xsl:text>
@@ -217,6 +288,15 @@ Under the following terms:
         <a>
             <xsl:call-template name="copy-attrs-no-class">
                 <xsl:with-param name="class" select="'ref'" />
+            </xsl:call-template>
+            <xsl:text> </xsl:text>
+        </a>
+    </xsl:template>
+    
+    <!-- a[@role = 'ref'] -> a -->
+    <xsl:template match="a[index-of(tokenize(@role, ' '), 'ref') > 0]">
+        <a>
+            <xsl:call-template name="copy-attrs-no-class-no-role">
                 <xsl:with-param name="role" select="'ref'" />
             </xsl:call-template>
             <xsl:text> </xsl:text>
@@ -255,6 +335,20 @@ Under the following terms:
         </xsl:if>
     </xsl:template>
     
+    <!-- @role with remove value -->
+    <xsl:template match="@role" mode="remove-value">
+        <xsl:param name="role" as="xs:string?" />
+        <xsl:if test="role">
+            <xsl:variable name="values" select="tokenize(., ' ')" as="xs:string*" />
+            <xsl:variable name="values-no-role" select="remove($values, index-of($values, $role))" as="xs:string*" />
+            <xsl:if test="$values-no-role">
+                <xsl:attribute name="role">
+                    <xsl:value-of select="$values-no-role" separator=" " />
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+    </xsl:template>
+    
     <xsl:template match="script[normalize-space() = '']">
         <script>
             <xsl:call-template name="copy-attrs-no-class" />
@@ -270,6 +364,28 @@ Under the following terms:
     </xsl:template>
     
     <!-- Named templates -->
+    <xsl:template name="copy-no-class-no-role">
+        <xsl:param name="class" as="xs:string?" />
+        <xsl:param name="role" as="xs:string?" />
+        <xsl:call-template name="copy-attrs-no-class-no-role">
+            <xsl:with-param name="class" select="$class" />
+            <xsl:with-param name="role" select="$role" />
+        </xsl:call-template>
+        <xsl:apply-templates />
+    </xsl:template>
+    
+    <xsl:template name="copy-attrs-no-class-no-role">
+        <xsl:param name="class" as="xs:string?" />
+        <xsl:param name="role" as="xs:string?" />
+        <xsl:apply-templates select="@* except (@class union @role)"/>
+        <xsl:apply-templates select="@class" mode="remove-value">
+            <xsl:with-param name="class" select="$class" />
+        </xsl:apply-templates>
+        <xsl:apply-templates select="@role" mode="remove-value">
+            <xsl:with-param name="role" select="$role" />
+        </xsl:apply-templates>
+    </xsl:template>
+    
     <xsl:template name="copy-no-class">
         <xsl:param name="class" as="xs:string?" />
         <xsl:param name="role" as="xs:string?" />

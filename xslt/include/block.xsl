@@ -20,7 +20,7 @@ Under the following terms:
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" 
     xmlns:m="http://www.w3.org/1998/Math/MathML"
-    xmlns:f="http://www.essepuntato.it/XSLT/fuction"
+    xmlns:f="http://www.essepuntato.it/XSLT/function"
     xmlns:mathml="http://www.w3.org/1998/Math/MathML">
     
     <xsl:import href="named_templates.xsl"/>
@@ -47,10 +47,10 @@ Under the following terms:
         <xsl:call-template name="next" />
     </xsl:template>
     
-    <xsl:template match="iml:p[parent::iml:figure and iml:img]" priority="3">
+    <xsl:template match="iml:p[parent::iml:figure and (iml:img or iml:span)]" priority="3">
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="iml:img" />
+            <xsl:with-param name="select" select="iml:img|iml:span" />
         </xsl:call-template>
     </xsl:template>
     
@@ -193,7 +193,7 @@ Under the following terms:
     
     <xsl:template match="iml:figcaption">
         <xsl:call-template name="n" />
-        <xsl:text>\caption{</xsl:text>
+        <xsl:text>\cprotect\caption{</xsl:text>
         <xsl:call-template name="next" />
         <xsl:text>}</xsl:text>
     </xsl:template>

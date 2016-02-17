@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: inline module - Version 0.4, October 25, 2015
+RASH to LaTeX: inline module - Version 0.4.1, February 17, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -28,7 +28,7 @@ Under the following terms:
         indent="no" />
     <xsl:strip-space elements="*"/>
     
-    <xsl:template match="iml:i">
+    <xsl:template match="iml:em">
         <!--<xsl:call-template name="add.space" />-->
         <xsl:text>{\em </xsl:text>
         <xsl:call-template name="next">
@@ -81,7 +81,7 @@ Under the following terms:
     
     <xsl:template match="iml:code[not(parent::iml:pre)]">
         <!--<xsl:call-template name="add.space" />-->
-        <xsl:text>\verb+</xsl:text>
+        <xsl:text>\Verb+</xsl:text>
         <xsl:call-template name="next">
             <xsl:with-param name="isInline" as="xs:boolean" select="true()" />
         </xsl:call-template>
@@ -106,12 +106,25 @@ Under the following terms:
         <xsl:text>}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:b">
+    <xsl:template match="iml:strong">
         <!--<xsl:call-template name="add.space" />-->
         <xsl:text>{\bf </xsl:text>
         <xsl:call-template name="next">
             <xsl:with-param name="isInline" as="xs:boolean" select="true()" />
         </xsl:call-template>
         <xsl:text>}</xsl:text>
+    </xsl:template>
+    
+    <xsl:template match="iml:span[some $token in tokenize(@role, ' ') satisfies $token = 'math']">
+        <xsl:choose>
+            <xsl:when test="ancestor::iml:figure">
+                <xsl:call-template name="next" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>$</xsl:text>
+                <xsl:call-template name="next" />
+                <xsl:text>$</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
