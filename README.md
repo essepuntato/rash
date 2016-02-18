@@ -11,6 +11,8 @@ Please use the hashtag *#rashfwk* for referring to any of the entities defined i
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
+* [2016 Workshop on Web APIs and RESTful Design (WS-REST2016)](http://ws-rest.org/2016)
+
 * [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org/)
 
 * [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
@@ -41,7 +43,7 @@ Please feel free to adopt RASH for accepting HTML submissions in your academic e
 
 ## Papers introducing the RASH Framework
 
-* Di Iorio, A., Gonzalez-Beltran, A. G., Osborne, F., Peroni, S., Poggi, F., Vitali, F. (2016). It ROCS! The RASH Online Conversion Service. To appear in the Companion Volume of the Proceedings of the [25th International World Wide Web Conference (WWW 2016)](http://www2016.ca/). Available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html) and [PDF](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.pdf).
+* Di Iorio, A., Gonzalez-Beltran, A., Osborne, F., Peroni, S., Poggi, F., Vitali, F. (2016). It ROCS! The RASH Online Conversion Service. To appear in the Companion Volume of the Proceedings of the [25th International World Wide Web Conference (WWW 2016)](http://www2016.ca/). Available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html) and [PDF](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.pdf).
 
 * Di Iorio, A., Nuzzolese, A. G., Osborne, F., Peroni, S., Poggi, F., Smith, M., Vitali, F. Zhao, J. (2015). The RASH Framework: enabling HTML+RDF submissions in scholarly venues. In Proceedings of the poster and demo session of the [14th International Semantic Web Conference (ISWC 2015)](http://iswc2015.semanticweb.org/). Available in [RASH](https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html) and [PDF](http://ceur-ws.org/Vol-1486/paper_72.pdf).
 
@@ -54,6 +56,10 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 * Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
 
 ## RASH papers accepted in scholarly venues
+
+### 25th International World Wide Web Conference ([WWW 2016](http://www2016.ca/)), poster and demo
+
+* Angelo Di Iorio, Alejandra Gonzalez-Beltran, Francesco Osborne, Silvio Peroni, Francesco Poggi, Fabio Vitali, [*It ROCS! The RASH Online Conversion Service*](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html)
 
 ### 14th International Semantic Web Conference ([ISWC 2015](http://iswc2015.semanticweb.org/)), poster and demo
 
