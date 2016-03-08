@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.5, February 15, 2016
+ * rash.js - Version 0.5.1, March 8, 2016
  * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com>
  * 
  * with precious contributions by Ruben Verborgh.
@@ -370,7 +370,7 @@ $(function() {
     });
     $(tablebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
-        var cur_number = $(this).parent().findNumber(tablebox_selector);
+        var cur_number = $(this).findNumber(tablebox_selector);
         cur_caption.html("<strong>Table " + cur_number + ".</strong> " + cur_caption.html());
     });
     $(formulabox_selector).each(function() {
@@ -380,7 +380,7 @@ $(function() {
     });
     $(listingbox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
-        var cur_number = $(this).parent().findNumber(listingbox_selector);
+        var cur_number = $(this).findNumber(listingbox_selector);
         cur_caption.html("<strong>Listing " + cur_number + ".</strong> " + cur_caption.html());
     });
     /* /END Captions */
