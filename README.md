@@ -11,6 +11,10 @@ Please use the hashtag *#rashfwk* for referring to any of the entities defined i
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
+* [4th International Workshop on Linked Media (LIME 2016)](http://www.mico-project.eu/lime-workshop-2016/), held during the [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
+
+* [20th International Conference on Knowledge Engineering and Knowledge Management (EKAW 2016)](ekaw2016.cs.unibo.it)
+
 * [2016 Workshop on Web APIs and RESTful Design (WS-REST2016)](http://ws-rest.org/2016), held during the [16th International Conference on Web Engineering (ICWE2016)](http://icwe2016.inf.usi.ch/)
 
 * [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org/)
