@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From ODT to RASH XSLT transformation file - Version 1.2, February 17, 2016
+From ODT to RASH XSLT transformation file - Version 1.2.1, March 22, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -546,6 +546,15 @@ Under the following terms:
                 </xsl:otherwise>
             </xsl:choose>
         </td>
+    </xsl:template>
+    
+    <xd:doc scope="text:tab">
+        <xd:desc>
+            <xd:p>This template creates a two-space characters as a tab.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:tab">
+        <xsl:text>  </xsl:text>
     </xsl:template>
     
     <xd:doc scope="text:bookmark-ref | text:sequence-ref">
