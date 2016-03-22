@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.5.1, March 8, 2016
+ * rash.js - Version 0.5.2, March 22, 2016
  * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com>
  * 
  * with precious contributions by Ruben Verborgh.
@@ -329,7 +329,7 @@ $(function() {
     /* /END Code Block */
 
     /* Bibliographic reference list */
-    $('li[role=doc-biblioentry] , li[role=doc-biblioentry]').sort(function(a,b) {
+    $('li[role=doc-biblioentry]').sort(function(a,b) {
         var a_text = $(a).text().replace(/\s+/g," ").split();
         var b_text = $(b).text().replace(/\s+/g," ").split();
         if (a_text < b_text) {
@@ -340,6 +340,18 @@ $(function() {
             return 0;
         }
     }).appendTo('section[role=doc-bibliography] ul , section[role=doc-bibliography] ol');
+    
+    /* Highlights in light-grey all the bibliographic references that are not cited in the paper */
+    $('li[role=doc-biblioentry]').each(function() {
+        var cur_entry_id = $(this).attr("id");
+        if (
+            cur_entry_id == undefined || 
+            cur_entry_id == false || 
+            $(cur_entry_id) == null) {
+            $(this).addClass("notcited");
+            $(this).attr("title", "This reference is not cited in the document.");
+        }
+    })
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
