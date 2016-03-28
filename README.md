@@ -11,6 +11,10 @@ Please use the hashtag *#rashfwk* for referring to any of the entities defined i
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
+* [PROV: Three Years Later 2016 Workshop](http://provenanceweek.org/2016/p3yl/), held during the [Provenance Week 2016](http://provenanceweek.org/2016)
+
+* [Semantic Publishing Challenge 2016 (SemPub2015)](https://github.com/ceurws/lod/wiki/SemPub2016), held during the [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
+
 * [4th International Workshop on Linked Media (LIME 2016)](http://www.mico-project.eu/lime-workshop-2016/), held during the [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
 
 * [20th International Conference on Knowledge Engineering and Knowledge Management (EKAW 2016)](ekaw2016.cs.unibo.it)
