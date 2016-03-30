@@ -65,6 +65,21 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 
 ## RASH papers accepted in scholarly venues
 
+### 2016 Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data ([SAVE-SD 2016](http://cs.unibo.it/save-sd/2016/index.html))
+
+* Alex Wade, [*The Microsoft Academic Graph: New Applications and Research Opportunities*](http://cs.unibo.it/save-sd/2016/papers/html/wade-savesd2016.html)
+
+* Giorgos Alexiou, Sahar Vahdati, Christoph Lange, George Papastefanatos and Steffen Lohmann, [*OpenAIRE LOD services: Scholarly Communication Data as Linked Data*](http://cs.unibo.it/save-sd/2016/papers/html/alexiou-savesd2016.html)
+
+* Jason Portenoy and Jevin West, [*Dynamic Visualization of Citation Networks Showing the Influence of Scholarly Fields Over Time*](http://cs.unibo.it/save-sd/2016/papers/html/portenoy-savesd2016.html)
+
+* Angelo Salatino and Enrico Motta, [*Detection of Embryonic Research Topics by Analysing Semantic Topic Networks*](http://cs.unibo.it/save-sd/2016/papers/html/salatino-savesd2016.html)
+
+* Joakim Philipson, [*Citation functions for knowledge export - a question of relevance, or, can CiTO do the trick?*](http://cs.unibo.it/save-sd/2016/papers/html/philipson-savesd2016.html)
+
+* Sahar Vahdati, Anastasia Dimou, Christoph Lange and Angelo Di Iorio, [*Semantic Publishing Challenge: Bootstrapping a Value Chain for Scientific Data*](http://cs.unibo.it/save-sd/2016/papers/html/vahdati-savesd2016.html)
+
+
 ### 25th International World Wide Web Conference ([WWW 2016](http://www2016.ca/)), poster and demo
 
 * Angelo Di Iorio, Alejandra Gonzalez-Beltran, Francesco Osborne, Silvio Peroni, Francesco Poggi, Fabio Vitali, [*It ROCS! The RASH Online Conversion Service*](https://rawgit.com/essepuntato/rash/master/papers/rash-poster-www2016.html)
