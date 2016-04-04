@@ -1,6 +1,7 @@
 package xyz.illbe.docx2rash;
 
 import net.sf.saxon.TransformerFactoryImpl;
+import org.apache.commons.io.FileUtils;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -8,9 +9,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.util.zip.ZipInputStream;
 
 /**
  * Applies an XSLT stylesheet to an XML file
@@ -18,14 +18,19 @@ import java.io.FileOutputStream;
 public class XSLT {
 
     public XSLT() {
-        String INPUT_PATH = "docx/file.xml";
-        String XSLT_PATH = "xslt/docx2rash.xslt";
-        String OUTPUT_PATH = "output" + File.separator + "out.html";
-        File output = new File(OUTPUT_PATH);
+        final String ZIP_PATH = "docx" + File.separator + "testbed-3.docx";
+        final String XSLT_PATH = "xslt" + File.separator + "from-docx.xsl";
+        final String OUTPUT_DIR = "output";
+        final String OUTPUT_HTML = OUTPUT_DIR + File.separator + "out.html";
+        final String WORKING_DIR = "workingdir";
+        File output = new File(OUTPUT_HTML);
         ClassLoader cl = this.getClass().getClassLoader();
         StreamSource xsltStream = new StreamSource(cl.getResourceAsStream(XSLT_PATH));
         TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
         Transformer transformer = null;
+        System.out.println("Extracting files");
+        ZipUtils.unzip(cl.getResource(ZIP_PATH), WORKING_DIR);
+        String input = WORKING_DIR + File.separator + "word" + File.separator + "document.xml";
         try {
             transformer = tFactory.newTransformer(xsltStream);
         } catch (TransformerConfigurationException e) {
@@ -33,8 +38,9 @@ public class XSLT {
         }
         try {
             if (transformer != null) {
+                System.out.println("Applying xslt");
                 transformer.transform(
-                        new StreamSource(cl.getResourceAsStream(INPUT_PATH)),
+                        new StreamSource(new FileInputStream(input)),
                         new StreamResult(new FileOutputStream(output))
                 );
             } else {
@@ -45,6 +51,18 @@ public class XSLT {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        File outputDir = new File(WORKING_DIR);
+        try {
+            FileUtils.deleteDirectory(outputDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            FileUtils.copyDirectory(new File(cl.getResource("js").getFile()), new File(OUTPUT_DIR + File.separator + "js"));
+            FileUtils.copyDirectory(new File(cl.getResource("css").getFile()), new File(OUTPUT_DIR + File.separator + "css"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
         if(output.exists())
