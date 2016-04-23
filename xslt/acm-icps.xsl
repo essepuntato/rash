@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.0, October 25, 2015
+From RASH to ACM ICPS LaTeX style XSLT transformation file - Version 1.0.1, April 8, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
