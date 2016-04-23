@@ -126,9 +126,9 @@ Under the following terms:
         <xsl:variable name="isFirstColHeading" select="every $f in (iml:tr/element()[1]) satisfies $f[self::iml:th]" as="xs:boolean" />
         <xsl:choose>
             <xsl:when test="$isFirstColHeading and $nCol > 1">
-                <xsl:text>{></xsl:text>
+                <xsl:text>{</xsl:text>
                 <xsl:for-each select="1 to $nCol">
-                    <xsl:text>>{\hsize=</xsl:text>
+                    <xsl:text> >{\hsize=</xsl:text>
                     <xsl:value-of select="$rowWidth" />
                     <xsl:text>\hsize}Z </xsl:text>
                 </xsl:for-each>
