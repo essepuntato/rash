@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: table module - Version 0.5, February 17, 2016
+RASH to LaTeX: named templates module - Version 0.5.1, April 29, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -40,18 +40,19 @@ Under the following terms:
     </xsl:template>
     
     <xsl:template name="document_title">
+        <xsl:variable name="cur_title" as="xs:string?" select="f:getTitle(/element())" />
+        <xsl:variable name="cur_subtitle" as="xs:string?" select="f:getSubtitle(/element())" />
         <xsl:text>\title{</xsl:text>
         <xsl:choose>
-            <xsl:when test="contains(iml:title,'--')">
-                <xsl:variable name="titleTok" select="tokenize(iml:title,'--')" />
-                <xsl:value-of select="normalize-space($titleTok[1])" />
+            <xsl:when test="$cur_subtitle">
+                <xsl:value-of select="$cur_title" />
                 <xsl:text>}</xsl:text>
                 <xsl:call-template name="n" />
                 <xsl:text>\subtitle{</xsl:text>
-                <xsl:value-of select="normalize-space($titleTok[2])" />
+                <xsl:value-of select="$cur_subtitle" />
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="iml:title"/>
+                <xsl:value-of select="$cur_title"/>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:text>}</xsl:text>
@@ -74,9 +75,12 @@ Under the following terms:
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{fixltx2e}</xsl:text>
         <xsl:call-template name="n" />
-        <xsl:text>\usepackage[hyphens]{url}</xsl:text>
-        <xsl:call-template name="n" />
         <xsl:text>\usepackage{hyperref}</xsl:text>
+    </xsl:template>
+    
+    <xsl:template name="url">
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage[hyphens]{url}</xsl:text>
     </xsl:template>
     
     <xsl:template name="footnote_verb">
@@ -275,6 +279,26 @@ Under the following terms:
             </xsl:choose>
         </xsl:if>
     </xsl:template>
+    
+    <xsl:function name="f:getTitle" as="xs:string?">
+        <xsl:param name="root" as="element()"/>
+        <xsl:choose>
+            <xsl:when test="contains($root//iml:title,'--')">
+                <xsl:value-of select="normalize-space(tokenize(iml:title,'--')[1])" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$root//iml:title"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="f:getSubtitle" as="xs:string?">
+        <xsl:param name="root" as="element()"/>
+        
+        <xsl:if test="contains($root//iml:title,'--')">
+            <xsl:value-of select="normalize-space(tokenize($root//iml:title,'--')[2])" />
+        </xsl:if>
+    </xsl:function>
     
     <xsl:function name="f:replace" as="xs:string">
         <xsl:param name="input" as="xs:string" />
