@@ -234,7 +234,6 @@ Under the following terms:
                     </xsl:if>
                 </xsl:for-each>
             </xsl:variable>
-
             <xsl:call-template name="add.inline">
                 <xsl:with-param name="select"
                     select="(w:t, ($follTEqual except ($follTNotEqual, f:getFollowing($follTNotEqual)))/w:t)" tunnel="yes" />
@@ -280,15 +279,22 @@ Under the following terms:
         <xd:p>This template is in charge of handling a sequence of paragraph that defines a block of code.</xd:p>
       </xd:desc>
     </xd:doc>
-    <xsl:template match="w:p/w:pPr/w:pStyle[contains(@w:val, 'HTML')]">
-      <xsl:variable name="prevp" select="preceding-sibling::text:p[1]" as="element()?"/>
-      <xsl:if test="not($prevp)">
+    <xsl:template match="w:p[w:pPr/w:pStyle[contains(@w:val, 'HTML')]]">
+      <xsl:variable name="prevp" select="preceding-sibling::w:p[1]" as="element()?"/>
+      <xsl:if test="not($prevp) or not($prevp[w:pPr/w:pStyle[contains(@w:val, 'HTML')]])">
         <xsl:variable name="allCodes"
-          select="following-sibling::text"
+          select="following-sibling::w:p"
           as="element()*" />
+        <!-- Chiedere se va bene -->
         <xsl:variable name="firstNonCode"
-          select="following-sibling::element()[not()]"
+          select="following-sibling::w:p[w:pPr/w:pStyle[not(contains(@w:val, 'HTML'))]]"
           />
+        <pre><code>
+            <xsl:for-each select="(., $allCodes) except $firstNonCode/(.|following-sibling::element())">
+                <xsl:text>&#xa;</xsl:text>
+                <xsl:apply-templates />
+            </xsl:for-each>
+        </code></pre>
       </xsl:if>
     </xsl:template>
 
