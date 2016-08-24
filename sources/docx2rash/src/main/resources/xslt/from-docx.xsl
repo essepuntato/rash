@@ -298,6 +298,21 @@ Under the following terms:
       </xsl:if>
     </xsl:template>
 
+    <!-- TODO: Localizzazione di Cit -->
+    <xd:doc scope="w:p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling a cited paragraph.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template
+      match="w:p[
+        w:pPr/w:pStyle[contains(@w:val, 'Cit')]
+      ]">
+        <blockquote><p>
+            <xsl:apply-templates />
+        </p></blockquote>
+    </xsl:template>
+
     <!-- NAMED TEMPLATES -->
     <xd:doc scope="get.following.content.elements">
         <xd:desc>

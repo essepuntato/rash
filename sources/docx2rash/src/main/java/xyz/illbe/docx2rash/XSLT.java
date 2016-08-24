@@ -18,7 +18,7 @@ import java.util.zip.ZipInputStream;
 public class XSLT {
 
     public XSLT() {
-        final String ZIP_PATH = "docx" + File.separator + "testbed-3.docx";
+        final String ZIP_PATH = "docx" + File.separator + "testbed-4.docx";
         final String XSLT_PATH = "xslt" + File.separator + "from-docx.xsl";
         final String OUTPUT_DIR = "output";
         final String OUTPUT_HTML = OUTPUT_DIR + File.separator + "out.html";

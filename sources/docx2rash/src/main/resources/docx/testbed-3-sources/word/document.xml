@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14">
+    <w:body>
+        <w:p w14:paraId="209D76CA" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:pStyle w:val="Titolo1" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Code</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="53E2E0F9" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve">In this example we want to introduce how to use </w:t>
+            </w:r>
+            <w:proofErr w:type="spellStart" />
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>monospace</w:t>
+            </w:r>
+            <w:proofErr w:type="spellEnd" />
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>-based characters for codes.</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="41DD9623" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:pStyle w:val="Titolo2" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Inline code</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="6CD582D8" w14:textId="6693B64B" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve">This is a simple example of </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:rStyle w:val="CodiceHTML" />
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>inline code</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve">, created by means of the default style for </w:t>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>HTML code</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve"> characters. Alternatively, it is possible to directly use the </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:rFonts w:ascii="Courier" w:hAnsi="Courier" />
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Courier font style</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve"> and the </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" w:cs="Courier New" />
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Courier New font style</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve"> for having the same effect.</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="56099945" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:pStyle w:val="Titolo2" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Block code</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="4949CF32" w14:textId="6F6EE918" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve">For having an entire sequence of paragraphs as codes, we have to use the default </w:t>
+            </w:r>
+            <w:r w:rsidR="00E9369C">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>DOCX</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve"> style for preformatted </w:t>
+            </w:r>
+            <w:r w:rsidR="00E9369C">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>HTML</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>, as follows:</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="2F9E96EB" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00E9369C">
+            <w:pPr>
+                <w:pStyle w:val="PreformattatoHTML" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>This is a block of code</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="72108278" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00E9369C">
+            <w:pPr>
+                <w:pStyle w:val="PreformattatoHTML" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>That is organised in multiple lines</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="7E6A3245" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00E9369C">
+            <w:pPr>
+                <w:pStyle w:val="PreformattatoHTML" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Isn't it awesome?</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="4B178ADC" w14:textId="77777777" w:rsidR="00C41818" w:rsidRPr="00C41818" w:rsidRDefault="00C41818" w:rsidP="00C41818">
+            <w:pPr>
+                <w:pStyle w:val="Titolo2" />
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>Listing box</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="4486DC10" w14:textId="0E8DFBD9" w:rsidR="00925B9B" w:rsidRDefault="00470829" w:rsidP="00583581">
+            <w:pPr>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:noProof />
+                </w:rPr>
+                <mc:AlternateContent>
+                    <mc:Choice Requires="wps">
+                        <w:drawing>
+                            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251661312" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="78035EB0" wp14:editId="3454823F">
+                                <wp:simplePos x="0" y="0" />
+                                <wp:positionH relativeFrom="column">
+                                    <wp:posOffset>0</wp:posOffset>
+                                </wp:positionH>
+                                <wp:positionV relativeFrom="paragraph">
+                                    <wp:posOffset>1125220</wp:posOffset>
+                                </wp:positionV>
+                                <wp:extent cx="6057900" cy="260985" />
+                                <wp:effectExtent l="0" t="0" r="0" b="0" />
+                                <wp:wrapSquare wrapText="bothSides" />
+                                <wp:docPr id="3" name="Casella di testo 3" />
+                                <wp:cNvGraphicFramePr />
+                                <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                                    <a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                        <wps:wsp>
+                                            <wps:cNvSpPr txBox="1" />
+                                            <wps:spPr>
+                                                <a:xfrm>
+                                                    <a:off x="0" y="0" />
+                                                    <a:ext cx="6057900" cy="260985" />
+                                                </a:xfrm>
+                                                <a:prstGeom prst="rect">
+                                                    <a:avLst />
+                                                </a:prstGeom>
+                                                <a:solidFill>
+                                                    <a:prstClr val="white" />
+                                                </a:solidFill>
+                                                <a:ln>
+                                                    <a:noFill />
+                                                </a:ln>
+                                                <a:effectLst />
+                                                <a:extLst>
+                                                    <a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}">
+                                                        <ma14:wrappingTextBoxFlag xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main" />
+                                                    </a:ext>
+                                                </a:extLst>
+                                            </wps:spPr>
+                                            <wps:txbx>
+                                                <w:txbxContent>
+                                                    <w:p w14:paraId="67D5C25B" w14:textId="4C29EA83" w:rsidR="00470829" w:rsidRDefault="00470829" w:rsidP="00470829">
+                                                        <w:pPr>
+                                                            <w:pStyle w:val="Didascalia" />
+                                                            <w:rPr>
+                                                                <w:noProof />
+                                                            </w:rPr>
+                                                        </w:pPr>
+                                                        <w:r>
+                                                            <w:t xml:space="preserve">Figura </w:t>
+                                                        </w:r>
+                                                        <w:fldSimple w:instr=" SEQ Figura \* ARABIC ">
+                                                            <w:r>
+                                                                <w:rPr>
+                                                                    <w:noProof />
+                                                                </w:rPr>
+                                                                <w:t>1</w:t>
+                                                            </w:r>
+                                                        </w:fldSimple>
+                                                        <w:r>
+                                                            <w:t xml:space="preserve">. </w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellStart" />
+                                                        <w:r>
+                                                            <w:t>This</w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellEnd" />
+                                                        <w:r>
+                                                            <w:t xml:space="preserve"> </w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellStart" />
+                                                        <w:r>
+                                                            <w:t>is</w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellEnd" />
+                                                        <w:r>
+                                                            <w:t xml:space="preserve"> the </w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellStart" />
+                                                        <w:r>
+                                                            <w:t>caption</w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellEnd" />
+                                                        <w:r>
+                                                            <w:t xml:space="preserve"> of </w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="gramStart" />
+                                                        <w:r>
+                                                            <w:t>the</w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="gramEnd" />
+                                                        <w:r>
+                                                            <w:t xml:space="preserve"> </w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellStart" />
+                                                        <w:r>
+                                                            <w:t>listings</w:t>
+                                                        </w:r>
+                                                        <w:proofErr w:type="spellEnd" />
+                                                        <w:r>
+                                                            <w:t>.</w:t>
+                                                        </w:r>
+                                                    </w:p>
+                                                </w:txbxContent>
+                                            </wps:txbx>
+                                            <wps:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow" horzOverflow="overflow" vert="horz" wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0" compatLnSpc="1">
+                                                <a:prstTxWarp prst="textNoShape">
+                                                    <a:avLst />
+                                                </a:prstTxWarp>
+                                                <a:spAutoFit />
+                                            </wps:bodyPr>
+                                        </wps:wsp>
+                                    </a:graphicData>
+                                </a:graphic>
+                            </wp:anchor>
+                        </w:drawing>
+                    </mc:Choice>
+                    <mc:Fallback>
+                        <w:pict>
+                            <v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202" path="m0,0l0,21600,21600,21600,21600,0xe">
+                                <v:stroke joinstyle="miter" />
+                                <v:path gradientshapeok="t" o:connecttype="rect" />
+                            </v:shapetype>
+                            <v:shape id="Casella di testo 3" o:spid="_x0000_s1026" type="#_x0000_t202" style="position:absolute;margin-left:0;margin-top:88.6pt;width:477pt;height:20.55pt;z-index:251661312;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top" o:gfxdata="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&#xA;cmV2LnhtbFBLBQYAAAAABAAEAPMAAAD7BQAAAAA=&#xA;" stroked="f">
+                                <v:textbox style="mso-fit-shape-to-text:t" inset="0,0,0,0">
+                                    <w:txbxContent>
+                                        <w:p w14:paraId="67D5C25B" w14:textId="4C29EA83" w:rsidR="00470829" w:rsidRDefault="00470829" w:rsidP="00470829">
+                                            <w:pPr>
+                                                <w:pStyle w:val="Didascalia" />
+                                                <w:rPr>
+                                                    <w:noProof />
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:t xml:space="preserve">Figura </w:t>
+                                            </w:r>
+                                            <w:fldSimple w:instr=" SEQ Figura \* ARABIC ">
+                                                <w:r>
+                                                    <w:rPr>
+                                                        <w:noProof />
+                                                    </w:rPr>
+                                                    <w:t>1</w:t>
+                                                </w:r>
+                                            </w:fldSimple>
+                                            <w:r>
+                                                <w:t xml:space="preserve">. </w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellStart" />
+                                            <w:r>
+                                                <w:t>This</w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellEnd" />
+                                            <w:r>
+                                                <w:t xml:space="preserve"> </w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellStart" />
+                                            <w:r>
+                                                <w:t>is</w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellEnd" />
+                                            <w:r>
+                                                <w:t xml:space="preserve"> the </w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellStart" />
+                                            <w:r>
+                                                <w:t>caption</w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellEnd" />
+                                            <w:r>
+                                                <w:t xml:space="preserve"> of </w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="gramStart" />
+                                            <w:r>
+                                                <w:t>the</w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="gramEnd" />
+                                            <w:r>
+                                                <w:t xml:space="preserve"> </w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellStart" />
+                                            <w:r>
+                                                <w:t>listings</w:t>
+                                            </w:r>
+                                            <w:proofErr w:type="spellEnd" />
+                                            <w:r>
+                                                <w:t>.</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:txbxContent>
+                                </v:textbox>
+                                <w10:wrap type="square" />
+                            </v:shape>
+                        </w:pict>
+                    </mc:Fallback>
+                </mc:AlternateContent>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:noProof />
+                </w:rPr>
+                <mc:AlternateContent>
+                    <mc:Choice Requires="wps">
+                        <w:drawing>
+                            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251659264" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="28C45AF9" wp14:editId="50DA12D2">
+                                <wp:simplePos x="0" y="0" />
+                                <wp:positionH relativeFrom="column">
+                                    <wp:posOffset>0</wp:posOffset>
+                                </wp:positionH>
+                                <wp:positionV relativeFrom="paragraph">
+                                    <wp:posOffset>610870</wp:posOffset>
+                                </wp:positionV>
+                                <wp:extent cx="6057900" cy="457200" />
+                                <wp:effectExtent l="0" t="0" r="0" b="0" />
+                                <wp:wrapSquare wrapText="bothSides" />
+                                <wp:docPr id="1" name="Casella di testo 1" />
+                                <wp:cNvGraphicFramePr />
+                                <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                                    <a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                        <wps:wsp>
+                                            <wps:cNvSpPr txBox="1" />
+                                            <wps:spPr>
+                                                <a:xfrm>
+                                                    <a:off x="0" y="0" />
+                                                    <a:ext cx="6057900" cy="457200" />
+                                                </a:xfrm>
+                                                <a:prstGeom prst="rect">
+                                                    <a:avLst />
+                                                </a:prstGeom>
+                                                <a:noFill />
+                                                <a:ln>
+                                                    <a:noFill />
+                                                </a:ln>
+                                                <a:effectLst />
+                                                <a:extLst>
+                                                    <a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}">
+                                                        <ma14:wrappingTextBoxFlag xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main" />
+                                                    </a:ext>
+                                                </a:extLst>
+                                            </wps:spPr>
+                                            <wps:style>
+                                                <a:lnRef idx="0">
+                                                    <a:schemeClr val="accent1" />
+                                                </a:lnRef>
+                                                <a:fillRef idx="0">
+                                                    <a:schemeClr val="accent1" />
+                                                </a:fillRef>
+                                                <a:effectRef idx="0">
+                                                    <a:schemeClr val="accent1" />
+                                                </a:effectRef>
+                                                <a:fontRef idx="minor">
+                                                    <a:schemeClr val="dk1" />
+                                                </a:fontRef>
+                                            </wps:style>
+                                            <wps:txbx>
+                                                <w:txbxContent>
+                                                    <w:p w14:paraId="3835EDD7" w14:textId="34FA862A" w:rsidR="00470829" w:rsidRPr="00470829" w:rsidRDefault="00470829">
+                                                        <w:pPr>
+                                                            <w:rPr>
+                                                                <w:lang w:val="en-GB" />
+                                                            </w:rPr>
+                                                        </w:pPr>
+                                                        <w:r w:rsidRPr="00470829">
+                                                            <w:rPr>
+                                                                <w:lang w:val="en-GB" />
+                                                            </w:rPr>
+                                                            <w:t>This is a piece of code.</w:t>
+                                                        </w:r>
+                                                    </w:p>
+                                                    <w:p w14:paraId="70101B77" w14:textId="4CBA5F12" w:rsidR="00470829" w:rsidRPr="00470829" w:rsidRDefault="00470829" w:rsidP="00841AB0">
+                                                        <w:pPr>
+                                                            <w:pStyle w:val="PreformattatoHTML" />
+                                                            <w:rPr>
+                                                                <w:lang w:val="en-GB" />
+                                                            </w:rPr>
+                                                        </w:pPr>
+                                                        <w:r w:rsidRPr="00470829">
+                                                            <w:rPr>
+                                                                <w:lang w:val="en-GB" />
+                                                            </w:rPr>
+                                                            <w:t>One can use whatever style she prefers.</w:t>
+                                                        </w:r>
+                                                    </w:p>
+                                                </w:txbxContent>
+                                            </wps:txbx>
+                                            <wps:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow" horzOverflow="overflow" vert="horz" wrap="square" lIns="91440" tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0" compatLnSpc="1">
+                                                <a:prstTxWarp prst="textNoShape">
+                                                    <a:avLst />
+                                                </a:prstTxWarp>
+                                                <a:noAutofit />
+                                            </wps:bodyPr>
+                                        </wps:wsp>
+                                    </a:graphicData>
+                                </a:graphic>
+                                <wp14:sizeRelV relativeFrom="margin">
+                                    <wp14:pctHeight>0</wp14:pctHeight>
+                                </wp14:sizeRelV>
+                            </wp:anchor>
+                        </w:drawing>
+                    </mc:Choice>
+                    <mc:Fallback>
+                        <w:pict>
+                            <v:shape id="Casella di testo 1" o:spid="_x0000_s1027" type="#_x0000_t202" style="position:absolute;margin-left:0;margin-top:48.1pt;width:477pt;height:36pt;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-height-percent:0;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;mso-height-percent:0;mso-height-relative:margin;v-text-anchor:top" o:gfxdata="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&#xA;LnhtbFBLBQYAAAAABAAEAPMAAAAxBgAAAAA=&#xA;" filled="f" stroked="f">
+                                <v:textbox>
+                                    <w:txbxContent>
+                                        <w:p w14:paraId="3835EDD7" w14:textId="34FA862A" w:rsidR="00470829" w:rsidRPr="00470829" w:rsidRDefault="00470829">
+                                            <w:pPr>
+                                                <w:rPr>
+                                                    <w:lang w:val="en-GB" />
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r w:rsidRPr="00470829">
+                                                <w:rPr>
+                                                    <w:lang w:val="en-GB" />
+                                                </w:rPr>
+                                                <w:t>This is a piece of code.</w:t>
+                                            </w:r>
+                                        </w:p>
+                                        <w:p w14:paraId="70101B77" w14:textId="4CBA5F12" w:rsidR="00470829" w:rsidRPr="00470829" w:rsidRDefault="00470829" w:rsidP="00841AB0">
+                                            <w:pPr>
+                                                <w:pStyle w:val="PreformattatoHTML" />
+                                                <w:rPr>
+                                                    <w:lang w:val="en-GB" />
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r w:rsidRPr="00470829">
+                                                <w:rPr>
+                                                    <w:lang w:val="en-GB" />
+                                                </w:rPr>
+                                                <w:t>One can use whatever style she prefers.</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:txbxContent>
+                                </v:textbox>
+                                <w10:wrap type="square" />
+                            </v:shape>
+                        </w:pict>
+                    </mc:Fallback>
+                </mc:AlternateContent>
+            </w:r>
+            <w:r w:rsidR="00C41818" w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t xml:space="preserve">Listing boxes are created by simply including them in a new paragraph and anchored as character, containing only textual element in it, followed by a caption paragraph by means of the appropriate default </w:t>
+            </w:r>
+            <w:proofErr w:type="spellStart" />
+            <w:r w:rsidR="00C41818" w:rsidRPr="00C41818">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>s</w:t>
+            </w:r>
+            <w:r w:rsidR="00CA2C43">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>tylesheet</w:t>
+            </w:r>
+            <w:proofErr w:type="spellEnd" />
+            <w:r w:rsidR="00CA2C43">
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+                <w:t>, as shown as follows.</w:t>
+            </w:r>
+        </w:p>
+        <w:p w14:paraId="12C98636" w14:textId="5CAE5F47" w:rsidR="00CA2C43" w:rsidRPr="00583581" w:rsidRDefault="00CA2C43" w:rsidP="00583581">
+            <w:pPr>
+                <w:rPr>
+                    <w:lang w:val="en-GB" />
+                </w:rPr>
+            </w:pPr>
+            <w:bookmarkStart w:id="0" w:name="_GoBack" />
+            <w:bookmarkEnd w:id="0" />
+        </w:p>
+        <w:sectPr w:rsidR="00CA2C43" w:rsidRPr="00583581" w:rsidSect="00925B9B">
+            <w:pgSz w:w="11900" w:h="16840" />
+            <w:pgMar w:top="1417" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0" />
+            <w:cols w:space="708" />
+            <w:docGrid w:linePitch="360" />
+        </w:sectPr>
+    </w:body>
+</w:document>
