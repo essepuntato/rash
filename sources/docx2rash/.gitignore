@@ -1,4 +1,6 @@
 output/
+tempdir/
+docx/
 
 # IntelliJ Idea
 .idea/

@@ -99,7 +99,6 @@ Under the following terms:
             <xsl:with-param name="caption" select="false()" tunnel="yes" as="xs:boolean" />
         </xsl:apply-templates>
     </xsl:template>
-
     <xd:doc scope="w:body">
         <xd:desc>
             <xd:p>This template is in charge of creating the whole structure of the document in RASH.</xd:p>
