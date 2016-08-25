@@ -99,7 +99,6 @@ Under the following terms:
             <xsl:with-param name="caption" select="false()" tunnel="yes" as="xs:boolean" />
         </xsl:apply-templates>
     </xsl:template>
-
     <xd:doc scope="w:body">
         <xd:desc>
             <xd:p>This template is in charge of creating the whole structure of the document in RASH.</xd:p>
@@ -285,7 +284,7 @@ Under the following terms:
         <xsl:variable name="allCodes"
           select="following-sibling::w:p"
           as="element()*" />
-        <!-- Chiedere se va bene -->
+        <!-- TODO: Chiedere se va bene aver usato contains(HTML) -->
         <xsl:variable name="firstNonCode"
           select="following-sibling::w:p[w:pPr/w:pStyle[not(contains(@w:val, 'HTML'))]]"
           />
@@ -534,4 +533,6 @@ Under the following terms:
         </xsl:variable>
         <xsl:value-of select="starts-with($value, 'heading')" />
     </xsl:function>
+
+
 </xsl:stylesheet>
