@@ -1,5 +1,6 @@
 package xyz.illbe.docx2rash;
 
+import net.lingala.zip4j.exception.ZipException;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.io.FileUtils;
 
@@ -28,21 +29,29 @@ public class XSLT {
 
     public XSLT(String inputFilePath) {
         String inputFilename = new File(inputFilePath).getName();
-        this.outputFilename = inputFilename.substring(0, inputFilePath.lastIndexOf('.')) + ".html";
+        this.outputFilename = inputFilename.substring(0, inputFilename.lastIndexOf(".")) + ".html";
+        File inputFile = new File(inputFilePath);
+//        TODO: Processare tutti i file nella directory
+//        if (inputFile.isDirectory()) {
+//
+//        }
         classLoader = this.getClass().getClassLoader();
         StreamSource xsltStream = new StreamSource(classLoader.getResourceAsStream(XSLT_PATH));
         TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
-        ZipUtils.unzip(classLoader.getResource(inputFilePath), WORKING_DIR);
         try {
+            ZipUtils.unzip(inputFile, WORKING_DIR);
             transformer = tFactory.newTransformer(xsltStream);
         } catch (TransformerConfigurationException e) {
             System.err.println(e.getMessage());
+        } catch (ZipException e) {
+            System.err.println("Error while unzipping the .docx file" + e.getMessage());
         }
     }
 
     public void transform(String outputDirPath) {
         String input = WORKING_DIR + File.separator + "word" + File.separator + "document.xml";
         File output = new File(outputDirPath + File.separator + this.outputFilename);
+        this.copyResourcesTo(outputDirPath);
         try {
             transformer.transform(
                     new StreamSource(new FileInputStream(input)),
@@ -55,7 +64,6 @@ public class XSLT {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        this.copyResourcesTo(outputDirPath);
         this.deleteWorkingDir();
     }
 

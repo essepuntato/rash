@@ -2,29 +2,62 @@ package xyz.illbe.docx2rash;
 
 import org.apache.commons.cli.*;
 
+import java.util.HashMap;
+
 /**
  *
  */
 public class App {
 
-  public static void main(String[] args) {
+  private static final String INPUT_ARG = "input";
+  private static final String OUTPUT_ARG = "output";
+
+  private static HashMap<String, String> checkArgs(String[] args) throws IllegalArgumentException, ParseException {
+    HashMap<String, String> map = new HashMap<String, String>();
     CommandLineParser parser = new DefaultParser();
     Options options = new Options();
-    options.addOption("i", "input", true, "The .docx file");
-    options.addOption("o", "output", true, "The output directory");
-    try {
-      CommandLine line = parser.parse(options, args);
-      if(line.hasOption("input") && line.hasOption("output")) {
-        String inputPath = line.getOptionValue("input");
-        String outputPath = line.getOptionValue("output");
-        XSLT xslt = new XSLT(inputPath);
-        xslt.transform(outputPath);
-      } else {
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("docx2rash", options);
+    options.addOption(
+            Option.builder("i").longOpt("input")
+              .hasArg().argName("inputFile")
+              .desc("The .docx file").build()
+    );
+    options.addOption(
+            Option.builder("o").longOpt("output")
+              .hasArg().argName("outputDirectory")
+              .desc("The output directory").build()
+    );
+    options.addOption("h", "help", false, "Prints this help message");
+    CommandLine line = parser.parse(options, args);
+    if (line.hasOption("help")) {
+      HelpFormatter formatter = new HelpFormatter();
+      formatter.printHelp("docx2rash", options);
+    } else {
+      if (!line.hasOption("input")) {
+        throw new IllegalArgumentException("Error: Missing -i option");
       }
-    } catch(ParseException exp) {
-      System.err.println("Unexpected exception:" + exp.getMessage());
+      if (!line.hasOption("output")) {
+        throw new IllegalArgumentException("Error: Missing -o option");
+      }
+      String inputPath = line.getOptionValue("input");
+      String outputPath = line.getOptionValue("output");
+      map.put(INPUT_ARG, inputPath);
+      map.put(OUTPUT_ARG, outputPath);
+    }
+    return map;
+  }
+
+  public static void main(String[] args) {
+    try {
+      HashMap<String, String> map = checkArgs(args);
+      if (!map.isEmpty()) {
+        XSLT xslt = new XSLT(map.get(INPUT_ARG));
+        xslt.transform(map.get(OUTPUT_ARG));
+        System.out.println("File successfully converted in " + map.get(OUTPUT_ARG) + " directory.");
+      }
+    } catch (IllegalArgumentException e) {
+      System.err.println(e.getMessage());
+    } catch (ParseException e) {
+      System.err.println("Unexpected error while parsing arguments: " + e.getMessage());
     }
   }
 
