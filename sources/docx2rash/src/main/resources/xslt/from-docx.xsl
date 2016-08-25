@@ -284,7 +284,7 @@ Under the following terms:
         <xsl:variable name="allCodes"
           select="following-sibling::w:p"
           as="element()*" />
-        <!-- Chiedere se va bene -->
+        <!-- TODO: Chiedere se va bene aver usato contains(HTML) -->
         <xsl:variable name="firstNonCode"
           select="following-sibling::w:p[w:pPr/w:pStyle[not(contains(@w:val, 'HTML'))]]"
           />
@@ -494,4 +494,6 @@ Under the following terms:
         </xsl:variable>
         <xsl:value-of select="starts-with($value, 'heading')" />
     </xsl:function>
+
+
 </xsl:stylesheet>
