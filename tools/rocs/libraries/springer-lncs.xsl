@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.1, October 25, 2015
+From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.1.1, April 29, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -49,6 +49,7 @@ Under the following terms:
         <!-- LaTeX style -->
         <xsl:text>\documentclass[runningheads,a4paper]{llncs}</xsl:text>
         <xsl:call-template name="standard_packages" />
+        <xsl:call-template name="url" />
         <xsl:call-template name="verbatim_text" />
         <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="graphics" />

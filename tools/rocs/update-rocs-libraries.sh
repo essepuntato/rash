@@ -17,3 +17,7 @@ mkdir $SCRIPTPATH/libraries/springer_lncs
 cp $SCRIPTPATH/../../cls/llncs.cls $SCRIPTPATH/libraries/springer_lncs
 cp $SCRIPTPATH/../../sty/* $SCRIPTPATH/libraries/springer_lncs
 cp $SCRIPTPATH/../../xslt/springer-lncs.xsl $SCRIPTPATH/libraries
+mkdir $SCRIPTPATH/libraries/acm_journal_large
+cp $SCRIPTPATH/../../cls/acmlarge.cls $SCRIPTPATH/libraries/acm_journal_large
+cp $SCRIPTPATH/../../sty/* $SCRIPTPATH/libraries/acm_journal_large
+cp $SCRIPTPATH/../../xslt/acm-journal-large.xsl $SCRIPTPATH/libraries
