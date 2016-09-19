@@ -572,7 +572,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:bookmark-ref[some $ref in //text:bookmark-start satisfies $ref/@text:name = @text:ref-name and (some $content in $bibliography satisfies lower-case(normalize-space($ref/preceding::text:h[1])) = $content)]" priority="3">
-        <a href="#{@text:ref-name}"><xsl:text> </xsl:text></a>
+        <xsl:variable name="text_name" select="@text:ref-name" as="xs:string" />
+        <xsl:variable name="id" select="((//text:p[some $tbs in .//text:bookmark-start/@text:name satisfies $tbs = $text_name])[1]//text:bookmark-start)[1]/@text:name" as="xs:string" />
+        <a href="#{$id}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="svg:desc">
@@ -839,7 +841,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template name="set.bookmarked.object.id">
-        <xsl:variable name="id" select="(.//text:bookmark-start/@text:name[some $el in //text:bookmark-ref satisfies $el/@text:ref-name = .])[1]" as="xs:string*" />
+        <xsl:variable name="id" select="(.//text:bookmark-start/@text:name)[1]" as="xs:string*" />
         <xsl:if test="$id">
             <xsl:attribute name="id" select="$id" />
         </xsl:if>
