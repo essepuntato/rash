@@ -171,8 +171,6 @@ Under the following terms:
     
     <xsl:template match="element()[iml:li[@role = 'doc-biblioentry']][parent::iml:section[@role = 'doc-bibliography']]" priority="1.7">
         <xsl:for-each select="iml:li">
-            <xsl:sort data-type="text" select="iml:p/text()[1]" />
-            
             <xsl:variable name="item" select="string-join(iml:p//text(),'')" as="xs:string*" />
             
             <xsl:call-template name="n" />
@@ -221,21 +219,6 @@ Under the following terms:
         <xsl:text>\section*{ACKNOWLEDGEMENTS}</xsl:text>
         <xsl:call-template name="next"/>
         <xsl:call-template name="n" />
-    </xsl:template>
-    
-    <xsl:template match="iml:ul[parent::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography']]|iml:ol[parent::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography']]" priority="3.0">
-        <xsl:param name="scope" as="element()?" tunnel="yes" />
-        <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
-        
-        <xsl:for-each select="iml:li[not($scope) or (some $ref in ($scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref'] | //iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-footnotes']/iml:section[some $footnote in $scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-noteref'] satisfies $footnote/@href = concat('#', @id)]//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref']) satisfies $ref/@href = concat('#', @id))]">
-            <xsl:call-template name="n" />
-            <xsl:text>\bibitem{</xsl:text>
-            <xsl:value-of select="if ($id-for-refs) then concat($id-for-refs,'-',@id) else @id" />
-            <xsl:text>} </xsl:text>
-            <xsl:call-template name="next">
-                <xsl:with-param name="select" select="iml:p/(text()|element())" />
-            </xsl:call-template>
-        </xsl:for-each>
     </xsl:template>
     
     <xsl:template match="element()" />
