@@ -839,9 +839,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template name="set.bookmarked.object.id">
-        <xsl:variable name="id" select=".//text:bookmark-start/@text:name[some $el in //text:bookmark-ref satisfies $el/@text:ref-name = .][1]" as="xs:string*" />
+        <xsl:variable name="id" select="(.//text:bookmark-start/@text:name[some $el in //text:bookmark-ref satisfies $el/@text:ref-name = .])[1]" as="xs:string*" />
         <xsl:if test="$id">
-            <xsl:attribute name="id" select="$id[1]" />
+            <xsl:attribute name="id" select="$id" />
         </xsl:if>
     </xsl:template>
     
