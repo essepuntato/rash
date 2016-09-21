@@ -88,6 +88,9 @@ Under the following terms:
     <!-- Link styles document -->
     <xsl:variable name="styles" select="doc(concat($dir, '/styles.xml'))" as="item()?" />
 
+    <!-- Link numbering document -->
+    <xsl:variable name="numbering" select="doc(concat($dir, '/numbering.xml'))" as="item()?"/>
+
     <xd:doc scope="/">
         <xd:desc>
             <xd:p>This template is in charge of starting the transformation.</xd:p>
@@ -312,46 +315,76 @@ Under the following terms:
         </p></blockquote>
     </xsl:template>
 
-    <!-- <xd:doc scope="text:list">
+    <!-- TODO: Localizzazione di elenco -->
+    <xd:doc scope="w:p">
         <xd:desc>
             <xd:p>This template is in charge of handling lists.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template match="text:list">
-        <xsl:variable name="isBulletList" select="some $s
-            in //text:list-style[exists(element()[1][self::text:list-level-style-bullet])]/@style:name
-            satisfies @text:style-name = $s" as="xs:boolean" />
-
-        <xsl:choose>
-            <xsl:when test="$isBulletList">
-                <ul>
-                    <xsl:apply-templates />
-                </ul>
-            </xsl:when>
-            <xsl:otherwise>
-                <ol>
-                    <xsl:apply-templates />
-                </ol>
-            </xsl:otherwise>
-        </xsl:choose>
+    <xsl:template match="w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]]">
+        <!--<xsl:variable name="isBulletList" select="some $s-->
+            <!--in //text:list-style[exists(element()[1][self::text:list-level-style-bullet])]/@style:name-->
+            <!--satisfies @text:style-name = $s" as="xs:boolean" />-->
+        <!--<xsl:variable name="isBulletList" as="xs:boolean" select="true()" />-->
+        <!--<xsl:variable name="listElements" as="element()*" select="self::w:p | following-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]]" />-->
+        <!--<xsl:variable name="firstNotInList" as="element()" select="following-sibling::w:p[1]" />-->
+        <!--<xsl:variable name="myListElements" as="element()*" select="$listElements" />-->
+        <!--<h1>-->
+            <!--<xsl:value-of select="$firstNotInList" />-->
+        <!--</h1>-->
+        <!--<xsl:choose>-->
+            <!--<xsl:when test="$isBulletList">-->
+                <!--<ul>-->
+                    <!--<xsl:call-template name="add.listItems" >-->
+                        <!--<xsl:with-param name="listElements" select="$listElements"/>-->
+                    <!--</xsl:call-template>-->
+                    <!--<li><xsl:value-of select="$listElements[0]" /> </li>-->
+                <!--</ul>-->
+            <!--</xsl:when>-->
+            <!--<xsl:otherwise>-->
+                <!--<ol>-->
+                    <!--<xsl:apply-templates />-->
+                <!--</ol>-->
+            <!--</xsl:otherwise>-->
+        <!--</xsl:choose>-->
+        <ol>
+            <li>
+                <xsl:apply-templates />
+            </li>
+        </ol>
     </xsl:template>
 
-    <xd:doc scope="text:list-item">
-        <xd:desc>
-            <xd:p>This template is in charge of handling list items.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template match="text:list-item">
-        <li>
-            <xsl:call-template name="set.bookmarked.object.id" />
-            <xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::text:h[1])) = $content">
-                <xsl:attribute name="role">doc-biblioentry</xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates />
-        </li>
-    </xsl:template> -->
+    <!--<xd:doc scope="text:list-item">-->
+        <!--<xd:desc>-->
+            <!--<xd:p>This template is in charge of handling list items.</xd:p>-->
+        <!--</xd:desc>-->
+    <!--</xd:doc>-->
+    <!--<xsl:template match="text:list-item">-->
+        <!--<li>-->
+            <!--<xsl:call-template name="set.bookmarked.object.id" />-->
+            <!--<xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::text:h[1])) = $content">-->
+                <!--<xsl:attribute name="role">doc-biblioentry</xsl:attribute>-->
+            <!--</xsl:if>-->
+            <!--<xsl:apply-templates />-->
+        <!--</li>-->
+    <!--</xsl:template>-->
 
     <!-- NAMED TEMPLATES -->
+
+    <xd:doc scope="add.listItems" >
+        <xd:desc>
+            <xd:p>This template handles the list items</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.listItems">
+        <xsl:param name="listElements" as="element()*" />
+        <xsl:for-each select="$listElements">
+            <li>
+                <xsl:apply-templates />
+            </li>
+        </xsl:for-each>
+    </xsl:template>
+
     <xd:doc scope="get.following.content.elements">
         <xd:desc>
             <xd:p>This named template allow one to get all the content elements after the first one. Since this particular sequence of element is used by different templates (e.g., for headings), the call has been implemented as a named template.</xd:p>
