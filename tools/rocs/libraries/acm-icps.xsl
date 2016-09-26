@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.0, October 25, 2015
+From RASH to ACM ICPS LaTeX style XSLT transformation file - Version 1.0.2, April 29, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -18,7 +18,7 @@ Under the following terms:
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
     xmlns:iml="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:f="http://www.essepuntato.it/XSLT/fuction"
+    xmlns:f="http://www.essepuntato.it/XSLT/function"
     exclude-result-prefixes="iml xs f">
     
     <xsl:include href="include/container.xsl"/>
@@ -49,6 +49,7 @@ Under the following terms:
         <!-- LaTeX style -->
         <xsl:text>\documentclass{sig-alternate}</xsl:text>
         <xsl:call-template name="standard_packages" />
+        <xsl:call-template name="url" />
         <xsl:call-template name="verbatim_text" />
         <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="graphics" />

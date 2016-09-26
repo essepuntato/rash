@@ -31,8 +31,10 @@ rash_tools = "libraries" + os.sep
 odt_to_rash_path = rash_tools + "odt2rash.jar"
 springer_lncs_xslt_file_path = rash_tools + "springer-lncs.xsl"
 acm_icps_xslt_file_path = rash_tools + "acm-icps.xsl"
+acm_journal_large_path = rash_tools + "acm-journal-large.xsl"
 springer_lncs_tex_dir = rash_tools + "springer_lncs"
 acm_icps_tex_dir = rash_tools + "acm_icps"
+acm_journal_large_tex_dir = rash_tools + "acm_journal_large"
 
 # For rendering
 render = web.template.render(base_path)
@@ -174,6 +176,9 @@ class Process:
                         if cur_latex_style == "icps":
                             cur_xslt = acm_icps_xslt_file_path
                             cur_tex_dir = acm_icps_tex_dir
+                        elif cur_latex_style == "acm-j-l":
+                            cur_xslt = acm_journal_large_path
+                            cur_tex_dir = acm_journal_large_tex_dir
                         else:
                             cur_xslt = springer_lncs_xslt_file_path
                             cur_tex_dir = springer_lncs_tex_dir

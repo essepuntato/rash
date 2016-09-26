@@ -167,6 +167,14 @@ body {
 }
 /* /END Footer */
 
+/* Not cited */
+.notcited {
+    color: lightgrey;
+    font-style:italic;
+    cursor:help;
+}
+/* /END Not cited */
+
 /* Error */
 .error {
     color: red;

@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.5, February 15, 2016
+ * rash.js - Version 0.5.3, March 30, 2016
  * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com>
  * 
  * with precious contributions by Ruben Verborgh.
@@ -106,7 +106,7 @@ jQuery.fn.extend({
         $("p.keywords").remove();
     
         /* Header title */
-        var header = $("<header class=\"page-header container\"></header>");
+        var header = $("<header class=\"page-header container cgen\"></header>");
         header.prependTo($("body"))
         var title_string = "";
         var title_split = $("head title").html().split(" -- ");
@@ -329,7 +329,7 @@ $(function() {
     /* /END Code Block */
 
     /* Bibliographic reference list */
-    $('li[role=doc-biblioentry] , li[role=doc-biblioentry]').sort(function(a,b) {
+    $('li[role=doc-biblioentry]').sort(function(a,b) {
         var a_text = $(a).text().replace(/\s+/g," ").split();
         var b_text = $(b).text().replace(/\s+/g," ").split();
         if (a_text < b_text) {
@@ -340,6 +340,18 @@ $(function() {
             return 0;
         }
     }).appendTo('section[role=doc-bibliography] ul , section[role=doc-bibliography] ol');
+    
+    /* Highlights in light-grey all the bibliographic references that are not cited in the paper */
+    $('li[role=doc-biblioentry]').each(function() {
+        var cur_entry_id = $(this).attr("id");
+        if (
+            cur_entry_id == undefined || 
+            cur_entry_id == false || 
+            $(cur_entry_id) == null) {
+            $(this).addClass("notcited");
+            $(this).attr("title", "This reference is not cited in the document.");
+        }
+    })
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
@@ -366,22 +378,22 @@ $(function() {
     $(figurebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
         var cur_number = $(this).findNumber(figurebox_selector);
-        cur_caption.html("<strong>Figure " + cur_number + ".</strong> " + cur_caption.html());
+        cur_caption.html("<strong class=\"cgen\">Figure " + cur_number + ". </strong>" + cur_caption.html());
     });
     $(tablebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
-        var cur_number = $(this).parent().findNumber(tablebox_selector);
-        cur_caption.html("<strong>Table " + cur_number + ".</strong> " + cur_caption.html());
+        var cur_number = $(this).findNumber(tablebox_selector);
+        cur_caption.html("<strong class=\"cgen\">Table " + cur_number + ". </strong>" + cur_caption.html());
     });
     $(formulabox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("p");
         var cur_number = $(this).findNumber(formulabox_selector);
-        cur_caption.html(cur_caption.html() + " (" + cur_number + ")");
+        cur_caption.html(cur_caption.html() + "<span class=\"cgen\"> (" + cur_number + ")</span>");
     });
     $(listingbox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
-        var cur_number = $(this).parent().findNumber(listingbox_selector);
-        cur_caption.html("<strong>Listing " + cur_number + ".</strong> " + cur_caption.html());
+        var cur_number = $(this).findNumber(listingbox_selector);
+        cur_caption.html("<strong class=\"cgen\">Listing " + cur_number + ". </strong>" + cur_caption.html());
     });
     /* /END Captions */
     
@@ -409,6 +421,7 @@ $(function() {
                     var cur_count = $(cur_id).prevAll("li").length + 1;
                     $(this).html("[" + cur_count + "]");
                     $(this).attr("title", $(cur_id).text().replace(/\s+/g, " ").trim());
+                    $(this).addClass("cgen");
                 /* Footnote references */
                 } else if ($(cur_id).parents("section[role=doc-footnotes]").length > 0) {
                     var cur_contents = $(this).parent().contents();
@@ -427,13 +440,13 @@ $(function() {
                     var footnote_element = $(current_id);
                     if (footnote_element.length > 0 && footnote_element.parent("section[role=doc-footnotes]").length > 0) {
                         var count = $(current_id).prevAll("section").length + 1;
-                        $(this).after("<sup class=\"fn\">" + (prev_el.hasClass("fn") ? "," : "") +
+                        $(this).after("<sup class=\"fn cgen\">" + (prev_el.hasClass("fn") ? "," : "") +
                             "<a name=\"fn_pointer_" + current_id.replace("#", "") + 
                             "\" href=\"" + current_id + "\"" + 
                             "\" title=\"" + $(current_id).text().replace(/\s+/g," ").trim() + "\">" + count + "</a></sup>");
                         $(this).remove()
                     } else {
-                        $(this).replaceWith("<span class=\"error\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
+                        $(this).replaceWith("<span class=\"error cgen\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
                     }
                 /* Common sections */
                 } else if ($("section" + cur_id).length > 0) {
@@ -442,37 +455,43 @@ $(function() {
                         "not([role=doc-footnotes]):not([role=doc-acknowledgements])");
                     if (cur_count != null && cur_count != "") {
                         $(this).html("Section " + cur_count);
+                        $(this).addClass("cgen");
                     }
                 /* Reference to figure boxes */
                 } else if (referenced_element_figure.length > 0) {
                     var cur_count = referenced_element_figure.findNumber(figurebox_selector);
                     if (cur_count != 0) {
                         $(this).html("Figure " + cur_count);
+                        $(this).addClass("cgen");
                     }
                 /* Reference to table boxes */
                 } else if (referenced_element_table.length > 0) {
                     var cur_count = referenced_element_table.findNumber(tablebox_selector);
                     if (cur_count != 0) {
                         $(this).html("Table " + cur_count);
+                        $(this).addClass("cgen");
                     }
                 /* Reference to formula boxes */
                 } else if (referenced_element_formula.length > 0) {
                     var cur_count = referenced_element_formula.findNumber(formulabox_selector);
                     if (cur_count != 0) {
                         $(this).html("Formula " + cur_count);
+                        $(this).addClass("cgen");
                     }
                 /* Reference to listing boxes */
                 } else if (referenced_element_listing.length > 0) {
                     var cur_count = referenced_element_listing.findNumber(listingbox_selector);
                     if (cur_count != 0) {
                         $(this).html("Listing " + cur_count);
+                        $(this).addClass("cgen");
                     }
                 } else {
-                    $(this).replaceWith("<span class=\"error\">ERR: referenced element '" + cur_id.replace("#","") + 
+                    $(this).replaceWith("<span class=\"error cgen\">ERR: referenced element '" + cur_id.replace("#","") + 
                         "' has not the correct type (it should be either a figure, a table, a formula, a listing, or a section)</span>");
                 }
            } else {
-               $(this).replaceWith("<span class=\"error\">ERR: referenced element '" + cur_id.replace("#","") + "' does not exist");
+               $(this).replaceWith("<span class=\"error cgen\">ERR: referenced element '" + 
+                                    cur_id.replace("#","") + "' does not exist</span>");
            }
         }
     });
@@ -481,7 +500,8 @@ $(function() {
     /* Footnotes (part 2) */
     $("section[role=doc-footnotes] > section[role=doc-footnote]").each(function() {
         var current_id = $(this).attr("id");
-        $(this).children(":last-child").append(" <sup class=\"hidden-print\"><a href=\"#fn_pointer_" + current_id + "\">[back]</a></sup>");
+        $(this).children(":last-child").append("<sup class=\"hidden-print cgen\"> <a href=\"#fn_pointer_" + 
+                                                current_id + "\">[back]</a></sup>");
     });
     /* /END Footnotes (part 2) */
     
@@ -512,7 +532,7 @@ $(function() {
     /* /END Bibliography */
     
     /* Footer */
-    var footer = $("<footer class=\"footer hidden-print\">" + 
+    var footer = $("<footer class=\"footer hidden-print cgen\">" + 
         "<p><span>Words: " + $("body").countWords() + "</span>" +
         "<span>Figures: " + $("body").countElements(figurebox_selector) + "</span>" +
         "<span>Tables: " + $("body").countElements(tablebox_selector) + "</span>" +

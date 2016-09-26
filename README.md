@@ -11,6 +11,22 @@ Please use the hashtag *#rashfwk* for referring to any of the entities defined i
 A list of papers introducing the RASH Framework is enclosed at the [end of this document](#papers-introducing-the-rash-framework), as well as a [list of all the papers](#rash-papers-accepted-in-scholarly-venues) accepted in scholarly venues that have been written in RASH.
 
 ## Venues that have adopted RASH as submission format
+* [7th International Workshop on Consuming Linked Data (COLD2016)](http://dcc.uchile.cl/cold2016/), held during the [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org)
+
+* [4th International Workshop on Linked Data for Information Extraction (LD4IE 2016)](http://web.informatik.uni-mannheim.de/ld4ie2016/LD4IE2016/Overview.html), held during the [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org)
+
+* [6th Workshop on Linked Science (LISC 2016)](http://linkedscience.org/events/lisc2016/), held during the [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org)
+
+* [2nd Workshop on Mobile Deployment of Semantic Technologies (MoDeST 2016)](http://modest.mobi/), held during the [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org)
+
+* [PROV: Three Years Later 2016 Workshop](http://provenanceweek.org/2016/p3yl/), held during the [Provenance Week 2016](http://provenanceweek.org/2016)
+
+* [Semantic Publishing Challenge 2016 (SemPub2016)](https://github.com/ceurws/lod/wiki/SemPub2016), held during the [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
+
+* [4th International Workshop on Linked Media (LIME 2016)](http://www.mico-project.eu/lime-workshop-2016/), held during the [13th Extended Semantic Web Conference (ESWC 2016)](http://2016.eswc-conferences.org/)
+
+* [20th International Conference on Knowledge Engineering and Knowledge Management (EKAW 2016)](ekaw2016.cs.unibo.it)
+
 * [2016 Workshop on Web APIs and RESTful Design (WS-REST2016)](http://ws-rest.org/2016), held during the [16th International Conference on Web Engineering (ICWE2016)](http://icwe2016.inf.usi.ch/)
 
 * [15th International Semantic Web Conference (ISWC 2016)](http://iswc2016.semanticweb.org/)
@@ -56,6 +72,21 @@ http://dx.doi.org/10.6084/m9.figshare.1566691
 * Peroni, S. (2015). RASH Framework - ESWC 2015 MoM session. Presented during the Minute of Madness session at the [12th Extended Semantic Web Conference (ESWC 2015)](http://2015.eswc-conferences.org/). figshare. http://dx.doi.org/10.6084/m9.figshare.1468349
 
 ## RASH papers accepted in scholarly venues
+
+### 2016 Workshop on Semantics, Analytics, Visualisation: Enhancing Scholarly Data ([SAVE-SD 2016](http://cs.unibo.it/save-sd/2016/index.html))
+
+* Alex Wade, [*The Microsoft Academic Graph: New Applications and Research Opportunities*](http://cs.unibo.it/save-sd/2016/papers/html/wade-savesd2016.html)
+
+* Giorgos Alexiou, Sahar Vahdati, Christoph Lange, George Papastefanatos and Steffen Lohmann, [*OpenAIRE LOD services: Scholarly Communication Data as Linked Data*](http://cs.unibo.it/save-sd/2016/papers/html/alexiou-savesd2016.html)
+
+* Jason Portenoy and Jevin West, [*Dynamic Visualization of Citation Networks Showing the Influence of Scholarly Fields Over Time*](http://cs.unibo.it/save-sd/2016/papers/html/portenoy-savesd2016.html)
+
+* Angelo Salatino and Enrico Motta, [*Detection of Embryonic Research Topics by Analysing Semantic Topic Networks*](http://cs.unibo.it/save-sd/2016/papers/html/salatino-savesd2016.html)
+
+* Joakim Philipson, [*Citation functions for knowledge export - a question of relevance, or, can CiTO do the trick?*](http://cs.unibo.it/save-sd/2016/papers/html/philipson-savesd2016.html)
+
+* Sahar Vahdati, Anastasia Dimou, Christoph Lange and Angelo Di Iorio, [*Semantic Publishing Challenge: Bootstrapping a Value Chain for Scientific Data*](http://cs.unibo.it/save-sd/2016/papers/html/vahdati-savesd2016.html)
+
 
 ### 25th International World Wide Web Conference ([WWW 2016](http://www2016.ca/)), poster and demo
 

@@ -15,3 +15,16 @@ Please run the script ``stop.sh`` to stop the service.
 ## Online version
 
 An online version of *ROCS* is available at http://dasplab.cs.unibo.it/rocs.
+
+
+## Requirements
+
+* [web.py](http://webpy.org/)
+* [lxml](http://lxml.de/)
+
+### Installation steps on Max OS X
+
+1. pip install web.py
+1. brew install libxml2
+1. xcode-select --install
+1. pip install lxml

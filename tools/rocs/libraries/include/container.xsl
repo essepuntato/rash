@@ -51,10 +51,6 @@ Under the following terms:
             <!-- Authors -->
             <xsl:value-of select="@content" />
             
-            <xsl:if test="position() != last()">
-                <xsl:text>, </xsl:text>
-            </xsl:if>
-            
             
             <xsl:call-template name="n" />
             <xsl:text>\affil{</xsl:text>
@@ -65,7 +61,7 @@ Under the following terms:
             
             <!-- Affiliation -->
             <xsl:for-each select="
-                for $affId in ../iml:meta[@property='schema:affiliation' and @about=$curId]/@href 
+                for $affId in ../iml:link[@property='schema:affiliation' and @about=$curId]/@href 
                 return ../iml:meta[@about = $affId]">
                 
                 <xsl:value-of select="@content" />
@@ -125,9 +121,6 @@ Under the following terms:
     <xsl:template match="iml:body">
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
-        <xsl:text>\begin{bottomstuff}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\end{bottomstuff}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\maketitle</xsl:text>
         <xsl:call-template name="n" />

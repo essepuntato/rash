@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From ODT to RASH XSLT transformation file - Version 1.2, February 17, 2016
+From ODT to RASH XSLT transformation file - Version 1.2.1, March 22, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -548,6 +548,15 @@ Under the following terms:
         </td>
     </xsl:template>
     
+    <xd:doc scope="text:tab">
+        <xd:desc>
+            <xd:p>This template creates a two-space characters as a tab.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text:tab">
+        <xsl:text>  </xsl:text>
+    </xsl:template>
+    
     <xd:doc scope="text:bookmark-ref | text:sequence-ref">
         <xd:desc>
             <xd:p>This template creates all the references to dereferanceable objects in the document content (i.e., sections, figures with caption, formulas with caption, and tables).</xd:p>
@@ -563,7 +572,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:bookmark-ref[some $ref in //text:bookmark-start satisfies $ref/@text:name = @text:ref-name and (some $content in $bibliography satisfies lower-case(normalize-space($ref/preceding::text:h[1])) = $content)]" priority="3">
-        <a href="#{@text:ref-name}"><xsl:text> </xsl:text></a>
+        <xsl:variable name="text_name" select="@text:ref-name" as="xs:string" />
+        <xsl:variable name="id" select="((//text:p[some $tbs in .//text:bookmark-start/@text:name satisfies $tbs = $text_name])[1]//text:bookmark-start)[1]/@text:name" as="xs:string" />
+        <a href="#{$id}"><xsl:text> </xsl:text></a>
     </xsl:template>
     
     <xd:doc scope="svg:desc">
@@ -830,7 +841,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template name="set.bookmarked.object.id">
-        <xsl:variable name="id" select=".//text:bookmark-start/@text:name[some $el in //text:bookmark-ref satisfies $el/@text:ref-name = .][1]" as="xs:string?" />
+        <xsl:variable name="id" select="(.//text:bookmark-start/@text:name)[1]" as="xs:string*" />
         <xsl:if test="$id">
             <xsl:attribute name="id" select="$id" />
         </xsl:if>
