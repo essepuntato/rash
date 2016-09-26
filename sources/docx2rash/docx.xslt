@@ -161,37 +161,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="w:p">
-        <xsl:variable name="parent" select="parent::w:body" as="element()?" />
-        <xsl:choose>
-            <!-- Headings -->
-            <xsl:when test="f:isHeading(.)">
-                <xsl:call-template name="create.section.with.heading" />
-            </xsl:when>
-            <!-- When a pure text paragraph is defined in the DOCX document without providing any particular structured
-            organisation of it into a paper (such as defining headings), a section is created automatically in the final
-            RASH document. -->
-            <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
-                <xsl:call-template name="create.untitled.section" />
-            </xsl:when>
-            <xsl:when test="f:isPreformattedParagraph(.)">
-                <xsl:call-template name="add.blockOfCode" />
-            </xsl:when>
-            <xsl:when test="contains(f:getRealStyleNameFromP(.), 'Quote')">
-                <xsl:call-template name="add.quote" />
-            </xsl:when>
-            <xsl:when test="f:getRealStyleNameFromP(.) = 'List Paragraph'">
-                <xsl:call-template name="add.list" />
-            </xsl:when>
-            <xsl:when test="f:pIsListingBox(.)">
-                <xsl:call-template name="add.listingBox" />
-            </xsl:when>
-            <!-- This is the basic case for the creation of paragraphs. -->
-            <xsl:otherwise>
-                <p>
-                    <xsl:apply-templates />
-                </p>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="add.p">
+            <xsl:with-param name="isInsideList" select="false()" />
+        </xsl:call-template>
     </xsl:template>
 
     <xd:doc scope="w:r">
@@ -305,6 +277,51 @@ Under the following terms:
         <xsl:apply-templates />
     </xsl:template>
 
+    <xd:doc scope="add.p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling common paragraphs.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.p">
+        <xsl:param name="isInsideList" as="xs:boolean" />
+        <xsl:variable name="parent" select="parent::w:body" as="element()?" />
+        <xsl:choose>
+            <!-- Headings -->
+            <xsl:when test="f:isHeading(.)">
+                <xsl:call-template name="create.section.with.heading" />
+            </xsl:when>
+            <!-- When a pure text paragraph is defined in the DOCX document without providing any particular structured
+            organisation of it into a paper (such as defining headings), a section is created automatically in the final
+            RASH document. -->
+            <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
+                <xsl:call-template name="create.untitled.section" />
+            </xsl:when>
+            <xsl:when test="f:isPreformattedParagraph(.)">
+                <xsl:call-template name="add.blockOfCode" />
+            </xsl:when>
+            <xsl:when test="contains(f:getRealStyleNameFromP(.), 'Quote')">
+                <xsl:call-template name="add.quote" />
+            </xsl:when>
+            <xsl:when test="f:pIsBetweenTwoListItems(.) and not($isInsideList)">
+                <!--Ignore-->
+            </xsl:when>
+            <xsl:when test="f:pIsListElement(.) and not($isInsideList)">
+                <xsl:if test="f:isFirstListItem(.)">
+                    <xsl:call-template name="add.list" />
+                </xsl:if>
+            </xsl:when>
+            <xsl:when test="f:pIsListingBox(.)">
+                <xsl:call-template name="add.listingBox" />
+            </xsl:when>
+            <!-- This is the basic case for the creation of paragraphs. -->
+            <xsl:otherwise>
+                <p>
+                    <xsl:apply-templates />
+                </p>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xd:doc scope="add.quote">
         <xd:desc>
             <xd:p>This template is in charge of handling a cited paragraph.</xd:p>
@@ -314,60 +331,6 @@ Under the following terms:
         <blockquote><p>
             <xsl:apply-templates />
         </p></blockquote>
-    </xsl:template>
-
-    <xd:doc scope="add.list">
-        <xd:desc>
-            <xd:p>This template is in charge of handling lists.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="add.list">
-        <xsl:variable name="currentNumId"
-                      as="xs:integer"
-                      select="w:pPr/w:numPr/w:numId/@w:val"
-        />
-        <xsl:variable name="isFirstElement"
-                      as="xs:boolean"
-                      select="
-                          not(
-                              exists(
-                                  preceding-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]]
-                              )
-                          )
-                        or
-                          preceding-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]][1]/w:pPr/w:numPr/w:numId/@w:val
-                          !=
-                          $currentNumId
-                        "
-        />
-        <xsl:if test="$isFirstElement">
-            <xsl:variable name="followingListElements"
-                          as="element()*"
-                          select="following-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]][w:pPr/w:numPr/w:numId/@w:val = $currentNumId]"
-            />
-            <xsl:variable name="listItems"
-                          as="element()*"
-                          select="$followingListElements"
-            />
-            <xsl:variable name="realListItems"
-                          as="element()*"
-                          select="current() | $listItems"
-            />
-            <xsl:if test="f:isBullet($currentNumId)">
-                <ul>
-                    <xsl:call-template name="add.listItems">
-                        <xsl:with-param name="listElements" as="element()*" select="$realListItems"/>
-                    </xsl:call-template>
-                </ul>
-            </xsl:if>
-            <xsl:if test="not(f:isBullet($currentNumId))">
-                <ol>
-                    <xsl:call-template name="add.listItems">
-                        <xsl:with-param name="listElements" as="element()*" select="$realListItems"/>
-                    </xsl:call-template>
-                </ol>
-            </xsl:if>
-        </xsl:if>
     </xsl:template>
 
     <xd:doc scope="add.caption">
@@ -436,6 +399,7 @@ Under the following terms:
             <!--</xsl:call-template>-->
             <pre><code>
                 <xsl:for-each select="$textbox/w:txbxContent/w:p">
+                    <!--TODO: Stili listing box-->
                     <xsl:apply-templates />
                     <xsl:if test="position() != last()">
                         <!-- Add a \n character if it is not the last paragraph -->
@@ -449,6 +413,52 @@ Under the following terms:
         </figure>
     </xsl:template>
 
+    <xd:doc scope="add.list">
+        <xd:desc>
+            <xd:p>This template is in charge of handling lists.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.list">
+        <xsl:variable name="currentNumId"
+                      as="xs:integer"
+                      select="w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:variable name="isFirstElement"
+                      as="xs:boolean"
+                      select="
+                          not(
+                              exists(
+                                  preceding-sibling::w:p[f:pIsListElement(.)]
+                              )
+                          )
+                        or
+                          preceding-sibling::w:p[f:pIsListElement(.)][1]/w:pPr/w:numPr/w:numId/@w:val
+                          !=
+                          $currentNumId
+                        "
+        />
+        <xsl:if test="$isFirstElement">
+            <xsl:variable name="thisListItems"
+                          as="element()*"
+                          select="f:getListItems(.)"
+            />
+            <xsl:if test="f:isBullet($currentNumId)">
+                <ul>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ul>
+            </xsl:if>
+            <xsl:if test="not(f:isBullet($currentNumId))">
+                <ol>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ol>
+            </xsl:if>
+        </xsl:if>
+    </xsl:template>
+
     <xd:doc scope="add.listItems" >
         <xd:desc>
             <xd:p>This template handles the list items</xd:p>
@@ -457,8 +467,27 @@ Under the following terms:
     <xsl:template name="add.listItems">
         <xsl:param name="listElements" as="element()*" />
         <xsl:for-each select="$listElements">
+            <xsl:variable name="nextParagraphsNotInList"
+                          as="element()*"
+                          select="following-sibling::w:p[not(f:pIsListElement(.))]"
+            />
+            <xsl:variable name="nextListItemIndex"
+                          as="xs:integer"
+                          select="position()+1"
+            />
+            <xsl:variable name="paragraphs"
+                          as="element()*"
+                          select="$nextParagraphsNotInList intersect $listElements[$nextListItemIndex]/preceding-sibling::w:p"
+            />
             <li>
-                <xsl:apply-templates />
+                <xsl:call-template name="add.p">
+                    <xsl:with-param name="isInsideList" select="true()"/>
+                </xsl:call-template>
+                <xsl:for-each select="$paragraphs">
+                    <xsl:call-template name="add.p">
+                        <xsl:with-param name="isInsideList" select="true()"/>
+                    </xsl:call-template>
+                </xsl:for-each>
             </li>
         </xsl:for-each>
     </xsl:template>
@@ -714,7 +743,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getTranslatedPStyleName" as="xs:string">
-        <xsl:param name="element" as="element()" />
+        <xsl:param name="element" as="element()?" />
         <xsl:variable name="translatedStyleName" as="xs:string" select="string($element/descendant-or-self::w:pStyle/@w:val)"/>
         <xsl:value-of select="$translatedStyleName"/>
     </xsl:function>
@@ -747,7 +776,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getRealStyleNameFromP" as="xs:string">
-        <xsl:param name="element" as="element()" />
+        <xsl:param name="element" as="element()?" />
         <xsl:variable name="translatedStyle" as="xs:string" select="f:getTranslatedPStyleName($element)" />
         <xsl:variable name="realStyle" as="xs:string" select="string($styles//w:style[@w:styleId = $translatedStyle]/w:name/@w:val)"/>
         <xsl:value-of select="$realStyle"/>
@@ -776,6 +805,20 @@ Under the following terms:
                       as="xs:boolean"
                       select="f:getRealStyleNameFromP($element) = 'HTML Preformatted'"/>
         <xsl:value-of select="$isPreformatted"/>
+    </xsl:function>
+
+    <xd:doc scope="f:pIsListElement">
+        <xd:desc>
+            <xd:p>This function says whether a paragraph is contained in a list.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:pIsListElement" as="xs:boolean">
+        <xsl:param name="element" as="element()?" />
+        <xsl:variable name="isListElement"
+                      as="xs:boolean"
+                      select="f:getRealStyleNameFromP($element) = 'List Paragraph'"
+        />
+        <xsl:value-of select="$isListElement"/>
     </xsl:function>
 
     <xd:doc scope="f:isNote">
@@ -808,6 +851,84 @@ Under the following terms:
                       select="exists($element/w:r/mc:AlternateContent/mc:Choice/w:drawing/wp:inline/a:graphic/a:graphicData/wps:wsp/wps:txbx)"
         />
         <xsl:value-of select="$isListingBox"/>
+    </xsl:function>
+
+    <xd:doc scope="f:getListItems">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getListItems" as="element()*">
+        <xsl:param name="firstListItem" as="element()" />
+        <xsl:variable name="currentNumId"
+                      as="xs:integer"
+                      select="$firstListItem/w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:variable name="nextListsElements"
+                      as="element()*"
+                      select="$firstListItem/following-sibling::w:p[f:pIsListElement(.)]"
+        />
+        <xsl:variable name="firstElementOfNextList"
+                      as="element()?"
+                      select="$firstListItem/following-sibling::w:p[f:pIsListElement(.)][w:pPr/w:numPr/w:numId/@w:val != $currentNumId][1]"
+        />
+        <xsl:variable name="nextListsElementsNotInTheSameList"
+                      as="element()*"
+                      select="$firstElementOfNextList/following-sibling::w:p[f:pIsListElement(.)]"
+        />
+        <xsl:variable name="thisListItems"
+                      as="element()*"
+                      select="($firstListItem , $nextListsElements) except ($firstElementOfNextList, $nextListsElementsNotInTheSameList)"
+        />
+        <xsl:sequence select="$thisListItems"/>
+    </xsl:function>
+
+    <xd:doc scope="f:isFirstListItem">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isFirstListItem" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:variable name="precedingItem"
+                      as="element()?"
+                      select="$element/preceding-sibling::w:p[f:pIsListElement(.)][1]"
+        />
+        <xsl:variable name="nextItem"
+                      as="element()?"
+                      select="$element/following-sibling::w:p[f:pIsListElement(.)][1]"
+        />
+        <xsl:value-of select="
+                not(exists($precedingItem))
+                or ($precedingItem/w:pPr/w:numPr/w:numId/@w:val = $nextItem/w:pPr/w:numPr/w:numId/@w:val)
+                or ($precedingItem/w:pPr/w:numPr/w:numId/@w:val != $element/w:pPr/w:numPr/w:numId/@w:val)
+                or ($precedingItem/w:pPr/w:numPr/w:ilvl/@w:val != $element/w:pPr/w:numPr/w:ilvl/@w:val)
+            "
+        />
+    </xsl:function>
+
+    <xd:doc scope="f:pIsBetweenTwoListItems">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:pIsBetweenTwoListItems" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:variable name="previousItem"
+                      as="element()?"
+                      select="$element/preceding-sibling::w:p[1]"
+        />
+        <xsl:variable name="nextItem"
+                      as="element()?"
+                      select="$element/following-sibling::w:p[1]"
+        />
+        <xsl:variable name="isBetweenTwoItems"
+                      as="xs:boolean"
+                      select="f:pIsListElement($previousItem)
+                              and f:pIsListElement($nextItem)
+                              and $previousItem/w:pPr/w:numPr/w:numId/@w:val = $nextItem/w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:value-of select="$isBetweenTwoItems"/>
     </xsl:function>
 
     <!--<xd:doc scope="f:getCaptionNodes">-->
