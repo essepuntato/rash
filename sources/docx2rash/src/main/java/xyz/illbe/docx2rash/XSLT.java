@@ -22,12 +22,15 @@ public class XSLT {
     private final String JS_RESOURCES_DIR = "js";
     private final String CSS_RESOURCES_DIR = "css";
 
+    private File rashDirectory;
+
     private String outputFilename;
 
     private ClassLoader classLoader;
     private Transformer transformer;
 
     public XSLT(String inputFilePath) {
+        this.rashDirectory = new File(".").getAbsoluteFile().getParentFile().getParentFile().getParentFile();
         String inputFilename = new File(inputFilePath).getName();
         this.outputFilename = inputFilename.substring(0, inputFilename.lastIndexOf(".")) + ".html";
         File inputFile = new File(inputFilePath);
@@ -35,8 +38,16 @@ public class XSLT {
 //        if (inputFile.isDirectory()) {
 //
 //        }
+        File xsltFile = new File(this.rashDirectory, XSLT_PATH);
+        File movedXsltFile = new File("docx.xslt");
+        try {
+            FileUtils.copyFile(xsltFile, movedXsltFile);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
         classLoader = this.getClass().getClassLoader();
-        StreamSource xsltStream = new StreamSource(classLoader.getResourceAsStream(XSLT_PATH));
+        StreamSource xsltStream = new StreamSource(movedXsltFile);
+        // StreamSource xsltStream = new StreamSource(classLoader.getResourceAsStream(XSLT_PATH));
         TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
         try {
             ZipUtils.unzip(inputFile, WORKING_DIR);
@@ -70,12 +81,16 @@ public class XSLT {
     private void copyResourcesTo(String outputDirPath) {
         try {
             FileUtils.copyDirectory(
-                    new File(classLoader.getResource(JS_RESOURCES_DIR).getFile()),
+                    new File(this.rashDirectory, "js"),
                     new File(outputDirPath + File.separator + "js")
             );
             FileUtils.copyDirectory(
-                    new File(classLoader.getResource(CSS_RESOURCES_DIR).getFile()),
+                    new File(this.rashDirectory, "css"),
                     new File(outputDirPath + File.separator + "css")
+            );
+            FileUtils.copyDirectory(
+                    new File(this.rashDirectory, "fonts"),
+                    new File(outputDirPath + File.separator + "fonts")
             );
         } catch (IOException e) {
             System.err.println(e.getMessage());
