@@ -31,8 +31,13 @@ Under the following terms:
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
     xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+    xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+    xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
+    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
     exclude-result-prefixes="xs xd f xlink svg dc fo meta w r">
+
+    <xsl:include href="omml2mml.xsl"/>
+
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Dec 25, 2015</xd:p>
@@ -68,13 +73,14 @@ Under the following terms:
         This parameters refers to the base path that all the URL of the image files
         of the final RASH document should have.
     -->
-    <xsl:param name="baseimg" select="'./'" />
+    <xsl:param name="baseimg" select="'./img'" />
 
     <!--
         This parameters refers to the directory that contains the actual XML content
         of the ODT document to transform.
     -->
     <xsl:param name="dir" select="'./workingdir/word/'" />
+    <!--<xsl:param name="dir" select="'../testbed/docx/testbed-8/word/'" />-->
 
     <!-- This variable is used to remove separators in captions -->
     <xsl:variable name="subcap" select="'^[!,\.:;\?\|\-\s]+'" as="xs:string" />
@@ -96,6 +102,10 @@ Under the following terms:
     <!-- Link numbering document -->
     <xsl:variable name="numbering" select="doc(concat($dir, '/numbering.xml'))" as="item()?" />
 
+    <!-- Link meta document -->
+    <xsl:variable name="metaExists" select="doc-available(concat($dir, '/../docProps/custom.xml'))" as="xs:boolean" />
+    <xsl:variable name="meta" select="doc(concat($dir, '/../docProps/custom.xml'))" as="item()?" />
+
     <xsl:variable name="footnotesExists" select="doc-available(concat($dir, '/footnotes.xml'))" as="xs:boolean" />
     <xsl:variable name="footnotes" select="doc(concat($dir, '/footnotes.xml'))" as="item()?" />
 
@@ -106,7 +116,7 @@ Under the following terms:
     </xd:doc>
     <xsl:template match="/">
         <xsl:apply-templates>
-            <xsl:with-param name="preformatted" select="false()" tunnel="yes" as="xs:boolean" />
+            <xsl:with-param name="isInsideBlock" select="false()" tunnel="yes" as="xs:boolean" />
             <xsl:with-param name="caption" select="false()" tunnel="yes" as="xs:boolean" />
         </xsl:apply-templates>
     </xsl:template>
@@ -131,9 +141,11 @@ Under the following terms:
                 <script src="{$basejs}jquery.min.js"><xsl:text> </xsl:text></script>
                 <script src="{$basejs}bootstrap.min.js"><xsl:text> </xsl:text></script>
                 <script src="{$basejs}rash.js"><xsl:text> </xsl:text></script>
+                <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><xsl:text> </xsl:text></script>
                 <!-- /END Visualisation requirements (mandatory for optimal reading) -->
 
                 <xsl:call-template name="add.title" />
+                <xsl:call-template name="add.meta" />
             </head>
             <body>
                 <xsl:choose>
@@ -161,37 +173,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="w:p">
-        <xsl:variable name="parent" select="parent::w:body" as="element()?" />
-        <xsl:choose>
-            <!-- Headings -->
-            <xsl:when test="f:isHeading(.)">
-                <xsl:call-template name="create.section.with.heading" />
-            </xsl:when>
-            <!-- When a pure text paragraph is defined in the DOCX document without providing any particular structured
-            organisation of it into a paper (such as defining headings), a section is created automatically in the final
-            RASH document. -->
-            <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
-                <xsl:call-template name="create.untitled.section" />
-            </xsl:when>
-            <xsl:when test="f:isPreformattedParagraph(.)">
-                <xsl:call-template name="add.blockOfCode" />
-            </xsl:when>
-            <xsl:when test="contains(f:getRealStyleNameFromP(.), 'Quote')">
-                <xsl:call-template name="add.quote" />
-            </xsl:when>
-            <xsl:when test="f:getRealStyleNameFromP(.) = 'List Paragraph'">
-                <xsl:call-template name="add.list" />
-            </xsl:when>
-            <xsl:when test="f:pIsListingBox(.)">
-                <xsl:call-template name="add.listingBox" />
-            </xsl:when>
-            <!-- This is the basic case for the creation of paragraphs. -->
-            <xsl:otherwise>
-                <p>
-                    <xsl:apply-templates />
-                </p>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="add.p">
+            <xsl:with-param name="isInsideList" select="false()" />
+        </xsl:call-template>
     </xsl:template>
 
     <xd:doc scope="w:r">
@@ -200,18 +184,14 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="w:r">
-        <!--
-            The 'preformatted' parameters is set to 'true()' if any of the ancestor of the
-            current inline element is a preformatted text
-        -->
-        <xsl:param name="preformatted" tunnel="yes" as="xs:boolean" />
-        <!--TODO: Controllare seconda parte della selezione -->
+        <xsl:param name="isInsideBlock" as="xs:boolean" tunnel="yes" />
         <xsl:variable name="isBold" select="exists(w:rPr/w:b)" as="xs:boolean" />
         <xsl:variable name="isItalic" select="exists(w:rPr/w:i)" as="xs:boolean" />
         <xsl:variable name="isCourier" select="exists(w:rPr/w:rFonts[contains(@w:ascii, 'Courier')])" as="xs:boolean" />
         <xsl:variable name="isSuperscript" select="w:rPr/w:vertAlign/@w:val = 'superscript'" as="xs:boolean" />
         <xsl:variable name="isSubscript" select="w:rPr/w:vertAlign/@w:val = 'subscript'" as="xs:boolean" />
         <xsl:variable name="isNote" select="f:isNote(.)" as="xs:boolean" />
+        <xsl:variable name="isImage" select="f:rHasAnImage(.)" as="xs:boolean" />
 
         <!-- If the immediately previous element doesn't have the same style then proceed -->
         <xsl:variable name="previousElementSameStyle" as="xs:boolean">
@@ -220,13 +200,14 @@ Under the following terms:
             <xsl:variable name="prevIsItalic" select="exists($prev/w:rPr/w:i)" as="xs:boolean" />
             <xsl:variable name="prevIsCourier" select="exists($prev/w:rPr/w:rFonts[contains(@w:ascii, 'Courier')])" as="xs:boolean" />
             <xsl:variable name="prevIsSuperscript"
-                select="$prev/w:rPr/w:vertAlign/@w:val = 'superscript'" as="xs:boolean" />
+                          select="$prev/w:rPr/w:vertAlign/@w:val = 'superscript'" as="xs:boolean" />
             <xsl:variable name="prevIsSubscript"
-                select="$prev/w:rPr/w:vertAlign/@w:val = 'subscript'" as="xs:boolean" />
+                          select="$prev/w:rPr/w:vertAlign/@w:val = 'subscript'" as="xs:boolean" />
             <xsl:variable name="prevIsNote" select="f:isNote($prev)" as="xs:boolean" />
+            <xsl:variable name="prevIsImage" select="f:rHasAnImage($prev)" as="xs:boolean" />
             <xsl:value-of select="$prev[self::w:r] and
                 $isBold = $prevIsBold and $isItalic = $prevIsItalic and $isCourier = $prevIsCourier and
-                $isSuperscript = $prevIsSuperscript and $isSubscript = $prevIsSubscript and $isNote = $prevIsNote" />
+                $isSuperscript = $prevIsSuperscript and $isSubscript = $prevIsSubscript and $isNote = $prevIsNote and $isImage = $prevIsImage" />
         </xsl:variable>
 
         <xsl:if test="not($previousElementSameStyle)">
@@ -239,9 +220,10 @@ Under the following terms:
                     <xsl:variable name="follIsSuperscript" select="w:rPr/w:vertAlign/@w:val = 'superscript'" as="xs:boolean" />
                     <xsl:variable name="follIsSubscript" select="w:rPr/w:vertAlign/@w:val = 'subscript'" as="xs:boolean" />
                     <xsl:variable name="follIsNote" select="f:isNote(.)" as="xs:boolean" />
+                    <xsl:variable name="follIsImage" select="f:rHasAnImage(.)" as="xs:boolean" />
                     <xsl:if test="not(self::w:r) or not(
                         $isBold = $follIsBold and $isItalic = $follIsItalic and $isCourier = $follIsCourier and
-                        $isSuperscript = $follIsSuperscript and $isSubscript = $follIsSubscript and $isNote = $follIsNote)">
+                        $isSuperscript = $follIsSuperscript and $isSubscript = $follIsSubscript and $isNote = $follIsNote and $isImage = $follIsImage)">
                         <xsl:sequence select="." />
                     </xsl:if>
                 </xsl:for-each>
@@ -256,23 +238,25 @@ Under the following terms:
                     <xsl:variable name="follIsSuperscript" select="w:rPr/w:vertAlign/@w:val = 'superscript'" as="xs:boolean" />
                     <xsl:variable name="follIsSubscript" select="w:rPr/w:vertAlign/@w:val = 'subscript'" as="xs:boolean" />
                     <xsl:variable name="follIsNote" select="f:isNote(.)" as="xs:boolean" />
+                    <xsl:variable name="follIsImage" select="f:rHasAnImage(.)" as="xs:boolean" />
                     <xsl:if test="
                         self::w:r and
                         $isBold = $follIsBold and $isItalic = $follIsItalic and $isCourier = $follIsCourier and
-                        $isSuperscript = $follIsSuperscript and $isSubscript = $follIsSubscript and $isNote = $follIsNote">
+                        $isSuperscript = $follIsSuperscript and $isSubscript = $follIsSubscript and $isNote = $follIsNote and $isImage = $follIsImage">
                         <xsl:sequence select="." />
                     </xsl:if>
                 </xsl:for-each>
             </xsl:variable>
             <xsl:call-template name="add.inline">
                 <xsl:with-param name="select"
-                    select="(w:t, ($follTEqual except ($follTNotEqual, f:getFollowing($follTNotEqual)))/w:t)" tunnel="yes" />
-                <xsl:with-param name="super" as="xs:boolean" tunnel="yes" select="$isSuperscript" />
-                <xsl:with-param name="sub" as="xs:boolean" tunnel="yes" select="$isSubscript" />
-                <xsl:with-param name="bold" as="xs:boolean" tunnel="yes" select="$isBold" />
-                <xsl:with-param name="italic" as="xs:boolean" tunnel="yes" select="$isItalic" />
-                <xsl:with-param name="courier" as="xs:boolean" tunnel="yes" select="$isCourier" />
-                <xsl:with-param name="note" as="xs:boolean" tunnel="yes" select="$isNote" />
+                                select="(w:t, ($follTEqual except ($follTNotEqual, f:getFollowing($follTNotEqual)))/w:t)" tunnel="yes" />
+                <xsl:with-param name="super" as="xs:boolean" tunnel="yes" select="$isSuperscript and not($isInsideBlock)" />
+                <xsl:with-param name="sub" as="xs:boolean" tunnel="yes" select="$isSubscript and not($isInsideBlock)" />
+                <xsl:with-param name="bold" as="xs:boolean" tunnel="yes" select="$isBold and not($isInsideBlock)" />
+                <xsl:with-param name="italic" as="xs:boolean" tunnel="yes" select="$isItalic and not($isInsideBlock)" />
+                <xsl:with-param name="courier" as="xs:boolean" tunnel="yes" select="$isCourier and not($isInsideBlock)" />
+                <xsl:with-param name="note" as="xs:boolean" tunnel="yes" select="$isNote and not($isInsideBlock)" />
+                <xsl:with-param name="image" as="xs:boolean" tunnel="yes" select="$isImage and not($isInsideBlock)" />
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
@@ -294,7 +278,146 @@ Under the following terms:
             <xd:p>This template is used for avoiding to process certain elements.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template match="w:pPr | w:rPr | w:sectPr | text()[empty(ancestor::w:t)]" />
+    <xsl:template match="w:hyperlink[not(exists(@r:id))] | w:pPr | w:rPr | w:sectPr | w:p[f:getRealStyleNameFromP(.) = 'Title'] | w:p[f:getRealStyleNameFromP(.) = 'Subtitle']" />
+
+    <xd:doc scope="w:r">
+        <xd:desc>
+            <xd:p>This template creates all the references to dereferanceable objects in the document content (i.e., sections, figures with caption, formulas with caption, and tables).</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="w:r[w:instrText]">
+        <!--<a href="#{w:instrText}"><xsl:text> </xsl:text></a>-->
+        <a href="www.google.com">Google</a>
+    </xsl:template>
+
+    <xd:doc scope="m:oMathPara">
+        <xd:desc>
+            <xd:p></xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="m:oMathPara">
+        <xsl:variable name="thereIsCaption"
+                      as="xs:boolean"
+                      select="f:pIsCaption(following::w:p[1])"
+        />
+        <figure>
+            <p>
+                <xsl:apply-templates />
+            </p>
+            <xsl:if test="$thereIsCaption">
+                <xsl:variable name="captionParagraph"
+                              as="element()"
+                              select="following::w:p[1]" />
+                <xsl:call-template name="add.caption" >
+                    <xsl:with-param name="captionParagraph" select="$captionParagraph" />
+                </xsl:call-template>
+            </xsl:if>
+        </figure>
+    </xsl:template>
+
+    <xd:doc scope="m:oMath">
+        <xd:desc>
+            <xd:p></xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="m:oMath">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <!--<semantics>-->
+                <xsl:apply-templates />
+            <!--</semantics>-->
+        </math>
+    </xsl:template>
+
+    <xd:doc scope="w:tbl">
+        <xd:desc>
+            <xd:p>This template creates new table boxes.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="w:tbl">
+        <xsl:variable name="thereIsCaption"
+                      as="xs:boolean"
+                      select="f:pIsCaption(following-sibling::w:p[1])"
+        />
+        <!--<xsl:variable name="caption" select="following-sibling::text:p[normalize-space() != ''][1][(@text:style-name = 'Table') or (some $s in //style:style[@style:parent-style-name = 'Table']/@style:name satisfies @text:style-name = $s)]" as="element()?" />-->
+        <figure>
+            <!--<xsl:call-template name="set.captioned.object.id">-->
+                <!--<xsl:with-param name="caption" select="$caption" />-->
+            <!--</xsl:call-template>-->
+            <table>
+                <xsl:apply-templates />
+            </table>
+            <xsl:if test="$thereIsCaption">
+                <xsl:variable name="captionParagraph"
+                              as="element()"
+                              select="following-sibling::w:p[1]" />
+                <xsl:call-template name="add.caption" >
+                    <xsl:with-param name="captionParagraph" select="$captionParagraph" />
+                </xsl:call-template>
+            </xsl:if>
+            <!--<xsl:call-template name="add.caption">-->
+                <!--<xsl:with-param name="caption" select="f:getCaptionNodes($caption)" />-->
+            <!--</xsl:call-template>-->
+        </figure>
+    </xsl:template>
+
+    <xd:doc scope="w:tr">
+        <xd:desc>
+            <xd:p>This template creates table rows.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="w:tr">
+        <xsl:variable name="isHeading"
+                      as="xs:boolean"
+                      select="./preceding-sibling::w:tblPr/w:tblLook/@w:firstRow = 1
+                        and (not(exists(./preceding-sibling::w:tr)))"
+        />
+        <tr>
+            <xsl:apply-templates>
+                <xsl:with-param name="isHeading" select="$isHeading" tunnel="yes" />
+            </xsl:apply-templates>
+        </tr>
+    </xsl:template>
+
+    <xd:doc scope="w:tc">
+        <xd:desc>
+            <xd:p>This template creates new table heading cells.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="w:tc">
+        <xsl:param name="isHeading" as="xs:boolean" tunnel="yes" />
+        <xsl:choose>
+            <xsl:when test="$isHeading">
+                <th>
+                    <xsl:apply-templates select=".//w:t" />
+                </th>
+            </xsl:when>
+            <xsl:otherwise>
+                <td>
+                    <xsl:apply-templates />
+                </td>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
+
+    <!--<xd:doc scope="w:tc">-->
+        <!--<xd:desc>-->
+            <!--<xd:p>This template creates new table content cells.</xd:p>-->
+        <!--</xd:desc>-->
+    <!--</xd:doc>-->
+    <!--<xsl:template match="w:tc">-->
+        <!--<td>-->
+            <!--<xsl:choose>-->
+                <!--<xsl:when test="normalize-space() = ''">-->
+                    <!--<p><xsl:text> </xsl:text></p>-->
+                <!--</xsl:when>-->
+                <!--<xsl:otherwise>-->
+                    <!--<xsl:apply-templates />-->
+                <!--</xsl:otherwise>-->
+            <!--</xsl:choose>-->
+        <!--</td>-->
+    <!--</xsl:template>-->
 
     <xd:doc scope="element()">
         <xd:desc>
@@ -303,6 +426,69 @@ Under the following terms:
     </xd:doc>
     <xsl:template match="element()">
         <xsl:apply-templates />
+    </xsl:template>
+
+    <xd:doc scope="text()">
+        <xd:desc>
+            <xd:p>This template handles all text nodes and, in case there is an inline quotation, it adds the appropriate element to the RASH document.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template match="text()">
+        <xsl:value-of select="." />
+    </xsl:template>
+
+    <xd:doc scope="add.p">
+        <xd:desc>
+            <xd:p>This template is in charge of handling common paragraphs.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.p">
+        <xsl:param name="isInsideList" as="xs:boolean" />
+        <xsl:variable name="parent" select="parent::w:body" as="element()?" />
+        <xsl:choose>
+            <xsl:when test="f:pIsCaption(.) or (f:pIsBetweenTwoListItems(.) and not($isInsideList))">
+                <!--Ignore-->
+            </xsl:when>
+            <!-- Headings -->
+            <xsl:when test="f:isHeading(.)">
+                <xsl:call-template name="create.section.with.heading" />
+            </xsl:when>
+            <!-- When a pure text paragraph is defined in the DOCX document without providing any particular structured
+            organisation of it into a paper (such as defining headings), a section is created automatically in the final
+            RASH document. -->
+            <xsl:when test="$parent and f:getContentChildElements($parent)[1] is .">
+                <xsl:call-template name="create.untitled.section" />
+            </xsl:when>
+            <xsl:when test="f:isPreformattedParagraph(.)">
+                <xsl:call-template name="add.blockOfCode" />
+            </xsl:when>
+            <xsl:when test="contains(f:getRealStyleNameFromP(.), 'Quote')">
+                <xsl:call-template name="add.quote" />
+            </xsl:when>
+            <xsl:when test="f:pIsListElement(.) and not($isInsideList)">
+                <xsl:if test="f:isFirstListItem(.)">
+                    <xsl:call-template name="add.list" />
+                </xsl:if>
+            </xsl:when>
+            <xsl:when test="f:pIsListingBox(.)">
+                <xsl:call-template name="add.listingBox" />
+            </xsl:when>
+            <xsl:when test="f:rHasAnImage(.) and not(f:containsText(.))">
+                <figure>
+                    <p>
+                        <xsl:call-template name="add.image" />
+                    </p>
+                </figure>
+            </xsl:when>
+            <!-- This is the basic case for the creation of paragraphs. -->
+            <xsl:otherwise>
+                <!--<xsl:if test="f:containsText(.)">-->
+                    <p>
+                        <xsl:apply-templates />
+                    </p>
+                <!--</xsl:if>-->
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xd:doc scope="add.quote">
@@ -316,75 +502,20 @@ Under the following terms:
         </p></blockquote>
     </xsl:template>
 
-    <xd:doc scope="add.list">
-        <xd:desc>
-            <xd:p>This template is in charge of handling lists.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="add.list">
-        <xsl:variable name="currentNumId"
-                      as="xs:integer"
-                      select="w:pPr/w:numPr/w:numId/@w:val"
-        />
-        <xsl:variable name="isFirstElement"
-                      as="xs:boolean"
-                      select="
-                          not(
-                              exists(
-                                  preceding-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]]
-                              )
-                          )
-                        or
-                          preceding-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]][1]/w:pPr/w:numPr/w:numId/@w:val
-                          !=
-                          $currentNumId
-                        "
-        />
-        <xsl:if test="$isFirstElement">
-            <xsl:variable name="followingListElements"
-                          as="element()*"
-                          select="following-sibling::w:p[w:pPr/w:pStyle[contains(@w:val, 'elenco')]][w:pPr/w:numPr/w:numId/@w:val = $currentNumId]"
-            />
-            <xsl:variable name="listItems"
-                          as="element()*"
-                          select="$followingListElements"
-            />
-            <xsl:variable name="realListItems"
-                          as="element()*"
-                          select="current() | $listItems"
-            />
-            <xsl:if test="f:isBullet($currentNumId)">
-                <ul>
-                    <xsl:call-template name="add.listItems">
-                        <xsl:with-param name="listElements" as="element()*" select="$realListItems"/>
-                    </xsl:call-template>
-                </ul>
-            </xsl:if>
-            <xsl:if test="not(f:isBullet($currentNumId))">
-                <ol>
-                    <xsl:call-template name="add.listItems">
-                        <xsl:with-param name="listElements" as="element()*" select="$realListItems"/>
-                    </xsl:call-template>
-                </ol>
-            </xsl:if>
-        </xsl:if>
-    </xsl:template>
-
     <xd:doc scope="add.caption">
         <xd:desc>
             <xd:p>This named template is in charge of creating captions to figures or tables.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template name="add.caption">
-        <xsl:param name="caption" as="node()*" />
-        <xsl:variable name="ftn" select="($caption//text())[1]" as="text()?" />
+        <xsl:param name="captionParagraph" as="element()" />
+        <xsl:variable name="captionNodes" as="node()*" select="f:getCaptionNodes($captionParagraph/descendant::w:r)" />
+        <!--<xsl:variable name="ftn" select="($caption//text())[1]" as="text()?" />-->
         <figcaption>
             <xsl:choose>
-                <xsl:when test="$caption">
-                    <xsl:for-each select="$caption">
-                        <xsl:apply-templates select=".">
-                            <xsl:with-param name="caption" select="true()" tunnel="yes" as="xs:boolean" />
-                        </xsl:apply-templates>
+                <xsl:when test="exists($captionNodes)">
+                    <xsl:for-each select="$captionNodes">
+                        <xsl:apply-templates select="." />
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
@@ -428,26 +559,103 @@ Under the following terms:
         <xsl:variable name="textbox"
                       as="element()"
                       select="w:r/mc:AlternateContent/mc:Choice/w:drawing/wp:inline/a:graphic/a:graphicData/wps:wsp/wps:txbx"/>
-        <xsl:variable name="caption"
-                      select="(following-sibling::w:p[f:getRealStyleNameFromP(.) = 'caption'])[1]" as="element()" />
+        <xsl:variable name="thereIsCaption"
+                      as="xs:boolean"
+                      select="f:pIsCaption(following-sibling::w:p[1])"
+        />
         <figure>
-            <!--<xsl:call-template name="set.captioned.object.id">-->
-            <!--<xsl:with-param name="caption" select="$caption" />-->
-            <!--</xsl:call-template>-->
             <pre><code>
                 <xsl:for-each select="$textbox/w:txbxContent/w:p">
-                    <!--TODO: Stili listing box-->
-                    <xsl:apply-templates />
+                    <xsl:apply-templates>
+                        <xsl:with-param name="isInsideBlock" tunnel="yes" as="xs:boolean" select="true()" />
+                    </xsl:apply-templates>
                     <xsl:if test="position() != last()">
                         <!-- Add a \n character if it is not the last paragraph -->
                         <xsl:text>&#xa;</xsl:text>
                     </xsl:if>
                 </xsl:for-each>
             </code></pre>
-            <xsl:call-template name="add.caption">
-                <xsl:with-param name="caption" select="$caption//text()" as="node()*" />
-            </xsl:call-template>
+            <xsl:if test="$thereIsCaption">
+                <xsl:variable name="captionParagraph"
+                              as="element()"
+                              select="following-sibling::w:p[1]" />
+                <xsl:call-template name="add.caption" >
+                    <xsl:with-param name="captionParagraph" select="$captionParagraph" />
+                </xsl:call-template>
+            </xsl:if>
         </figure>
+    </xsl:template>
+
+    <xd:doc scope="add.image">
+        <xd:desc>
+            <xd:p>This template is used for avoiding to process certain elements.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.image" xpath-default-namespace="http://schemas.openxmlformats.org/package/2006/relationships">
+        <xsl:variable name="thereIsCaption"
+                      as="xs:boolean"
+                      select="f:pIsCaption(following::w:p[1])"
+        />
+        <xsl:variable name="imageId"
+                      as="xs:string"
+                      select=".//pic:blipFill/a:blip/@r:embed"
+        />
+        <img src="{$baseimg}/{substring-after(f:getImageNameById($imageId), 'media/')}"
+                 alt="Alt" />
+        <xsl:if test="$thereIsCaption">
+            <xsl:variable name="captionParagraph"
+                          as="element()"
+                          select="following::w:p[1]" />
+            <xsl:call-template name="add.caption" >
+                <xsl:with-param name="captionParagraph" select="$captionParagraph" />
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+    <xd:doc scope="add.list">
+        <xd:desc>
+            <xd:p>This template is in charge of handling lists.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.list">
+        <xsl:variable name="currentNumId"
+                      as="xs:integer"
+                      select="w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:variable name="isFirstElement"
+                      as="xs:boolean"
+                      select="
+                          not(
+                              exists(
+                                  preceding-sibling::w:p[f:pIsListElement(.)]
+                              )
+                          )
+                        or
+                          preceding-sibling::w:p[f:pIsListElement(.)][1]/w:pPr/w:numPr/w:numId/@w:val
+                          !=
+                          $currentNumId
+                        "
+        />
+        <xsl:if test="$isFirstElement">
+            <xsl:variable name="thisListItems"
+                          as="element()*"
+                          select="f:getListItems(.)"
+            />
+            <xsl:if test="f:isBullet($currentNumId)">
+                <ul>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ul>
+            </xsl:if>
+            <xsl:if test="not(f:isBullet($currentNumId))">
+                <ol>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ol>
+            </xsl:if>
+        </xsl:if>
     </xsl:template>
 
     <xd:doc scope="add.listItems" >
@@ -458,8 +666,30 @@ Under the following terms:
     <xsl:template name="add.listItems">
         <xsl:param name="listElements" as="element()*" />
         <xsl:for-each select="$listElements">
+            <xsl:variable name="nextParagraphsNotInList"
+                          as="element()*"
+                          select="following-sibling::w:p[not(f:pIsListElement(.))]"
+            />
+            <xsl:variable name="nextListItemIndex"
+                          as="xs:integer"
+                          select="position()+1"
+            />
+            <xsl:variable name="paragraphs"
+                          as="element()*"
+                          select="$nextParagraphsNotInList intersect $listElements[$nextListItemIndex]/preceding-sibling::w:p"
+            />
             <li>
-                <xsl:apply-templates />
+                <xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::w:p[f:isHeading(.)][1])) = $content">
+                    <xsl:attribute name="role">doc-biblioentry</xsl:attribute>
+                </xsl:if>
+                <xsl:call-template name="add.p">
+                    <xsl:with-param name="isInsideList" select="true()"/>
+                </xsl:call-template>
+                <xsl:for-each select="$paragraphs">
+                    <xsl:call-template name="add.p">
+                        <xsl:with-param name="isInsideList" select="true()"/>
+                    </xsl:call-template>
+                </xsl:for-each>
             </li>
         </xsl:for-each>
     </xsl:template>
@@ -471,6 +701,70 @@ Under the following terms:
     </xd:doc>
     <xsl:template name="add.notes">
         <a href="#ftn{w:footnoteReference/@w:id}"><xsl:text> </xsl:text></a>
+    </xsl:template>
+
+    <xd:doc scope="add.meta">
+        <xd:desc>
+            <xd:p>This named template is in charge of handling the head data of the document, i.e., authors, emails, affiliations, keywords, categories.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.meta" xpath-default-namespace="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties">
+        <xsl:if test="$metaExists">
+            <!-- Affiliations -->
+            <xsl:variable name="aff" as="xs:string*">
+                <xsl:variable name="afflist" as="xs:string*">
+                    <xsl:for-each select="$meta//property[matches(@name, '^ *(A|a)uthor', 'i')]/vt:lpwstr/text()">
+                        <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
+                        <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
+                        <xsl:if test="$len > 2">
+                            <xsl:value-of select="normalize-space($tokens[3])" />
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:variable name="distaff" select="distinct-values($afflist)" as="xs:string*" />
+                <xsl:sequence select="(for $a in $distaff return lower-case($a), $distaff)" />
+            </xsl:variable>
+            <xsl:variable name="afflen" select="xs:integer(count($aff) div 2)" as="xs:integer" />
+            <xsl:for-each select="$aff[position() > $afflen]">
+                <meta about="#affiliation-{position()}" property="schema:name" content="{.}" />
+            </xsl:for-each>
+
+            <!-- Author -->
+            <xsl:for-each select="$meta//property[matches(@name, '^ *(A|a)uthor', 'i')]/vt:lpwstr/text()">
+                <xsl:variable name="authiri" select="concat('#author-', position())" as="xs:string" />
+                <xsl:variable name="tokens" select="tokenize(., '--')" as="xs:string*" />
+                <xsl:variable name="len" select="count($tokens)" as="xs:integer" />
+                <xsl:if test="$len > 0">
+                    <meta about="{$authiri}" name="dc.creator" property="schema:name"
+                          content="{normalize-space($tokens[1])}"/>
+                    <xsl:if test="$len > 1">
+                        <meta about="{$authiri}" property="schema:email" content="{normalize-space($tokens[2])}" />
+                        <xsl:if test="$len > 2">
+                            <xsl:variable name="idx"
+                                          select="index-of($aff, lower-case(normalize-space($tokens[3])))" as="xs:integer*" />
+                            <xsl:if test="$idx">
+                                <link about="{$authiri}" property="schema:affiliation"
+                                      href="#affiliation-{$idx[1]}" />
+                            </xsl:if>
+                        </xsl:if>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+
+            <!-- Keywords -->
+            <xsl:for-each select="$meta//property[matches(@name, '^ *(K|k)eyword?', 'i')]/vt:lpwstr/text()">
+                <xsl:for-each select="tokenize(., '--')">
+                    <meta property="prism:keyword" content="{normalize-space()}" />
+                </xsl:for-each>
+            </xsl:for-each>
+
+            <!-- Categories -->
+            <xsl:for-each select="$meta//property[matches(@name, '^ *(C|c)ategor(y|ies)', 'i')]/vt:lpwstr/text()">
+                <xsl:for-each select="tokenize(., '--')">
+                    <meta name="dcterms.subject" content="{normalize-space()}" />
+                </xsl:for-each>
+            </xsl:for-each>
+        </xsl:if>
     </xsl:template>
 
     <xd:doc scope="add.footnotes">
@@ -518,7 +812,7 @@ Under the following terms:
         <xsl:param name="sub" as="xs:boolean" tunnel="yes" />
         <xsl:param name="courier" as="xs:boolean" tunnel="yes" />
         <xsl:param name="note" as="xs:boolean" tunnel="yes" />
-
+        <xsl:param name="image" as="xs:boolean" tunnel="yes" />
         <xsl:choose>
             <xsl:when test="$super">
                 <sup>
@@ -563,6 +857,9 @@ Under the following terms:
                     </xsl:call-template>
                 </a>
             </xsl:when>
+            <xsl:when test="$image">
+                <xsl:call-template name="add.image" />
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="$select"/>
             </xsl:otherwise>
@@ -570,7 +867,24 @@ Under the following terms:
     </xsl:template>
 
     <xsl:template name="add.title">
-        <title>No title specified</title>
+        <xsl:variable name="title"
+                      select="//w:p[f:getRealStyleNameFromP(.) = 'Title'][1]" as="element()?" />
+        <xsl:variable name="subtitle"
+                      select="//w:p[f:getRealStyleNameFromP(.) = 'Subtitle'][1]" as="element()?" />
+        <title>
+            <xsl:choose>
+                <xsl:when test="normalize-space($title) != ''">
+                    <xsl:value-of select="$title" />
+                    <xsl:if test="normalize-space($subtitle) != ''">
+                        <xsl:text> -- </xsl:text>
+                        <xsl:value-of select="$subtitle" />
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>No title specified</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </title>
     </xsl:template>
 
     <xd:doc scope="set.section.type">
@@ -715,8 +1029,8 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getTranslatedPStyleName" as="xs:string">
-        <xsl:param name="element" as="element()" />
-        <xsl:variable name="translatedStyleName" as="xs:string" select="string($element/descendant-or-self::w:pStyle/@w:val)"/>
+        <xsl:param name="element" as="element()?" />
+        <xsl:variable name="translatedStyleName" as="xs:string" select="string($element/descendant-or-self::w:pStyle[1]/@w:val)"/>
         <xsl:value-of select="$translatedStyleName"/>
     </xsl:function>
 
@@ -726,8 +1040,8 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getTranslatedRStyleName" as="xs:string">
-        <xsl:param name="element" as="element()" />
-        <xsl:variable name="translatedStyleName" as="xs:string" select="string($element/descendant-or-self::w:rStyle/@w:val)"/>
+        <xsl:param name="element" as="element()?" />
+        <xsl:variable name="translatedStyleName" as="xs:string" select="string($element/descendant-or-self::w:rStyle[1]/@w:val)"/>
         <xsl:value-of select="$translatedStyleName"/>
     </xsl:function>
 
@@ -748,7 +1062,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getRealStyleNameFromP" as="xs:string">
-        <xsl:param name="element" as="element()" />
+        <xsl:param name="element" as="element()?" />
         <xsl:variable name="translatedStyle" as="xs:string" select="f:getTranslatedPStyleName($element)" />
         <xsl:variable name="realStyle" as="xs:string" select="string($styles//w:style[@w:styleId = $translatedStyle]/w:name/@w:val)"/>
         <xsl:value-of select="$realStyle"/>
@@ -760,7 +1074,7 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getRealStyleNameFromR" as="xs:string">
-        <xsl:param name="element" as="element()" />
+        <xsl:param name="element" as="element()?" />
         <xsl:variable name="translatedStyle" as="xs:string" select="f:getTranslatedRStyleName($element)" />
         <xsl:variable name="realStyle" as="xs:string" select="string($styles//w:style[@w:styleId = $translatedStyle]/w:name/@w:val)"/>
         <xsl:value-of select="$realStyle"/>
@@ -779,13 +1093,27 @@ Under the following terms:
         <xsl:value-of select="$isPreformatted"/>
     </xsl:function>
 
+    <xd:doc scope="f:pIsListElement">
+        <xd:desc>
+            <xd:p>This function says whether a paragraph is contained in a list.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:pIsListElement" as="xs:boolean">
+        <xsl:param name="element" as="element()?" />
+        <xsl:variable name="isListElement"
+                      as="xs:boolean"
+                      select="f:getRealStyleNameFromP($element) = 'List Paragraph'"
+        />
+        <xsl:value-of select="$isListElement"/>
+    </xsl:function>
+
     <xd:doc scope="f:isNote">
         <xd:desc>
             <xd:p>TODO</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:isNote" as="xs:boolean">
-        <xsl:param name="element" as="element()" />
+        <xsl:param name="element" as="element()?" />
         <xsl:variable name="hasNoteStyle"
                       as="xs:boolean"
                       select="f:getRealStyleNameFromR($element) = 'footnote reference'"
@@ -810,6 +1138,200 @@ Under the following terms:
         />
         <xsl:value-of select="$isListingBox"/>
     </xsl:function>
+
+    <xd:doc scope="f:getListItems">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getListItems" as="element()*">
+        <xsl:param name="firstListItem" as="element()" />
+        <xsl:variable name="currentNumId"
+                      as="xs:integer"
+                      select="$firstListItem/w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:variable name="nextListsElements"
+                      as="element()*"
+                      select="$firstListItem/following-sibling::w:p[f:pIsListElement(.)]"
+        />
+        <xsl:variable name="firstElementOfNextList"
+                      as="element()?"
+                      select="$firstListItem/following-sibling::w:p[f:pIsListElement(.)][w:pPr/w:numPr/w:numId/@w:val != $currentNumId][1]"
+        />
+        <xsl:variable name="nextListsElementsNotInTheSameList"
+                      as="element()*"
+                      select="$firstElementOfNextList/following-sibling::w:p[f:pIsListElement(.)]"
+        />
+        <xsl:variable name="thisListItems"
+                      as="element()*"
+                      select="($firstListItem , $nextListsElements) except ($firstElementOfNextList, $nextListsElementsNotInTheSameList)"
+        />
+        <xsl:sequence select="$thisListItems"/>
+    </xsl:function>
+
+    <xd:doc scope="f:isFirstListItem">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isFirstListItem" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:variable name="precedingItem"
+                      as="element()?"
+                      select="$element/preceding-sibling::w:p[f:pIsListElement(.)][1]"
+        />
+        <xsl:variable name="nextItem"
+                      as="element()?"
+                      select="$element/following-sibling::w:p[f:pIsListElement(.)][1]"
+        />
+        <xsl:value-of select="
+                not(exists($precedingItem))
+                or ($precedingItem/w:pPr/w:numPr/w:numId/@w:val = $nextItem/w:pPr/w:numPr/w:numId/@w:val)
+                or ($precedingItem/w:pPr/w:numPr/w:numId/@w:val != $element/w:pPr/w:numPr/w:numId/@w:val)
+            "
+        />
+    </xsl:function>
+
+    <xd:doc scope="f:pIsBetweenTwoListItems">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:pIsBetweenTwoListItems" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:variable name="previousItem"
+                      as="element()?"
+                      select="$element/preceding-sibling::w:p[1]"
+        />
+        <xsl:variable name="nextItem"
+                      as="element()?"
+                      select="$element/following-sibling::w:p[1]"
+        />
+        <xsl:variable name="isBetweenTwoItems"
+                      as="xs:boolean"
+                      select="f:pIsListElement($previousItem)
+                              and f:pIsListElement($nextItem)
+                              and $previousItem/w:pPr/w:numPr/w:numId/@w:val = $nextItem/w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:value-of select="$isBetweenTwoItems"/>
+    </xsl:function>
+
+    <xd:doc scope="f:pIsCaption">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:pIsCaption" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:variable name="previousItem"
+                      as="element()?"
+                      select="$element/preceding-sibling::w:p[1]"
+        />
+
+        <xsl:variable name="isCaption"
+                      as="xs:boolean"
+                      select="f:getRealStyleNameFromP($element) = 'caption'"
+        />
+        <xsl:value-of select="$isCaption and exists($previousItem)"/>
+    </xsl:function>
+
+    <xd:doc scope="f:rHasAnImage">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:rHasAnImage" as="xs:boolean">
+        <xsl:param name="element" as="element()?" />
+        <xsl:variable name="image"
+                      as="element()?"
+                      select="$element/descendant::pic:pic[pic:blipFill/a:blip]"
+        />
+        <xsl:value-of select="exists($image)"/>
+    </xsl:function>
+
+    <xd:doc scope="f:getImageNameById">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getImageNameById" as="xs:string" xpath-default-namespace="http://schemas.openxmlformats.org/package/2006/relationships">
+        <xsl:param name="id" as="xs:string" />
+        <xsl:variable name="imageName"
+                      as="xs:string"
+                      select="string($links//Relationship[@Id = $id]/@Target)"
+        />
+        <xsl:value-of select="$imageName"/>
+    </xsl:function>
+
+    <xd:doc scope="f:containsText">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:containsText" as="xs:boolean">
+        <xsl:param name="element" as="element()" />
+        <xsl:value-of select="exists($element/descendant-or-self::w:t)" />
+    </xsl:function>
+
+    <xd:doc scope="f:substringAfterFirstNumber">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:substringAfterFirstNumber" as="xs:string">
+        <xsl:param name="s" as="xs:string?" />
+        <xsl:variable name="substrings" as="xs:string*">
+            <xsl:for-each select="(0 to 9)">
+                <xsl:if test="contains($s, string(.))">
+                    <xsl:value-of select="substring-after($s, string(.))"/>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:value-of select="$substrings[1]" />
+    </xsl:function>
+
+    <xd:doc scope="f:nodeContainsANumber">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:nodeContainsANumber" as="xs:boolean">
+        <xsl:param name="node" as="node()" />
+        <xsl:variable name="nodeText"
+                      as="xs:string"
+                      select="string($node//text())"
+        />
+        <xsl:value-of select="if (some $i in (0 to 9) satisfies contains($nodeText, string($i))) then true() else false()" />
+    </xsl:function>
+
+    <xd:doc scope="f:getCaptionNodes">
+        <xd:desc>
+            <xd:p>TODO</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getCaptionNodes" as="node()*">
+        <xsl:param name="nodes" as="node()*" />
+        <xsl:variable name="firstNodeContainingANumberIndex"
+                      as="xs:integer"
+                      select="index-of($nodes, $nodes[f:nodeContainsANumber(.)][1])"
+        />
+        <xsl:value-of select="subsequence($nodes, $firstNodeContainingANumberIndex + 1)" />
+    </xsl:function>
+
+    <!--<xd:doc scope="f:getCaptionText">-->
+        <!--<xd:desc>-->
+            <!--<xd:p>TODO</xd:p>-->
+        <!--</xd:desc>-->
+    <!--</xd:doc>-->
+    <!--<xsl:function name="f:getCaptionText" as="xs:string">-->
+        <!--<xsl:param name="element" as="element()" />-->
+        <!--<xsl:variable name="text" as="xs:string">-->
+            <!--<xsl:for-each select="$element/descendant-or-self::text()">-->
+                <!--<xsl:value-of select="concat($text, .)" />-->
+            <!--</xsl:for-each>-->
+        <!--</xsl:variable>-->
+        <!--<xsl:value-of select="$text" />-->
+    <!--</xsl:function>-->
 
     <!--<xd:doc scope="f:getCaptionNodes">-->
         <!--<xd:desc>-->

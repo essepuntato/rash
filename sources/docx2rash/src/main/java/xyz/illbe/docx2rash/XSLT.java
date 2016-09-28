@@ -18,6 +18,7 @@ import java.io.*;
 public class XSLT {
 
     private final String XSLT_PATH = "xslt" + File.separator + "from-docx.xsl";
+//    private final String XSLT_PATH = "xslt" + File.separator + "omml2mml.xsl";
     private final String WORKING_DIR = "workingdir";
     private final String JS_RESOURCES_DIR = "js";
     private final String CSS_RESOURCES_DIR = "css";
@@ -92,6 +93,13 @@ public class XSLT {
                     new File(this.rashDirectory, "fonts"),
                     new File(outputDirPath + File.separator + "fonts")
             );
+            File imageDir = new File(WORKING_DIR, "word" + File.separator + "media");
+            if (imageDir.exists()) {
+                FileUtils.copyDirectory(
+                        imageDir,
+                        new File(outputDirPath + File.separator + "img")
+                );
+            }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
