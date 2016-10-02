@@ -1,6 +1,7 @@
 output/
-tempdir/
-docx/
+workingdir/
+docx.xslt
+omml2mml.xsl
 
 # IntelliJ Idea
 .idea/
