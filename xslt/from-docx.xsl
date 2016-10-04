@@ -40,8 +40,8 @@ Under the following terms:
 
     <xd:doc scope="stylesheet">
         <xd:desc>
-            <xd:p><xd:b>Created on:</xd:b> Dec 25, 2015</xd:p>
-            <xd:p><xd:b>Author:</xd:b> Silvio Peroni</xd:p>
+            <xd:p><xd:b>Created on:</xd:b> Oct 5, 2016</xd:p>
+            <xd:p><xd:b>Author:</xd:b> Alberto Nicoletti</xd:p>
             <xd:p>This XSLT document allows the conversion of any DOCX document into RASH.</xd:p>
         </xd:desc>
     </xd:doc>
@@ -55,13 +55,13 @@ Under the following terms:
         This parameters refers to the base path that all the URL of the CSS files
         of the final RASH document should have.
     -->
-    <xsl:param name="basecss" select="'./css/'" />
+    <xsl:param name="basecss" select="'../../css/'" />
 
     <!--
         This parameters refers to the base path that all the URL of the Javascript files
         of the final RASH document should have.
     -->
-    <xsl:param name="basejs" select="'./js/'" />
+    <xsl:param name="basejs" select="'../../js/'" />
 
     <!--
         This parameters refers to the base path that all the URL of the RelaxNG files
@@ -79,7 +79,7 @@ Under the following terms:
         This parameters refers to the directory that contains the actual XML content
         of the ODT document to transform.
     -->
-    <xsl:param name="dir" select="'./workingdir/word/'" />
+    <xsl:param name="dir" select="'./word/'" />
     <!--<xsl:param name="dir" select="'../testbed/docx/testbed-8/word/'" />-->
 
     <!-- This variable is used to remove separators in captions -->
@@ -1027,7 +1027,7 @@ Under the following terms:
     </xd:doc>
     <xsl:template name="set.bookmarked.object.id">
         <xsl:variable name="id" select="(.//w:bookmarkStart/@w:name)[last()]" as="xs:string*" />
-        <xsl:if test="$id">
+        <xsl:if test="$id and $id != '_GoBack'">
             <xsl:attribute name="id" select="$id" />
         </xsl:if>
     </xsl:template>

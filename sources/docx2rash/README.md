@@ -13,7 +13,3 @@ docx2rash
 
 -h, --help
 ```
-
-## TODO List
-- Add an array of files as input
-- If the input file is a directory, convert every .docx file in that directory

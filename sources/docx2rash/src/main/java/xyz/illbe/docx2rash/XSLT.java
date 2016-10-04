@@ -11,87 +11,106 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.util.LinkedList;
 
 /**
  * Applies an XSLT stylesheet to an XML file
  */
 public class XSLT {
 
-    private final String XSLT_PATH = "xslt" + File.separator + "from-docx.xsl";
-//    private final String XSLT_PATH = "xslt" + File.separator + "omml2mml.xsl";
+    private final String XSLT_DIR = "xslt";
+    private final String DOCX_XSLT = "from-docx.xsl";
+    private final String OMML_XSLT = "omml2mml.xsl";
     private final String WORKING_DIR = "workingdir";
     private final String JS_RESOURCES_DIR = "js";
     private final String CSS_RESOURCES_DIR = "css";
+    private final String FONTS_RESOURCES_DIR = "fonts";
 
     private File rashDirectory;
 
-    private String outputFilename;
+    private LinkedList<File> inputFiles = new LinkedList<File>();
 
-    private ClassLoader classLoader;
     private Transformer transformer;
 
     public XSLT(String inputFilePath) {
         this.rashDirectory = new File(".").getAbsoluteFile().getParentFile().getParentFile().getParentFile();
-        String inputFilename = new File(inputFilePath).getName();
-        this.outputFilename = inputFilename.substring(0, inputFilename.lastIndexOf(".")) + ".html";
         File inputFile = new File(inputFilePath);
-//        TODO: Processare tutti i file nella directory
-//        if (inputFile.isDirectory()) {
-//
-//        }
-        File xsltFile = new File(this.rashDirectory, XSLT_PATH);
-        File movedXsltFile = new File("docx.xslt");
-        try {
-            FileUtils.copyFile(xsltFile, movedXsltFile);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        if (inputFile.isDirectory()) {
+        	for(File f : inputFile.listFiles()) {
+        		if (f.getName().endsWith(".docx")) {
+        			inputFiles.add(f);
+        		}
+        	}
+        } else {
+            inputFiles.add(inputFile);
         }
-        classLoader = this.getClass().getClassLoader();
-        StreamSource xsltStream = new StreamSource(movedXsltFile);
-        // StreamSource xsltStream = new StreamSource(classLoader.getResourceAsStream(XSLT_PATH));
-        TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
+    }
+
+    public void transform(String outputDirPath) throws TransformerException {
+        for (File file : inputFiles) {
+            File docxXslt = new File(this.rashDirectory, XSLT_DIR + File.separator + DOCX_XSLT);
+            File ommlXslt = new File(this.rashDirectory, XSLT_DIR + File.separator + OMML_XSLT);
+            File movedDocxXsltFile = new File(WORKING_DIR, "docx2rash.xsl");
+            File movedOmmlXsltFile = new File(WORKING_DIR, "omml2mml.xsl");
+            try {
+                FileUtils.copyFile(docxXslt, movedDocxXsltFile);
+                FileUtils.copyFile(ommlXslt, movedOmmlXsltFile);
+            } catch (IOException e) {
+                System.err.println("Error moving the XSLT files: " + e.getMessage());
+            }
+            StreamSource xsltStream = new StreamSource(movedDocxXsltFile);
+            TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
+            try {
+                transformer = tFactory.newTransformer(xsltStream);
+            } catch (TransformerConfigurationException e) {
+                System.err.println(e.getMessage());
+            }
+            unzipDocx(file);
+            String input = WORKING_DIR + File.separator + "word" + File.separator + "document.xml";
+            File subdirectory = new File(outputDirPath, file.getName().substring(0, file.getName().lastIndexOf(".")));
+            boolean createSuccessful = true;
+            if (!subdirectory.exists()) {
+                createSuccessful = subdirectory.mkdirs();
+            }
+            if (createSuccessful) {
+                File output = new File(subdirectory, file.getName().substring(0, file.getName().lastIndexOf(".")) + ".html");
+                this.copyResourcesTo(subdirectory.getPath());
+                try {
+                    transformer.transform(
+                            new StreamSource(new FileInputStream(input)),
+                            new StreamResult(new FileOutputStream(output))
+                    );
+                } catch (FileNotFoundException e) {
+                    System.err.println("File not found: " + e.getMessage());
+                }
+            } else {
+                System.err.println("Can't create directory");
+            }
+            this.deleteWorkingDir();
+        }
+    }
+
+    private void unzipDocx(File docx) {
         try {
-            ZipUtils.unzip(inputFile, WORKING_DIR);
-            transformer = tFactory.newTransformer(xsltStream);
-        } catch (TransformerConfigurationException e) {
-            System.err.println(e.getMessage());
+            ZipUtils.unzip(docx, WORKING_DIR);
         } catch (ZipException e) {
             System.err.println("Error while unzipping the .docx file" + e.getMessage());
         }
     }
 
-    public void transform(String outputDirPath) {
-        String input = WORKING_DIR + File.separator + "word" + File.separator + "document.xml";
-        File output = new File(outputDirPath + File.separator + this.outputFilename);
-        this.copyResourcesTo(outputDirPath);
-        try {
-            transformer.transform(
-                    new StreamSource(new FileInputStream(input)),
-                    new StreamResult(new FileOutputStream(output))
-            );
-        } catch (TransformerException e) {
-            System.err.println(e.getMessage());
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        this.deleteWorkingDir();
-    }
-
     private void copyResourcesTo(String outputDirPath) {
         try {
             FileUtils.copyDirectory(
-                    new File(this.rashDirectory, "js"),
-                    new File(outputDirPath + File.separator + "js")
+                    new File(this.rashDirectory, JS_RESOURCES_DIR),
+                    new File(outputDirPath + File.separator + JS_RESOURCES_DIR)
             );
             FileUtils.copyDirectory(
-                    new File(this.rashDirectory, "css"),
-                    new File(outputDirPath + File.separator + "css")
+                    new File(this.rashDirectory, CSS_RESOURCES_DIR),
+                    new File(outputDirPath + File.separator + CSS_RESOURCES_DIR)
             );
             FileUtils.copyDirectory(
-                    new File(this.rashDirectory, "fonts"),
-                    new File(outputDirPath + File.separator + "fonts")
+                    new File(this.rashDirectory, FONTS_RESOURCES_DIR),
+                    new File(outputDirPath + File.separator + FONTS_RESOURCES_DIR)
             );
             File imageDir = new File(WORKING_DIR, "word" + File.separator + "media");
             if (imageDir.exists()) {

@@ -2,6 +2,7 @@ package xyz.illbe.docx2rash;
 
 import org.apache.commons.cli.*;
 
+import javax.xml.transform.TransformerException;
 import java.util.HashMap;
 
 /**
@@ -58,6 +59,8 @@ public class App {
       System.err.println(e.getMessage());
     } catch (ParseException e) {
       System.err.println("Unexpected error while parsing arguments: " + e.getMessage());
+    } catch (TransformerException e) {
+      System.err.println(e.getMessage());
     }
   }
 
