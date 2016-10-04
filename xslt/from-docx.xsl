@@ -225,6 +225,8 @@ Under the following terms:
         <xsl:variable name="isNote" select="f:isNote(.)" as="xs:boolean" />
         <xsl:variable name="isImage" select="f:rHasAnImage(.)" as="xs:boolean" />
         <xsl:variable name="isRef" as="xs:boolean" select="f:isInsideRef(.)" />
+        <xsl:variable name="lastFormula" as="element()?" select="preceding-sibling::m:oMath" />
+        <xsl:variable name="nextFormula" as="element()?" select="following-sibling::m:oMath" />
 
         <!-- If the immediately previous element doesn't have the same style then proceed -->
         <xsl:variable name="previousElementSameStyle" as="xs:boolean">
@@ -244,6 +246,7 @@ Under the following terms:
                     and $isBold = $prevIsBold and $isItalic = $prevIsItalic and $isCourier = $prevIsCourier
                     and $isSuperscript = $prevIsSuperscript and $isSubscript = $prevIsSubscript
                     and $isNote = $prevIsNote and $isImage = $prevIsImage and $isRef = $prevIsRef
+                    and not(preceding-sibling::*[1] is $lastFormula)
                 "
             />
         </xsl:variable>
@@ -312,15 +315,22 @@ Under the following terms:
                                   as="element()*"
                                   select="., $refRs, $closingRef"
                     />
-                    <xsl:call-template name="add.ref">
-                        <xsl:with-param name="refElements" select="$refElements" />
-                    </xsl:call-template>
+                    <xsl:choose>
+                        <xsl:when test="some $r in $refElements satisfies f:getRealStyleName($r) = 'footnote reference'">
+                            <a href="#ftn{$refElements//w:t}"><xsl:text> </xsl:text></a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="add.ref">
+                                <xsl:with-param name="refElements" select="$refElements" />
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:call-template name="add.inline">
                         <xsl:with-param name="select"
                                         tunnel="yes"
-                                        select="(w:t, ($follTEqual except ($follTNotEqual, f:getFollowing($follTNotEqual)))/w:t)" />
+                                        select="(w:t, ($follTEqual except ($follTNotEqual, f:getFollowing($follTNotEqual), f:getFollowing($nextFormula)))/w:t)" />
                         <xsl:with-param name="super" as="xs:boolean" tunnel="yes" select="$isSuperscript and not($isInsideBlock)" />
                         <xsl:with-param name="sub" as="xs:boolean" tunnel="yes" select="$isSubscript and not($isInsideBlock)" />
                         <xsl:with-param name="bold" as="xs:boolean" tunnel="yes" select="$isBold and not($isInsideBlock)" />
@@ -369,8 +379,8 @@ Under the following terms:
                           '\'
                         )
                       )" />
-        <xsl:variable name="refText" as="xs:string" select="f:getStringFromTextNodes($refElements//w:t)" />
-        <a href="#{$refLink}"><xsl:value-of select="$refText"/></a>
+        <!--<a href="#{$refLink}"><xsl:value-of select="$refText"/></a>-->
+        <a href="#{$refLink}"><xsl:text> </xsl:text></a>
     </xsl:template>
 
     <xd:doc scope="w:p[m:oMathPara]">
@@ -489,7 +499,7 @@ Under the following terms:
         <xsl:param name="isInsideList" as="xs:boolean" />
         <xsl:variable name="parent" select="parent::w:body" as="element()?" />
         <xsl:choose>
-            <xsl:when test="f:pIsCaption(.) or (f:pIsBetweenTwoListItems(.) and not($isInsideList))">
+            <xsl:when test="f:pIsCaption(.) or (f:pIsBetweenTwoListItems(.) and not($isInsideList)) or f:isLastListParagraph(.)">
                 <!--Ignore-->
             </xsl:when>
             <!-- Headings -->
@@ -684,30 +694,23 @@ Under the following terms:
     </xd:doc>
     <xsl:template name="add.listItems">
         <xsl:param name="listElements" as="element()*" />
+        <xsl:variable name="lastItem" as="element()?" select="$listElements[count($listElements)]" />
+        <xsl:variable name="nextListItem" as="element()?" select="$lastItem/following-sibling::w:p[f:pIsListElement(.)][1]" />
+        <xsl:variable name="lastParagraph" as="element()?" select="$lastItem/following-sibling::w:p[1][f:isLastListParagraph(.)]" />
+        <xsl:variable name="lastParagraphs"
+                      as="element()*"
+                      select="
+                        $lastParagraph,
+                        ($lastParagraph/following-sibling::w:p[f:isLastListParagraph(.)] except $nextListItem/following-sibling::w:p[f:isLastListParagraph(.)])
+                      "
+        />
         <xsl:for-each select="$listElements">
-            <xsl:variable name="nextParagraphsNotInList"
-                          as="element()*"
-                          select="following-sibling::w:p[not(f:pIsListElement(.))]"
-            />
-            <xsl:variable name="previousListItemIndex"
-                          as="xs:integer"
-                          select="position()-1"
-            />
-            <xsl:variable name="nextListItemIndex"
-                          as="xs:integer"
-                          select="position()+1"
-            />
+            <xsl:variable name="currentLevel" as="xs:integer" select="./w:pPr/w:numPr/w:ilvl/@w:val" />
+            <xsl:variable name="nextParagraphsNotInList" as="element()*" select="following-sibling::w:p[not(f:pIsListElement(.))]" />
+            <xsl:variable name="nextListItemIndex" as="xs:integer" select="position()+1" />
             <xsl:variable name="paragraphs"
                           as="element()*"
                           select="$nextParagraphsNotInList intersect $listElements[$nextListItemIndex]/preceding-sibling::w:p"
-            />
-            <xsl:variable name="precedingItem"
-                          as="element()?"
-                          select="$listElements[$previousListItemIndex]"
-            />
-            <xsl:variable name="currentLevel"
-                          as="xs:integer"
-                          select="./w:pPr/w:numPr/w:ilvl/@w:val"
             />
             <xsl:variable name="isFirstNested"
                           as="xs:boolean"
@@ -731,10 +734,21 @@ Under the following terms:
                                 <xsl:with-param name="isInsideList" select="true()"/>
                             </xsl:call-template>
                             <xsl:for-each select="$paragraphs">
-                                <xsl:call-template name="add.p">
-                                    <xsl:with-param name="isInsideList" select="true()"/>
-                                </xsl:call-template>
+                                <xsl:if test="f:containsText(.)">
+                                    <p>
+                                        <xsl:apply-templates />
+                                    </p>
+                                </xsl:if>
                             </xsl:for-each>
+                            <xsl:if test="count($listElements) = position()">
+                                <xsl:for-each select="$lastParagraphs">
+                                    <xsl:if test="f:containsText(.)">
+                                        <p>
+                                            <xsl:apply-templates />
+                                        </p>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:if>
                         </li>
                     </xsl:if>
                 </xsl:otherwise>
@@ -1135,6 +1149,20 @@ Under the following terms:
     <xsl:function name="f:isPreformattedParagraph" as="xs:boolean">
         <xsl:param name="element" as="element()" />
         <xsl:value-of select="f:getRealStyleName($element) = 'HTML Preformatted'"/>
+    </xsl:function>
+
+    <xd:doc scope="f:pIsLastParagraph">
+        <xd:desc>
+            <xd:p>This function says whether a paragraph is contained in a list.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isLastListParagraph" as="xs:boolean">
+        <xsl:param name="element" as="element()?" />
+        <!--<xsl:variable name="possiblePs"-->
+                      <!--as="element()*"-->
+                      <!--select="$element/following-sibling::w:p[f:getRealStyleName(.) = 'List Paragraph'][not(exists(w:pPr/w:numPr))]"-->
+        <!--/>-->
+        <xsl:value-of select="f:getRealStyleName($element) = 'List Paragraph' and not(exists($element/w:pPr/w:numPr))" />
     </xsl:function>
 
     <xd:doc scope="f:pIsListElement">
