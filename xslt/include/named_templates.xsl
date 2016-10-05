@@ -75,7 +75,7 @@ Under the following terms:
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{fixltx2e}</xsl:text>
         <xsl:call-template name="n" />
-        <xsl:text>\usepackage{hyperref}</xsl:text>
+        <xsl:text>\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}</xsl:text>
     </xsl:template>
     
     <xsl:template name="url">
