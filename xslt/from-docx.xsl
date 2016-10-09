@@ -55,13 +55,13 @@ Under the following terms:
         This parameters refers to the base path that all the URL of the CSS files
         of the final RASH document should have.
     -->
-    <xsl:param name="basecss" select="'../../css/'" />
+    <xsl:param name="basecss" select="'./css/'" />
 
     <!--
         This parameters refers to the base path that all the URL of the Javascript files
         of the final RASH document should have.
     -->
-    <xsl:param name="basejs" select="'../../js/'" />
+    <xsl:param name="basejs" select="'./js/'" />
 
     <!--
         This parameters refers to the base path that all the URL of the RelaxNG files
@@ -561,12 +561,14 @@ Under the following terms:
                       as="element()?"
                       select="following::w:p[1][f:pIsCaption(.)]"
         />
+        <xsl:variable name="caption"
+                      as="xs:string?"
+                      select="normalize-space(f:getCaptionNodes($captionParagraph/descendant::w:r))"
+        />
         <figcaption>
             <xsl:choose>
                 <xsl:when test="exists($captionParagraph)">
-                    <xsl:for-each select="f:getCaptionNodes($captionParagraph/descendant::w:r)">
-                        <xsl:apply-templates select="." />
-                    </xsl:for-each>
+                    <xsl:value-of select="$caption" />
                 </xsl:when>
                 <xsl:otherwise>
                     No caption has been provided.
@@ -651,8 +653,16 @@ Under the following terms:
                       as="xs:string"
                       select=".//pic:blipFill/a:blip/@r:embed"
         />
+        <xsl:variable name="captionParagraph"
+                      as="element()*"
+                      select="following::w:p[1][f:pIsCaption(.)]/descendant::w:r"
+        />
+        <xsl:variable name="alt"
+                      as="xs:string"
+                      select="normalize-space(f:getCaptionNodes($captionParagraph))"
+        />
         <img src="{$baseimg}/{substring-after(f:getImageNameById($imageId), 'media/')}"
-             alt="Alt" />
+             alt="{if ($captionParagraph) then $alt else 'No alternate description has been provided.'}" />
     </xsl:template>
 
     <xd:doc scope="add.list">
@@ -1387,11 +1397,22 @@ Under the following terms:
     </xd:doc>
     <xsl:function name="f:getCaptionNodes" as="node()*">
         <xsl:param name="nodes" as="node()*" />
-        <xsl:variable name="firstNodeContainingANumberIndex"
-                      as="xs:integer"
-                      select="index-of($nodes, $nodes[f:nodeContainsANumber(.)][1])"
+        <xsl:variable name="firstNodeContainingANumber"
+                      as="element()?"
+                      select="$nodes[f:nodeContainsANumber(.)][1]"
         />
-        <xsl:value-of select="subsequence($nodes, $firstNodeContainingANumberIndex + 1)" />
+        <xsl:choose>
+            <xsl:when test="exists($firstNodeContainingANumber)">
+                <xsl:variable name="firstNodeContainingANumberIndex"
+                              as="xs:integer"
+                              select="index-of($nodes, $firstNodeContainingANumber)"
+                />
+                <xsl:value-of select="subsequence($nodes, $firstNodeContainingANumberIndex + 1)" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$nodes" />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 
     <xd:doc scope="f:sequenceOfTextNodes">
