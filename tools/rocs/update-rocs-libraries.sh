@@ -23,3 +23,7 @@ mkdir $SCRIPTPATH/libraries/acm_journal_large
 cp $SCRIPTPATH/../../cls/acmlarge.cls $SCRIPTPATH/libraries/acm_journal_large
 cp $SCRIPTPATH/../../sty/* $SCRIPTPATH/libraries/acm_journal_large
 cp $SCRIPTPATH/../../xslt/acm-journal-large.xsl $SCRIPTPATH/libraries
+mkdir $SCRIPTPATH/libraries/peerj
+cp $SCRIPTPATH/../../cls/wlpeerj.cls $SCRIPTPATH/libraries/peerj
+cp $SCRIPTPATH/../../sty/* $SCRIPTPATH/libraries/peerj
+cp $SCRIPTPATH/../../xslt/peerj.xsl $SCRIPTPATH/libraries

@@ -39,6 +39,46 @@ Under the following terms:
         <xsl:text>    </xsl:text>
     </xsl:template>
     
+    <xsl:template name="handling-reference">
+        <xsl:variable name="item" select="string-join(iml:p//text(),'')" as="xs:string*" />
+        
+        <xsl:call-template name="n" />
+        <xsl:text>\bibitem</xsl:text>
+        <xsl:if test="$item">
+            <xsl:text>[\protect\citeauthoryear</xsl:text>
+            <xsl:variable name="authors" select="tokenize(tokenize($item,'\s*\(?\d\d\d\d\)?\.')[1],',|( and )')" as="xs:string+" />
+            <xsl:variable name="authorCite" as="xs:string*">
+                <xsl:text>{</xsl:text>
+                <xsl:value-of select="normalize-space(replace(replace($authors[1], '\s+', ' '), '[A-z]\.', ''))" />
+                <xsl:choose>
+                    <xsl:when test="count($authors) = 2">
+                        <xsl:text> and </xsl:text>
+                        <xsl:value-of select="normalize-space(replace(replace($authors[2], '\s+', ' '), '[A-z]\.', ''))" />
+                    </xsl:when>
+                    <xsl:when test="count($authors) > 2">
+                        <xsl:text> et al.</xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+                <xsl:text>}</xsl:text>
+            </xsl:variable>
+            <xsl:value-of select="$authorCite,$authorCite" separator="" />
+            <xsl:analyze-string select="$item" regex=".*[^\d]\.\s*\(?(\d\d\d\d)\)?\..*">
+                <xsl:matching-substring>
+                    <xsl:text>{</xsl:text>
+                    <xsl:value-of select="regex-group(1)"/>
+                    <xsl:text>}</xsl:text>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+            <xsl:text>]</xsl:text>
+        </xsl:if>
+        <xsl:text>{</xsl:text>
+        <xsl:value-of select="@id" />
+        <xsl:text>} </xsl:text>
+        <xsl:call-template name="next">
+            <xsl:with-param name="select" select="iml:p/(text()|element())" />
+        </xsl:call-template>
+    </xsl:template>
+    
     <xsl:template name="document_title">
         <xsl:variable name="cur_title" as="xs:string?" select="f:getTitle(/element())" />
         <xsl:variable name="cur_subtitle" as="xs:string?" select="f:getSubtitle(/element())" />
@@ -102,10 +142,15 @@ Under the following terms:
     </xsl:template>
     
     <xsl:template name="mathml">
-        <xsl:call-template name="n" />
-        <xsl:text>\usepackage{amsmath}</xsl:text>
+        <xsl:call-template name="amsmath" />
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{color,graphics,array,csscolor}</xsl:text>
+        <xsl:call-template name="n" />
+    </xsl:template>
+    
+    <xsl:template name="amsmath">
+        <xsl:call-template name="n" />
+        <xsl:text>\usepackage{amsmath}</xsl:text>
         <xsl:call-template name="n" />
         <xsl:text>\usepackage{pmml-new}</xsl:text>
         <xsl:call-template name="n" />

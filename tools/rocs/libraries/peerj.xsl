@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.1.1, April 29, 2016
+From RASH to PeerJ LaTeX style XSLT transformation file - Version 1.0, October 6, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -47,13 +47,14 @@ Under the following terms:
     <!-- Main template -->
     <xsl:template match="/">
         <!-- LaTeX style -->
-        <xsl:text>\documentclass[runningheads,a4paper]{llncs}</xsl:text>
+        <!-- uses \documentclass[fleqn,10pt,lineno]{wlpeerj} % for journal submissions -->
+        <xsl:text>\documentclass[fleqn,10pt]{wlpeerj}</xsl:text>
         <xsl:call-template name="standard_packages" />
         <xsl:call-template name="url" />
         <xsl:call-template name="verbatim_text" />
         <xsl:call-template name="footnote_verb" />
         <xsl:call-template name="graphics" />
-        <xsl:call-template name="mathml" />
+        <xsl:call-template name="amsmath" />
         <xsl:call-template name="greek" />
         
         <xsl:call-template name="n" />
@@ -63,14 +64,8 @@ Under the following terms:
         
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
-        <xsl:text>\begin{document}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:text>\mainmatter</xsl:text>
-        <xsl:call-template name="n" />
         
-        <xsl:call-template name="n" />
-        
-        <xsl:apply-templates select="element()">
+        <xsl:apply-templates select="//iml:head">
             <!-- Defalut values -->
             <xsl:with-param name="lang" select="'en-s'" as="xs:string" tunnel="yes" />
             <xsl:with-param name="document.lang" select="if (exists(/element()[@xml:lang])) then /element()/@xml:lang else 'en-s'" tunnel="yes" />
@@ -80,7 +75,31 @@ Under the following terms:
             <xsl:with-param name="img.content.width" select="$img.content.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="img.default.width" select="$img.default.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
-            <xsl:with-param name="numbering" select="true()" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="false()" as="xs:boolean" tunnel="yes" />
+        </xsl:apply-templates>
+        <xsl:call-template name="n" />
+        <xsl:call-template name="n" />
+        <xsl:text>\begin{document}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\flushbottom</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\maketitle</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:text>\thispagestyle{empty}</xsl:text>
+        <xsl:call-template name="n" />
+        <xsl:call-template name="n" />
+        
+        <xsl:apply-templates select="//iml:body">
+            <!-- Defalut values -->
+            <xsl:with-param name="lang" select="'en-s'" as="xs:string" tunnel="yes" />
+            <xsl:with-param name="document.lang" select="if (exists(/element()[@xml:lang])) then /element()/@xml:lang else 'en-s'" tunnel="yes" />
+            <xsl:with-param name="type" select="'bullet'" as="xs:string" tunnel="yes" />
+            <xsl:with-param name="deep" select="0" as="xs:integer" tunnel="yes" />
+            <xsl:with-param name="all.languages" select="$v_all.languages" as="xs:string*" tunnel="yes" />
+            <xsl:with-param name="img.content.width" select="$img.content.width" as="xs:string*" tunnel="yes" />
+            <xsl:with-param name="img.default.width" select="$img.default.width" as="xs:string*" tunnel="yes" />
+            <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="false()" as="xs:boolean" tunnel="yes" />
         </xsl:apply-templates>
         
         <xsl:call-template name="n" />
@@ -93,82 +112,43 @@ Under the following terms:
         <xsl:value-of select="$titlestr"/>
         <xsl:text>}</xsl:text>
         <xsl:call-template name="n" />
-        
-        <xsl:if test="string-length($titlestr) > 40">
-            <xsl:text>\titlerunning{</xsl:text>
-            <xsl:choose>
-                <xsl:when test="contains($titlestr, ':')">
-                    <xsl:value-of select="substring(substring-before($titlestr,':'), 0, 40)" />
-                </xsl:when>
-                <xsl:when test="contains($titlestr, '-')">
-                    <xsl:value-of select="substring(substring-before($titlestr,'-'), 0, 40)" />
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="substring($titlestr, 0, 40)" />
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:text>}</xsl:text>
-        </xsl:if>
         <xsl:call-template name="n" />
         
         <xsl:variable name="affiliations" select="distinct-values(for $aff in iml:link[@property = 'schema:affiliation']/@href return iml:meta[@about = $aff]/@content)" as="xs:string*" />
         <xsl:variable name="authors" select="iml:meta[@name='dc.creator']" as="element()*" />
         
         <!-- Authors -->
-        <xsl:text>\author{</xsl:text>
         <xsl:for-each select="$authors">
+            <xsl:call-template name="n" />
+            <xsl:variable name="position" as="xs:integer" select="position()" />
+            <xsl:text>\author[</xsl:text><xsl:value-of select="$position" /><xsl:text>]{</xsl:text>
+            <xsl:value-of select="@content" />
+            <xsl:text>}</xsl:text>
+        </xsl:for-each>
+        <xsl:call-template name="n" />
+        <!-- Affiliation -->
+        <xsl:for-each select="$authors">
+            <xsl:call-template name="n" />
+            <xsl:variable name="position" as="xs:integer" select="position()" />
             <xsl:variable name="curId" as="xs:string" select="@about"/>
             
-            <xsl:value-of select="@content" />
-            <xsl:text>\inst{</xsl:text>
-                <xsl:for-each select="for $aff in ../iml:link[@property = 'schema:affiliation' and @about = $curId]/@href return ../iml:meta[@about = $aff]/@content">
-                    <xsl:value-of select="index-of($affiliations, .)" />
-                    <xsl:if test="position() != last()">
-                        <xsl:text>,</xsl:text>
-                    </xsl:if>
-                </xsl:for-each>
+            <xsl:text>\affil[</xsl:text><xsl:value-of select="$position" /><xsl:text>]{</xsl:text>
+            <xsl:for-each select="
+                for $affId in ../iml:link[@property='schema:affiliation' and @about=$curId]/@href 
+                return ../iml:meta[@about = $affId]">
+                <xsl:value-of select="@content" />
+                <xsl:if test="position() != last()">
+                    <xsl:text>; </xsl:text>
+                </xsl:if>
+            </xsl:for-each>
             <xsl:text>}</xsl:text>
-            
-            <xsl:if test="position() != last()">
-                <xsl:text> \and</xsl:text>
-                <xsl:call-template name="n" />
-            </xsl:if>
-        </xsl:for-each>
-        <xsl:text>}</xsl:text>
-        <xsl:call-template name="n" />
-        <xsl:if test="count($authors) > 2">
-            <xsl:text>\authorrunning{</xsl:text>
-            <xsl:value-of select="$authors[1]/@content" />
-            <xsl:text> et al.</xsl:text>
-            <xsl:text>}</xsl:text>
-        </xsl:if>
-        
-        <xsl:call-template name="n" />
-        <xsl:text>\institute{</xsl:text>
-        <!-- Affiliation -->
-        <xsl:for-each select="$affiliations">
-            <xsl:value-of select="." />
-            <xsl:if test="position() != last()">
-                <xsl:text>\and</xsl:text>
-                <xsl:call-template name="n" />
-            </xsl:if>
         </xsl:for-each>
         
-        <!-- E-mail -->
-        <xsl:text>\\</xsl:text>
+        <!-- E-mail corresponding author -->
         <xsl:call-template name="n" />
-        <xsl:text>\email{</xsl:text>
-        <xsl:for-each select="iml:meta[@property = 'schema:email']/@content">
-            <xsl:value-of select="." />
-            <xsl:if test="position() != last()">
-                <xsl:text>, </xsl:text>
-                <xsl:call-template name="n" />
-            </xsl:if>
-        </xsl:for-each>
-        <xsl:text>}}</xsl:text>
-        
-        <xsl:call-template name="n" />
-        <xsl:text>\maketitle</xsl:text>
+        <xsl:text>\corrauthor[1]{</xsl:text>
+        <xsl:value-of select="$authors[1]/@content" /><xsl:text>}</xsl:text>
+        <xsl:text>{</xsl:text><xsl:value-of select="iml:meta[@about = $authors[1]/@about and @property = 'schema:email']/@content" /><xsl:text>}</xsl:text>
         
         <xsl:call-template name="next">
             <xsl:with-param name="select" select="//iml:body/iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-abstract']"/>
@@ -181,20 +161,6 @@ Under the following terms:
         <xsl:text>\begin{abstract}</xsl:text>
         <xsl:call-template name="next" />
         <xsl:call-template name="n" />
-        <!-- Add keywords -->
-        <xsl:if test="exists(//iml:meta[@property = 'prism:keyword'])">
-            <xsl:call-template name="n" />
-            <xsl:text>\keywords{</xsl:text>
-            <xsl:for-each select="//iml:meta[@property = 'prism:keyword']">
-                <xsl:sort select="@content" data-type="text"/>
-                <xsl:value-of select="@content"/>
-                <xsl:if test="position() != last()">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-            <xsl:text>}</xsl:text>
-            <xsl:call-template name="n" />
-        </xsl:if>
         <xsl:text>\end{abstract}</xsl:text>
     </xsl:template>
     
@@ -207,7 +173,7 @@ Under the following terms:
     
     <xsl:template match="iml:ol[empty(ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography'])]" priority="3.0">
         <xsl:call-template name="n" />
-        <xsl:text>\begin{enumerate}</xsl:text>
+        <xsl:text>\begin{enumerate}[noitemsep]</xsl:text>
         <xsl:call-template name="next" />
         <xsl:call-template name="n" />
         <xsl:text>\end{enumerate}</xsl:text>
@@ -215,10 +181,36 @@ Under the following terms:
     
     <xsl:template match="iml:ul[empty(ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-bibliography'])]" priority="3.0">
         <xsl:call-template name="n" />
-        <xsl:text>\begin{itemize}</xsl:text>
+        <xsl:text>\begin{itemize}[noitemsep]</xsl:text>
         <xsl:call-template name="next" />
         <xsl:call-template name="n" />
         <xsl:text>\end{itemize}</xsl:text>
+    </xsl:template>
+    
+    <xsl:template match="element()[iml:li[@role = 'doc-biblioentry']][parent::iml:section[@role = 'doc-bibliography']]" priority="1.7">
+        <xsl:for-each select="iml:li">
+            <xsl:sort data-type="text" select="lower-case(string-join(iml:p//text(),''))" />
+            <xsl:call-template name="handling-reference" />
+        </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template match="iml:a[@href and normalize-space() = ''][some $id in substring-after(@href, '#') satisfies exists(//iml:li[@id = $id][some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioentry'])]" priority="5">
+        <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
+        
+        <xsl:variable name="curID" select="substring-after(@href, '#')" as="xs:string" />
+        <xsl:variable name="el" select="//element()[@id = $curID][1]" as="element()*" />
+        <xsl:choose>
+            <xsl:when test="exists($el)">
+                <xsl:text> \citep{</xsl:text>
+                <xsl:value-of select="if ($id-for-refs) then concat($id-for-refs,'-',$curID) else $curID" />
+                <xsl:text>}</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>NOREF[</xsl:text>
+                <xsl:value-of select="@href" />
+                <xsl:text>]</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="element()" />

@@ -85,6 +85,7 @@ Under the following terms:
             <xsl:with-param name="deep" select="0" as="xs:integer" tunnel="yes" />
             <xsl:with-param name="all.languages" select="$v_all.languages" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="true()" as="xs:boolean" tunnel="yes" />
         </xsl:apply-templates>
         
         <xsl:call-template name="n" />

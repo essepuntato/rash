@@ -115,6 +115,7 @@ Under the following terms:
                                         $token = 'doc-footnotes' or
                                         $token = 'doc-footnote'])]">
         <xsl:param name="deep" as="xs:integer" tunnel="yes" />
+        <xsl:param name="numbering" as="xs:boolean" tunnel="yes" />
         
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
@@ -165,7 +166,7 @@ Under the following terms:
                 </xsl:choose>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="$notNumbered or $isAppendix">
+        <xsl:if test="not($numbering) or $notNumbered or $isAppendix">
             <xsl:text>*</xsl:text>
         </xsl:if>
         <xsl:text>{</xsl:text>

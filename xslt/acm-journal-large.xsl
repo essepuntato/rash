@@ -128,6 +128,7 @@ Under the following terms:
             <xsl:with-param name="img.content.width" select="$img.content.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="img.default.width" select="$img.default.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="true()" as="xs:boolean" tunnel="yes" />
         </xsl:apply-templates>
         
         <xsl:call-template name="n" />
@@ -171,43 +172,7 @@ Under the following terms:
     
     <xsl:template match="element()[iml:li[@role = 'doc-biblioentry']][parent::iml:section[@role = 'doc-bibliography']]" priority="1.7">
         <xsl:for-each select="iml:li">
-            <xsl:variable name="item" select="string-join(iml:p//text(),'')" as="xs:string*" />
-            
-            <xsl:call-template name="n" />
-            <xsl:text>\bibitem</xsl:text>
-            <xsl:if test="$item">
-                <xsl:text>[\protect\citeauthoryear</xsl:text>
-                <xsl:variable name="authors" select="tokenize(tokenize($item,'\. ?\(?\d\d\d\d\)?\.')[1],',|( and )')" as="xs:string+" />
-                <xsl:variable name="authorCite" as="xs:string*">
-                    <xsl:text>{</xsl:text>
-                    <xsl:value-of select="normalize-space($authors[1])" />
-                    <xsl:choose>
-                        <xsl:when test="count($authors) = 2">
-                            <xsl:text> and </xsl:text>
-                            <xsl:value-of select="normalize-space($authors[2])" />
-                        </xsl:when>
-                        <xsl:when test="count($authors) > 2">
-                            <xsl:text> et al.</xsl:text>
-                        </xsl:when>
-                    </xsl:choose>
-                    <xsl:text>}</xsl:text>
-                </xsl:variable>
-                <xsl:value-of select="$authorCite,$authorCite" separator="" />
-                <xsl:analyze-string select="$item" regex=".*[^\d]\. ?\(?(\d\d\d\d)\)?\..*">
-                    <xsl:matching-substring>
-                        <xsl:text>{</xsl:text>
-                        <xsl:value-of select="regex-group(1)"/>
-                        <xsl:text>}</xsl:text>
-                    </xsl:matching-substring>
-                </xsl:analyze-string>
-                <xsl:text>]</xsl:text>
-            </xsl:if>
-            <xsl:text>{</xsl:text>
-            <xsl:value-of select="@id" />
-            <xsl:text>} </xsl:text>
-            <xsl:call-template name="next">
-                <xsl:with-param name="select" select="iml:p/(text()|element())" />
-            </xsl:call-template>
+            <xsl:call-template name="handling-reference" />
         </xsl:for-each>
     </xsl:template>
     
