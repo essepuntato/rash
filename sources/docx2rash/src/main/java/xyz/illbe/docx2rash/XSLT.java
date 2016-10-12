@@ -21,10 +21,12 @@ public class XSLT {
     private final String XSLT_DIR = "xslt";
     private final String DOCX_XSLT = "from-docx.xsl";
     private final String OMML_XSLT = "omml2mml.xsl";
-    private final String WORKING_DIR = "workingdir";
+    private final String WORKING_DIR = ".workingdir";
     private final String JS_RESOURCES_DIR = "js";
     private final String CSS_RESOURCES_DIR = "css";
     private final String FONTS_RESOURCES_DIR = "fonts";
+    private final String GRAMMAR_RESOURCES_DIR = "grammar";
+    private final String RNG_FILENAME = "rash.rng";
 
     private File rashDirectory;
 
@@ -111,6 +113,10 @@ public class XSLT {
             FileUtils.copyDirectory(
                     new File(this.rashDirectory, FONTS_RESOURCES_DIR),
                     new File(outputDirPath + File.separator + FONTS_RESOURCES_DIR)
+            );
+            FileUtils.copyFile(
+                    new File(this.rashDirectory + File.separator + GRAMMAR_RESOURCES_DIR, RNG_FILENAME),
+                    new File(outputDirPath, RNG_FILENAME)
             );
             File imageDir = new File(WORKING_DIR, "word" + File.separator + "media");
             if (imageDir.exists()) {

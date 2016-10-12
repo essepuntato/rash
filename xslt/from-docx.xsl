@@ -557,17 +557,10 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template name="add.caption">
-        <xsl:variable name="captionParagraph"
-                      as="element()?"
-                      select="following::w:p[1][f:pIsCaption(.)]"
-        />
-        <xsl:variable name="caption"
-                      as="xs:string?"
-                      select="normalize-space(f:getCaptionNodes($captionParagraph/descendant::w:r))"
-        />
+        <xsl:variable name="caption" as="xs:string" select="f:getCaptionText(.)" />
         <figcaption>
             <xsl:choose>
-                <xsl:when test="exists($captionParagraph)">
+                <xsl:when test="string-length($caption) > 0">
                     <xsl:value-of select="$caption" />
                 </xsl:when>
                 <xsl:otherwise>
@@ -653,16 +646,9 @@ Under the following terms:
                       as="xs:string"
                       select=".//pic:blipFill/a:blip/@r:embed"
         />
-        <xsl:variable name="captionParagraph"
-                      as="element()*"
-                      select="following::w:p[1][f:pIsCaption(.)]/descendant::w:r"
-        />
-        <xsl:variable name="alt"
-                      as="xs:string"
-                      select="normalize-space(f:getCaptionNodes($captionParagraph))"
-        />
+        <xsl:variable name="alt" as="xs:string" select="f:getCaptionText(.)" />
         <img src="{$baseimg}/{substring-after(f:getImageNameById($imageId), 'media/')}"
-             alt="{if ($captionParagraph) then $alt else 'No alternate description has been provided.'}" />
+             alt="{if (string-length($alt) > 0) then $alt else 'No alternate description has been provided.'}" />
     </xsl:template>
 
     <xd:doc scope="add.list">
@@ -1392,11 +1378,15 @@ Under the following terms:
 
     <xd:doc scope="f:getCaptionNodes">
         <xd:desc>
-            <xd:p>TODO</xd:p>
+            <xd:p>This functions given a paragraph returns the nodes containing its caption. Should be used only by getCaptionText.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:function name="f:getCaptionNodes" as="node()*">
-        <xsl:param name="nodes" as="node()*" />
+        <xsl:param name="paragraph" as="element()" />
+        <xsl:variable name="nodes"
+                      as="element()*"
+                      select="$paragraph/following::w:p[1][f:pIsCaption(.)]/descendant::w:r"
+        />
         <xsl:variable name="firstNodeContainingANumber"
                       as="element()?"
                       select="$nodes[f:nodeContainsANumber(.)][1]"
@@ -1411,6 +1401,27 @@ Under the following terms:
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$nodes" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+    <xd:doc scope="f:getCaptionText">
+        <xd:desc>
+            <xd:p>This function given a paragraph returns its caption.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:getCaptionText" as="xs:string">
+        <xsl:param name="paragraph" as="element()" />
+        <xsl:variable name="caption"
+                      as="xs:string"
+                      select="normalize-space(f:getCaptionNodes($paragraph))"
+        />
+        <xsl:choose>
+            <xsl:when test="matches($caption, '^(\.|,|:|;)')">
+                <xsl:value-of select="normalize-space(substring($caption, 2))" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$caption" />
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
