@@ -3,6 +3,8 @@ package xyz.illbe.docx2rash;
 import org.apache.commons.cli.*;
 
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
@@ -20,7 +22,7 @@ public class App {
     options.addOption(
             Option.builder("i").longOpt("input")
               .hasArg().argName("inputFile")
-              .desc("The .docx file").build()
+              .desc("The .docx file or directory to be converted").build()
     );
     options.addOption(
             Option.builder("o").longOpt("output")

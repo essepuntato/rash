@@ -5,8 +5,99 @@
     <artifactId>xyz.illbe.docx2rash</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources-css</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/resources/css</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../css</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-js</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/resources/js</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../js</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-fonts</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/resources/fonts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../fonts</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-grammar</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/resources/grammar</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../grammar</directory>
+                                    <includes>
+                                        <include>rash.rng</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-xslt</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/resources/xslt</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../xslt</directory>
+                                    <includes>
+                                        <include>from-docx.xsl</include>
+                                        <include>omml2mml.xsl</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -44,7 +135,7 @@
                     </execution>
                 </executions>
             </plugin>
-    </plugins>
+        </plugins>
     </build>
 
     <dependencies>

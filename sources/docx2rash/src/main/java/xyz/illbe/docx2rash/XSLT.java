@@ -11,31 +11,32 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * Applies an XSLT stylesheet to an XML file
  */
 public class XSLT {
 
-    private final String XSLT_DIR = "xslt";
-    private final String DOCX_XSLT = "from-docx.xsl";
-    private final String OMML_XSLT = "omml2mml.xsl";
     private final String WORKING_DIR = ".workingdir";
+    private final String XSLT_DIR = "xslt";
     private final String JS_RESOURCES_DIR = "js";
     private final String CSS_RESOURCES_DIR = "css";
     private final String FONTS_RESOURCES_DIR = "fonts";
     private final String GRAMMAR_RESOURCES_DIR = "grammar";
     private final String RNG_FILENAME = "rash.rng";
-
-    private File rashDirectory;
+    private final String DOCX_XSLT = "from-docx.xsl";
+    private final String OMML_XSLT = "omml2mml.xsl";
 
     private LinkedList<File> inputFiles = new LinkedList<File>();
 
     private Transformer transformer;
 
     public XSLT(String inputFilePath) {
-        this.rashDirectory = new File(".").getAbsoluteFile().getParentFile().getParentFile().getParentFile();
         File inputFile = new File(inputFilePath);
         if (inputFile.isDirectory()) {
         	for(File f : inputFile.listFiles()) {
@@ -50,17 +51,29 @@ public class XSLT {
 
     public void transform(String outputDirPath) throws TransformerException {
         for (File file : inputFiles) {
-            File docxXslt = new File(this.rashDirectory, XSLT_DIR + File.separator + DOCX_XSLT);
-            File ommlXslt = new File(this.rashDirectory, XSLT_DIR + File.separator + OMML_XSLT);
-            File movedDocxXsltFile = new File(WORKING_DIR, "docx2rash.xsl");
-            File movedOmmlXsltFile = new File(WORKING_DIR, "omml2mml.xsl");
+            File xsltFile = new File(WORKING_DIR, "docx2rash.xsl");
             try {
-                FileUtils.copyFile(docxXslt, movedDocxXsltFile);
-                FileUtils.copyFile(ommlXslt, movedOmmlXsltFile);
+                if (isJar()) {
+                    InputStream docxStream = XSLT.class.getClassLoader().getResourceAsStream(XSLT_DIR + File.separator + DOCX_XSLT);
+                    InputStream ommlStream = XSLT.class.getClassLoader().getResourceAsStream(XSLT_DIR + File.separator + OMML_XSLT);
+                    FileUtils.copyInputStreamToFile(docxStream, xsltFile);
+                    FileUtils.copyInputStreamToFile(ommlStream, new File(WORKING_DIR, "omml2mml.xsl"));
+                } else {
+                    FileUtils.copyFile(
+                            new File(XSLT.class.getClassLoader().getResource(XSLT_DIR + File.separator + DOCX_XSLT).toURI()),
+                            xsltFile
+                    );
+                    FileUtils.copyFile(
+                            new File(XSLT.class.getClassLoader().getResource(XSLT_DIR + File.separator + OMML_XSLT).toURI()),
+                            new File(WORKING_DIR, "omml2mml.xsl")
+                    );
+                }
             } catch (IOException e) {
-                System.err.println("Error moving the XSLT files: " + e.getMessage());
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
-            StreamSource xsltStream = new StreamSource(movedDocxXsltFile);
+            StreamSource xsltStream = new StreamSource(xsltFile);
             TransformerFactory tFactory = TransformerFactoryImpl.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
             try {
                 transformer = tFactory.newTransformer(xsltStream);
@@ -69,13 +82,15 @@ public class XSLT {
             }
             unzipDocx(file);
             String input = WORKING_DIR + File.separator + "word" + File.separator + "document.xml";
-            File subdirectory = new File(outputDirPath, file.getName().substring(0, file.getName().lastIndexOf(".")));
+            String outputSubdirectoryFilename = file.getName().substring(0, file.getName().lastIndexOf("."));
+            File subdirectory = new File(outputDirPath, outputSubdirectoryFilename);
             boolean createSuccessful = true;
             if (!subdirectory.exists()) {
                 createSuccessful = subdirectory.mkdirs();
             }
             if (createSuccessful) {
-                File output = new File(subdirectory, file.getName().substring(0, file.getName().lastIndexOf(".")) + ".html");
+                String outputFilename = file.getName().substring(0, file.getName().lastIndexOf(".")) + ".html";
+                File output = new File(subdirectory, outputFilename);
                 this.copyResourcesTo(subdirectory.getPath());
                 try {
                     transformer.transform(
@@ -92,6 +107,11 @@ public class XSLT {
         }
     }
 
+    private boolean isJar() {
+        final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        return jarFile.isFile();
+    }
+
     private void unzipDocx(File docx) {
         try {
             ZipUtils.unzip(docx, WORKING_DIR);
@@ -102,22 +122,55 @@ public class XSLT {
 
     private void copyResourcesTo(String outputDirPath) {
         try {
-            FileUtils.copyDirectory(
-                    new File(this.rashDirectory, JS_RESOURCES_DIR),
-                    new File(outputDirPath + File.separator + JS_RESOURCES_DIR)
-            );
-            FileUtils.copyDirectory(
-                    new File(this.rashDirectory, CSS_RESOURCES_DIR),
-                    new File(outputDirPath + File.separator + CSS_RESOURCES_DIR)
-            );
-            FileUtils.copyDirectory(
-                    new File(this.rashDirectory, FONTS_RESOURCES_DIR),
-                    new File(outputDirPath + File.separator + FONTS_RESOURCES_DIR)
-            );
-            FileUtils.copyFile(
-                    new File(this.rashDirectory + File.separator + GRAMMAR_RESOURCES_DIR, RNG_FILENAME),
-                    new File(outputDirPath, RNG_FILENAME)
-            );
+            final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+            if (jarFile.isFile()) {  // Run with JAR file
+                final JarFile jar = new JarFile(jarFile);
+                final Enumeration<JarEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    final String name = entries.nextElement().getName();
+                    if (!name.endsWith("/") && (name.startsWith(CSS_RESOURCES_DIR + "/")
+                            || name.startsWith(JS_RESOURCES_DIR + "/")
+                            || name.startsWith(FONTS_RESOURCES_DIR + "/")
+                    )) {
+                        FileUtils.copyInputStreamToFile(
+                                XSLT.class.getClassLoader().getResourceAsStream(name),
+                                new File(outputDirPath, name)
+                        );
+                    }
+                    if (!name.endsWith("/") && name.startsWith(GRAMMAR_RESOURCES_DIR + "/")) {
+                        FileUtils.copyInputStreamToFile(
+                                XSLT.class.getClassLoader().getResourceAsStream(name),
+                                new File(outputDirPath, name.substring(name.lastIndexOf("/")))
+                        );
+                    }
+                }
+                jar.close();
+            } else { // Run with Maven
+                try {
+                    FileUtils.copyDirectory(
+                            new File(XSLT.class.getClassLoader().getResource(CSS_RESOURCES_DIR).toURI()),
+                            new File(outputDirPath + File.separator + CSS_RESOURCES_DIR)
+                    );
+                    FileUtils.copyDirectory(
+                            new File(XSLT.class.getClassLoader().getResource(JS_RESOURCES_DIR).toURI()),
+                            new File(outputDirPath, JS_RESOURCES_DIR)
+                    );
+                    FileUtils.copyDirectory(
+                            new File(XSLT.class.getClassLoader().getResource(FONTS_RESOURCES_DIR).toURI()),
+                            new File(outputDirPath, FONTS_RESOURCES_DIR)
+                    );
+                    FileUtils.copyFile(
+                            new File(XSLT.class.getClassLoader().getResource(GRAMMAR_RESOURCES_DIR + File.separator + RNG_FILENAME).toURI()),
+                            new File(outputDirPath, RNG_FILENAME)
+                    );
+                } catch(URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             File imageDir = new File(WORKING_DIR, "word" + File.separator + "media");
             if (imageDir.exists()) {
                 FileUtils.copyDirectory(
@@ -126,7 +179,8 @@ public class XSLT {
                 );
             }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error while copying the resources: ");
+            e.printStackTrace();
         }
     }
 
@@ -135,7 +189,7 @@ public class XSLT {
         try {
             FileUtils.deleteDirectory(outputDir);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error while " + e.getMessage());
         }
     }
 

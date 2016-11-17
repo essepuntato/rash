@@ -5,6 +5,7 @@ omml2mml.xsl
 
 # IntelliJ Idea
 .idea/
+docx2rash.iml
 *.iml
 *.iws
 
