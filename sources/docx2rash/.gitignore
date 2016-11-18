@@ -1,0 +1,17 @@
+output/
+workingdir/
+docx.xslt
+omml2mml.xsl
+
+# IntelliJ Idea
+.idea/
+docx2rash.iml
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
