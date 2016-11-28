@@ -225,8 +225,8 @@ Under the following terms:
         <xsl:variable name="isNote" select="f:isNote(.)" as="xs:boolean" />
         <xsl:variable name="isImage" select="f:containsAnImage(.)" as="xs:boolean" />
         <xsl:variable name="isRef" as="xs:boolean" select="f:isInsideRef(.)" />
-        <xsl:variable name="lastFormula" as="element()?" select="preceding-sibling::m:oMath" />
-        <xsl:variable name="nextFormula" as="element()?" select="following-sibling::m:oMath" />
+        <xsl:variable name="lastFormula" as="element()?" select="preceding-sibling::m:oMath[last()]" />
+        <xsl:variable name="nextFormula" as="element()?" select="following-sibling::m:oMath[1]" />
 
         <!-- If the immediately previous element doesn't have the same style then proceed -->
         <xsl:variable name="previousElementSameStyle" as="xs:boolean">
