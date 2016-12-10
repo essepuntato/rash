@@ -1,2 +1,1381 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14"><w:body><w:p w14:paraId="5D676B80" w14:textId="77777777" w:rsidR="00E3643B" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo1"/><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Referring things</w:t></w:r></w:p><w:p w14:paraId="6393FF9D" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00830717"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>In this document we show how to refer to various things contained in it through internal links, where the text of the link will be substituted in the final RASH document.</w:t></w:r></w:p><w:p w14:paraId="3FC21C60" w14:textId="29142256" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>In particular, we can refer to sections (</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462854352 \h </w:instrText></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00602083"><w:t>Formul</w:t></w:r><w:r w:rsidR="00602083"><w:t>a</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>)</w:t></w:r><w:r w:rsidR="00606767"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>, tables (</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462854417 \h </w:instrText></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00602083"><w:t xml:space="preserve">Tabella </w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r w:rsidR="00606767"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>), formulas (</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462854439 \h </w:instrText></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00602083"><w:t xml:space="preserve">Equazione </w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00602083"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r w:rsidR="00606767"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>), figures (</w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462854678 \h </w:instrText></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00310E02"><w:t xml:space="preserve">Figura </w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r w:rsidR="00606767"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>)</w:t></w:r><w:r w:rsidR="00E12847"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>, listings (</w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462854707 \h </w:instrText></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00310E02"><w:t xml:space="preserve">Text </w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00310E02"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r w:rsidR="00E12847"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>), and references (</w:t></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:instrText xml:space="preserve"> REF _Ref462227929 \w \h </w:instrText></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>2</w:t></w:r><w:r w:rsidR="000468AE"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:r w:rsidR="00E12847"><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>).</w:t></w:r></w:p><w:p w14:paraId="14C76FC3" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr></w:p><w:p w14:paraId="421739FF" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo2"/><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Tables</w:t></w:r></w:p><w:p w14:paraId="1018C148" w14:textId="77777777" w:rsidR="00830717" w:rsidRPr="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:r><w:t>Here’s a table.</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblStyle w:val="Grigliatabella"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="2405"/><w:gridCol w:w="2405"/><w:gridCol w:w="2406"/><w:gridCol w:w="2406"/></w:tblGrid><w:tr w:rsidR="00830717" w14:paraId="51DDBC30" w14:textId="77777777" w:rsidTr="00DC3C6F"><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="20BBB23D" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Table heading 1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="5BB181C9" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Table heading 2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="43CCDBA1" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Table heading 3</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="251280A3" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Table heading 4</w:t></w:r></w:p></w:tc></w:tr><w:tr w:rsidR="00830717" w14:paraId="5D739F88" w14:textId="77777777" w:rsidTr="00DC3C6F"><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="42896883" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 1 row 1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="2C7B32B9" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 2 row 1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="0D55A17A" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 3 row 1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="292076A0" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 4 row 1</w:t></w:r></w:p></w:tc></w:tr><w:tr w:rsidR="00830717" w14:paraId="72C6CFAF" w14:textId="77777777" w:rsidTr="00DC3C6F"><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="37BC0238" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 1 row 2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="42ADE1B4" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 2 row 2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="23B89B8C" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 3 row 2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="7C340593" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 4 row 2</w:t></w:r></w:p></w:tc></w:tr><w:tr w:rsidR="00830717" w14:paraId="16A186D7" w14:textId="77777777" w:rsidTr="00DC3C6F"><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="501A735F" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 1 row 3</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2405" w:type="dxa"/></w:tcPr><w:p w14:paraId="21C8D4A9" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 2 row 3</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="3093265F" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00DC3C6F"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 3 row 3</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2406" w:type="dxa"/></w:tcPr><w:p w14:paraId="1833CF39" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:keepNext/><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>Cell 4 row 3</w:t></w:r></w:p></w:tc></w:tr></w:tbl><w:p w14:paraId="4DBEA45F" w14:textId="1C880240" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Didascalia"/></w:pPr><w:bookmarkStart w:id="0" w:name="_Ref462854417"/><w:bookmarkStart w:id="1" w:name="_Ref462854383"/><w:r><w:t xml:space="preserve">Tabella </w:t></w:r><w:r w:rsidR="00831ECD"><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00831ECD"><w:instrText xml:space="preserve"> SEQ Tabella \* ARABIC </w:instrText></w:r><w:r w:rsidR="00831ECD"><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00831ECD"><w:rPr><w:noProof/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:bookmarkEnd w:id="0"/><w:r><w:t>My current table</w:t></w:r><w:bookmarkEnd w:id="1"/></w:p><w:p w14:paraId="25B4A82E" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo2"/></w:pPr><w:bookmarkStart w:id="2" w:name="_Formula"/><w:bookmarkStart w:id="3" w:name="_Ref462854352"/><w:bookmarkEnd w:id="2"/><w:r><w:t>Formula</w:t></w:r><w:bookmarkEnd w:id="3"/></w:p><w:p w14:paraId="1EA4B41F" w14:textId="77777777" w:rsidR="00606767" w:rsidRPr="00606767" w:rsidRDefault="00606767" w:rsidP="00606767"><w:r><w:t>Here’s a formula.</w:t></w:r></w:p><w:p w14:paraId="2F9EC0B6" w14:textId="77777777" w:rsidR="005C2B76" w:rsidRDefault="005C2B76" w:rsidP="005C2B76"><w:pPr><w:keepNext/></w:pPr><m:oMathPara><m:oMath><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>a-b=¬c</m:t></m:r></m:oMath></m:oMathPara></w:p><w:p w14:paraId="7853C97A" w14:textId="32F8978B" w:rsidR="005C2B76" w:rsidRPr="00DA4C09" w:rsidRDefault="005C2B76" w:rsidP="005C2B76"><w:pPr><w:pStyle w:val="Didascalia"/><w:jc w:val="center"/></w:pPr><w:bookmarkStart w:id="4" w:name="_Ref462854439"/><w:r><w:t xml:space="preserve">Equazione </w:t></w:r><w:fldSimple w:instr=" SEQ Equazione \* ARABIC "><w:r><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r></w:fldSimple><w:bookmarkEnd w:id="4"/></w:p><w:p w14:paraId="41653279" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"/><w:p w14:paraId="624E2E30" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo2"/></w:pPr><w:r><w:t>Figure</w:t></w:r><w:bookmarkStart w:id="5" w:name="_GoBack"/><w:bookmarkEnd w:id="5"/></w:p><w:p w14:paraId="21876CA6" w14:textId="635FF3BF" w:rsidR="00602083" w:rsidRDefault="00606767" w:rsidP="00606767"><w:r><w:t>Here’s a figure.</w:t></w:r></w:p><w:p w14:paraId="251A29CD" w14:textId="7316BF40" w:rsidR="005C2B76" w:rsidRDefault="00602083" w:rsidP="00602083"><w:r><w:rPr><w:noProof/><w:lang w:eastAsia="it-IT"/></w:rPr><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="769EBC82" wp14:editId="09AD2CA1"><wp:extent cx="6114415" cy="1089660"/><wp:effectExtent l="0" t="0" r="6985" b="2540"/><wp:docPr id="2" name="Immagine 2" descr="../../../../Desktop/rash-long.png"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="Picture 1" descr="../../../../Desktop/rash-long.png"/><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId5"><a:extLst><a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}"><a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/></a:ext></a:extLst></a:blip><a:srcRect/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm><a:off x="0" y="0"/><a:ext cx="6114415" cy="1089660"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p><w:p w14:paraId="77C26F5E" w14:textId="31476F5D" w:rsidR="005C2B76" w:rsidRDefault="005C2B76" w:rsidP="005C2B76"><w:pPr><w:pStyle w:val="Didascalia"/></w:pPr><w:bookmarkStart w:id="6" w:name="_Ref462854678"/><w:r><w:t xml:space="preserve">Figura </w:t></w:r><w:fldSimple w:instr=" SEQ Figura \* ARABIC "><w:r><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r></w:fldSimple><w:bookmarkEnd w:id="6"/><w:r><w:t>This is the caption of the figure</w:t></w:r></w:p><w:p w14:paraId="79375771" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"/><w:p w14:paraId="5B227246" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo2"/></w:pPr><w:r><w:t>Listing</w:t></w:r></w:p><w:p w14:paraId="0AE75F07" w14:textId="029A1D35" w:rsidR="006F5B6A" w:rsidRPr="00606767" w:rsidRDefault="00606767" w:rsidP="00606767"><w:r><w:t>Here’s a listing.</w:t></w:r></w:p><w:p w14:paraId="1C5002A1" w14:textId="77777777" w:rsidR="006F5B6A" w:rsidRDefault="00606767" w:rsidP="006F5B6A"><w:pPr><w:keepNext/></w:pPr><w:r><w:rPr><w:noProof/><w:lang w:eastAsia="it-IT"/></w:rPr><mc:AlternateContent><mc:Choice Requires="wps"><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="0FA079D4" wp14:editId="61C2A0A7"><wp:extent cx="2282190" cy="346710"/><wp:effectExtent l="0" t="0" r="0" b="8890"/><wp:docPr id="6" name="Casella di testo 6"/><wp:cNvGraphicFramePr/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><wps:wsp><wps:cNvSpPr txBox="1"/><wps:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="2282190" cy="346710"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></wps:spPr><wps:style><a:lnRef idx="0"><a:schemeClr val="accent1"/></a:lnRef><a:fillRef idx="0"><a:schemeClr val="accent1"/></a:fillRef><a:effectRef idx="0"><a:schemeClr val="accent1"/></a:effectRef><a:fontRef idx="minor"><a:schemeClr val="dk1"/></a:fontRef></wps:style><wps:txbx><w:txbxContent><w:p w14:paraId="2B6FC58C" w14:textId="77777777" w:rsidR="00606767" w:rsidRPr="00606767" w:rsidRDefault="00606767"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>This is a piece of code</w:t></w:r></w:p></w:txbxContent></wps:txbx><wps:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow" horzOverflow="overflow" vert="horz" wrap="square" lIns="91440" tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0" compatLnSpc="1"><a:prstTxWarp prst="textNoShape"><a:avLst/></a:prstTxWarp><a:noAutofit/></wps:bodyPr></wps:wsp></a:graphicData></a:graphic></wp:inline></w:drawing></mc:Choice><mc:Fallback><w:pict><v:shapetype w14:anchorId="0FA079D4" id="_x0000_t202" coordsize="21600,21600" o:spt="202" path="m0,0l0,21600,21600,21600,21600,0xe"><v:stroke joinstyle="miter"/><v:path gradientshapeok="t" o:connecttype="rect"/></v:shapetype><v:shape id="Casella_x0020_di_x0020_testo_x0020_6" o:spid="_x0000_s1026" type="#_x0000_t202" style="width:179.7pt;height:27.3pt;visibility:visible;mso-wrap-style:square;mso-left-percent:-10001;mso-top-percent:-10001;mso-position-horizontal:absolute;mso-position-horizontal-relative:char;mso-position-vertical:absolute;mso-position-vertical-relative:line;mso-left-percent:-10001;mso-top-percent:-10001;v-text-anchor:top" o:gfxdata="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&#xA;" filled="f" stroked="f"><v:textbox><w:txbxContent><w:p w14:paraId="2B6FC58C" w14:textId="77777777" w:rsidR="00606767" w:rsidRPr="00606767" w:rsidRDefault="00606767"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:lang w:val="en-US"/></w:rPr><w:t>This is a piece of code</w:t></w:r></w:p></w:txbxContent></v:textbox><w10:anchorlock/></v:shape></w:pict></mc:Fallback></mc:AlternateContent></w:r></w:p><w:p w14:paraId="19DBC45D" w14:textId="5E00CC5A" w:rsidR="00606767" w:rsidRDefault="006F5B6A" w:rsidP="006F5B6A"><w:pPr><w:pStyle w:val="Didascalia"/></w:pPr><w:bookmarkStart w:id="7" w:name="_Ref462854707"/><w:r><w:t xml:space="preserve">Text </w:t></w:r><w:r w:rsidR="00831ECD"><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00831ECD"><w:instrText xml:space="preserve"> SEQ Text \* ARABIC </w:instrText></w:r><w:r w:rsidR="00831ECD"><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="00831ECD"><w:rPr><w:noProof/></w:rPr><w:fldChar w:fldCharType="end"/></w:r><w:bookmarkEnd w:id="7"/><w:r w:rsidRPr="00F272FC"><w:t>This is the caption of the listing.</w:t></w:r></w:p><w:p w14:paraId="1F08D3F7" w14:textId="77777777" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidP="00830717"><w:pPr><w:pStyle w:val="Titolo2"/></w:pPr><w:r><w:t>References</w:t></w:r></w:p><w:p w14:paraId="30B87CB4" w14:textId="2269E9FC" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidP="00606767"><w:pPr><w:pStyle w:val="Paragrafoelenco"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr></w:pPr><w:r w:rsidRPr="00A80A33"><w:t xml:space="preserve">Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. </w:t></w:r><w:hyperlink r:id="rId6" w:history="1"><w:r w:rsidRPr="001608FC"><w:rPr><w:rStyle w:val="Collegamentoipertestuale"/></w:rPr><w:t>http://dx.doi.org/10.1007/978-3-319-07443-6_39</w:t></w:r></w:hyperlink></w:p><w:p w14:paraId="3094D44B" w14:textId="54423C64" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidP="00606767"><w:pPr><w:pStyle w:val="Paragrafoelenco"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr></w:pPr><w:bookmarkStart w:id="8" w:name="_Ref462227929"/><w:r w:rsidRPr="00A80A33"><w:t xml:space="preserve">Peroni, S. (2014). Research Articles in Simplified HTML (RASH). </w:t></w:r><w:hyperlink r:id="rId7" w:history="1"><w:r w:rsidRPr="001608FC"><w:rPr><w:rStyle w:val="Collegamentoipertestuale"/></w:rPr><w:t>http://cs.unibo.it/save-sd/rush/rush.rng</w:t></w:r></w:hyperlink><w:bookmarkEnd w:id="8"/></w:p><w:p w14:paraId="58A0FEFC" w14:textId="0C13ABFC" w:rsidR="00606767" w:rsidRPr="00606767" w:rsidRDefault="00606767" w:rsidP="00606767"><w:pPr><w:pStyle w:val="Paragrafoelenco"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr></w:pPr><w:r w:rsidRPr="00A80A33"><w:t>Prud'hommeaux, E., Carothers, G. (2014). RDF 1.1 Turtle: Terse RDF Triple Language. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from http://www.w3.org/TR/turtle/</w:t></w:r></w:p><w:sectPr w:rsidR="00606767" w:rsidRPr="00606767" w:rsidSect="00BE3783"><w:pgSz w:w="11900" w:h="16840"/><w:pgMar w:top="1417" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/><w:cols w:space="708"/><w:docGrid w:linePitch="360"/></w:sectPr></w:body></w:document>
+<w:document mc:Ignorable="w14 w15 wp14" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+	<w:body>
+		<w:p w14:paraId="5D676B80" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00E3643B" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading1"/>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>Referring things</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="6393FF9D" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00830717">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>In this document we show how to refer to various things contained in it through internal links, where the text of the link will be substituted in the final RASH document.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="3FC21C60" w14:textId="29142256" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>In particular, we can refer to sections (</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462854352 \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:t>Formula</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>)</w:t>
+			</w:r>
+			<w:r w:rsidR="00606767">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>, tables (</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462854417 \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:t xml:space="preserve">Tabella </w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r w:rsidR="00606767">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>), formulas (</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462854439 \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:t xml:space="preserve">Equazione </w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="00602083">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r w:rsidR="00606767">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>), figures (</w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462854678 \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:t xml:space="preserve">Figura </w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r w:rsidR="00606767">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>)</w:t>
+			</w:r>
+			<w:r w:rsidR="00E12847">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>, listings (</w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462854707 \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:t xml:space="preserve">Text </w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="00310E02">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r w:rsidR="00E12847">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>), and references (</w:t>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:instrText xml:space="preserve">REF _Ref462227929 \w \h </w:instrText>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>2</w:t>
+			</w:r>
+			<w:r w:rsidR="000468AE">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r w:rsidR="00E12847">
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>).</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="14C76FC3" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="421739FF" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading2"/>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="en-US"/>
+				</w:rPr>
+				<w:t>Tables</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1018C148" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717" w:rsidRPr="00830717">
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>Here’s</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">a </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>table</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:tbl>
+			<w:tblPr>
+				<w:tblStyle w:val="TableGrid"/>
+				<w:tblW w:type="auto" w:w="0"/>
+				<w:tblLook w:firstColumn="1" w:firstRow="1" w:lastColumn="0" w:lastRow="0" w:noHBand="0" w:noVBand="1" w:val="04A0"/>
+			</w:tblPr>
+			<w:tblGrid>
+				<w:gridCol w:w="2405"/>
+				<w:gridCol w:w="2405"/>
+				<w:gridCol w:w="2406"/>
+				<w:gridCol w:w="2406"/>
+			</w:tblGrid>
+			<w:tr w14:paraId="51DDBC30" w14:textId="77777777" w:rsidR="00830717" w:rsidTr="00DC3C6F">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="20BBB23D" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Table heading 1</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="5BB181C9" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Table heading 2</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="43CCDBA1" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Table heading 3</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="251280A3" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Table heading 4</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+			<w:tr w14:paraId="5D739F88" w14:textId="77777777" w:rsidR="00830717" w:rsidTr="00DC3C6F">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="42896883" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 1 row 1</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="2C7B32B9" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 2 row 1</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="0D55A17A" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 3 row 1</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="292076A0" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 4 row 1</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+			<w:tr w14:paraId="72C6CFAF" w14:textId="77777777" w:rsidR="00830717" w:rsidTr="00DC3C6F">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="37BC0238" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 1 row 2</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="42ADE1B4" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 2 row 2</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="23B89B8C" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 3 row 2</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="7C340593" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 4 row 2</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+			<w:tr w14:paraId="16A186D7" w14:textId="77777777" w:rsidR="00830717" w:rsidTr="00DC3C6F">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="501A735F" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 1 row 3</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2405"/>
+					</w:tcPr>
+					<w:p w14:paraId="21C8D4A9" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 2 row 3</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="3093265F" w14:textId="77777777" w:rsidP="00DC3C6F" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 3 row 3</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:type="dxa" w:w="2406"/>
+					</w:tcPr>
+					<w:p w14:paraId="1833CF39" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+						<w:pPr>
+							<w:keepNext/>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+						</w:pPr>
+						<w:r>
+							<w:rPr>
+								<w:lang w:val="en-US"/>
+							</w:rPr>
+							<w:t>Cell 4 row 3</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+		</w:tbl>
+		<w:p w14:paraId="4DBEA45F" w14:textId="1C880240" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Caption"/>
+			</w:pPr>
+			<w:bookmarkStart w:id="0" w:name="_Ref462854417"/>
+			<w:bookmarkStart w:id="1" w:name="_Ref462854383"/>
+			<w:r>
+				<w:t xml:space="preserve">Tabella </w:t>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:instrText xml:space="preserve">SEQ Tabella \* ARABIC </w:instrText>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r>
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:bookmarkEnd w:id="0"/>
+			<w:r>
+				<w:t xml:space="preserve">My </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>current</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve"/>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>table</w:t>
+			</w:r>
+			<w:bookmarkEnd w:id="1"/>
+			<w:proofErr w:type="spellEnd"/>
+		</w:p>
+		<w:p w14:paraId="25B4A82E" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading2"/>
+			</w:pPr>
+			<w:bookmarkStart w:id="2" w:name="_Formula"/>
+			<w:bookmarkStart w:id="3" w:name="_Ref462854352"/>
+			<w:bookmarkEnd w:id="2"/>
+			<w:r>
+				<w:t>Formula</w:t>
+			</w:r>
+			<w:bookmarkEnd w:id="3"/>
+		</w:p>
+		<w:p w14:paraId="1EA4B41F" w14:textId="77777777" w:rsidP="00606767" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidRPr="00606767">
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>Here’s</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">a formula.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2F9EC0B6" w14:textId="77777777" w:rsidP="005C2B76" w:rsidR="005C2B76" w:rsidRDefault="005C2B76">
+			<w:pPr>
+				<w:keepNext/>
+			</w:pPr>
+			<m:oMathPara>
+				<m:oMath>
+					<m:r>
+						<w:rPr>
+							<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+						</w:rPr>
+						<m:t>a-b=¬c</m:t>
+					</m:r>
+				</m:oMath>
+			</m:oMathPara>
+		</w:p>
+		<w:p w14:paraId="7853C97A" w14:textId="32F8978B" w:rsidP="005C2B76" w:rsidR="005C2B76" w:rsidRDefault="005C2B76" w:rsidRPr="00DA4C09">
+			<w:pPr>
+				<w:pStyle w:val="Caption"/>
+				<w:jc w:val="center"/>
+			</w:pPr>
+			<w:bookmarkStart w:id="4" w:name="_Ref462854439"/>
+			<w:r>
+				<w:t xml:space="preserve">Equazione </w:t>
+			</w:r>
+			<w:fldSimple w:instr=" SEQ Equazione \* ARABIC ">
+				<w:r>
+					<w:rPr>
+						<w:noProof/>
+					</w:rPr>
+					<w:t>1</w:t>
+				</w:r>
+			</w:fldSimple>
+			<w:bookmarkEnd w:id="4"/>
+		</w:p>
+		<w:p w14:paraId="41653279" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717"/>
+		<w:p w14:paraId="624E2E30" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading2"/>
+			</w:pPr>
+			<w:r>
+				<w:t>Figure</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="21876CA6" w14:textId="635FF3BF" w:rsidP="00606767" w:rsidR="00602083" w:rsidRDefault="00606767">
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>Here’s</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">a figure.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="251A29CD" w14:textId="7316BF40" w:rsidP="00602083" w:rsidR="005C2B76" w:rsidRDefault="00602083">
+			<w:r>
+				<w:rPr>
+					<w:noProof/>
+					<w:lang w:eastAsia="en-GB" w:val="en-GB"/>
+				</w:rPr>
+				<w:drawing>
+					<wp:inline distB="0" distL="0" distR="0" distT="0" wp14:anchorId="769EBC82" wp14:editId="09AD2CA1">
+						<wp:extent cx="6114415" cy="1089660"/>
+						<wp:effectExtent b="2540" l="0" r="6985" t="0"/>
+						<wp:docPr descr="../../../../Desktop/rash-long.png" id="2" name="Immagine 2"/>
+						<wp:cNvGraphicFramePr>
+							<a:graphicFrameLocks noChangeAspect="1" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"/>
+						</wp:cNvGraphicFramePr>
+						<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+							<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+								<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+									<pic:nvPicPr>
+										<pic:cNvPr descr="../../../../Desktop/rash-long.png" id="0" name="Picture 1"/>
+										<pic:cNvPicPr>
+											<a:picLocks noChangeArrowheads="1" noChangeAspect="1"/>
+										</pic:cNvPicPr>
+									</pic:nvPicPr>
+									<pic:blipFill>
+										<a:blip r:embed="rId5">
+											<a:extLst>
+												<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+													<a14:useLocalDpi val="0" xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"/>
+												</a:ext>
+											</a:extLst>
+										</a:blip>
+										<a:srcRect/>
+										<a:stretch>
+											<a:fillRect/>
+										</a:stretch>
+									</pic:blipFill>
+									<pic:spPr bwMode="auto">
+										<a:xfrm>
+											<a:off x="0" y="0"/>
+											<a:ext cx="6114415" cy="1089660"/>
+										</a:xfrm>
+										<a:prstGeom prst="rect">
+											<a:avLst/>
+										</a:prstGeom>
+										<a:noFill/>
+										<a:ln>
+											<a:noFill/>
+										</a:ln>
+									</pic:spPr>
+								</pic:pic>
+							</a:graphicData>
+						</a:graphic>
+					</wp:inline>
+				</w:drawing>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="77C26F5E" w14:textId="57C1670A" w:rsidP="005C2B76" w:rsidR="005C2B76" w:rsidRDefault="005C2B76">
+			<w:pPr>
+				<w:pStyle w:val="Caption"/>
+			</w:pPr>
+			<w:bookmarkStart w:id="5" w:name="_Ref462854678"/>
+			<w:r>
+				<w:t xml:space="preserve">Figura </w:t>
+			</w:r>
+			<w:fldSimple w:instr=" SEQ Figura \* ARABIC ">
+				<w:r>
+					<w:rPr>
+						<w:noProof/>
+					</w:rPr>
+					<w:t>1</w:t>
+				</w:r>
+			</w:fldSimple>
+			<w:bookmarkEnd w:id="5"/>
+			<w:r>
+				<w:t xml:space="preserve">This </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>is</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">the </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>caption</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">of the </w:t>
+			</w:r>
+			<w:r w:rsidR="00A90F4D">
+				<w:t>(</w:t>
+			</w:r>
+			<w:r>
+				<w:t>figure</w:t>
+			</w:r>
+			<w:r w:rsidR="00A90F4D">
+				<w:t>)</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="79375771" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717"/>
+		<w:p w14:paraId="5B227246" w14:textId="77777777" w:rsidP="00830717" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading2"/>
+			</w:pPr>
+			<w:r>
+				<w:t>Listing</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="0AE75F07" w14:textId="029A1D35" w:rsidP="00606767" w:rsidR="006F5B6A" w:rsidRDefault="00606767" w:rsidRPr="00606767">
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>Here’s</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r>
+				<w:t xml:space="preserve">a listing.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1C5002A1" w14:textId="77777777" w:rsidP="006F5B6A" w:rsidR="006F5B6A" w:rsidRDefault="00606767">
+			<w:pPr>
+				<w:keepNext/>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:noProof/>
+					<w:lang w:eastAsia="en-GB" w:val="en-GB"/>
+				</w:rPr>
+				<mc:AlternateContent>
+					<mc:Choice Requires="wps">
+						<w:drawing>
+							<wp:inline distB="0" distL="0" distR="0" distT="0" wp14:anchorId="0FA079D4" wp14:editId="61C2A0A7">
+								<wp:extent cx="2282190" cy="346710"/>
+								<wp:effectExtent b="8890" l="0" r="0" t="0"/>
+								<wp:docPr id="6" name="Casella di testo 6"/>
+								<wp:cNvGraphicFramePr/>
+								<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+									<a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+										<wps:wsp>
+											<wps:cNvSpPr txBox="1"/>
+											<wps:spPr>
+												<a:xfrm>
+													<a:off x="0" y="0"/>
+													<a:ext cx="2282190" cy="346710"/>
+												</a:xfrm>
+												<a:prstGeom prst="rect">
+													<a:avLst/>
+												</a:prstGeom>
+												<a:noFill/>
+												<a:ln>
+													<a:noFill/>
+												</a:ln>
+												<a:effectLst/>
+											</wps:spPr>
+											<wps:style>
+												<a:lnRef idx="0">
+													<a:schemeClr val="accent1"/>
+												</a:lnRef>
+												<a:fillRef idx="0">
+													<a:schemeClr val="accent1"/>
+												</a:fillRef>
+												<a:effectRef idx="0">
+													<a:schemeClr val="accent1"/>
+												</a:effectRef>
+												<a:fontRef idx="minor">
+													<a:schemeClr val="dk1"/>
+												</a:fontRef>
+											</wps:style>
+											<wps:txbx>
+												<w:txbxContent>
+													<w:p w14:paraId="2B6FC58C" w14:textId="77777777" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidRPr="00606767">
+														<w:pPr>
+															<w:rPr>
+																<w:lang w:val="en-US"/>
+															</w:rPr>
+														</w:pPr>
+														<w:r>
+															<w:rPr>
+																<w:lang w:val="en-US"/>
+															</w:rPr>
+															<w:t>This is a piece of code</w:t>
+														</w:r>
+													</w:p>
+												</w:txbxContent>
+											</wps:txbx>
+											<wps:bodyPr anchor="t" anchorCtr="0" bIns="45720" compatLnSpc="1" forceAA="0" fromWordArt="0" horzOverflow="overflow" lIns="91440" numCol="1" rIns="91440" rot="0" rtlCol="0" spcCol="0" spcFirstLastPara="0" tIns="45720" vert="horz" vertOverflow="overflow" wrap="square">
+												<a:prstTxWarp prst="textNoShape">
+													<a:avLst/>
+												</a:prstTxWarp>
+												<a:noAutofit/>
+											</wps:bodyPr>
+										</wps:wsp>
+									</a:graphicData>
+								</a:graphic>
+							</wp:inline>
+						</w:drawing>
+					</mc:Choice>
+					<mc:Fallback>
+						<w:pict>
+							<v:shapetype coordsize="21600,21600" id="_x0000_t202" o:spt="202" path="m0,0l0,21600,21600,21600,21600,0xe" w14:anchorId="0FA079D4">
+								<v:stroke joinstyle="miter"/>
+								<v:path gradientshapeok="t" o:connecttype="rect"/>
+							</v:shapetype>
+							<v:shape filled="f" id="Casella_x0020_di_x0020_testo_x0020_6" o:gfxdata="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
+" o:spid="_x0000_s1026" stroked="f" style="width:179.7pt;height:27.3pt;visibility:visible;mso-wrap-style:square;mso-left-percent:-10001;mso-top-percent:-10001;mso-position-horizontal:absolute;mso-position-horizontal-relative:char;mso-position-vertical:absolute;mso-position-vertical-relative:line;mso-left-percent:-10001;mso-top-percent:-10001;v-text-anchor:top" type="#_x0000_t202">
+								<v:textbox>
+									<w:txbxContent>
+										<w:p w14:paraId="2B6FC58C" w14:textId="77777777" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidRPr="00606767">
+											<w:pPr>
+												<w:rPr>
+													<w:lang w:val="en-US"/>
+												</w:rPr>
+											</w:pPr>
+											<w:r>
+												<w:rPr>
+													<w:lang w:val="en-US"/>
+												</w:rPr>
+												<w:t>This is a piece of code</w:t>
+											</w:r>
+										</w:p>
+									</w:txbxContent>
+								</v:textbox>
+								<w10:anchorlock/>
+							</v:shape>
+						</w:pict>
+					</mc:Fallback>
+				</mc:AlternateContent>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="19DBC45D" w14:textId="5E00CC5A" w:rsidP="006F5B6A" w:rsidR="00606767" w:rsidRDefault="006F5B6A">
+			<w:pPr>
+				<w:pStyle w:val="Caption"/>
+			</w:pPr>
+			<w:bookmarkStart w:id="6" w:name="_Ref462854707"/>
+			<w:r>
+				<w:t xml:space="preserve">Text </w:t>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:instrText xml:space="preserve">SEQ Text \* ARABIC </w:instrText>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r>
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>1</w:t>
+			</w:r>
+			<w:r w:rsidR="008A3E08">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:bookmarkEnd w:id="6"/>
+			<w:r w:rsidRPr="00F272FC">
+				<w:t xml:space="preserve">This </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00F272FC">
+				<w:t>is</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00F272FC">
+				<w:t xml:space="preserve">the </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00F272FC">
+				<w:t>caption</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00F272FC">
+				<w:t xml:space="preserve">of the listing.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1F08D3F7" w14:textId="77777777" w:rsidP="008A3E08" w:rsidR="00830717" w:rsidRDefault="00830717">
+			<w:pPr>
+				<w:pStyle w:val="Heading1"/>
+			</w:pPr>
+			<w:proofErr w:type="spellStart"/>
+			<w:r>
+				<w:t>Reference</w:t>
+			</w:r>
+			<w:bookmarkStart w:id="7" w:name="_GoBack"/>
+			<w:bookmarkEnd w:id="7"/>
+			<w:r>
+				<w:t>s</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+		</w:p>
+		<w:p w14:paraId="30B87CB4" w14:textId="2269E9FC" w:rsidP="00606767" w:rsidR="00606767" w:rsidRDefault="00606767">
+			<w:pPr>
+				<w:pStyle w:val="ListParagraph"/>
+				<w:numPr>
+					<w:ilvl w:val="0"/>
+					<w:numId w:val="1"/>
+				</w:numPr>
+			</w:pPr>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Ciancarini</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, P., Di Iorio, A., </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Nuzzolese</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, A. G., Peroni, S., Vitali, F. (2014). </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Evaluating</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve"/>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>citation</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve"/>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>functions</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">in </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>CiTO</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">: cognitive </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>issues</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">. In </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Presutti</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, V., d'Amato, C., </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Gandon</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>, F., d'</w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Aquin</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, M., </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Staab</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>, S., Tordai, A. (</w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Eds</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">.), </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Proceedings</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">of the 11th Extended </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Semantic</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">Web Conference (ESWC 2014), </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Lecture</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">Notes in Computer Science 8465: 580-594. </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Berlin</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, Germany: </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Springer</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">. </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId6" w:history="1">
+				<w:r w:rsidRPr="001608FC">
+					<w:rPr>
+						<w:rStyle w:val="Hyperlink"/>
+					</w:rPr>
+					<w:t>http://dx.doi.org/10.1007/978-3-319-07443-6_39</w:t>
+				</w:r>
+			</w:hyperlink>
+		</w:p>
+		<w:p w14:paraId="3094D44B" w14:textId="54423C64" w:rsidP="00606767" w:rsidR="00606767" w:rsidRDefault="00606767">
+			<w:pPr>
+				<w:pStyle w:val="ListParagraph"/>
+				<w:numPr>
+					<w:ilvl w:val="0"/>
+					<w:numId w:val="1"/>
+				</w:numPr>
+			</w:pPr>
+			<w:bookmarkStart w:id="8" w:name="_Ref462227929"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">Peroni, S. (2014). </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Research</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve"/>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Articles</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">in </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Simplified</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">HTML (RASH). </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId7" w:history="1">
+				<w:r w:rsidRPr="001608FC">
+					<w:rPr>
+						<w:rStyle w:val="Hyperlink"/>
+					</w:rPr>
+					<w:t>http://cs.unibo.it/save-sd/rush/rush.rng</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:bookmarkEnd w:id="8"/>
+		</w:p>
+		<w:p w14:paraId="58A0FEFC" w14:textId="0C13ABFC" w:rsidP="00606767" w:rsidR="00606767" w:rsidRDefault="00606767" w:rsidRPr="00606767">
+			<w:pPr>
+				<w:pStyle w:val="ListParagraph"/>
+				<w:numPr>
+					<w:ilvl w:val="0"/>
+					<w:numId w:val="1"/>
+				</w:numPr>
+			</w:pPr>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Prud'hommeaux</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, E., </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Carothers</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, G. (2014). RDF 1.1 </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Turtle</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">: Terse RDF Triple Language. W3C </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Recommendation</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">, 25 </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>February</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">2014. World Wide Web </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Consortium</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">. </w:t>
+			</w:r>
+			<w:proofErr w:type="spellStart"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t>Retrieved</w:t>
+			</w:r>
+			<w:proofErr w:type="spellEnd"/>
+			<w:r w:rsidRPr="00A80A33">
+				<w:t xml:space="preserve">from http://www.w3.org/TR/turtle/</w:t>
+			</w:r>
+		</w:p>
+		<w:sectPr w:rsidR="00606767" w:rsidRPr="00606767" w:rsidSect="00BE3783">
+			<w:pgSz w:h="16840" w:w="11900"/>
+			<w:pgMar w:bottom="1134" w:footer="708" w:gutter="0" w:header="708" w:left="1134" w:right="1134" w:top="1417"/>
+			<w:cols w:space="708"/>
+			<w:docGrid w:linePitch="360"/>
+		</w:sectPr>
+	</w:body>
+</w:document>

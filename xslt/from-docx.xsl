@@ -178,38 +178,6 @@ Under the following terms:
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:function name="f:isRef">
-        <xsl:param name="r" as="element()" />
-        <xsl:value-of
-                select="
-                    exists($r/w:fldChar)
-                    and $r/w:fldChar/@w:fldCharType = 'begin'
-                    and contains($r/following-sibling::w:r[1]/w:instrText/text(), 'REF')
-                "
-        />
-    </xsl:function>
-
-    <xsl:function name="f:isInsideRef">
-        <xsl:param name="r" as="element()" />
-        <xsl:value-of
-                select="
-                    matches($r/w:fldChar/@w:fldCharType, 'begin|separate|end')
-                    or (
-                        matches($r/preceding-sibling::w:r[w:fldChar][1]/w:fldChar/@w:fldCharType, 'begin|separate')
-                        and matches($r/following-sibling::w:r[w:fldChar][1]/w:fldChar/@w:fldCharType, 'separate|end')
-                    )
-                "
-        />
-    </xsl:function>
-
-    <xsl:function name="f:isCode">
-        <xsl:param name="element" as="element()?" />
-        <xsl:value-of select="
-            exists($element/w:rPr/w:rFonts[contains(@w:ascii, 'Courier')])
-            or f:getStyleName($element) = 'HTML Code'"
-        />
-    </xsl:function>
-
     <xd:doc scope="w:r">
         <xd:desc>
             <xd:p>This template handles all the inline textual elements that appear in the context of a paragraph, excluding links.</xd:p>
@@ -683,6 +651,39 @@ Under the following terms:
         </xsl:choose>
     </xsl:template>
 
+    <xd:doc scope="add.listParam">
+        <xd:desc>
+            <xd:p>This template is in charge of handling lists.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="add.listParam">
+        <xsl:param name="el" as="element()"/>
+        <xsl:variable name="currentNumId"
+                      as="xs:integer"
+                      select="$el/w:pPr/w:numPr/w:numId/@w:val"
+        />
+        <xsl:variable name="thisListItems"
+                      as="element()*"
+                      select="f:getListItems($el)"
+        />
+        <xsl:choose>
+            <xsl:when test="f:isBullet($currentNumId)">
+                <ul>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ul>
+            </xsl:when>
+            <xsl:otherwise>
+                <ol>
+                    <xsl:call-template name="add.listItems">
+                        <xsl:with-param name="listElements" as="element()*" select="$thisListItems"/>
+                    </xsl:call-template>
+                </ol>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xd:doc scope="add.listItems" >
         <xd:desc>
             <xd:p>This template handles the list items</xd:p>
@@ -702,6 +703,7 @@ Under the following terms:
         />
         <xsl:for-each select="$listElements">
             <xsl:variable name="currentLevel" as="xs:integer" select="./w:pPr/w:numPr/w:ilvl/@w:val" />
+            <xsl:variable name="next" as="element()?" select="following-sibling::w:p[f:pIsListElement(.)][1]" />
             <xsl:variable name="nextParagraphsNotInList" as="element()*" select="following-sibling::w:p[not(f:pIsListElement(.))]" />
             <xsl:variable name="nextListItemIndex" as="xs:integer" select="position()+1" />
             <xsl:variable name="paragraphs"
@@ -715,40 +717,54 @@ Under the following terms:
                             and not(exists(./preceding-sibling::w:p[w:pPr/w:numPr/w:ilvl/@w:val = $currentLevel]))
                           "
             />
-            <xsl:choose>
-                <xsl:when test="$isFirstNested">
-                    <xsl:call-template name="add.list" />
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:if test="./w:pPr/w:numPr/w:ilvl/@w:val = $listElements[1]/w:pPr/w:numPr/w:ilvl/@w:val">
-                        <li>
-                            <xsl:call-template name="set.bookmarked.object.id" />
-                            <xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::w:p[f:isHeading(.)][1])) = $content">
-                                <xsl:attribute name="role">doc-biblioentry</xsl:attribute>
-                            </xsl:if>
-                            <xsl:call-template name="add.p">
-                                <xsl:with-param name="isInsideList" select="true()"/>
-                            </xsl:call-template>
-                            <xsl:for-each select="$paragraphs">
-                                <xsl:if test="f:containsText(.)">
-                                    <p>
-                                        <xsl:apply-templates />
-                                    </p>
-                                </xsl:if>
-                            </xsl:for-each>
-                            <xsl:if test="count($listElements) = position()">
-                                <xsl:for-each select="$lastParagraphs">
-                                    <xsl:if test="f:containsText(.)">
-                                        <p>
-                                            <xsl:apply-templates />
-                                        </p>
-                                    </xsl:if>
-                                </xsl:for-each>
-                            </xsl:if>
-                        </li>
+            <xsl:variable name="nextIsFirstNested"
+                          as="xs:boolean"
+                          select="
+                            exists($next)
+                            and $currentLevel = $next/w:pPr/w:numPr/w:ilvl/@w:val - 1
+                            and not(exists($next/preceding-sibling::w:p[w:pPr/w:numPr/w:ilvl/@w:val = $currentLevel + 1]))
+                          "
+            />
+
+            <!--<xsl:choose>-->
+                <!--<xsl:when test="$isFirstNested">-->
+                    <!--<xsl:call-template name="add.list" />-->
+                <!--</xsl:when>-->
+                <!--<xsl:otherwise>-->
+            <xsl:if test="./w:pPr/w:numPr/w:ilvl/@w:val = $listElements[1]/w:pPr/w:numPr/w:ilvl/@w:val">
+                <li>
+                    <xsl:call-template name="set.bookmarked.object.id" />
+                    <xsl:if test="some $content in $bibliography satisfies lower-case(normalize-space(preceding::w:p[f:isHeading(.)][1])) = $content">
+                        <xsl:attribute name="role">doc-biblioentry</xsl:attribute>
                     </xsl:if>
-                </xsl:otherwise>
-            </xsl:choose>
+                    <xsl:call-template name="add.p">
+                        <xsl:with-param name="isInsideList" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:for-each select="$paragraphs">
+                        <xsl:if test="f:containsText(.)">
+                            <p>
+                                <xsl:apply-templates />
+                            </p>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count($listElements) = position()">
+                        <xsl:for-each select="$lastParagraphs">
+                            <xsl:if test="f:containsText(.)">
+                                <p>
+                                    <xsl:apply-templates />
+                                </p>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </xsl:if>
+                    <xsl:if test="$nextIsFirstNested">
+                        <xsl:call-template name="add.listParam">
+                            <xsl:with-param name="el" select="$next" />
+                        </xsl:call-template>
+                    </xsl:if>
+                </li>
+            </xsl:if>
+                <!--</xsl:otherwise>-->
+            <!--</xsl:choose>-->
         </xsl:for-each>
     </xsl:template>
 
@@ -1063,6 +1079,53 @@ Under the following terms:
     </xsl:template>
 
     <!-- FUNCTIONS -->
+
+    <xd:doc scope="f:isRef">
+        <xd:desc>
+            <xd:p>This function says whether or not a given element is  a Ref.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isRef">
+        <xsl:param name="r" as="element()" />
+        <xsl:value-of
+                select="
+                    exists($r/w:fldChar)
+                    and $r/w:fldChar/@w:fldCharType = 'begin'
+                    and contains($r/following-sibling::w:r[1]/w:instrText/text(), 'REF')
+                "
+        />
+    </xsl:function>
+
+    <xd:doc scope="f:isInsideRef">
+        <xd:desc>
+            <xd:p>This function says whether or not a given w:r is inside a Ref.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isInsideRef">
+        <xsl:param name="r" as="element()" />
+        <xsl:value-of
+                select="
+                    matches($r/w:fldChar/@w:fldCharType, 'begin|separate|end')
+                    or (
+                        matches($r/preceding-sibling::w:r[w:fldChar][1]/w:fldChar/@w:fldCharType, 'begin|separate')
+                        and matches($r/following-sibling::w:r[w:fldChar][1]/w:fldChar/@w:fldCharType, 'separate|end')
+                    )
+                "
+        />
+    </xsl:function>
+
+    <xd:doc scope="f:isCode">
+        <xd:desc>
+            <xd:p>This function says whether or not a given element is a code paragraph.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:function name="f:isCode">
+        <xsl:param name="element" as="element()?" />
+        <xsl:value-of select="
+            exists($element/w:rPr/w:rFonts[contains(@w:ascii, 'Courier')])
+            or contains(f:getStyleName($element), 'HTML')"
+        />
+    </xsl:function>
 
     <xd:doc scope="f:listType">
         <xd:desc>
@@ -1386,11 +1449,11 @@ Under the following terms:
             <xd:p>This functions given a paragraph returns the nodes containing its caption. Should be used only by getCaptionText.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:function name="f:getCaptionNodes" as="node()*">
+    <xsl:function name="f:getCaptionNodes" as="text()*">
         <xsl:param name="paragraph" as="element()" />
         <xsl:variable name="nodes"
                       as="element()*"
-                      select="$paragraph/following::w:p[1][f:pIsCaption(.)]/descendant::w:r"
+                      select="$paragraph/following::w:p[1][f:pIsCaption(.)]/descendant::w:t"
         />
         <xsl:variable name="firstNodeContainingANumber"
                       as="element()?"
@@ -1417,10 +1480,8 @@ Under the following terms:
     </xd:doc>
     <xsl:function name="f:getCaptionText" as="xs:string">
         <xsl:param name="paragraph" as="element()" />
-        <xsl:variable name="caption"
-                      as="xs:string"
-                      select="normalize-space(f:getCaptionNodes($paragraph))"
-        />
+        <xsl:variable name="nodes" as="text()*" select="f:getCaptionNodes($paragraph)" />
+        <xsl:variable name="caption" as="xs:string" select="string($nodes)" />
         <xsl:choose>
             <xsl:when test="matches($caption, '^(\.|,|:|;)')">
                 <xsl:value-of select="normalize-space(substring($caption, 2))" />

@@ -50,6 +50,8 @@ def validate_xml(filename):
 
 def validate_rash(filename):
     """Validate a RASH file."""
+    if not os.path.exists(rng_path):
+        raise IOError(rng_path + ' not found!')
     try:
         check_output(["pyjing", rng_path, filename])
     except CalledProcessError as e:
