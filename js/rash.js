@@ -300,48 +300,6 @@ var listingbox_selector_pre = "pre";
 var listingbox_selector = "figure > " + listingbox_selector_pre;
 
 $(function() {
-    /* AsciiMath and LaTeX formulas */
-    if (typeof MathJax !== 'undefined') {
-      // MathJax should parse *only* math content within span with role=math
-      var ignore_math_class = 'rash-nomath';
-      var process_math_class = 'rash-math';
-              $('body').attr("class", ignore_math_class);
-      var ascii_math_left_delimiter = '``';
-      var ascii_math_right_delimiter = '``';
-                var tex_math_left_delimiter = '$$';
-          var tex_math_right_delimiter = '$$';
-        $('span[role=math]').each(function() {
-          //We need to keep the outer span to let MathJax know that it should process its content
-          // but we *must* absolutely change its role.
-          $(this).attr("role", "presentation");
-          $(this).attr("class", process_math_class);
-            var tex_math_regex = /\\.+(?![\ ])/g;
-          if(tex_math_regex.test($(this).text())) {
-                        $(this).html(tex_math_left_delimiter+$(this).html()+tex_math_right_delimiter);
-          }
-          else {
-                        $(this).html(ascii_math_left_delimiter+$(this).html()+ascii_math_right_delimiter);
-          }
-        });
-        MathJax.Hub.Config({
-          asciimath2jax: {
-            // delimiters for AsciiMath formulas
-            delimiters: [ [ascii_math_left_delimiter, ascii_math_right_delimiter] ],
-              processClass: process_math_class,
-              ignoreClass: ignore_math_class
-          },
-            tex2jax: {
-              // delimiters for LaTeX formulas
-                inlineMath: [ [tex_math_left_delimiter, tex_math_right_delimiter] ],
-                processClass: process_math_class,
-                ignoreClass: ignore_math_class
-            }
-        });
-        // we changed the DOM, so we make MathJax typeset the document again.
-                MathJax.Hub.Queue([ "Typeset", MathJax.Hub ]);
-    }
-    /* /END AsciiMath and LaTeX formulas */
-
     /* Code Block */
     $('pre').each(function() {
         $(this).html($.trim($(this).html()))
@@ -545,6 +503,48 @@ $(function() {
         $(this).replaceWith("<h" + counter + ">"+ $(this).html() + "</h" + counter + ">")
     });
     /* /END Heading dimensions */
+    
+    /* AsciiMath and LaTeX formulas */
+    if (typeof MathJax !== 'undefined') {
+      // MathJax should parse *only* math content within span with role=math
+      var ignore_math_class = 'rash-nomath';
+      var process_math_class = 'rash-math';
+              $('body').attr("class", ignore_math_class);
+      var ascii_math_left_delimiter = '``';
+      var ascii_math_right_delimiter = '``';
+                var tex_math_left_delimiter = '$$';
+          var tex_math_right_delimiter = '$$';
+        $('span[role=math]').each(function() {
+          //We need to keep the outer span to let MathJax know that it should process its content
+          // but we *must* absolutely change its role.
+          $(this).attr("role", "presentation");
+          $(this).attr("class", process_math_class);
+          var tex_math_regex = /\\.+(?![\ ])/g;
+          if(tex_math_regex.test($(this).text())) {
+            $(this).html(tex_math_left_delimiter+$(this).html()+tex_math_right_delimiter);
+          }
+          else {
+            $(this).html(ascii_math_left_delimiter+$(this).html()+ascii_math_right_delimiter);
+          }
+        });
+        MathJax.Hub.Config({
+          asciimath2jax: {
+            // delimiters for AsciiMath formulas
+            delimiters: [ [ascii_math_left_delimiter, ascii_math_right_delimiter] ],
+              processClass: process_math_class,
+              ignoreClass: ignore_math_class
+          },
+            tex2jax: {
+              // delimiters for LaTeX formulas
+                inlineMath: [ [tex_math_left_delimiter, tex_math_right_delimiter] ],
+                processClass: process_math_class,
+                ignoreClass: ignore_math_class
+            }
+        });
+        // we changed the DOM, so we make MathJax typeset the document again.
+                MathJax.Hub.Queue([ "Typeset", MathJax.Hub ]);
+    }
+    /* /END AsciiMath and LaTeX formulas */
     
     /* Set header */
     $(this).addHeaderHTML();

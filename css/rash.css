@@ -81,6 +81,10 @@ th {
     color: white;
     text-align:center;
 }
+
+.rash-math div {
+    display: inline !important;
+}
 /* /END Figure, table and formula */
 
 /* Heading counters */
