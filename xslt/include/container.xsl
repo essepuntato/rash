@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: container module - Version 0.5, February 17, 2016
+RASH to LaTeX: container module - Version 0.6, December 24, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -125,7 +125,7 @@ Under the following terms:
         <xsl:text>\maketitle</xsl:text>
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-footnotes' and $token != 'doc-abstract']|text()"
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-endnotes' and $token != 'doc-abstract']|text()"
                 as="node()*"/>
         </xsl:call-template>
         <xsl:call-template name="n" />

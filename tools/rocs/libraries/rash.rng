@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.5, February 15, 2016
+Research Articles in Simplified HTML (RASH) format - Version 0.6, December 24, 2016
 by Silvio Peroni
 
 with precious contributions by Mike Smith and Ruben Verborgh.
@@ -384,7 +384,7 @@ Under the following terms:
         <element name="section">
             <attribute name="role">
                 <data type="string">
-                    <param name="pattern">doc-footnotes</param>
+                    <param name="pattern">doc-endnotes</param>
                 </data>
             </attribute>
             <ref name="attributes_html_element_no_role" />
@@ -392,7 +392,7 @@ Under the following terms:
                 <element name="section">
                     <attribute name="role">
                         <data type="string">
-                            <param name="pattern">doc-footnote</param>
+                            <param name="pattern">doc-endnote</param>
                         </data>
                     </attribute>
                     <ref name="attributes_html_element_no_role" />
@@ -589,7 +589,6 @@ Under the following terms:
     </define>
     <!-- /END Elements -->
     
-    <!-- Attributes -->
     <define name="aSrc">
         <attribute name="src">
             <data type="anyURI" />

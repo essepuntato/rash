@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-From DOCX to RASH XSLT transformation file - Version 1.0, December 25, 2015
+From DOCX to RASH XSLT transformation file - Version 1.1, December 24, 2016
 by Alberto Nicoletti, based on a work by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -81,6 +81,12 @@ Under the following terms:
     -->
     <xsl:param name="dir" select="'./word/'" />
     <!--<xsl:param name="dir" select="'../testbed/docx/testbed-8/word/'" />-->
+    
+    <!-- 
+        This parameter refers to the action of keeping the bibliographic reference
+        order as specified in the original document.
+    -->
+    <xsl:param name="keep-ref-order" select="false()" />
 
     <!-- This variable is used to remove separators in captions -->
     <xsl:variable name="subcap" select="'^[!,\.:;\?\|\-\s]+'" as="xs:string" />
@@ -851,9 +857,9 @@ Under the following terms:
             <!-- Select only the paragraphs containing text -->
             <xsl:variable name="footnoteElements" select="$footnotes//w:footnote[f:containsText(.)]" as="element()*" />
             <xsl:if test="exists($footnoteElements)">
-                <section role="doc-footnotes">
+                <section role="doc-endnotes">
                     <xsl:for-each select="$footnoteElements">
-                        <section id="ftn{./@w:id}" role="doc-footnote">
+                        <section id="ftn{./@w:id}" role="doc-endnote">
                             <xsl:apply-templates />
                         </section>
                     </xsl:for-each>

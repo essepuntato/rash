@@ -1,5 +1,5 @@
 /* 
-rash.css - Version 0.4, February 16, 2016
+rash.css - Version 0.5, December 28, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -173,11 +173,43 @@ body {
 
 /* Not cited */
 .notcited {
-    color: lightgrey;
-    font-style:italic;
+    color: red;
     cursor:help;
 }
 /* /END Not cited */
+
+/* Sections */
+body > section {
+    padding-right:15px;
+    padding-left:15px;
+    margin-right:auto;
+    margin-left:auto;
+}
+
+@media (min-width:768px){
+    body > section {
+        width:750px;
+    }
+}
+
+@media (min-width:992px){
+    body > section {
+        width:970px;
+    }
+}
+
+@media (min-width:1200px){
+    body > section {
+        width:1170px;
+    }
+}
+
+body > section:after{
+    display:table;
+    content:" ";
+    clear:both;
+}
+/* /END Sections */
 
 /* Error */
 .error {
@@ -191,6 +223,12 @@ body {
     content: "]]";
 }
 /* /END Error */
+
+/* Reference list */
+section[role=doc-bibliography] > ul {
+    list-style-type: decimal;
+}
+/* /END Reference list */
 
 /* ### Rules for printing the document */
 @media print {

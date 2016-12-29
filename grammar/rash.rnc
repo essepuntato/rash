@@ -1,4 +1,4 @@
-# Research Articles in Simplified HTML (RASH) format - Version 0.5, February 15, 2016
+# Research Articles in Simplified HTML (RASH) format - Version 0.6, December 24, 2016
 # by Silvio Peroni
 # 
 # with precious contributions by Mike Smith and Ruben Verborgh.
@@ -176,12 +176,12 @@ references =
 footnotes =
   element section {
     attribute role {
-      xsd:string { pattern = "doc-footnotes" }
+      xsd:string { pattern = "doc-endnotes" }
     },
     attributes_html_element_no_role,
     element section {
       attribute role {
-        xsd:string { pattern = "doc-footnote" }
+        xsd:string { pattern = "doc-endnote" }
       },
       attributes_html_element_no_role,
       cm_container
@@ -242,8 +242,6 @@ span_latex =
     text
   }
 # /END Elements
-
-# Attributes
 aSrc = attribute src { xsd:anyURI }
 aAlt = attribute alt { xsd:string }
 aHref = attribute href { xsd:anyURI }

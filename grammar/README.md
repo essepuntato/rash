@@ -16,6 +16,10 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
 
 
 ### Change log
+* Version 0.6
+  * The roles for footnotes (``doc-footnotes`` and ``doc-footnote``) have been updated according to the latter DOC-ARIA specification (``doc-endnotes`` and ``doc-endnote``).
+  * The current grammar allows the specification of ASCIIMath formulas (handled via MathJax).
+
 * Version 0.5
   * The elements ``i`` and ``b`` have been replaced by ``em`` and ``strong`` respectively (thanks Ruben Verborgh for this).
   * Removed the roles 'figurebox', 'tablebox', 'listingbox', and 'formulabox' - the correct visualisation and conversion is still guaranteed by looking at the actual elements the element ``figure`` contains.

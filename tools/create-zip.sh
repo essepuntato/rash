@@ -12,5 +12,5 @@ cp -rf $SCRIPTPATH/../css $SCRIPTPATH/rash
 cp -rf $SCRIPTPATH/../js $SCRIPTPATH/rash
 mkdir $SCRIPTPATH/rash/grammar
 cp $SCRIPTPATH/../grammar/rash.rn* $SCRIPTPATH/rash/grammar
-zip -r $SCRIPTPATH/../rash.zip $SCRIPTPATH/rash
+zip -r $SCRIPTPATH/../rash.zip $SCRIPTPATH/rash -x "*.DS_Store"
 rm -rf $SCRIPTPATH/rash

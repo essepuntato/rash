@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.5, February 15, 2016
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6, December 28, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -45,7 +45,7 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.5, February 15, 2016</title>
+        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.6, December 28, 2016</title>
         
         <!-- Author's data (one or more) -->
         <meta about="#sp" name="dc.creator" content="Silvio Peroni"/>
@@ -97,7 +97,7 @@ Under the following terms:
         <!-- Abstract -->
         <section role="doc-abstract">
             <h1>Abstract</h1>
-            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.5</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.6</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </section>
         
@@ -125,7 +125,7 @@ Under the following terms:
 &lt;/html&gt;</code></pre>
             <p>This document presents which elements are specifiable in each of the two document blocks, i.e., metadata and content. In <a href="#metadata"></a> we explain how to specify the metadata of the article as appropriate elements within <code>head</code>, while the rest of the document mainly pertains elements within the element <code>body</code>. In particular:</p>
             <ul>
-                <li><p>in <a href="#textualelements"></a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines;</p></li>
+                <li><p>in <a href="#textualelements"> </a> we introduce all the elements responsible for the definition of the actual text of documents, i.e, paragraphs and inlines;</p></li>
                 <li><p>in <a href="#sections"></a> we present the hierarchical structures for organising the text, e.g., the sections;</p></li>
                 <li><p>in <a href="#floatings"></a> we show how to create boxes with figures, tables, formulas, and listings;</p></li>
                 <li><p>in <a href="#references"></a> we introduce how to define the bibliographic reference of a paper;</p></li>
@@ -616,7 +616,7 @@ Under the following terms:
             <pre><code>
 &lt;section id="bibreflist" role="doc-bibliography"&gt;
     &lt;h1&gt;References&lt;/h1&gt;
-    &lt;ol&gt;
+    &lt;ul&gt;
         &lt;li id="Per2014" role="doc-biblioentry"&gt;
             &lt;p&gt;
                 Peroni, S. (2014). Research Articles in Simplified HTML 
@@ -647,21 +647,22 @@ Under the following terms:
                     http://dx.doi.org/10.1007/978-3-319-07443-6_39&lt;/a&gt;
             &lt;/p&gt;
         &lt;/li&gt;
-    &lt;/ol&gt;
+    &lt;/ul&gt;
 &lt;/section&gt;</code></pre>
+            <p>Both kinds of lists (i.e. <code>ul</code> and <code>ol</code>) can be used for defining the reference list. In particular, when <code>ul</code> is used, the RASH visualisation scripts (see <a href="#visualisation"></a>) will reorder all the bibliographic reference entries alphabetically, while the use of <code>ol</code> will oblige such scripts to keep the same order of specified in the source RASH file.</p>
         </section>
         
         <section id="footnotes">
             <h1>Footnotes</h1>
-            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-footnotes</q>. They are usually put at the end of the document <strong>after</strong> the reference section (cf. <a href="#references"></a>).</p>
-            <p>This special section contains a sequence of elements <code>section</code>. Each of these elements is accompanied by the attribute <code>role</code> with value <q>doc-footnote</q>, by the attribute <code>id</code> (for referencing to the particular footnote within the text), and can contain block elements containing text, i.e., a paragraph, a list, a code block, a block quotation or any of the structures described in <a href="#floatings"></a>.</p>
+            <p>All the footnotes is a special section defined by using the element <code>section</code> with the attribute <code>role</code> set to <q>doc-endnotes</q>. They are usually put at the end of the document <strong>after</strong> the reference section (cf. <a href="#references"></a>).</p>
+            <p>This special section contains a sequence of elements <code>section</code>. Each of these elements is accompanied by the attribute <code>role</code> with value <q>doc-endnote</q>, by the attribute <code>id</code> (for referencing to the particular footnote within the text), and can contain block elements containing text, i.e., a paragraph, a list, a code block, a block quotation or any of the structures described in <a href="#floatings"></a>.</p>
             <p>For instance, the footnote section in <a href="#fnlist"></a> is defined in RASH through the following code.</p>
             <pre><code>
-&lt;section id="fnlist" role="doc-footnotes"&gt;
-    &lt;section role="doc-footnote" id="fn1"&gt;
+&lt;section id="fnlist" role="doc-endnotes"&gt;
+    &lt;section role="doc-endnote" id="fn1"&gt;
         &lt;p&gt;This is the text of a footnote.&lt;/p&gt;
     &lt;/section&gt;
-    &lt;section role="doc-footnote" id="fn2"&gt;
+    &lt;section role="doc-endnote" id="fn2"&gt;
         &lt;p&gt;This is the text of another footnote.&lt;/p&gt;
     &lt;/section&gt;
     ...
@@ -782,7 +783,7 @@ Under the following terms:
         <!-- References -->
         <section id="bibreflist" role="doc-bibliography">
             <h1>References</h1>
-            <ol>
+            <ul>
                 <li id="Per2014" role="doc-biblioentry"><p>Peroni, S. (2014). Research Articles in Simplified HTML (RASH). <a href="http://cs.unibo.it/save-sd/rush.rng">http://cs.unibo.it/save-sd/rush/rush.rng</a></p></li>
                 <li id="ParagraphWikipedia" role="doc-biblioentry"><p>Wikipedia entry <q>Paragraph</q>. <a href="https://en.wikipedia.org/wiki/Paragraph">https://en.wikipedia.org/wiki/Paragraph</a> (last visited, December 17, 2014).</p></li>
                 <li id="CDN2014" role="doc-biblioentry"><p>Ciancarini, P., Di Iorio, A., Nuzzolese, A. G., Peroni, S., Vitali, F. (2014). Evaluating citation functions in CiTO: cognitive issues. In Presutti, V., d'Amato, C., Gandon, F., d'Aquin, M., Staab, S., Tordai, A. (Eds.), Proceedings of the 11th Extended Semantic Web Conference (ESWC 2014), Lecture Notes in Computer Science 8465: 580-594. Berlin, Germany: Springer. <a href="http://dx.doi.org/10.1007/978-3-319-07443-6_39">http://dx.doi.org/10.1007/978-3-319-07443-6_39</a></p></li>
@@ -792,18 +793,18 @@ Under the following terms:
                 <li id="RDFXML2014" role="doc-biblioentry"><p>Gandon, F., Schreiber, G. (2014). RDF 1.1 XML Syntax. W3C Recommendation, 25 February 2014. World Wide Web Consortium. Retrieved from <a href="http://www.w3.org/TR/rdf-syntax-grammar/">http://www.w3.org/TR/rdf-syntax-grammar/</a></p></li>
                 <li id="RASH2015" role="doc-biblioentry"><p>Di Iorio, A., Nuzzolese, A. G., Osborne, F., Peroni, S., Poggi, F., Smith, M., Vitali, F. Zhao, J. (2015). The RASH Framework: enabling HTML+RDF submissions in scholarly venues. In Proceedings of the poster and demo session of the 14th International Semantic Web Conference (ISWC 2015). Retrieved from <a href="https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html">https://rawgit.com/essepuntato/rash/master/papers/rash-demo-iswc2015.html</a></p></li>
                 <li id="Patterns2014" role="doc-biblioentry"><p>Di Iorio, A., Peroni, S., Poggi, F., &amp; Vitali, F. (2014). Dealing with structural patterns of XML documents. Journal of the American Society for Information Science and Technology, 65(9): 1884–1900. <a href="http://dx.doi.org/10.1002/asi.23088">http://dx.doi.org/10.1002/asi.23088</a></p></li>
-            </ol>
+            </ul>
         </section>
         
         <!-- Footnotes -->
-        <section id="fnlist" role="doc-footnotes">
-            <section id="fn3" role="doc-footnote">
+        <section id="fnlist" role="doc-endnotes">
+            <section id="fn3" role="doc-endnote">
                 <p>Note that other elements should be added for visualisation purposes. Please refer to <a href="#visualisation"></a> for additional details.</p>
             </section>
-            <section id="fn4" role="doc-footnote">
+            <section id="fn4" role="doc-endnote">
                 <p>Note that <code>h1</code> has the same content model of the element <code>p</code>, which means that all the inline elements described in <a href="#inlines"></a> can be used within such element.</p>
             </section>
-            <section id="fn5" role="doc-footnote">
+            <section id="fn5" role="doc-endnote">
                 <p>The full support of MathML is guaranteed by means of <a href="https://www.mathjax.org">MathJax</a>.</p>
             </section>
         </section>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.1.1, April 29, 2016
+From RASH to Springer LNCS LaTeX style XSLT transformation file - Version 1.2, December 24, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -201,7 +201,7 @@ Under the following terms:
     <xsl:template match="iml:body" priority="3.0">
         <xsl:call-template name="n" />
         <xsl:call-template name="next">
-            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-footnotes' and $token != 'doc-abstract']|text()" />
+            <xsl:with-param name="select" select="element()[every $token in tokenize(@role, ' ') satisfies $token != 'doc-endnotes' and $token != 'doc-abstract']|text()" />
         </xsl:call-template>
     </xsl:template>
     

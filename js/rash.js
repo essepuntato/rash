@@ -1,8 +1,8 @@
 /*
- * rash.js - Version 0.5.3, March 30, 2016
- * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com>
+ * rash.js - Version 0.6, December 27, 2016
+ * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com> 
  * 
- * with precious contributions by Ruben Verborgh.
+ * with precious contributions by Ruben Verborgh and Vincenzo Rubano.
  * 
  * Permission to use, copy, modify, and/or distribute this software for any purpose with 
  * or without fee is hereby granted, provided that the above copyright notice and this 
@@ -310,7 +310,7 @@ $(function() {
     /* /END Code Block */
 
     /* Bibliographic reference list */
-    $('li[role=doc-biblioentry]').sort(function(a,b) {
+    $('ul > li[role=doc-biblioentry]').sort(function(a,b) {
         var a_text = $(a).text().replace(/\s+/g," ").split();
         var b_text = $(b).text().replace(/\s+/g," ").split();
         if (a_text < b_text) {
@@ -322,23 +322,22 @@ $(function() {
         }
     }).appendTo('section[role=doc-bibliography] ul , section[role=doc-bibliography] ol');
     
-    /* Highlights in light-grey all the bibliographic references that are not cited in the paper */
+    /* Highlights with a red '[X]' all the bibliographic references that are not cited in the paper */
     $('li[role=doc-biblioentry]').each(function() {
         var cur_entry_id = $(this).attr("id");
         if (
             cur_entry_id == undefined || 
             cur_entry_id == false || 
-            $(cur_entry_id) == null) {
-            $(this).addClass("notcited");
-            $(this).attr("title", "This reference is not cited in the document.");
-        }
+            $("a[href=#" + cur_entry_id + "]").length == 0) {
+                $(this).find("p").prepend("<span class=\"cgen notcited\" title=\"This reference is not cited in the document.\">[X] </span>");
+            }
     })
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
-    $('section[role=doc-footnotes] section[role=doc-footnote]').sort(function(a,b) {
+    $('section[role=doc-endnotes] section[role=doc-endnote]').sort(function(a,b) {
         var all_footnote_pointers = $("a[href]").each(function() {
-            if ($.trim($(this).text()) == '' && $($(this).attr("href")).parents("section[role=doc-footnotes]")) {
+            if ($.trim($(this).text()) == '' && $($(this).attr("href")).parents("section[role=doc-endnotes]")) {
                 return $(this);
             }
         });
@@ -351,8 +350,8 @@ $(function() {
         } else {
             return 0;
         }
-    }).appendTo('section[role=doc-footnotes]');
-    $("section[role=doc-footnotes]").prepend("<h1>Footnotes</h1>");
+    }).appendTo('section[role=doc-endnotes]');
+    $("section[role=doc-endnotes]").prepend("<h1>Footnotes</h1>");
     /* /END Footnotes (part one) */
     
     /* Captions */
@@ -385,7 +384,8 @@ $(function() {
            referenced_element = $(cur_id); 
            
            if (referenced_element.length > 0) { 
-                referenced_element_figure = referenced_element.find(figurebox_selector_img + "," + figurebox_selector_svg);
+                referenced_element_figure = referenced_element.find(
+                    figurebox_selector_img + "," + figurebox_selector_svg);
                 referenced_element_table = referenced_element.find(tablebox_selector_table);
                 referenced_element_formula = referenced_element.find(
                     formulabox_selector_img + "," + formulabox_selector_span + "," + formulabox_selector_math);
@@ -394,17 +394,17 @@ $(function() {
                 if (
                     $("section[role=doc-abstract]" + cur_id).length > 0 ||
                     $("section[role=doc-bibliography]" + cur_id).length > 0 ||
-                    $("section[role=doc-footnotes]" + cur_id).length > 0 ||
+                    $("section[role=doc-endnotes]" + cur_id).length > 0 ||
                     $("section[role=doc-acknowledgements]" + cur_id).length > 0) {
-                    $(this).html("Section <q>" + $(cur_id + " h1").text() + "</q>");
+                    $(this).html($(this).html() + 
+                        "<span class=\"cgen\">Section <q>" + $(cur_id + " > h1").text() + "</q></span>");
                 /* Bibliographic references */
                 } else if ($(cur_id).parents("section[role=doc-bibliography]").length > 0) {
                     var cur_count = $(cur_id).prevAll("li").length + 1;
-                    $(this).html("[" + cur_count + "]");
-                    $(this).attr("title", $(cur_id).text().replace(/\s+/g, " ").trim());
-                    $(this).addClass("cgen");
+                    $(this).html($(this).html() + "<span class=\"cgen\" title=\"" + 
+                        $(cur_id).text().replace(/\s+/g, " ").trim() + "\">[" + cur_count + "]</span>");
                 /* Footnote references */
-                } else if ($(cur_id).parents("section[role=doc-footnotes]").length > 0) {
+                } else if ($(cur_id).parents("section[role=doc-endnotes]").length > 0) {
                     var cur_contents = $(this).parent().contents();
                     var cur_index = cur_contents.index($(this));
                     var prev_tmp = null;
@@ -419,13 +419,14 @@ $(function() {
                     var prev_el = $(prev_tmp);
                     var current_id = $(this).attr("href");
                     var footnote_element = $(current_id);
-                    if (footnote_element.length > 0 && footnote_element.parent("section[role=doc-footnotes]").length > 0) {
+                    if (footnote_element.length > 0 && 
+                        footnote_element.parent("section[role=doc-endnotes]").length > 0) {
                         var count = $(current_id).prevAll("section").length + 1;
-                        $(this).after("<sup class=\"fn cgen\">" + (prev_el.hasClass("fn") ? "," : "") +
+                        $(this).html($(this).html() + 
+                            "<sup class=\"fn cgen\">" + (prev_el.find("sup").hasClass("fn") ? "," : "") +
                             "<a name=\"fn_pointer_" + current_id.replace("#", "") + 
-                            "\" href=\"" + current_id + "\"" + 
-                            "\" title=\"" + $(current_id).text().replace(/\s+/g," ").trim() + "\">" + count + "</a></sup>");
-                        $(this).remove()
+                            "\" title=\"" + $(current_id).text().replace(/\s+/g," ").trim() + "\">" + 
+                            count + "</a></sup>");
                     } else {
                         $(this).replaceWith("<span class=\"error cgen\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
                     }
@@ -433,38 +434,33 @@ $(function() {
                 } else if ($("section" + cur_id).length > 0) {
                     var cur_count = $(cur_id).findHierarchicalNumber(
                         "section:not([role=doc-abstract]):not([role=doc-bibliography]):" + 
-                        "not([role=doc-footnotes]):not([role=doc-acknowledgements])");
+                        "not([role=doc-endnotes]):not([role=doc-acknowledgements])");
                     if (cur_count != null && cur_count != "") {
-                        $(this).html("Section " + cur_count);
-                        $(this).addClass("cgen");
+                        $(this).html($(this).html() + "<span class=\"cgen\">Section " + cur_count + "</span>");
                     }
                 /* Reference to figure boxes */
                 } else if (referenced_element_figure.length > 0) {
                     var cur_count = referenced_element_figure.findNumber(figurebox_selector);
                     if (cur_count != 0) {
-                        $(this).html("Figure " + cur_count);
-                        $(this).addClass("cgen");
+                        $(this).html($(this).html() + "<span class=\"cgen\">Figure " + cur_count + "</span>");
                     }
                 /* Reference to table boxes */
                 } else if (referenced_element_table.length > 0) {
                     var cur_count = referenced_element_table.findNumber(tablebox_selector);
                     if (cur_count != 0) {
-                        $(this).html("Table " + cur_count);
-                        $(this).addClass("cgen");
+                        $(this).html($(this).html() + "<span class=\"cgen\">Table " + cur_count + "</span>");
                     }
                 /* Reference to formula boxes */
                 } else if (referenced_element_formula.length > 0) {
                     var cur_count = referenced_element_formula.findNumber(formulabox_selector);
                     if (cur_count != 0) {
-                        $(this).html("Formula " + cur_count);
-                        $(this).addClass("cgen");
+                        $(this).html($(this).html() + "<span class=\"cgen\">Formula " + cur_count + "</span>");
                     }
                 /* Reference to listing boxes */
                 } else if (referenced_element_listing.length > 0) {
                     var cur_count = referenced_element_listing.findNumber(listingbox_selector);
                     if (cur_count != 0) {
-                        $(this).html("Listing " + cur_count);
-                        $(this).addClass("cgen");
+                        $(this).html($(this).html() + "<span class=\"cgen\">Listing " + cur_count + "</span>");
                     }
                 } else {
                     $(this).replaceWith("<span class=\"error cgen\">ERR: referenced element '" + cur_id.replace("#","") + 
@@ -479,18 +475,12 @@ $(function() {
     /* /END References */
 
     /* Footnotes (part 2) */
-    $("section[role=doc-footnotes] > section[role=doc-footnote]").each(function() {
+    $("section[role=doc-endnotes] > section[role=doc-endnote]").each(function() {
         var current_id = $(this).attr("id");
         $(this).children(":last-child").append("<sup class=\"hidden-print cgen\"> <a href=\"#fn_pointer_" + 
                                                 current_id + "\">[back]</a></sup>");
     });
     /* /END Footnotes (part 2) */
-    
-    /* Container sections */
-    $(
-        "body > section , section[role=doc-abstract] , section[role=doc-acknowledgements] , " + 
-        "section[role=doc-bibliography], section[role=doc-footnotes]").addClass("container");
-    /* /END Container sections */
     
     /* Heading dimensions */
     $("h1").each(function () {
@@ -549,10 +539,6 @@ $(function() {
     /* Set header */
     $(this).addHeaderHTML();
     /* /END Set header */
-    
-    /* Bibliography */
-    $("section[role=doc-bibliography] ul").replaceWith("<ol>" +$("section[role=doc-bibliography] ul").html() + "</ol>");
-    /* /END Bibliography */
     
     /* Footer */
     var footer = $("<footer class=\"footer hidden-print cgen\">" + 

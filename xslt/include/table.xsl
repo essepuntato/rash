@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: table module - Version 0.4, October 25, 2015
+RASH to LaTeX: table module - Version 0.5, December 24, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -48,7 +48,7 @@ Under the following terms:
         <xsl:param name="scope" as="element()?" tunnel="yes" />
         <xsl:param name="id-for-refs" as="xs:string?" tunnel="yes" />
         
-        <xsl:for-each select="iml:li[not($scope) or (some $ref in ($scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref'] | //iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-footnotes']/iml:section[some $footnote in $scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-noteref'] satisfies $footnote/@href = concat('#', @id)]//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref']) satisfies $ref/@href = concat('#', @id))]">
+        <xsl:for-each select="iml:li[not($scope) or (some $ref in ($scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref'] | //iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-endnotes']/iml:section[some $footnote in $scope//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-noteref'] satisfies $footnote/@href = concat('#', @id)]//iml:a[some $token in tokenize(@role, ' ') satisfies $token = 'doc-biblioref']) satisfies $ref/@href = concat('#', @id))]">
             <xsl:sort data-type="text" select="lower-case(string-join(iml:p//text(),''))" />
             <xsl:call-template name="n" />
             <xsl:text>\bibitem{</xsl:text>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: block module - Version 0.4, October 24, 2015
+RASH to LaTeX: block module - Version 0.5, December 24, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -94,7 +94,7 @@ Under the following terms:
         <xsl:text>\end{lstlisting}</xsl:text>
     </xsl:template>
     
-    <xsl:template match="iml:p[ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-footnotes']]" priority="3">
+    <xsl:template match="iml:p[ancestor::iml:section[some $token in tokenize(@role, ' ') satisfies $token = 'doc-endnotes']]" priority="3">
         <xsl:choose>
             <xsl:when test="empty(preceding-sibling::iml:p)">
                 <xsl:call-template name="next" />
@@ -112,8 +112,8 @@ Under the following terms:
                                         $token = 'doc-bibliography' or
                                         $token = 'doc-acknowledgements' or
                                         $token = 'doc-appendix' or
-                                        $token = 'doc-footnotes' or
-                                        $token = 'doc-footnote'])]">
+                                        $token = 'doc-endnotes' or
+                                        $token = 'doc-endnote'])]">
         <xsl:param name="deep" as="xs:integer" tunnel="yes" />
         <xsl:param name="numbering" as="xs:boolean" tunnel="yes" />
         

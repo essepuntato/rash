@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From ODT to RASH XSLT transformation file - Version 1.2.1, March 22, 2016
+From ODT to RASH XSLT transformation file - Version 1.3, December 24, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -45,34 +45,40 @@ Under the following terms:
         indent="yes" />
     
     <!-- 
-        This parameters refers to the base path that all the URL of the CSS files 
+        This parameter refers to the base path that all the URL of the CSS files 
         of the final RASH document should have.
     -->
     <xsl:param name="basecss" select="'./'" />
     
     <!-- 
-        This parameters refers to the base path that all the URL of the Javascript files 
+        This parameter refers to the base path that all the URL of the Javascript files 
         of the final RASH document should have.
     -->
     <xsl:param name="basejs" select="'./'" />
     
     <!-- 
-        This parameters refers to the base path that all the URL of the RelaxNG files 
+        This parameter refers to the base path that all the URL of the RelaxNG files 
         of the final RASH document should have.
     -->
     <xsl:param name="baserng" select="'./'" />
     
     <!-- 
-        This parameters refers to the base path that all the URL of the image files 
+        This parameter refers to the base path that all the URL of the image files 
         of the final RASH document should have.
     -->
     <xsl:param name="baseimg" select="'./'" />
     
     <!-- 
-        This parameters refers to the directory that contains the actual XML content 
+        This parameter refers to the directory that contains the actual XML content 
         of the ODT document to trnasform.
     -->
     <xsl:param name="dir" select="'./'" />
+    
+    <!-- 
+        This parameter refers to the action of keeping the bibliographic reference
+        order as specified in the original document.
+    -->
+    <xsl:param name="keep-ref-order" select="false()" />
     
     <!-- This variable is used to remove separators in captions -->
     <xsl:variable name="subcap" select="'^[!,\.:;\?\|\-\s]+'" as="xs:string" />
@@ -352,10 +358,9 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="text:list">
-        <xsl:variable name="isBulletList" select="some $s 
+        <xsl:variable name="isBulletList" select="(some $s 
             in //text:list-style[exists(element()[1][self::text:list-level-style-bullet])]/@style:name 
-            satisfies @text:style-name = $s" as="xs:boolean" />
-        
+            satisfies @text:style-name = $s) or ((some $content in $bibliography satisfies lower-case(normalize-space((preceding::text:h)[1])) = $content) and not($keep-ref-order))" as="xs:boolean" />
         <xsl:choose>
             <xsl:when test="$isBulletList">
                 <ul>
@@ -683,9 +688,9 @@ Under the following terms:
         <xsl:variable name="footnotes" select="//text:note" />
         
         <xsl:if test="$footnotes">
-            <section role="doc-footnotes">
+            <section role="doc-endnotes">
                 <xsl:for-each select="$footnotes">
-                    <section id="{./@text:id}" role="doc-footnote">
+                    <section id="{./@text:id}" role="doc-endnote">
                         <xsl:apply-templates select="text:note-body/element()" />
                     </section>
                 </xsl:for-each>
