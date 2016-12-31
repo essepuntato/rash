@@ -33,14 +33,14 @@ Under the following terms:
         <script src="../js/bootstrap.min.js"> </script>
         <script src="../js/rash.js"> </script>
         
-        <!-- MathJax for multi-browser support of LaTeX formulas and MathML -->
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+        <!-- MathJax for multi-browser support of LaTeX formulas, ASCIIMath and MathML -->
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"> </script>
         <!-- 
-            The rendering of the LaTeX/MathML formulas is guarenteed if there is internet connection. 
+            The rendering of the LaTeX/ASCIIMath/MathML formulas is guarenteed if there is internet connection. 
             However, for offline rendering, one should store the whole MathJax package 
             (see https://docs.mathjax.org/en/v2.5-latest/installation.html) locally and
             should refer to it by means of a relative path, e.g.:
-            <script src="[local-dir]/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+            <script src="[local-dir]/MathJax.js?config=TeX-MML-AM_HTMLorMML"> </script>
         -->
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
@@ -523,13 +523,18 @@ Under the following terms:
                         <span role="math">[a + b]^{260} + \{a + b\}_i</span>
                     </p>
                 </figure>
+                <figure id="formula_4">
+                    <p>
+                        <span role="math">[a + b]^260 + {a + b}_i</span>
+                    </p>
+                </figure>
                 <p>Each formula box is composed by a mandatory element <code>p</code> that can contain a formula by means of:</p>
                 <ul>
                     <li><p>an element <code>img</code> with role <q>math</q> as introduced in <a href="#inlines"></a>;</p></li>
                     <li><p>an element <code>math</code> (with namespace <code>http://www.w3.org/1998/Math/MathML</code>) of the MathML specification as introduced in <a href="#inlines"></a>.</p></li>
                     <li><p>an element <code>span</code> with role <q>math</q> introduced in <a href="#inlines"></a>.</p></li>
                 </ul>
-                <p>For instance the formulas shown in <a href="#formula_1"></a>, <a href="#formula_2"></a>, and <a href="#formula_3"></a> are defined in RASH through the following code.</p>
+                <p>For instance the formulas shown in <a href="#formula_1"></a>, <a href="#formula_2"></a>, <a href="#formula_3"></a> and <a href="#formula_4"></a> are defined in RASH through the following code.</p>
                 <pre><code>
 &lt;!-- Formula defined as an image --&gt;
 &lt;figure id="formula_1"&gt;
@@ -573,6 +578,13 @@ Under the following terms:
 &lt;figure id="formula_3"&gt;
     &lt;p&gt;
         &lt;span role="math"&gt;[a + b]^{260} + \{a + b\}_i&lt;/span&gt;
+    &lt;/p&gt;
+&lt;/figure&gt;
+                
+&lt;!-- Formula defined through ASCIIMath --&gt;
+&lt;figure id="formula_4"&gt;
+    &lt;p&gt;
+        &lt;span role="math"&gt;[a + b]^260 + {a + b}_i&lt;/span&gt;
     &lt;/p&gt;
 &lt;/figure&gt;</code></pre>
             </section>
@@ -763,14 +775,14 @@ Under the following terms:
 &lt;script src="bootstrap.min.js"&gt; &lt;/script&gt;
 &lt;script src="rash.js"&gt; &lt;/script&gt;
 
-&lt;!-- MathJax for multi-browser support of LaTeX formulas and MathML --&gt;
-&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; &lt;/script&gt;
+&lt;!-- MathJax for multi-browser support of LaTeX formulas, ASCIIMath and MathML --&gt;
+&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"&gt; &lt;/script&gt;
 &lt;!-- /END Visualisation requirements (mandatory for optimal reading) --&gt;</code></pre>
             <p>Note that the RASH file you are writing must be placed in the same location where the aforementioned scripts and stylesheets are. We have made available a <a href="../rash.zip">ZIP package</a> containing all these files with this documentation and a full example of a real research article <a href="#CDN2014"></a> written in RASH format.</p>
-            <p>In addition to these Javascript files, we also suggest the use of <a href="https://www.mathjax.org/">MathJax</a>, which is a Javascript display engine for mathematics that works in all browsers. It is used for rendering particular elements used in RASH, i.e., MathML formulas (by means of the element <code>math</code>) as well as LaTeX formulas (through the element <code>span</code> with the attribute <code>role</code> set to <q>math</q>), as shown in <a href="#inlines"></a>. Please note that the use of MathJax as introduced in the excerpt above is guaranteed only if there is internet connection. However, for offline rendering, one should store the whole <a href="https://docs.mathjax.org/en/v2.5-latest/installation.html">MathJax package</a> locally and should refer to it by means of a relative path, as shown in the following excerpt.</p>
+            <p>In addition to these Javascript files, we also suggest the use of <a href="https://www.mathjax.org/">MathJax</a>, which is a Javascript display engine for mathematics that works in all browsers. It is used for rendering particular elements used in RASH, i.e., MathML formulas (by means of the element <code>math</code>) as well as LaTeX and <a href="http://asciimath.org/">ASCIIMath</a> formulas (through the element <code>span</code> with the attribute <code>role</code> set to <q>math</q>), as shown in <a href="#inlines"></a>. Please note that the use of MathJax as introduced in the excerpt above is guaranteed only if there is internet connection. However, for offline rendering, one should store the whole <a href="https://docs.mathjax.org/en/v2.5-latest/installation.html">MathJax package</a> locally and should refer to it by means of a relative path, as shown in the following excerpt.</p>
             <pre><code>
 &lt;script 
-    src="[local-dir]/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; &lt;/script&gt;
+    src="[local-dir]/MathJax.js?config=TeX-MML-AM_HTMLorMML"&gt; &lt;/script&gt;
             </code></pre>
         </section>
         

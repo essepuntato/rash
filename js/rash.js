@@ -494,6 +494,30 @@ $(function() {
     });
     /* /END Heading dimensions */
     
+    /* Set header */
+    $(this).addHeaderHTML();
+    /* /END Set header */
+    
+    /* Footer */
+    var footer = $("<footer class=\"footer hidden-print cgen\">" + 
+        "<p><span>Words: " + $("body").countWords() + "</span>" +
+        "<span>Figures: " + $("body").countElements(figurebox_selector) + "</span>" +
+        "<span>Tables: " + $("body").countElements(tablebox_selector) + "</span>" +
+        "<span>Formulas: " + $("body").countElements(formulabox_selector) + "</span>" +
+        "<span>Listings: " + $("body").countElements(listingbox_selector) + "</span></p>" +
+        "<div class=\"btn-group dropup\">" +
+            "<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" " + 
+                "aria-expanded=\"false\" onClick=\"$(this).toggleCSS()\">" + 
+                "Layout: <span id=\"layoutselection\">Web-based</span><span class=\"caret\"></span></button>" +
+            "<ul class=\"dropdown-menu\" role=\"menu\">" +
+                "<li><a href=\"#rash_web_based_layout\" onClick=\"$(this).changeCSS('#rash_web_based_layout')\">Web-based</a></li>" +
+                "<li><a href=\"#rash_lncs_layout\" onClick=\"$(this).changeCSS('#rash_lncs_layout')\">Springer LNCS</a></li>" +
+            "</ul>" +
+        "</div>" +
+        "</p></footer>");
+    footer.appendTo($("body"))
+    /* /END Footer */
+    
     /* AsciiMath and LaTeX formulas */
     if (typeof MathJax !== 'undefined') {
       // MathJax should parse *only* math content within span with role=math
@@ -535,30 +559,6 @@ $(function() {
                 MathJax.Hub.Queue([ "Typeset", MathJax.Hub ]);
     }
     /* /END AsciiMath and LaTeX formulas */
-    
-    /* Set header */
-    $(this).addHeaderHTML();
-    /* /END Set header */
-    
-    /* Footer */
-    var footer = $("<footer class=\"footer hidden-print cgen\">" + 
-        "<p><span>Words: " + $("body").countWords() + "</span>" +
-        "<span>Figures: " + $("body").countElements(figurebox_selector) + "</span>" +
-        "<span>Tables: " + $("body").countElements(tablebox_selector) + "</span>" +
-        "<span>Formulas: " + $("body").countElements(formulabox_selector) + "</span>" +
-        "<span>Listings: " + $("body").countElements(listingbox_selector) + "</span></p>" +
-        "<div class=\"btn-group dropup\">" +
-            "<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" " + 
-                "aria-expanded=\"false\" onClick=\"$(this).toggleCSS()\">" + 
-                "Layout: <span id=\"layoutselection\">Web-based</span><span class=\"caret\"></span></button>" +
-            "<ul class=\"dropdown-menu\" role=\"menu\">" +
-                "<li><a href=\"#rash_web_based_layout\" onClick=\"$(this).changeCSS('#rash_web_based_layout')\">Web-based</a></li>" +
-                "<li><a href=\"#rash_lncs_layout\" onClick=\"$(this).changeCSS('#rash_lncs_layout')\">Springer LNCS</a></li>" +
-            "</ul>" +
-        "</div>" +
-        "</p></footer>");
-    footer.appendTo($("body"))
-    /* /END Footer */
     
     /* General function for loading CSS */
     var currentStyle = document.location.hash;

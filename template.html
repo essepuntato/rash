@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <!-- 
-Basic RASH template - Version 1.0, February 17, 2016
+Basic RASH template - Version 1.1, December 31, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -33,7 +33,7 @@ Under the following terms:
         <script src="js/rash.js"> </script>
         
         <!-- MathJax for multi-browser support of LaTeX formulas and MathML -->
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"> </script>
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
@@ -123,6 +123,7 @@ Under the following terms:
                     </math>
                 </p></li>
                 <li><p>LaTeX formulas, like <span role="math">\pi r^2</span></p></li>
+                <li><p>AsciiMath formulas, like <span role="math">pi r^2</span></p></li>
                 <li><p><a href="https://en.wikipedia.org/wiki/Hyperlink">hyperlinks</a></p></li>
             </ul>
         </section>
@@ -257,14 +258,14 @@ Under the following terms:
         </section>
         
         <!-- Footnotes -->
-        <section id="fnlist" role="doc-footnotes">
-            <section id="fn1" role="doc-footnote">
+        <section id="fnlist" role="doc-endnotes">
+            <section id="fn1" role="doc-endnote">
                 <p>Footnote 1.</p>
             </section>
-            <section id="fn2" role="doc-footnote">
+            <section id="fn2" role="doc-endnote">
                 <p>Footnote 2.</p>
             </section>
-            <section id="fn3" role="doc-footnote">
+            <section id="fn3" role="doc-endnote">
                 <p>Footnote 3.</p>
             </section>
         </section>

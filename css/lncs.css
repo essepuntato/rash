@@ -357,13 +357,13 @@ h1{
     counter-reset:h2;
 }
 
-section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) h1:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h1:before{
     counter-increment:h1;
     content:counter(h1);
     margin-right:1.5em;
 }
 
-section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-footnotes]) h2:before{
+section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h2:before{
     counter-increment:h2;
     content:counter(h1) "." counter(h2);
     margin-right:1em;
@@ -419,16 +419,16 @@ figcaption{
 /* /END Captions */
 
 /* Footnotes */
-section[role=doc-footnotes] .hidden-print {
+section[role=doc-endnotes] .hidden-print {
     display: none;
 }
 
-section[role=doc-footnotes] { 
+section[role=doc-endnotes] { 
     counter-reset: fn;
     font-size:9pt;
 }
 
-section[role=doc-footnotes] > section[role=doc-footnote]:before {
+section[role=doc-endnotes] > section[role=doc-endnote]:before {
     counter-increment: fn;
     content: counter(fn);
     float: left;
@@ -442,7 +442,7 @@ html{
     min-height:100%;
 }
 
-section[role=doc-footnotes] {
+section[role=doc-endnotes] {
     /* Margin bottom by footer height */
     margin-bottom:90px;
 }
@@ -679,6 +679,19 @@ section[role=doc-footnotes] {
     display:inline;
 }
 /* /END Footer */
+
+/* Formulas */
+.rash-math div {
+    display: inline !important;
+}
+/* /END formulas */
+
+/* Reference list */
+section[role=doc-bibliography] > ul {
+    list-style-type: decimal;
+}
+/* /END Reference list */
+
 
 @media print{
     .footer{
