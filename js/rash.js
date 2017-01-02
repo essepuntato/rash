@@ -1,5 +1,5 @@
 /*
- * rash.js - Version 0.6, December 27, 2016
+ * rash.js - Version 0.6, January 1, 2017
  * Copyright (c) 2014-2016, Silvio Peroni <essepuntato@gmail.com> 
  * 
  * with precious contributions by Ruben Verborgh and Vincenzo Rubano.
@@ -106,7 +106,7 @@ jQuery.fn.extend({
         $("p.keywords").remove();
     
         /* Header title */
-        var header = $("<header class=\"page-header container cgen\"></header>");
+        var header = $("<header class=\"page-header container cgen\" data-rash-original-content=\"\"></header>");
         header.prependTo($("body"))
         var title_string = "";
         var title_split = $("head title").html().split(" -- ");
@@ -329,7 +329,7 @@ $(function() {
             cur_entry_id == undefined || 
             cur_entry_id == false || 
             $("a[href=#" + cur_entry_id + "]").length == 0) {
-                $(this).find("p").prepend("<span class=\"cgen notcited\" title=\"This reference is not cited in the document.\">[X] </span>");
+                $(this).find("p").prepend("<span class=\"cgen notcited\" data-rash-original-content=\"\" title=\"This reference is not cited in the document.\">[X] </span>");
             }
     })
     /* /END Bibliographic reference list */
@@ -351,29 +351,33 @@ $(function() {
             return 0;
         }
     }).appendTo('section[role=doc-endnotes]');
-    $("section[role=doc-endnotes]").prepend("<h1>Footnotes</h1>");
+    $("section[role=doc-endnotes]").prepend("<h1 class=\"cgen\" data-rash-original-content=\"\">Footnotes</h1>");
     /* /END Footnotes (part one) */
     
     /* Captions */
     $(figurebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
         var cur_number = $(this).findNumber(figurebox_selector);
-        cur_caption.html("<strong class=\"cgen\">Figure " + cur_number + ". </strong>" + cur_caption.html());
+        cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Figure " + cur_number +
+            ". </strong>" + cur_caption.html());
     });
     $(tablebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
         var cur_number = $(this).findNumber(tablebox_selector);
-        cur_caption.html("<strong class=\"cgen\">Table " + cur_number + ". </strong>" + cur_caption.html());
+        cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Table " + cur_number +
+            ". </strong>" + cur_caption.html());
     });
     $(formulabox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("p");
         var cur_number = $(this).findNumber(formulabox_selector);
-        cur_caption.html(cur_caption.html() + "<span class=\"cgen\"> (" + cur_number + ")</span>");
+        cur_caption.html(cur_caption.html() + "<span class=\"cgen\" data-rash-original-content=\"\"> (" +
+            cur_number + ")</span>");
     });
     $(listingbox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
         var cur_number = $(this).findNumber(listingbox_selector);
-        cur_caption.html("<strong class=\"cgen\">Listing " + cur_number + ". </strong>" + cur_caption.html());
+        cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Listing " + cur_number +
+            ". </strong>" + cur_caption.html());
     });
     /* /END Captions */
     
@@ -390,18 +394,20 @@ $(function() {
                 referenced_element_formula = referenced_element.find(
                     formulabox_selector_img + "," + formulabox_selector_span + "," + formulabox_selector_math);
                 referenced_element_listing = referenced_element.find(listingbox_selector_pre);
+                original_content = $(this).html()
                 /* Special sections */
                 if (
                     $("section[role=doc-abstract]" + cur_id).length > 0 ||
                     $("section[role=doc-bibliography]" + cur_id).length > 0 ||
                     $("section[role=doc-endnotes]" + cur_id).length > 0 ||
                     $("section[role=doc-acknowledgements]" + cur_id).length > 0) {
-                    $(this).html($(this).html() + 
-                        "<span class=\"cgen\">Section <q>" + $(cur_id + " > h1").text() + "</q></span>");
+                    $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content +
+                        "\">Section <q>" + $(cur_id + " > h1").text() + "</q></span>");
                 /* Bibliographic references */
                 } else if ($(cur_id).parents("section[role=doc-bibliography]").length > 0) {
                     var cur_count = $(cur_id).prevAll("li").length + 1;
-                    $(this).html($(this).html() + "<span class=\"cgen\" title=\"" + 
+                    $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content +
+                        "\" title=\"Bibliographic reference " + cur_count + ": " +
                         $(cur_id).text().replace(/\s+/g, " ").trim() + "\">[" + cur_count + "]</span>");
                 /* Footnote references */
                 } else if ($(cur_id).parents("section[role=doc-endnotes]").length > 0) {
@@ -422,13 +428,16 @@ $(function() {
                     if (footnote_element.length > 0 && 
                         footnote_element.parent("section[role=doc-endnotes]").length > 0) {
                         var count = $(current_id).prevAll("section").length + 1;
-                        $(this).html($(this).html() + 
-                            "<sup class=\"fn cgen\">" + (prev_el.find("sup").hasClass("fn") ? "," : "") +
+                        if (prev_el.find("sup").hasClass("fn")) {
+                            $(this).before("<sup class=\"cgen\" data-rash-original-content=\"\">,</sup>");
+                        }
+                        $(this).html("<sup class=\"fn cgen\" data-rash-original-content=\"" + original_content + "\">" + 
                             "<a name=\"fn_pointer_" + current_id.replace("#", "") + 
-                            "\" title=\"" + $(current_id).text().replace(/\s+/g," ").trim() + "\">" + 
-                            count + "</a></sup>");
+                            "\" title=\"Footnote " + count + ": " +
+                            $(current_id).text().replace(/\s+/g," ").trim() + "\">" + count + "</a></sup>");
                     } else {
-                        $(this).replaceWith("<span class=\"error cgen\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
+                        $(this).html("<span class=\"error cgen\" data-rash-original-content=\"" + original_content + 
+                            "\">ERR: footnote '" + current_id.replace("#","") + "' does not exist</span>");
                     }
                 /* Common sections */
                 } else if ($("section" + cur_id).length > 0) {
@@ -436,39 +445,45 @@ $(function() {
                         "section:not([role=doc-abstract]):not([role=doc-bibliography]):" + 
                         "not([role=doc-endnotes]):not([role=doc-acknowledgements])");
                     if (cur_count != null && cur_count != "") {
-                        $(this).html($(this).html() + "<span class=\"cgen\">Section " + cur_count + "</span>");
+                        $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
+                        "\">Section " + cur_count + "</span>");
                     }
                 /* Reference to figure boxes */
                 } else if (referenced_element_figure.length > 0) {
                     var cur_count = referenced_element_figure.findNumber(figurebox_selector);
                     if (cur_count != 0) {
-                        $(this).html($(this).html() + "<span class=\"cgen\">Figure " + cur_count + "</span>");
+                        $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
+                            "\">Figure " + cur_count + "</span>");
                     }
                 /* Reference to table boxes */
                 } else if (referenced_element_table.length > 0) {
                     var cur_count = referenced_element_table.findNumber(tablebox_selector);
                     if (cur_count != 0) {
-                        $(this).html($(this).html() + "<span class=\"cgen\">Table " + cur_count + "</span>");
+                        $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
+                            "\">Table " + cur_count + "</span>");
                     }
                 /* Reference to formula boxes */
                 } else if (referenced_element_formula.length > 0) {
                     var cur_count = referenced_element_formula.findNumber(formulabox_selector);
                     if (cur_count != 0) {
-                        $(this).html($(this).html() + "<span class=\"cgen\">Formula " + cur_count + "</span>");
+                        $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
+                            "\">Formula " + cur_count + "</span>");
                     }
                 /* Reference to listing boxes */
                 } else if (referenced_element_listing.length > 0) {
                     var cur_count = referenced_element_listing.findNumber(listingbox_selector);
                     if (cur_count != 0) {
-                        $(this).html($(this).html() + "<span class=\"cgen\">Listing " + cur_count + "</span>");
+                        $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
+                        "\">Listing " + cur_count + "</span>");
                     }
                 } else {
-                    $(this).replaceWith("<span class=\"error cgen\">ERR: referenced element '" + cur_id.replace("#","") + 
+                    $(this).html("<span class=\"error cgen\" data-rash-original-content=\"" + original_content + 
+                        "\">ERR: referenced element '" + cur_id.replace("#","") + 
                         "' has not the correct type (it should be either a figure, a table, a formula, a listing, or a section)</span>");
                 }
            } else {
-               $(this).replaceWith("<span class=\"error cgen\">ERR: referenced element '" + 
-                                    cur_id.replace("#","") + "' does not exist</span>");
+               $(this).replaceWith("<span class=\"error cgen\" data-rash-original-content=\"" + original_content + 
+                    "\">ERR: referenced element '" + cur_id.replace("#","") + "' does not exist</span>");
            }
         }
     });
@@ -477,8 +492,8 @@ $(function() {
     /* Footnotes (part 2) */
     $("section[role=doc-endnotes] > section[role=doc-endnote]").each(function() {
         var current_id = $(this).attr("id");
-        $(this).children(":last-child").append("<sup class=\"hidden-print cgen\"> <a href=\"#fn_pointer_" + 
-                                                current_id + "\">[back]</a></sup>");
+        $(this).children(":last-child").append("<sup class=\"hidden-print cgen\" data-rash-original-content=\"" + original_content + 
+            "\"> <a href=\"#fn_pointer_" + current_id + "\">[back]</a></sup>");
     });
     /* /END Footnotes (part 2) */
     
@@ -499,7 +514,7 @@ $(function() {
     /* /END Set header */
     
     /* Footer */
-    var footer = $("<footer class=\"footer hidden-print cgen\">" + 
+    var footer = $("<footer class=\"footer hidden-print cgen\" data-rash-original-content=\"\">" + 
         "<p><span>Words: " + $("body").countWords() + "</span>" +
         "<span>Figures: " + $("body").countElements(figurebox_selector) + "</span>" +
         "<span>Tables: " + $("body").countElements(tablebox_selector) + "</span>" +
