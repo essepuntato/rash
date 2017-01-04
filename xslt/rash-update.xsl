@@ -333,22 +333,22 @@ Under the following terms:
     
     <!-- section[@role = 'doc-footnotes'] -> section[@role = 'doc-endnotes'] -->
     <xsl:template match="section[index-of(tokenize(@role, ' '), 'doc-footnotes') > 0]">
-        <a>
+        <section>
             <xsl:call-template name="copy-no-class">
                 <xsl:with-param name="role" select="'doc-endnotes'" />
                 <xsl:with-param name="remove-role" select="'doc-footnotes'" />
             </xsl:call-template>
-        </a>
+        </section>
     </xsl:template>
     
     <!-- section[@role = 'doc-footnote'] -> section[@role = 'doc-endnote'] -->
     <xsl:template match="section[index-of(tokenize(@role, ' '), 'doc-footnote') > 0]">
-        <a>
+        <section>
             <xsl:call-template name="copy-no-class">
                 <xsl:with-param name="role" select="'doc-endnote'" />
                 <xsl:with-param name="remove-role" select="'doc-footnote'" />
             </xsl:call-template>
-        </a>
+        </section>
     </xsl:template>
     
     <!-- @class with remove value -->
@@ -423,7 +423,7 @@ Under the following terms:
         <xsl:call-template name="copy-attrs-no-class">
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="role" select="$role" />
-            <xsl:with-param name="remove-role" select="$role" />
+            <xsl:with-param name="remove-role" select="$remove-role" />
         </xsl:call-template>
         <xsl:apply-templates />
     </xsl:template>
@@ -438,7 +438,7 @@ Under the following terms:
         </xsl:apply-templates>
         <xsl:call-template name="handle-role">
             <xsl:with-param name="role" select="$role" />
-            <xsl:with-param name="remove-role" select="$role" />
+            <xsl:with-param name="remove-role" select="$remove-role" />
         </xsl:call-template>
     </xsl:template>
     
