@@ -20,7 +20,7 @@ urls = (
 )
 
 # Variables
-wordprocessor_extensions = (".odt", )
+wordprocessor_extensions = (".odt", ".docx")
 html_extensions = (".html", ".htm")
 archive_extensions = (".zip", )
 supported_extensions = wordprocessor_extensions + html_extensions + archive_extensions
@@ -29,6 +29,7 @@ supported_extensions = wordprocessor_extensions + html_extensions + archive_exte
 base_path = "html" + os.sep
 rash_tools = "libraries" + os.sep
 odt_to_rash_path = rash_tools + "odt2rash.jar"
+docx_to_rash_path = rash_tools + "docx2rash.jar"
 springer_lncs_xslt_file_path = rash_tools + "springer-lncs.xsl"
 acm_icps_xslt_file_path = rash_tools + "acm-icps.xsl"
 acm_journal_large_file_path = rash_tools + "acm-journal-large.xsl"
@@ -131,6 +132,14 @@ class Process:
         if os.path.isdir(cur_rash_dir):
             return cur_rash_dir
 
+    @staticmethod
+    def __convert_from_docx(cur_docx_file):
+        cur_rash_dir = os.path.dirname(cur_docx_file) + os.sep + "rash"
+        call("java -jar %s -i %s -o %s" %
+             (docx_to_rash_path, cur_docx_file, cur_rash_dir), shell=True)
+        if os.path.isdir(cur_rash_dir):
+            return cur_rash_dir
+
     def POST(self):
         web_logger.mes()
         final_result = None
@@ -153,11 +162,17 @@ class Process:
 
                 cur_rash_file = None
 
-                if cur_filename.endswith(wordprocessor_extensions):  # conversion from ODT
+                if cur_filename.endswith(".odt"):  # conversion from ODT
                     cur_rash_dir = Process.__convert_from_odt(cur_file_path)
                     if cur_rash_dir is None:
                         error = "The conversion from ODT into RASH doesn't work as expected, and no" \
                                 " RASH package has been created."
+
+                    if cur_filename.endswith(".docx"):  # conversion from DOCX
+                        cur_rash_dir = Process.__convert_from_docx(cur_file_path)
+                        if cur_rash_dir is None:
+                            error = "The conversion from DOCX into RASH doesn't work as expected, and no" \
+                                    " RASH package has been created."
 
                 # Conversion from RASH (complete archive)
                 if cur_filename.endswith(archive_extensions):
