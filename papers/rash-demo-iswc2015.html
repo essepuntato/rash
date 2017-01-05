@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><!-- 
 The RASH Framework: enabling HTML+RDF submissions in scholarly venues
 by Angelo Di Iorio, Andrea Giovanni Nuzzolese, Francesco Osborne, Silvio Peroni, Francesco Poggi, Michael Smith, Fabio Vitali, Juhn Zhao
 
@@ -14,21 +12,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 Under the following terms:
 * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
--->
-<html xmlns="http://www.w3.org/1999/xhtml" 
-    prefix="
-    a: http://www.essepuntato.it/paper/iswc2015/demo/
-    c: http://www.essepuntato.it/cited-by/iswc2015/demo/
-    p: http://www.essepuntato.it/person/
-    o: http://www.essepuntato.it/organisation/
-    r: http://www.essepuntato.it/role/
-    fabio: http://purl.org/spar/fabio/
-    cito: http://purl.org/spar/cito/
-    pro: http://purl.org/spar/pro/
-    schema: http://schema.org/
-    prism: http://prismstandard.org/namespaces/basic/2.0/
-    frbr: http://purl.org/vocab/frbr/core#
-    dcterms: http://purl.org/dc/terms/">
+--><html xmlns="http://www.w3.org/1999/xhtml" prefix="     a: http://www.essepuntato.it/paper/iswc2015/demo/     c: http://www.essepuntato.it/cited-by/iswc2015/demo/     p: http://www.essepuntato.it/person/     o: http://www.essepuntato.it/organisation/     r: http://www.essepuntato.it/role/     fabio: http://purl.org/spar/fabio/     cito: http://purl.org/spar/cito/     pro: http://purl.org/spar/pro/     schema: http://schema.org/     prism: http://prismstandard.org/namespaces/basic/2.0/     frbr: http://purl.org/vocab/frbr/core#     dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
         <meta charset="UTF-8"/>
@@ -37,9 +21,9 @@ Under the following terms:
         <link rel="stylesheet" href="../css/bootstrap.min.css"/>
         <link rel="stylesheet" href="../css/rash.css"/>
         
-        <script src="../js/jquery.min.js"><![CDATA[ ]]></script>
-        <script src="../js/bootstrap.min.js"><![CDATA[ ]]></script>
-        <script src="../js/rash.js"><![CDATA[ ]]></script>
+        <script src="../js/jquery.min.js"><!--//--><![CDATA[ ]]><!--//--></script>
+        <script src="../js/bootstrap.min.js"><!--//--><![CDATA[ ]]><!--//--></script>
+        <script src="../js/rash.js"><!--//--><![CDATA[ ]]><!--//--></script>
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
@@ -191,7 +175,7 @@ Under the following terms:
                 pro:relatesToOrganization o:sc-lanc .
             
         ]]></script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><![CDATA[ ]]></script></head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><!--//--><![CDATA[ ]]><!--//--></script></head>
     <body>
         <!-- Abstract -->
         <section role="doc-abstract">
@@ -254,14 +238,14 @@ Under the following terms:
         </section>
         
         <!-- Footnotes -->
-        <section role="doc-footnotes">
-            <section id="fn1" role="doc-footnote">
+        <section role="doc-endnotes">
+            <section id="fn1" role="doc-endnote">
                 <p>The full project is available at <a href="https://github.com/essepuntato/rash/">https://github.com/essepuntato/rash/</a>. Please use the hashtag <code>#rashfwk</code> for referring to any of the items defined in the RASH Framework via Twitter or other social platforms.</p>
             </section>
-            <section id="fn3" role="doc-footnote">
+            <section id="fn3" role="doc-endnote">
                 <p><a href="https://github.com/essepuntato/rash/#venues-that-have-adopted-rash-as-submission-format">https://github.com/essepuntato/rash/#venues-that-have-adopted-rash-as-submission-format</a></p>
             </section>
-            <section id="fn4" role="doc-footnote">
+            <section id="fn4" role="doc-endnote">
                 <p>Please refer to the official RASH documentation, available at <a href="http://cs.unibo.it/save-sd/rash">http://cs.unibo.it/save-sd/rash</a>, for a complete introduction of all the elements and attributes that can be used in RASH documents.</p>
             </section>
         </section>

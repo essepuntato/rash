@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?><!-- 
 How Do Researchers Annotate Their Work? A Study on Semantic Annotations in RASH Papers
 by Francesco Osborne, Silvio Peroni, 
 
@@ -13,16 +12,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 Under the following terms:
 * Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
--->
-<html xmlns="http://www.w3.org/1999/xhtml" prefix="
-    sd: https://w3id.org/scholarlydata/person/
-    fabio: http://purl.org/spar/fabio/
-    cito: http://purl.org/spar/cito/
-    pro: http://purl.org/spar/pro/
-    schema: http://schema.org/
-    prism: http://prismstandard.org/namespaces/basic/2.0/
-    frbr: http://purl.org/vocab/frbr/core#
-    dcterms: http://purl.org/dc/terms/">
+--><html xmlns="http://www.w3.org/1999/xhtml" prefix="     sd: https://w3id.org/scholarlydata/person/     fabio: http://purl.org/spar/fabio/     cito: http://purl.org/spar/cito/     pro: http://purl.org/spar/pro/     schema: http://schema.org/     prism: http://prismstandard.org/namespaces/basic/2.0/     frbr: http://purl.org/vocab/frbr/core#     dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
         <meta charset="UTF-8"/>
@@ -31,9 +21,9 @@ Under the following terms:
         <link rel="stylesheet" href="../css/bootstrap.min.css"/>
         <link rel="stylesheet" href="../css/rash.css"/>
         
-        <script src="../js/jquery.min.js"> </script>
-        <script src="../js/bootstrap.min.js"> </script>
-        <script src="../js/rash.js"> </script>
+        <script src="../js/jquery.min.js"><!--//--><![CDATA[ ]]><!--//--></script>
+        <script src="../js/bootstrap.min.js"><!--//--><![CDATA[ ]]><!--//--></script>
+        <script src="../js/rash.js"><!--//--><![CDATA[ ]]><!--//--></script>
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
@@ -42,13 +32,11 @@ Under the following terms:
         <!-- Author's data (one or more) -->
         <meta about="sd:francesco-osborne" typeof="schema:Person" name="dc.creator" property="schema:name" content="Francesco Osborne"/>
         <meta about="sd:francesco-osborne" property="schema:email" content="francesco.osborne@open.ac.uk"/>
-        <link about="sd:francesco-osborne" property="schema:affiliation" 
-            href="https://w3id.org/scholarlydata/organisation/kmi-the-open-university-uk"/>
+        <link about="sd:francesco-osborne" property="schema:affiliation" href="https://w3id.org/scholarlydata/organisation/kmi-the-open-university-uk"/>
         
         <meta about="sd:silvio-peroni" typeof="schema:Person" name="dc.creator" property="schema:name" content="Silvio Peroni"/>
         <meta about="sd:silvio-peroni" property="schema:email" content="silvio.peroni@unibo.it"/>
-        <link about="sd:silvio-peroni" property="schema:affiliation" 
-            href="https://w3id.org/scholarlydata/organisation/university-of-bologna"/>
+        <link about="sd:silvio-peroni" property="schema:affiliation" href="https://w3id.org/scholarlydata/organisation/university-of-bologna"/>
         
         <!-- Affiliations -->
         <meta about="https://w3id.org/scholarlydata/organisation/university-of-bologna" property="schema:name" typeof="schema:Organization" content="DASPLab, DISI, University of Bologna, Bologna, Italy"/>
@@ -59,7 +47,7 @@ Under the following terms:
         <meta property="prism:keyword" content="Semantic Publishing"/>
         <meta property="prism:keyword" content="RDF annotations"/>
         <!-- /END Metadata -->
-    </head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><!--//--><![CDATA[ ]]><!--//--></script></head>
     <body typeof="fabio:PosterPaper">
         <!-- Abstract -->
         <section role="doc-abstract">
@@ -71,8 +59,8 @@ Under the following terms:
         <!-- Sections -->
         <section id="sec_introduction">
             <h1>Introduction</h1>
-            <p>In the last ten years the Semantic Publishing <a href="#shotton2009"></a> community proposed a number of good practices and tools for fostering discovery, exploration and reproducibility of research publications on the Web. The adoption of HTML-based formats in academic literature is an important step towards this vision, since it opens the possibility of enriching research papers with machine-readable semantic annotations. However, in order to foster a wider adoption of these formats, we need to support the needs of all the actors involved in the production, delivery and fruition of scholarly articles, and this is still an open challenge.</p> 
-            <p>Existing solutions which support HTML+RDF annotations are <em>Dokieli</em> (<a rel="cito:credits" href="https://dokie.li/">https://dokie.li/</a>), which is an a client-side editor for decentralised article publishing based on Semantic Web technologies, and <em>Scholarly HTML</em> (<a rel="cito:credits" href="https://w3c.github.io/scholarly-html/">https://w3c.github.io/scholarly-html/</a>), a domain-specific document format built on open standards. Along these lines, in a previous work we presented the Research Articles in Simplified HTML (RASH) Framework <a href="#diiorio2015"></a>, i.e., a set of specifications and tools for writing academic articles in RASH, that is a simplified version of HTML which allows users to include semantic relationships in RDFa, Turtle or JSON-LD. </p>
+            <p>In the last ten years the Semantic Publishing <a href="#shotton2009"> </a> community proposed a number of good practices and tools for fostering discovery, exploration and reproducibility of research publications on the Web. The adoption of HTML-based formats in academic literature is an important step towards this vision, since it opens the possibility of enriching research papers with machine-readable semantic annotations. However, in order to foster a wider adoption of these formats, we need to support the needs of all the actors involved in the production, delivery and fruition of scholarly articles, and this is still an open challenge.</p> 
+            <p>Existing solutions which support HTML+RDF annotations are <em>Dokieli</em> (<a rel="cito:credits" href="https://dokie.li/">https://dokie.li/</a>), which is an a client-side editor for decentralised article publishing based on Semantic Web technologies, and <em>Scholarly HTML</em> (<a rel="cito:credits" href="https://w3c.github.io/scholarly-html/">https://w3c.github.io/scholarly-html/</a>), a domain-specific document format built on open standards. Along these lines, in a previous work we presented the Research Articles in Simplified HTML (RASH) Framework <a href="#diiorio2015"> </a>, i.e., a set of specifications and tools for writing academic articles in RASH, that is a simplified version of HTML which allows users to include semantic relationships in RDFa, Turtle or JSON-LD. </p>
             <p>In the last two years RASH and other HTML-based formats were adopted by the main Semantic Web conferences (ISWC, ESWC, EKAW) and by a number of related workshops and challenges such as COLD, LD4IE, LISC, MoDeST at ISWC, SemPub at ESWC, WS-REST at ICWE, and SAVE-SD at WWW. However, we still do not know much how researchers took advantage of this solution and the nature of the semantic annotations adopted for describing their work.</p>
             <p>In this paper we present an evaluation study on the annotations associated to the RASH articles submitted to the <q>Semantics, Analytics, Visualisation: Enhancing Scholarly Data (SAVE-SD)</q> workshop in the 2015-2016 period. In particular, our goal is to understand:</p>
             <ul>
@@ -84,13 +72,13 @@ Under the following terms:
         <section id="sec_rash">
             <h1>The RASH Framework</h1>
             <p>The Research Articles in Simplified HTML (RASH) format is a markup language that restricts the use of HTML to 32 elements. It allows authors to include semantic relationships in their work either by associating RDFa annotations or by inserting plain Turtle, RDF/XML or JSON-LD content in a script element.</p> 
-            <p>RASH is the building block of the RASH Framework (<a rel="cito:describes" href="https://github.com/essepuntato/rash">https://github.com/essepuntato/rash</a>), i.e., a set of specifications and tools for the visualisation, conversion, and enrichment of RASH documents. In particular, the Framework makes available a series of CSS3 stylesheets and Javascript scripts for visualizing RASH documents in modern browsers, and allow users to change the layout dynamically. In addition, the Framework includes the <em>RASH Online Conversion Service</em> (<em>ROCS</em>) <a href="#diiorio2016"></a>, i.e., a Web application that allows the conversion of ODT documents into RASH and from RASH into LaTeX according to Springer Nature LNCS and ACM ICPS layouts. Finally, the RASH Framework also contains the <em>SPAR Xtractor suite</em>, a Java application that automatically enriches a RASH document with RDFa annotations defining its structure in terms of the Document Component Ontology (DoCO) <a href="#constantin2016"></a>. This tool allows the identification of each sentence in the paper and can be used to support a number of techniques to extract information from scientific articles.</p>
+            <p>RASH is the building block of the RASH Framework (<a rel="cito:describes" href="https://github.com/essepuntato/rash">https://github.com/essepuntato/rash</a>), i.e., a set of specifications and tools for the visualisation, conversion, and enrichment of RASH documents. In particular, the Framework makes available a series of CSS3 stylesheets and Javascript scripts for visualizing RASH documents in modern browsers, and allow users to change the layout dynamically. In addition, the Framework includes the <em>RASH Online Conversion Service</em> (<em>ROCS</em>) <a href="#diiorio2016"> </a>, i.e., a Web application that allows the conversion of ODT documents into RASH and from RASH into LaTeX according to Springer Nature LNCS and ACM ICPS layouts. Finally, the RASH Framework also contains the <em>SPAR Xtractor suite</em>, a Java application that automatically enriches a RASH document with RDFa annotations defining its structure in terms of the Document Component Ontology (DoCO) <a href="#constantin2016"> </a>. This tool allows the identification of each sentence in the paper and can be used to support a number of techniques to extract information from scientific articles.</p>
         </section>
         
         <section id="sec_evaluation">
             <h1>Evaluation Study</h1>
-            <p>In this study we focused on a sample of 1751 semantic annotations obtained from 11 RASH papers submitted to SAVE-SD 2015 and SAVE-SD 2016. The number of statements in a single paper was found to range from 24 to 903, yielding a median value of 46 (25th percentile 34, 75th percentile 175). We extracted all the RDF statements by running the W3C RDFa 1.1 Distiller service (<a rel="cito:usesMethodIn" href="https://www.w3.org/2012/pyRdfa/">https://www.w3.org/2012/pyRdfa/</a>) on each article. We then considered only the statements that used http-based entities as predicates, or their objects if used for typing resources. The data are organised in several CSV files and have been obtained by running a Python script we developed for gathering the data used in this evaluation. All the material used has been made available online with open licenses <a href="#osborne2016"></a> and it is accompanied by explanatory README files.</p> 
-            <p>The first goal of the study was to determine the prevalent vocabularies and how much they were used in the average paper. The left panel of <a href="#fig1"></a> shows the common vocabularies. Schema.org and PRISM are actually enforced by RASH: the first is used for standard metadata such as emails, affiliations and organization names and the second for keywords. In addition, a quantity of XHTML statements was automatically extracted when processing DPUB roles (<a rel="cito:usesMethodIn" href="https://www.w3.org/TR/dpub-aria-1.0/">https://www.w3.org/TR/dpub-aria-1.0/</a>). Thus we will not consider such vocabularies in the rest of the evaluation. The other common vocabularies are Dublin Core, which appear in 82% of the papers, FOAF (27%) and the SPAR ontologies <a href="#peroni2014"></a>, such as FABIO (36%) and CITO (27%). The right panel of Figure 1 illustrates the average number of statement for each of these vocabularies. Dublin Core characterizes the highest number of annotation (9.4), followed by FOAF (7.36) and FABIO (6.4).</p>
+            <p>In this study we focused on a sample of 1751 semantic annotations obtained from 11 RASH papers submitted to SAVE-SD 2015 and SAVE-SD 2016. The number of statements in a single paper was found to range from 24 to 903, yielding a median value of 46 (25th percentile 34, 75th percentile 175). We extracted all the RDF statements by running the W3C RDFa 1.1 Distiller service (<a rel="cito:usesMethodIn" href="https://www.w3.org/2012/pyRdfa/">https://www.w3.org/2012/pyRdfa/</a>) on each article. We then considered only the statements that used http-based entities as predicates, or their objects if used for typing resources. The data are organised in several CSV files and have been obtained by running a Python script we developed for gathering the data used in this evaluation. All the material used has been made available online with open licenses <a href="#osborne2016"> </a> and it is accompanied by explanatory README files.</p> 
+            <p>The first goal of the study was to determine the prevalent vocabularies and how much they were used in the average paper. The left panel of <a href="#fig1"> </a> shows the common vocabularies. Schema.org and PRISM are actually enforced by RASH: the first is used for standard metadata such as emails, affiliations and organization names and the second for keywords. In addition, a quantity of XHTML statements was automatically extracted when processing DPUB roles (<a rel="cito:usesMethodIn" href="https://www.w3.org/TR/dpub-aria-1.0/">https://www.w3.org/TR/dpub-aria-1.0/</a>). Thus we will not consider such vocabularies in the rest of the evaluation. The other common vocabularies are Dublin Core, which appear in 82% of the papers, FOAF (27%) and the SPAR ontologies <a href="#peroni2014"> </a>, such as FABIO (36%) and CITO (27%). The right panel of Figure 1 illustrates the average number of statement for each of these vocabularies. Dublin Core characterizes the highest number of annotation (9.4), followed by FOAF (7.36) and FABIO (6.4).</p>
             <figure id="fig1">
                 <p><img src="img/fig1.png" alt="Vocabularies and number of statements in a RASH paper"/></p>
                 <figcaption>Percentage of papers and average number of statements using a vocabulary</figcaption>
@@ -99,7 +87,7 @@ Under the following terms:
                 <p><img src="img/fig2.png" alt="Vocabulary entities in a RASH paper"/></p>
                 <figcaption>Average percentage of vocabulary entities in a RASH paper (excluding the mandatory ones).</figcaption>
             </figure>
-            <p>We also performed a more fine-grained analysis considering the amount of entities of these vocabularies within the various RDF statements. The goal was to understand the percentage of contribution that the various entities provide (on average) to the statements of the document analysed. As expected, the entities that contribute to about 60% of the statements are either those that are obliged by RASH (prism:keyword 6.9%, schema:affiliation 5.7%, schema:name 5.3%, and schema:email 4.7%) or those automatically extracted by processing the DPUB roles included, mandatorily, in the documents (xhtml:role 38%). Excluding these, the following top ten entities, shown in <a href="#fig2"></a>, cover about 20% of the statements.</p>
+            <p>We also performed a more fine-grained analysis considering the amount of entities of these vocabularies within the various RDF statements. The goal was to understand the percentage of contribution that the various entities provide (on average) to the statements of the document analysed. As expected, the entities that contribute to about 60% of the statements are either those that are obliged by RASH (prism:keyword 6.9%, schema:affiliation 5.7%, schema:name 5.3%, and schema:email 4.7%) or those automatically extracted by processing the DPUB roles included, mandatorily, in the documents (xhtml:role 38%). Excluding these, the following top ten entities, shown in <a href="#fig2"> </a>, cover about 20% of the statements.</p>
             <p>Among these entities, we have three classes describing three diverse but interlinked kinds of objects, i.e. people (foaf:Person) authoring a research work (fabio:ResearchPaper) and the sentences (doco:Sentence) therein contained. The other seven entities are three object properties – two of them (pav:authoredBy and pattern:contains) provide the links between the three aforementioned classes, while the other, i.e., cito:cites, describes citation links between papers – and four data properties – used for providing additional metadata about the entities (dcterms:title, dcterms:bibliographicCitation, foaf:name) and for describing bunches of textual content of the sentences (c4o:hasContent).</p>
             </section>
             
