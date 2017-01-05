@@ -335,9 +335,9 @@ $(function() {
     /* /END Bibliographic reference list */
     
     /* Footnotes (part one) */
-    $('section[role=doc-endnotes] section[role=doc-endnote]').sort(function(a,b) {
+    $('section[role=doc-endnotes] section[role=doc-endnote], section[role=doc-footnotes] section[role=doc-footnote]').sort(function(a,b) {
         var all_footnote_pointers = $("a[href]").each(function() {
-            if ($.trim($(this).text()) == '' && $($(this).attr("href")).parents("section[role=doc-endnotes]")) {
+            if ($.trim($(this).text()) == '' && $($(this).attr("href")).parents("section[role=doc-endnotes], section[role=doc-footnotes]")) {
                 return $(this);
             }
         });
@@ -350,8 +350,8 @@ $(function() {
         } else {
             return 0;
         }
-    }).appendTo('section[role=doc-endnotes]');
-    $("section[role=doc-endnotes]").prepend("<h1 class=\"cgen\" data-rash-original-content=\"\">Footnotes</h1>");
+    }).appendTo('section[role=doc-endnotes], section[role=doc-footnotes]');
+    $("section[role=doc-endnotes], section[role=doc-footnotes]").prepend("<h1 class=\"cgen\" data-rash-original-content=\"\">Footnotes</h1>");
     /* /END Footnotes (part one) */
     
     /* Captions */
@@ -399,7 +399,7 @@ $(function() {
                 if (
                     $("section[role=doc-abstract]" + cur_id).length > 0 ||
                     $("section[role=doc-bibliography]" + cur_id).length > 0 ||
-                    $("section[role=doc-endnotes]" + cur_id).length > 0 ||
+                    $("section[role=doc-endnotes]" + cur_id + ", section[role=doc-footnotes]" + cur_id).length > 0 ||
                     $("section[role=doc-acknowledgements]" + cur_id).length > 0) {
                     $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content +
                         "\">Section <q>" + $(cur_id + " > h1").text() + "</q></span>");
@@ -409,8 +409,8 @@ $(function() {
                     $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content +
                         "\" title=\"Bibliographic reference " + cur_count + ": " +
                         $(cur_id).text().replace(/\s+/g, " ").trim() + "\">[" + cur_count + "]</span>");
-                /* Footnote references */
-                } else if ($(cur_id).parents("section[role=doc-endnotes]").length > 0) {
+                /* Footnote references (doc-footnotes and doc-footnote included for easing back compatibility) */
+                } else if ($(cur_id).parents("section[role=doc-endnotes], section[role=doc-footnotes]").length > 0) {
                     var cur_contents = $(this).parent().contents();
                     var cur_index = cur_contents.index($(this));
                     var prev_tmp = null;
@@ -426,7 +426,7 @@ $(function() {
                     var current_id = $(this).attr("href");
                     var footnote_element = $(current_id);
                     if (footnote_element.length > 0 && 
-                        footnote_element.parent("section[role=doc-endnotes]").length > 0) {
+                        footnote_element.parent("section[role=doc-endnotes], section[role=doc-footnotes]").length > 0) {
                         var count = $(current_id).prevAll("section").length + 1;
                         if (prev_el.find("sup").hasClass("fn")) {
                             $(this).before("<sup class=\"cgen\" data-rash-original-content=\"\">,</sup>");
@@ -443,7 +443,7 @@ $(function() {
                 } else if ($("section" + cur_id).length > 0) {
                     var cur_count = $(cur_id).findHierarchicalNumber(
                         "section:not([role=doc-abstract]):not([role=doc-bibliography]):" + 
-                        "not([role=doc-endnotes]):not([role=doc-acknowledgements])");
+                        "not([role=doc-endnotes]):not([role=doc-footnotes]):not([role=doc-acknowledgements])");
                     if (cur_count != null && cur_count != "") {
                         $(this).html("<span class=\"cgen\" data-rash-original-content=\"" + original_content + 
                         "\">Section " + cur_count + "</span>");
@@ -490,7 +490,7 @@ $(function() {
     /* /END References */
 
     /* Footnotes (part 2) */
-    $("section[role=doc-endnotes] > section[role=doc-endnote]").each(function() {
+    $("section[role=doc-endnotes] > section[role=doc-endnote], section[role=doc-footnotes] > section[role=doc-footnote]").each(function() {
         var current_id = $(this).attr("id");
         $(this).children(":last-child").append("<sup class=\"hidden-print cgen\" data-rash-original-content=\"" + original_content + 
             "\"> <a href=\"#fn_pointer_" + current_id + "\">[back]</a></sup>");

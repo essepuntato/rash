@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH update XSLT file - Version 0.6, December 27, 2016
+RASH update XSLT file - Version 0.6.1, January 5, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -41,7 +41,9 @@ Under the following terms:
         <head>
             <xsl:call-template name="copy-no-class" />
             <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+                <xsl:comment>//</xsl:comment>
                 <xsl:text> </xsl:text>
+                <xsl:comment>//</xsl:comment>
             </script>
         </head>
     </xsl:template>
@@ -382,7 +384,9 @@ Under the following terms:
     <xsl:template match="script[normalize-space() = '']">
         <script>
             <xsl:call-template name="copy-attrs-no-class" />
+            <xsl:comment>//</xsl:comment>
             <xsl:text> </xsl:text>
+            <xsl:comment>//</xsl:comment>
         </script>
     </xsl:template>
     
