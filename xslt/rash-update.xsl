@@ -322,6 +322,14 @@ Under the following terms:
         </a>
     </xsl:template>
     
+    <!-- a[normalize-space() = ''] -> a with one space -->
+    <xsl:template match="a[normalize-space() = '']">
+        <a>
+            <xsl:call-template name="copy-attrs-no-class" />
+            <xsl:text> </xsl:text>
+        </a>
+    </xsl:template>
+    
     <!-- (i|b|a|sup|sub|q)[@class = 'code'] -> code -->
     <xsl:template match="i[index-of(tokenize(@class, ' '), 'code') > 0]|b[index-of(tokenize(@class, ' '), 'code') > 0]|a[index-of(tokenize(@class, ' '), 'code') > 0]|sup[index-of(tokenize(@class, ' '), 'code') > 0]|sub[index-of(tokenize(@class, ' '), 'code') > 0]|q[index-of(tokenize(@class, ' '), 'code') > 0]">
         <xsl:copy>
