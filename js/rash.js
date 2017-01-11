@@ -385,6 +385,7 @@ $(function() {
     $("a[href]").each(function() {
         if ($.trim($(this).text()) == '') {
            var cur_id = $(this).attr("href");
+           original_content = $(this).html()
            referenced_element = $(cur_id); 
            
            if (referenced_element.length > 0) { 
@@ -394,7 +395,6 @@ $(function() {
                 referenced_element_formula = referenced_element.find(
                     formulabox_selector_img + "," + formulabox_selector_span + "," + formulabox_selector_math);
                 referenced_element_listing = referenced_element.find(listingbox_selector_pre);
-                original_content = $(this).html()
                 /* Special sections */
                 if (
                     $("section[role=doc-abstract]" + cur_id).length > 0 ||
