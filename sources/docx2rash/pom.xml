@@ -11,12 +11,24 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>copy-resources-css</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -27,11 +39,12 @@
                                     <directory>${basedir}/../../css</directory>
                                 </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                     <execution>
                         <id>copy-resources-js</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -40,13 +53,19 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/../../js</directory>
+                                    <includes>
+                                        <include>bootstrap.min.js</include>
+                                        <include>jquery.min.js</include>
+                                        <include>rash.js</include>
+                                    </includes>
                                 </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                     <execution>
                         <id>copy-resources-fonts</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -57,11 +76,12 @@
                                     <directory>${basedir}/../../fonts</directory>
                                 </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                     <execution>
                         <id>copy-resources-grammar</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -75,11 +95,12 @@
                                     </includes>
                                 </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                     <execution>
                         <id>copy-resources-xslt</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -94,6 +115,7 @@
                                     </includes>
                                 </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                 </executions>
