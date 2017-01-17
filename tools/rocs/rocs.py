@@ -44,12 +44,7 @@ render = web.template.render(base_path)
 
 # Rewrite rules
 rewrite = RewriteRuleHandler(
-    "Redirect",
-    [
-        ("^/sempub-datasets/?$", "/static/2016/eswc/RDF_scholarly_dataset_info.xlsx"),
-        ("^/sempub-ontologies/?$", "/static/2016/eswc/Ontologies.zip")
-    ],
-    urls
+    "Redirect", [], urls
 )
 
 web_logger = WebLogger("dasplab.cs.unibo.it/rocs", "dasplab_log.txt", [
@@ -168,11 +163,11 @@ class Process:
                         error = "The conversion from ODT into RASH doesn't work as expected, and no" \
                                 " RASH package has been created."
 
-                    if cur_filename.endswith(".docx"):  # conversion from DOCX
-                        cur_rash_dir = Process.__convert_from_docx(cur_file_path)
-                        if cur_rash_dir is None:
-                            error = "The conversion from DOCX into RASH doesn't work as expected, and no" \
-                                    " RASH package has been created."
+                if cur_filename.endswith(".docx"):  # conversion from DOCX
+                    cur_rash_dir = Process.__convert_from_docx(cur_file_path)
+                    if cur_rash_dir is None:
+                        error = "The conversion from DOCX into RASH doesn't work as expected, and no" \
+                                " RASH package has been created."
 
                 # Conversion from RASH (complete archive)
                 if cur_filename.endswith(archive_extensions):

@@ -13,6 +13,7 @@ cp $SCRIPTPATH/../call-saxon.sh $SCRIPTPATH/libraries
 cp -rf $SCRIPTPATH/../../xslt/include $SCRIPTPATH/libraries
 cp -rf $SCRIPTPATH/../lib $SCRIPTPATH/libraries
 cp $SCRIPTPATH/../odt2rash/bin/odt2rash.jar $SCRIPTPATH/libraries
+cp $SCRIPTPATH/../docx2rash/bin/docx2rash.jar $SCRIPTPATH/libraries
 cp $SCRIPTPATH/../../grammar/rash.rng $SCRIPTPATH/libraries
 mkdir $SCRIPTPATH/libraries/springer_lncs
 cp $SCRIPTPATH/../../cls/llncs.cls $SCRIPTPATH/libraries/springer_lncs

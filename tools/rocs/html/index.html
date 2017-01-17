@@ -2,7 +2,7 @@ $def with (error)
 
 <!DOCTYPE HTML>
 <!--
-RASH online conversion service - November 13, 2015
+RASH online conversion service - January 17, 2017
 by Silvio Peroni
 
 This page is based on the jQuery File Upload Plugin Basic Demo
@@ -58,7 +58,7 @@ http://www.opensource.org/licenses/MIT
                         method="POST" enctype="multipart/form-data"
                         action="/rocs/process" accept-charset="utf-8">
                     <p>
-                        <label for="file">Choose a file (.zip, .html, .odt)</label>:
+                        <label for="file">Choose a file (.zip, .html, .odt, .docx)</label>:
                         <input style="display:inline" id="file" type="file" name="file" required="required" />
                     </p>
                     <p>
@@ -85,9 +85,9 @@ http://www.opensource.org/licenses/MIT
         <div class="panel-body">
             <ul>
                 <li>The maximum file size for uploads is <strong>5 MB</strong>.</li>
-                <li>Only OpenOffice Document files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt">simple guidelines</a>), HTML files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) and ZIP files containing an HTML compliant with RASH are allowed.</li>
+                <li>Only OpenOffice Document and Word files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/rash-in-odt.odt">ODT</a> and <a href="https://rawgit.com/essepuntato/rash/master/documentation/rash-in-docx.docx">DOCX</a> simple guidelines), HTML files (compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) and ZIP files containing an HTML compliant with RASH are allowed.</li>
                 <li>All the input RASH file must be well-formed XHTML documents.</li>
-                <li>The conversion will try always to generate a LaTeX file, result of the conversion of a RASH file, compliant with the <a href="https://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Springer LNCS LaTeX class</a> or the <a href="http://www.acm.org/publications/article-templates/proceedings-template.html">ACM ICPS LaTeX class</a>.</li>
+                <li>The conversion will try always to generate a LaTeX file, result of the conversion of a RASH file, compliant with the <a href="https://www.springer.com/computer/lncs?SGWID=0-164-6-793341-0">Springer LNCS LaTeX class</a>, <a href="http://www.acm.org/publications/article-templates/proceedings-template.html">ACM ICPS LaTeX class</a>, the <a href="http://www.acm.org/publications/authors/submissions">ACM Journal LaTeX class</a>, and the <a href="https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn">PeerJ LaTeX class</a>.</li>
                 <li>The LaTeX file result of the conversion <b>must be compiled by using <a href="https://en.wikipedia.org/wiki/XeTeX">XeTeX</a></b>, which is a TeX typesetting engine using Unicode. It is already included in <a href="http://pages.uoregon.edu/koch/texshop/">TexShop</a> and <a href="https://www.tug.org/texworks/">TexWorks</a>.</li>
                 <li>When an <b>OpenOffice Document file</b> is used, the converter will return a ZIP archive containing such file and a directory called <q>rash</q> that contains a RASH file (extension <q>.html</q>), the related LaTeX document result of the conversion (extension <q>.tex</q>), and all the other imported files (css, javascript, LaTeX class and styles, fonts).</li>
                 <li>When a <b>ZIP archive</b> (containing and HTML file compliant with <a href="https://rawgit.com/essepuntato/rash/master/documentation/index.html">RASH</a>) is used, the converter will return a ZIP archive containing the sources in the input archive, a LaTeX document result of the conversion (extension <q>.tex</q>) in the same directory where the RASH file is contained in the input archive, and all the other imported LaTeX-related resources (LaTeX class and styles, fonts).</li>
