@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Version 0.6, December 24, 2016
+Research Articles in Simplified HTML (RASH) format - Version 0.6.1, February 10, 2017
 by Silvio Peroni
 
 with precious contributions by Mike Smith and Ruben Verborgh.
@@ -116,6 +116,21 @@ Under the following terms:
     <define name="meta">
         <element name="meta">
             <ref name="attributes_html_head_element" />
+            <optional>
+                <attribute name="http-equiv">
+                    <choice>
+                        <value type="string">content-type</value>
+                        <value type="string">Content-Type</value>
+                        <value type="string">CONTENT-TYPE</value>
+                        <value type="string">default-style</value>
+                        <value type="string">Default-Style</value>
+                        <value type="string">DEFAULT-STYLE</value>
+                        <value type="string">refresh</value>
+                        <value type="string">Refresh</value>
+                        <value type="string">REFRESH</value>
+                    </choice>
+                </attribute>
+            </optional>
         </element>
     </define>
     
