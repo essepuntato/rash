@@ -1,4 +1,4 @@
-# Research Articles in Simplified HTML (RASH) format - Version 0.6, December 24, 2016
+# Research Articles in Simplified HTML (RASH) format - Version 0.6.1, February 10, 2017
 # by Silvio Peroni
 # 
 # with precious contributions by Mike Smith and Ruben Verborgh.
@@ -71,7 +71,21 @@ link =
     attributes_rdfa_literal,
     attributes_rdfa_macro
   }
-meta = element meta { attributes_html_head_element }
+meta =
+  element meta {
+    attributes_html_head_element,
+    attribute http-equiv {
+      xsd:string "content-type"
+      | xsd:string "Content-Type"
+      | xsd:string "CONTENT-TYPE"
+      | xsd:string "default-style"
+      | xsd:string "Default-Style"
+      | xsd:string "DEFAULT-STYLE"
+      | xsd:string "refresh"
+      | xsd:string "Refresh"
+      | xsd:string "REFRESH"
+    }?
+  }
 meta_category =
   element meta {
     attribute name { xsd:string "dcterms.subject" },

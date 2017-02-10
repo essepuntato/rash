@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH update XSLT file - Version 0.6.1, January 5, 2017
+RASH update XSLT file - Version 0.6.2, February 10, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -24,17 +24,32 @@ Under the following terms:
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Oct 18, 2015</xd:p>
-            <xd:p><xd:b>Last modified on:</xd:b> Dec 24, 2016</xd:p>
+            <xd:p><xd:b>Last modified on:</xd:b> Feb 10, 2017</xd:p>
             <xd:p><xd:b>Author:</xd:b> Silvio Peroni</xd:p>
-            <xd:p>This XSLT document allows one to update the RASH version (starting from version 0.3.5) of a given document into the earliest available version of the language (0.6).</xd:p>
+            <xd:p>This XSLT document allows one to update the RASH version (starting from version 0.3.5) of a given document into the earliest available version of the language (0.6.1).</xd:p>
         </xd:desc>
     </xd:doc>
     
-    <xsl:output encoding="UTF-8" indent="no" method="xml" cdata-section-elements="script" />
+    <xsl:output 
+        encoding="UTF-8" 
+        indent="no" 
+        method="xml" 
+        cdata-section-elements="script" 
+        omit-xml-declaration="yes" />
     
     <!-- 
-        From 0.3.5 to last version (0.5)
+        From 0.3.5 to last version (0.6.1)
     -->
+    <xsl:template match="/">
+        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:call-template name="copy-no-class" />
+    </xsl:template>
+    
+    <xsl:template match="meta[@charset='UTF-8']">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+    </xsl:template>
+    
     
     <!-- head with no MathJax -> head/script for MathJax -->
     <xsl:template match="head[every $s in script/@src satisfies not(contains($s, 'MathJax.js?config=TeX-AMS-MML_HTMLorMML'))]">

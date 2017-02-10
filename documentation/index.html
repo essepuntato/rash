@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-model href="../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6, December 28, 2016
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6.1, February 10, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -23,7 +23,7 @@ Under the following terms:
         dcterms: http://purl.org/dc/terms/">
     <head>
         <!-- Visualisation requirements (mandatory for optimal reading) -->
-        <meta charset="UTF-8"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         
         <link rel="stylesheet" href="../css/bootstrap.min.css"/>
@@ -97,7 +97,7 @@ Under the following terms:
         <!-- Abstract -->
         <section role="doc-abstract">
             <h1>Abstract</h1>
-            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a href="#RASH2015"></a> (<a href="../grammar/rash.rng">version 0.6</a>), i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
+            <p>The current version of this document is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. It documents the <a href="../grammar/rash.rng">earlieast version</a> of <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) <a href="#RASH2015"></a>, i.e., a markup language defined as a subset of <a href="http://www.w3.org/TR/rdfa-in-html/">HTML+RDFa</a> for writing scientific articles. A full example of a real research article <a href="#CDN2014"></a> written in RASH format is <a href="../examples/evaluating-citation-functions-in-cito.html">available online</a>. In addition, a <a href="../rash.zip">ZIP package</a> containing this documentation, scripts, stylesheets and other exemplar files is available for downloading and use.</p>
             <p>For any feedback please <a href="mailto:essepuntato@gmail.com">send me an email</a> or use the tools in the official GitHub repository (<a href="http://github.com/essepuntato/rash">github.com/essepuntato/rash</a>).</p>
         </section>
         
@@ -767,7 +767,7 @@ Under the following terms:
             <p>In order to permit a correct visualisation of RASH documents, it is needed to add few line of HTML code at the very beginning of the document, within the element <code>head</code>, as shown in the following excerpt.</p>
             <pre><code>
 &lt;!-- Visualisation requirements (mandatory for optimal reading) --&gt;
-&lt;meta charset="UTF-8" /&gt;
+&lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
 &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
 &lt;link href="bootstrap.min.css" rel="stylesheet" /&gt;
 &lt;link rel="stylesheet" href="rash.css" /&gt;

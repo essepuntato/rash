@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-From DOCX to RASH XSLT transformation file - Version 1.1, December 24, 2016
+From DOCX to RASH XSLT transformation file - Version 1.2, February 10, 2016
 by Alberto Nicoletti, based on a work by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -49,7 +49,8 @@ Under the following terms:
     <xsl:output
             encoding="UTF-8"
             method="xml"
-            indent="yes" />
+            indent="yes"
+            omit-xml-declaration="yes" />
 
     <!--
         This parameters refers to the base path that all the URL of the CSS files
@@ -133,14 +134,14 @@ Under the following terms:
         </xd:desc>
     </xd:doc>
     <xsl:template match="w:body">
-        <xsl:processing-instruction name="xml-model">href="<xsl:value-of select="$baserng" />rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"</xsl:processing-instruction>
-
+        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
         <html
                 xmlns="http://www.w3.org/1999/xhtml"
                 prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
             <head>
                 <!-- Visualisation requirements (mandatory for optimal reading) -->
-                <meta charset="UTF-8"></meta>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
                 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
                 <link rel="stylesheet" href="{$basecss}bootstrap.min.css"></link>
                 <link rel="stylesheet" href="{$basecss}rash.css"></link>

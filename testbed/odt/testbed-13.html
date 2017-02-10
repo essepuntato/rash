@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../../grammar/rash.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/">
    <head>
-      <meta charset="UTF-8"/>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
       <link rel="stylesheet" href="../../css/rash.css"/>
       <script src="../../js/jquery.min.js"> </script>
       <script src="../../js/bootstrap.min.js"> </script>
       <script src="../../js/rash.js"> </script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
       <title>RASH in ODT -- Documentation - Version 0.2, October 30, 2015</title>
       <meta about="#affiliation-1"
             property="schema:name"
@@ -79,7 +79,6 @@ Silvio Peroni -- silvio.peroni@unibo.it -- Department of Computer Science and En
                </p>
                <figcaption>The panel for adding custom properties with keywords and categories specified.</figcaption>
             </figure>
-            <p/>
          </section>
          <section>
             <h1>Keywords and ACM categories</h1>
@@ -418,7 +417,6 @@ It is not important which font you use here, even if it is common to use the Pre
             </table>
             <figcaption>The objects that can be referenced in the document (and that will be correctly converted in RASH) with their type and referencing style suggested.</figcaption>
          </figure>
-         <p/>
          <figure id="refIllustration14">
             <p>
                <img src="./testbed-13-sources/Pictures/10000201000004F8000003B8EE358BAF.png"
@@ -451,8 +449,8 @@ java -jar odt2rash.jar -i &lt;input-odt-file&gt; -o &lt;new-output-directory&gt;
             </li>
          </ol>
       </section>
-      <section role="doc-footnotes">
-         <section id="ftn1" role="doc-footnote">
+      <section role="doc-endnotes">
+         <section id="ftn1" role="doc-endnote">
             <p>This is the first footnote of the document.</p>
          </section>
       </section>

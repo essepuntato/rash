@@ -16,6 +16,9 @@ Please use the hashtag *#rashtodo* for suggesting bugs or additional features fo
 
 
 ### Change log
+* Version 0.6.1
+  * Extended the element ``meta`` so as to specify the attribute ``http-equiv``.
+
 * Version 0.6
   * The roles for footnotes (``doc-footnotes`` and ``doc-footnote``) have been updated according to the latter DOC-ARIA specification (``doc-endnotes`` and ``doc-endnote``).
   * The current grammar allows the specification of ASCIIMath formulas (handled via MathJax).
