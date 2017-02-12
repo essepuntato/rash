@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-From RASH to ACM Journal LaTeX style (large) XSLT transformation file - Version 1.0, April 29, 2016
+From RASH to ACM Journal LaTeX style (large) XSLT transformation file - Version 1.1, February 12, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -172,6 +172,7 @@ Under the following terms:
     
     <xsl:template match="element()[iml:li[@role = 'doc-biblioentry']][parent::iml:section[@role = 'doc-bibliography']]" priority="1.7">
         <xsl:for-each select="iml:li">
+            <xsl:sort select="string-join((f:getAllAuthorsSurnames(.), f:getYear(.)), ' ')" />
             <xsl:call-template name="handling-reference" />
         </xsl:for-each>
     </xsl:template>

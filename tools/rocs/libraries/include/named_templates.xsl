@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-RASH to LaTeX: named templates module - Version 0.5.1, April 29, 2016
+RASH to LaTeX: named templates module - Version 0.6, February 12, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -40,20 +40,20 @@ Under the following terms:
     </xsl:template>
     
     <xsl:template name="handling-reference">
-        <xsl:variable name="item" select="string-join(iml:p//text(),'')" as="xs:string*" />
+        <xsl:variable name="item" select="iml:p" as="element()" />
         
         <xsl:call-template name="n" />
         <xsl:text>\bibitem</xsl:text>
         <xsl:if test="$item">
+            <xsl:variable name="authors" select="f:getAllAuthorsNames($item)" as="xs:string+" />
             <xsl:text>[\protect\citeauthoryear</xsl:text>
-            <xsl:variable name="authors" select="tokenize(tokenize($item,'\s*\(?\d\d\d\d\)?\.')[1],',|( and )')" as="xs:string+" />
             <xsl:variable name="authorCite" as="xs:string*">
                 <xsl:text>{</xsl:text>
-                <xsl:value-of select="normalize-space(replace(replace($authors[1], '\s+', ' '), '[A-z]\.', ''))" />
+                <xsl:value-of select="f:getSurname($authors[1])" />
                 <xsl:choose>
                     <xsl:when test="count($authors) = 2">
                         <xsl:text> and </xsl:text>
-                        <xsl:value-of select="normalize-space(replace(replace($authors[2], '\s+', ' '), '[A-z]\.', ''))" />
+                        <xsl:value-of select="f:getSurname($authors[2])" />
                     </xsl:when>
                     <xsl:when test="count($authors) > 2">
                         <xsl:text> et al.</xsl:text>
@@ -62,14 +62,9 @@ Under the following terms:
                 <xsl:text>}</xsl:text>
             </xsl:variable>
             <xsl:value-of select="$authorCite,$authorCite" separator="" />
-            <xsl:analyze-string select="$item" regex=".*[^\d]\.\s*\(?(\d\d\d\d)\)?\..*">
-                <xsl:matching-substring>
-                    <xsl:text>{</xsl:text>
-                    <xsl:value-of select="regex-group(1)"/>
-                    <xsl:text>}</xsl:text>
-                </xsl:matching-substring>
-            </xsl:analyze-string>
-            <xsl:text>]</xsl:text>
+            <xsl:text>{</xsl:text>
+            <xsl:value-of select="f:getYear($item)"/>
+            <xsl:text>}]</xsl:text>
         </xsl:if>
         <xsl:text>{</xsl:text>
         <xsl:value-of select="@id" />
@@ -78,6 +73,37 @@ Under the following terms:
             <xsl:with-param name="select" select="iml:p/(text()|element())" />
         </xsl:call-template>
     </xsl:template>
+    
+    <xsl:function name="f:getAllAuthorsNames" as="xs:string+">
+        <xsl:param name="el" as="element()" />
+        <xsl:variable name="item" select="string-join($el//text(),'')" as="xs:string*" />
+        <xsl:sequence select="tokenize(tokenize($item,'\s*\(?\d\d\d\d\)?\.')[1],',|( and )')" />
+    </xsl:function>
+    
+    <xsl:function name="f:getAllAuthorsSurnames" as="xs:string+">
+        <xsl:param name="el" as="element()" />
+        <xsl:variable name="surnames" as="xs:string+">
+            <xsl:for-each select="f:getAllAuthorsNames($el)">
+                <xsl:sequence select="f:getSurname(.)" />
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="$surnames" />
+    </xsl:function>
+    
+    <xsl:function name="f:getYear" as="xs:string?">
+        <xsl:param name="el" as="element()" />
+        <xsl:variable name="item" select="string-join($el//text(),'')" as="xs:string*" />
+        <xsl:analyze-string select="$item" regex=".*[^\d]\.\s*\(?(\d\d\d\d)\)?\..*">
+            <xsl:matching-substring>
+                <xsl:value-of select="regex-group(1)"/>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
+    </xsl:function>
+    
+    <xsl:function name="f:getSurname" as="xs:string?">
+        <xsl:param name="author-name" as="xs:string" />
+        <xsl:value-of select="tokenize(replace(normalize-space(replace(replace($author-name, '\s+', ' '), '[A-Z]\.', '')), '\.', ''), ' ')[last()]" />
+    </xsl:function>
     
     <xsl:template name="document_title">
         <xsl:variable name="cur_title" as="xs:string?" select="f:getTitle(/element())" />
