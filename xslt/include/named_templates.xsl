@@ -355,7 +355,7 @@ Under the following terms:
         <xsl:param name="root" as="element()"/>
         <xsl:choose>
             <xsl:when test="contains($root//iml:title,'--')">
-                <xsl:value-of select="normalize-space(tokenize(iml:title,'--')[1])" />
+                <xsl:value-of select="normalize-space(tokenize($root//iml:title,'--')[1])" />
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$root//iml:title"/>
