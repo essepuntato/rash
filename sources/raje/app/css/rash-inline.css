@@ -1,0 +1,114 @@
+[contenteditable="true"]:active, [contenteditable="true"]:focus {
+  border: none;
+  outline: none;
+}
+
+/* Chrome generated p and li */
+
+#rashEditor section>div, #rashEditor li {
+  margin: 0 0 10px;
+}
+
+#rashEditor .inline_formula {
+  background-color: #ffb7b7;
+}
+
+/** Sortable */
+ul#sortable{
+  list-style: none;
+  padding-left: 0
+}
+
+/* Editor styles */
+
+ol,ul{
+  text-align: left
+}
+
+#formulaEditor .btn-group {
+  margin-top: 20px;
+}
+
+#formulaEditor textarea {
+  resize: vertical;
+}
+
+#formulaEditor #formula_output {
+  margin: 20px 0;
+}
+
+figure {
+  position: relative;
+}
+
+span.tableOptions {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+body {
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#mode {
+  position: fixed;
+  right: 50px;
+  top: 0;
+  z-index: 1031;
+}
+
+#messageDealer{
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+}
+
+#mode:hover {
+  cursor: pointer;
+}
+
+#mode>img{
+  height: 18px
+}
+
+#mode .dropdown-menu {
+ left: -120px;
+}  
+
+#rashEditor li>a[data-code]{
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+address.lead.authors{
+  position: relative
+}
+
+span.btnRemove{
+  position: absolute;
+  font-size: 30px;
+  color: #ED5565;
+  left:-30px;
+  top: 15px;
+}
+
+span.btnRemove:hover{
+  cursor: pointer
+}
+
+li.ui-state-default:hover{
+  cursor: move
+}
+
+div.list-group > a:hover{
+  cursor: pointer
+}
+
+img.avatar{
+  height: 20px;
+  padding-right: 10px
+}
+
