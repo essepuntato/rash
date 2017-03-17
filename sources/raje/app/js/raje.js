@@ -1470,50 +1470,65 @@ rashEditor.
 /** Edit navbar */
 function showNavbar() {
 
-
   var editNavbar = $(`
       <nav id=\"editNavar\" class=\"navbar navbar-default navbar-fixed-top cgen editgen\">
         <div class=\"container\">
           <div class=\"row\">
-            <div class=\"btn-group\" role=\"group\" aria-label=\"Inline elements\">
 
+            <div class=\"btn-group\" role=\"group\" aria-label=\"Undo and Redo\">
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-              onclick=\"rashEditor.undo()\" title=\"Undo\" aria-pressed=\"false\">
+                onclick=\"rashEditor.undo()\" title=\"Undo\" aria-pressed=\"false\">
                 <i class=\"fa fa-undo\" aria-hidden=\"true\"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onclick=\"rashEditor.redo()\" title=\"Redo\" aria-pressed=\"false\">
                 <i class=\"fa fa-repeat\" aria-hidden=\"true\"></i>
               </button>
+            </div>
 
+            <div class=\"btn-group\" role=\"group\" aria-label=\"Inline elements\">
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertBold()\" title=\"Strong\" aria-pressed=\"false\">
                 <i class=\"fa fa-bold\" aria-hidden=\"true\"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertItalic()\" title=\"Emphasis\">
                 <i class=\"fa fa-italic\" aria-hidden=\"true\"></i>
               </button>
+
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                onClick=\"handleCrossRef()\" title=\"Cross-ref\">
-                <i class=\"fa fa-anchor\" aria-hidden=\"true\"></i>
+                onClick=\"handleCrossRef()\" title=\"Reference\">
+                <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
               </button>
+
+              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                onClick=\"\" title=\"Footnote\">
+                  <i class="fa fa-asterisk" aria-hidden="true"></i>
+              </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertInline(INLINE.CODE)\" title=\"Code\">
                 <i class=\"fa fa-code\" aria-hidden=\"true\"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleExternalLink()\" title=\"External link\">
-                <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
+                <i class="fa fa-globe" aria-hidden="true"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertInline(INLINE.QUOTE)\" title=\"Quote\">
                 <i class=\"fa fa-quote-right\" aria-hidden=\"true\"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertSuperscript()\" title=\"Sup\">
                 <i class=\"fa fa-superscript\" aria-hidden=\"true\"></i>
               </button>
+
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertSubscript()\" title=\"Sub\">
                 <i class=\"fa fa-subscript\" aria-hidden=\"true\"></i>
@@ -1543,9 +1558,6 @@ function showNavbar() {
                 onclick=\"rashEditor.insertUnorderedList()\" title=\"Unordered list\">
                 <i class=\"fa fa-list-ul\" aria-hidden=\"true\"></i>
               </button>
-            </div>
-
-            <div class=\"btn-group\" role=\"group\" aria-label=\"Box elements\">
 
               <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleTableBox()\" title=\"Table\">
