@@ -62,6 +62,17 @@ jQuery.fn.extend({
       edit_state = $(rash_inline_selector).html() != bodyContent
       setEditState()
     })
+
+    /**
+     * Get when call event to disable or activate toolbar elements
+     */
+    $(this).on('click', function () {
+      refreshToolbar()
+    })
+    $(this).bind('keydown', function () {
+      refreshToolbar()
+    })
+
   },
   setNotEditable: function () {
     $(this).attr('contenteditable', false);
@@ -224,6 +235,7 @@ function attachHeaderEventHandler() {
       $(this).addClass('mousetrap')
     }
   })
+
 }
 
 function updateEditState() {
@@ -379,18 +391,21 @@ const ONE_SPACE = '&nbsp;';
 
 const messageDealer = 'div#messageDealer';
 
+let strong = false
+let em = false
+
 rashEditor = {
 
   /* und/redo */
 
   undo: function () {
     document.execCommand("undo");
-    //TODO manage footer
+    refreshToolbar()
   },
 
   redo: function () {
     document.execCommand("redo");
-    //TODO manage footer
+    refreshToolbar()
   },
   /* END undo/redo */
 
@@ -421,12 +436,12 @@ rashEditor = {
 
   insertBold: function () {
     document.execCommand("bold");
-    //TODO manage semantic revision
+    refreshToolbar()
   },
 
   insertItalic: function () {
     document.execCommand("italic");
-    //TODO manage semantic revision
+    refreshToolbar()
   },
 
   externalLink: function () {
@@ -1476,103 +1491,105 @@ function showNavbar() {
           <div class=\"row\">
 
             <div class=\"btn-group\" role=\"group\" aria-label=\"Undo and Redo\">
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+
+              <button id="btnUndo" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onclick=\"rashEditor.undo()\" title=\"Undo\" aria-pressed=\"false\">
                 <i class=\"fa fa-undo\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnRedo" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onclick=\"rashEditor.redo()\" title=\"Redo\" aria-pressed=\"false\">
                 <i class=\"fa fa-repeat\" aria-hidden=\"true\"></i>
               </button>
+
             </div>
 
             <div class=\"btn-group\" role=\"group\" aria-label=\"Inline elements\">
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+
+              <button id="btnStrong" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertBold()\" title=\"Strong\" aria-pressed=\"false\">
                 <i class=\"fa fa-bold\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnEm" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertItalic()\" title=\"Emphasis\">
                 <i class=\"fa fa-italic\" aria-hidden=\"true\"></i>
               </button>
 
-
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnReference" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleCrossRef()\" title=\"Reference\">
                 <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnFootnote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"\" title=\"Footnote\">
                   <i class="fa fa-asterisk" aria-hidden="true"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnInlineCode" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertInline(INLINE.CODE)\" title=\"Code\">
                 <i class=\"fa fa-code\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnLink" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleExternalLink()\" title=\"External link\">
                 <i class="fa fa-globe" aria-hidden="true"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnInlineQuote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertInline(INLINE.QUOTE)\" title=\"Quote\">
                 <i class=\"fa fa-quote-right\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnSup" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertSuperscript()\" title=\"Sup\">
                 <i class=\"fa fa-superscript\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnSub" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"rashEditor.insertSubscript()\" title=\"Sub\">
                 <i class=\"fa fa-subscript\" aria-hidden=\"true\"></i>
               </button>
+
             </div>
 
             <div class=\"btn-group\" role=\"group\" aria-label=\"Textual elements\">
-            <!--
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                onclick=\"rashEditor.insertParagraph()\" title=\"Paragraph\" aria-pressed=\"false\">
-                <i class=\"fa fa-paragraph\" aria-hidden=\"true\"></i>
-              </button>
-              -->
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+            
+              <button id="btnBlockCode" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onclick=\"rashEditor.insertCodeBlock()\" title=\"Code block\" aria-pressed=\"false\">
                 <i class=\"fa fa-code\" aria-hidden=\"true\"></i>
               </button>
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-              onclick=\"rashEditor.insertQuoteBlock()\" title=\"Block quote\">
+
+              <button id="btnBlockQuote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                onclick=\"rashEditor.insertQuoteBlock()\" title=\"Block quote\">
                 <i class=\"fa fa-quote-left\" aria-hidden=\"true\"></i>
               </button>
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-              onclick=\"rashEditor.insertOrderedList()\" title=\"Orderer list\">
+
+              <button id="btnOrderedList" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                onclick=\"rashEditor.insertOrderedList()\" title=\"Orderer list\">
                 <i class=\"fa fa-list-ol\" aria-hidden=\"true\"></i>
               </button>
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+
+              <button id="btnUnorderedList" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onclick=\"rashEditor.insertUnorderedList()\" title=\"Unordered list\">
                 <i class=\"fa fa-list-ul\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnBoxTable" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleTableBox()\" title=\"Table\">
                 <i class=\"fa fa-table\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\" 
+              <button id="btnBoxFigure" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\" 
                 onClick=\"handleFigureBox()\" title=\"Figure\">
                 <i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i>
               </button>
 
-              <button type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+              <button id="btnBoxFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                 onClick=\"handleFormulaBox();\" title=\"Formula\">
                 <i class=\"fa\">&radic;</i>
               </button>
+
             </div>
 
             <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
@@ -2310,6 +2327,26 @@ function updateModeButton() {
         <a onclick="githubLogin()">Login w/ Github</a></li>
       </ul>`)
   }
+}
+
+function refreshToolbar() {
+
+  let sel = rangy.getSelection()
+  if (typeof window.getSelection != "undefined") {
+
+    strong = $(sel.anchorNode).parents('strong, b').length > 0
+    em = $(sel.anchorNode).parents('em, italic').length > 0
+
+    setButtonWithVar('#btnStrong', strong)
+    setButtonWithVar('#btnEm', em)
+  }
+}
+
+function setButtonWithVar(id, variable) {
+  if (variable)
+    $(id).addClass('active')
+  else
+    $(id).removeClass('active')
 }
 function execDerash() {
 

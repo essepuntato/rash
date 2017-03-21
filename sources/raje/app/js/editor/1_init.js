@@ -62,6 +62,17 @@ jQuery.fn.extend({
       edit_state = $(rash_inline_selector).html() != bodyContent
       setEditState()
     })
+
+    /**
+     * Get when call event to disable or activate toolbar elements
+     */
+    $(this).on('click', function () {
+      refreshToolbar()
+    })
+    $(this).bind('keydown', function () {
+      refreshToolbar()
+    })
+
   },
   setNotEditable: function () {
     $(this).attr('contenteditable', false);
@@ -224,6 +235,7 @@ function attachHeaderEventHandler() {
       $(this).addClass('mousetrap')
     }
   })
+
 }
 
 function updateEditState() {

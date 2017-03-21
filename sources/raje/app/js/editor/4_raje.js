@@ -1,15 +1,18 @@
+let strong = false
+let em = false
+
 rashEditor = {
 
   /* und/redo */
 
   undo: function () {
     document.execCommand("undo");
-    //TODO manage footer
+    refreshToolbar()
   },
 
   redo: function () {
     document.execCommand("redo");
-    //TODO manage footer
+    refreshToolbar()
   },
   /* END undo/redo */
 
@@ -40,12 +43,12 @@ rashEditor = {
 
   insertBold: function () {
     document.execCommand("bold");
-    //TODO manage semantic revision
+    refreshToolbar()
   },
 
   insertItalic: function () {
     document.execCommand("italic");
-    //TODO manage semantic revision
+    refreshToolbar()
   },
 
   externalLink: function () {
