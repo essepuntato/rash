@@ -69,7 +69,7 @@ jQuery.fn.extend({
     $(this).on('click', function () {
       refreshToolbar()
     })
-    $(this).bind('keydown', function () {
+    $(this).bind('keyup', function () {
       refreshToolbar()
     })
 

@@ -69,7 +69,7 @@ jQuery.fn.extend({
     $(this).on('click', function () {
       refreshToolbar()
     })
-    $(this).bind('keydown', function () {
+    $(this).bind('keyup', function () {
       refreshToolbar()
     })
 
@@ -2335,7 +2335,7 @@ function refreshToolbar() {
   if (typeof window.getSelection != "undefined") {
 
     strong = $(sel.anchorNode).parents('strong, b').length > 0
-    em = $(sel.anchorNode).parents('em, italic').length > 0
+    em = $(sel.anchorNode).parents('em, i').length > 0
 
     setButtonWithVar('#btnStrong', strong)
     setButtonWithVar('#btnEm', em)

@@ -851,7 +851,7 @@ function refreshToolbar() {
   if (typeof window.getSelection != "undefined") {
 
     strong = $(sel.anchorNode).parents('strong, b').length > 0
-    em = $(sel.anchorNode).parents('em, italic').length > 0
+    em = $(sel.anchorNode).parents('em, i').length > 0
 
     setButtonWithVar('#btnStrong', strong)
     setButtonWithVar('#btnEm', em)
