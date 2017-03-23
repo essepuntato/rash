@@ -97,7 +97,7 @@ jQuery.fn.extend({
   getNextFormulaID: function () {
     let id = 0
     $(formulabox_selector_rendered).each(function () {
-      id = Math.max(id, parseInt($(this).attr('id').replace('formula_')))
+      id = Math.max(id, parseInt($(this).parents('figure').attr('id').replace('formula_', '')))
     })
     return ++id
   },
