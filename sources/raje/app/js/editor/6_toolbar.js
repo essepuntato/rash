@@ -125,25 +125,21 @@ function showNavbar() {
             </div>
 
             -->
-            
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+              <span id="github"></span>
+                
+              </li>
+            </li>
           </div>
         </div>
       </nav>`
-  )
-
-  var modeButton = $(`
-      <div id=\"mode\" class="dropdown">
-        <button type="button" data-toggle="dropdown" class=\"btn btn-default navbar-btn\"><i class="fa fa-bars" aria-hidden="true"></i></button>
-        <ul class="dropdown-menu" aria-labelledby="dLabel">
-        </ul>
-      </div>`
   )
 
   var messageDealer = $('<div id="messageDealer"><p class="text-primary">Hello from message dealer</p></div>')
 
   // add navbar and button
   $('body').prepend(editNavbar);
-  $('body').prepend(modeButton);
   $('body').append(messageDealer);
 
   $('#sectionDropdown').on('show.bs.dropdown', function (event) {
@@ -825,6 +821,25 @@ function hideMessageDealer() {
 
   if (loadingMessageDealerIntervalID)
     window.clearInterval(loadingMessageDealerIntervalID)
+}
+
+function updateGithubButton() {
+  if (settings && settings.avatar && checkSoftware()) {
+
+    $('span#github').html(`
+      <button id="btnGithub" type=\"button\" class=\"btn btn-default navbar-btn\" 
+      data-toggle=\"tooltip\" title=\"Signed as ${settings.login}\">
+        <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/>
+      </button>`)
+
+  } else {
+
+    $('span#github').html(`
+      <button onclick=\"githubLogin()\" id="btnGithub" type=\"button\" class=\"btn btn-default navbar-btn\" 
+      data-toggle=\"tooltip\" title=\"Login with github\">
+        <i class=\"fa fa-github\" aria-hidden=\"true\"></i>
+      </button>`)
+  }
 }
 
 function updateModeButton() {

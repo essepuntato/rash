@@ -201,6 +201,8 @@ $(document).ready(function () {
       updateDropdown();
     });
 
+    updateGithubButton()
+
     $('[data-toggle="tooltip"]').tooltip({
       placement: 'bottom',
       container: 'body'
@@ -208,11 +210,9 @@ $(document).ready(function () {
 
     rashEditor.init();
 
-    //sortableAuthors()
-    //EDITABLE meta
-    attachHeaderEventHandler()
 
-    updateModeButton()
+
+    attachHeaderEventHandler()
 
     initFigureReferences()
 

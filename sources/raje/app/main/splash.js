@@ -1,4 +1,4 @@
-const {dialog, webFrame} = require('electron')
+const { dialog, webFrame } = require('electron')
 const fs = require('fs')
 //const SpellCheckProvider = require('electron-spell-check-provider');
 
@@ -36,7 +36,6 @@ module.exports = {
     let hiddenSettingsPath = `${folder}/.raje`
     let articleSettings = JSON.parse(fs.readFileSync(hiddenSettingsPath))
     let articleName = articleSettings.file
-
     this.openEditorWindow(mainWindow, `${folder[0]}/${articleName}`)
     return articleSettings
   },
@@ -73,11 +72,8 @@ module.exports = {
   },
 
   openEditorWindow: function (mainWindow, articlePath) {
-
     mainWindow.loadURL(`file://${articlePath}`)
     mainWindow.maximize()
-
-    //mainWindow.webContents.toggleDevTools()
   },
 
   createSettingsFile: function (folderPath, settings) {

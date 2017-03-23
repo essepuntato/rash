@@ -223,7 +223,7 @@ ipcMain.on('writeFigureFromUrlSync', (event, arg) => {
 const github = require('octonode')
 const githubOptions = {
   client_id: '7964cf9a6911b9794567',
-  client_secret: '6b60a0bc64def18b591875ecc24af25a3a0cdcc9',
+  client_secret: 'c681e5caaa052917b4cb355372e01e62c1734d3d',
   scopes: ["user", "notifications", "public_repo"] // Scopes limit access for OAuth tokens.
 }
 
@@ -436,7 +436,11 @@ function createInitRepository(repoFullName, article) {
 
 function createOAuthWindow() {
 
-  authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false })
+  authWindow = new BrowserWindow({
+    width: 800, height: 600, show: false, webPreferences: {
+      nodeIntegration: false
+    }
+  })
   authWindow.loadURL(`https://github.com/login/oauth/authorize?client_id=${githubOptions.client_id}&scope=${githubOptions.scopes}`)
   authWindow.show()
 
