@@ -25,7 +25,7 @@ var rash_inline_selector = '#rashEditor',
   section_acknowledgement_selector = 'section[role=\"doc-acknowledgements\"]',
   section_footnotes_selector = 'section[role=\"doc_footnotes\"]';
 
-var meta_headers_selector = 'h1.title, strong.author_name, code.email, span.affiliation, p.keywords>ul.list-inline, p.acm_subject_categories>code';
+var meta_headers_selector = 'h1.title, h1>small, strong.author_name, code.email, span.affiliation, p.keywords>ul.list-inline, p.acm_subject_categories>code';
 
 window['bodyContent'] = ''
 edit_state = false
@@ -556,7 +556,7 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!title.find('small').length)
+        if (!$('h1.title small').length)
           document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
       }
     },

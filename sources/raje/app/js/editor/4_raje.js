@@ -160,7 +160,7 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!title.find('small').length)
+        if (!$('h1.title small').length)
           document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
       }
     },
