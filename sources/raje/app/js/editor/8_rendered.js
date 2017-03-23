@@ -5,7 +5,7 @@ const { ipcRenderer, webFrame } = require('electron'),
 ipcRenderer.on('githubSettings', (event, args) => {
 
   window['settings'] = args
-  updateModeButton()
+  updateGithubButton()
   console.log(settings)
 })
 
@@ -84,7 +84,7 @@ function githubLogin() {
 function githubLogout() {
   ipcRenderer.send('githubLogout')
   window['settings'] = null
-  updateModeButton()
+  updateGithubButton()
 }
 
 function executeSaveAsync() {
