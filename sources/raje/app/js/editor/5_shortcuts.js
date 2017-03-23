@@ -75,6 +75,9 @@ rashEditor.
           title: $(node).parents('h1.title').last(),
           affiliation: $(node).parents('span.affiliation').last(),
 
+          //cross reference
+          reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
+
           //inlines
           crossRef: $(node).parents('a.cgen').last(),
           code_inline: $(node).parents('code').last(),
@@ -110,6 +113,12 @@ rashEditor.
           rashEditor.header.insertSubject()
           return false
 
+        }
+
+        //cross reference
+
+        else if (parent.reference.length) {
+          rashEditor.exitInline(parent.reference)
         }
 
         // inlines
