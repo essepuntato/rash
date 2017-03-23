@@ -659,6 +659,7 @@ rashEditor = {
 
       captions();
       addTableModal();
+      refreshReferences()
     };
     /* Getters */
     this.hasTopHeading = function () {
@@ -791,6 +792,7 @@ rashEditor = {
 
         rangy.restoreSelection(this.selection)
         document.execCommand("insertHTML", false, removeWhiteSpaces(html))
+        refreshReferences()
       }
     }
 
@@ -839,6 +841,7 @@ rashEditor = {
 
         captions()
         formulas()
+        refreshReferences()
       }
     };
   }

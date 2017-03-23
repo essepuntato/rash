@@ -265,3 +265,20 @@ function executeSave() {
   updateEditState()
   showMessageDealer('Document saved', 'success', 2000)
 }
+
+/**
+ * Turn all references to empty <a>, then refresh references again
+ */
+function refreshReferences() {
+
+  /** handle references */
+  $(rash_inline_selector).find('a[href]:has(span.cgen)').each(function () {
+
+    let originalContent = $(this).find('span.cgen').data('rash-original-content')
+    let href = $(this).attr('href')
+
+    $(this).replaceWith(`<a href="${href}">${originalContent}</a>`)
+  })
+
+  references()
+}
