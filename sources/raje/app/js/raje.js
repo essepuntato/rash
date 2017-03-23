@@ -66,10 +66,10 @@ jQuery.fn.extend({
     /**
      * Get when call event to disable or activate toolbar elements
      */
-    $(this).on('click', function () {
+    $('html').on('click', function () {
       refreshToolbar()
     })
-    $(this).bind('keyup', function () {
+    $('html').bind('keyup', function () {
       refreshToolbar()
     })
 
@@ -717,15 +717,23 @@ rashEditor = {
 
   insertInline: function (element) {
     var sel = rangy.getSelection();
-    if (sel.rangeCount && !sel.isCollapsed && caret.checkIfInEditor()) {
-      var range = sel.getRangeAt(0);
-      var text = range.toString();
+    if (sel.rangeCount && caret.checkIfInEditor()) {
       /*
         Check if selection is at the parentElement start or end
         In this case add ZERO_SPACE ascii_code to allow normal contenteditable behaviour
       */
+
       caret.appendOrPrependZeroSpace();
-      document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
+
+      if (sel.isCollapsed) {
+        document.execCommand("insertHTML", false, `<code>${ZERO_SPACE}</code>${ZERO_SPACE}`);
+      }
+      else {
+
+        var range = sel.getRangeAt(0);
+        var text = range.toString();
+        document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
+      }
     }
   },
 
@@ -1486,7 +1494,7 @@ rashEditor.
 function showNavbar() {
 
   var editNavbar = $(`
-      <nav id=\"editNavar\" class=\"navbar navbar-default navbar-fixed-top cgen editgen\">
+      <nav id=\"editNavbar\" class=\"navbar navbar-default navbar-fixed-top cgen editgen\">
         <div class=\"container\">
           <div class=\"row\">
 
@@ -1592,6 +1600,8 @@ function showNavbar() {
 
             </div>
 
+            <!--
+
             <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
 
               <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1605,6 +1615,8 @@ function showNavbar() {
                 <li role=\"separator\" class=\"divider\"></li>
               </ul>
             </div>
+
+            -->
             
           </div>
         </div>
@@ -2333,6 +2345,11 @@ function refreshToolbar() {
 
   let sel = rangy.getSelection()
   if (typeof window.getSelection != "undefined") {
+
+    $('nav#editNavbar button').attr('disabled', caret.checkIfInHeader())
+
+    if (caret.checkIfInEditor())
+      $('nav#editNavbar button').removeAttr('disabled')
 
     strong = $(sel.anchorNode).parents('strong, b').length > 0
     em = $(sel.anchorNode).parents('em, i').length > 0

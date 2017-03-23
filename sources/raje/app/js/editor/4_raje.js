@@ -324,15 +324,23 @@ rashEditor = {
 
   insertInline: function (element) {
     var sel = rangy.getSelection();
-    if (sel.rangeCount && !sel.isCollapsed && caret.checkIfInEditor()) {
-      var range = sel.getRangeAt(0);
-      var text = range.toString();
+    if (sel.rangeCount && caret.checkIfInEditor()) {
       /*
         Check if selection is at the parentElement start or end
         In this case add ZERO_SPACE ascii_code to allow normal contenteditable behaviour
       */
+
       caret.appendOrPrependZeroSpace();
-      document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
+
+      if (sel.isCollapsed) {
+        document.execCommand("insertHTML", false, `<code>${ZERO_SPACE}</code>${ZERO_SPACE}`);
+      }
+      else {
+
+        var range = sel.getRangeAt(0);
+        var text = range.toString();
+        document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
+      }
     }
   },
 

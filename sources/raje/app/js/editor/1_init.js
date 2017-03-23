@@ -66,10 +66,10 @@ jQuery.fn.extend({
     /**
      * Get when call event to disable or activate toolbar elements
      */
-    $(this).on('click', function () {
+    $('html').on('click', function () {
       refreshToolbar()
     })
-    $(this).bind('keyup', function () {
+    $('html').bind('keyup', function () {
       refreshToolbar()
     })
 

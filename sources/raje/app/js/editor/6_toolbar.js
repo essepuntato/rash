@@ -2,7 +2,7 @@
 function showNavbar() {
 
   var editNavbar = $(`
-      <nav id=\"editNavar\" class=\"navbar navbar-default navbar-fixed-top cgen editgen\">
+      <nav id=\"editNavbar\" class=\"navbar navbar-default navbar-fixed-top cgen editgen\">
         <div class=\"container\">
           <div class=\"row\">
 
@@ -108,6 +108,8 @@ function showNavbar() {
 
             </div>
 
+            <!--
+
             <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
 
               <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -121,6 +123,8 @@ function showNavbar() {
                 <li role=\"separator\" class=\"divider\"></li>
               </ul>
             </div>
+
+            -->
             
           </div>
         </div>
@@ -849,6 +853,11 @@ function refreshToolbar() {
 
   let sel = rangy.getSelection()
   if (typeof window.getSelection != "undefined") {
+
+    $('nav#editNavbar button').attr('disabled', caret.checkIfInHeader())
+
+    if (caret.checkIfInEditor())
+      $('nav#editNavbar button').removeAttr('disabled')
 
     strong = $(sel.anchorNode).parents('strong, b').length > 0
     em = $(sel.anchorNode).parents('em, i').length > 0
