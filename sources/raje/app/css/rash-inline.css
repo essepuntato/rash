@@ -1,4 +1,4 @@
-[contenteditable="true"]:active, [contenteditable="true"]:focus {
+#rashEditor[contenteditable="true"]:active, #rashEditor[contenteditable="true"]:focus {
   border: none;
   outline: none;
 }
@@ -87,16 +87,25 @@ address.lead.authors{
   position: relative
 }
 
-span.btnRemove{
+span.authorSettings{
   position: absolute;
-  font-size: 30px;
-  color: #ED5565;
-  left:-30px;
-  top: 15px;
+  left: -120px;
 }
 
-span.btnRemove:hover{
+span.authorSettings:hover{
   cursor: pointer
+}
+
+span.authorSettings i.fa-trash-o{
+  color: #DA4453
+}
+
+span.authorSettings i.fa-arrows-alt{
+  color: #656D78
+}
+
+span.authorSettings i.fa-plus{
+  color: #37BC9B
 }
 
 li.ui-state-default:hover{

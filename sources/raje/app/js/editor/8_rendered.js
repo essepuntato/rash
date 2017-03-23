@@ -1,4 +1,4 @@
-const {ipcRenderer, webFrame} = require('electron'),
+const { ipcRenderer, webFrame } = require('electron'),
   fs = require('fs')
 
 /** Receive settings info (3) */
@@ -11,7 +11,7 @@ ipcRenderer.on('githubSettings', (event, args) => {
 
 ipcRenderer.on('addNewAuthor', (event, arg) => {
 
-  rashEditor.header.insertPlaceholderAuthor()
+  rashEditor.header.addAuthor()
 })
 
 ipcRenderer.on('setRemoveAuthors', (event, arg) => {

@@ -54,9 +54,9 @@ function createWindow() {
 
   setSplashMenu()
 
-  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/js/raje.js`))
+  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/demo_toolbar/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
-  //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/css/rash-inline.css`))
+  fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/demo_toolbar/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))
 
   mainWindow.on('close', (event) => {
@@ -628,32 +628,6 @@ const menuUtils = {
       {
         label: 'Add new author',
         click() { mainWindow.webContents.send('addNewAuthor') }
-      },
-      {
-        label: 'Toggle removing authors',
-        click() {
-
-          if (!removingAuthors)
-            mainWindow.webContents.send('setRemoveAuthors')
-
-          else
-            mainWindow.webContents.send('unsetRemoveAuthors')
-
-          removingAuthors = !removingAuthors
-        }
-      },
-      {
-        label: 'Toggle reorganize authors',
-        click() {
-
-          if (!reorganizingAuthors)
-            mainWindow.webContents.send('setReorganizeAuthors')
-
-          else
-            mainWindow.webContents.send('unsetReorganizeAuthors')
-
-          reorganizingAuthors = !reorganizingAuthors
-        }
       },
       {
         label: 'Insert keyword',

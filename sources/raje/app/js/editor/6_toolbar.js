@@ -873,3 +873,27 @@ function setButtonWithVar(id, variable) {
   else
     $(id).removeClass('active')
 }
+
+function showAuthorSettings() {
+  $('address.lead.authors').each(function () {
+
+    if (!$(this).find('span.authorSettings').length)
+      $(this).prepend(`<span class=\"btn-group authorSettings\" role=\"group\" aria-label=\"Undo and Redo\">
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\"
+          onclick="rashEditor.header.removeAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </button>
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\" aria-pressed=\"false\" disabled>
+          <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+        </button>
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\"
+          onclick="rashEditor.header.addAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+
+      </span>`)
+  })
+}

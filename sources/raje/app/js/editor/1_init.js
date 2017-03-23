@@ -73,6 +73,8 @@ jQuery.fn.extend({
       refreshToolbar()
     })
 
+    showAuthorSettings()
+
   },
   setNotEditable: function () {
     $(this).attr('contenteditable', false);
@@ -236,6 +238,7 @@ function attachHeaderEventHandler() {
     }
   })
 
+  showAuthorSettings()
 }
 
 function updateEditState() {

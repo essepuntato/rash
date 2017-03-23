@@ -73,6 +73,8 @@ jQuery.fn.extend({
       refreshToolbar()
     })
 
+    showAuthorSettings()
+
   },
   setNotEditable: function () {
     $(this).attr('contenteditable', false);
@@ -236,6 +238,7 @@ function attachHeaderEventHandler() {
     }
   })
 
+  showAuthorSettings()
 }
 
 function updateEditState() {
@@ -558,42 +561,30 @@ rashEditor = {
       }
     },
 
-    insertPlaceholderAuthor: function () {
+    addAuthor: function (author) {
 
       let placeholderAuthor = $(`
         <address class="lead authors">
-          <strong class="author_name">Author name</strong>
-          <code class="email"><a>author@email.com</a></code><br>
-          <span class="affiliation">Author Affiliation</span>
+          <strong class="author_name">John Doe</strong>
+          <code class="email"><a>john.doe@email.com</a></code><br>
+          <span class="affiliation">John Doe affiliation</span>
         </address>`)
       let lastAuthor
 
-      if ($('address.lead.authors').length)
-        lastAuthor = $('address.lead.authors:last()')
+      if (author)
+        lastAuthor = author
+      else if ($('address.lead.authors').length)
+        lastAuthor = $('address.lead.authors').last()
       else
         lastAuthor = $('h1.title')
 
       placeholderAuthor.insertAfter(lastAuthor)
       attachHeaderEventHandler()
+
     },
 
-    setRemoveAuthors: function () {
-
-      $('address.lead.authors').each(function () {
-
-        $(this).prepend(`<span class="btnRemove"><i class="fa fa-times" aria-hidden="true"></i></span>`)
-
-        $('span.btnRemove').on('click', function () {
-
-          $(this).parent('address').remove()
-        })
-      })
-    },
-
-    unsetRemoveAuthors: function () {
-      $('address.lead.authors').each(function () {
-        $(this).find('span.btnRemove').remove()
-      })
+    removeAuthor: function (author) {
+      author.remove()
     },
 
     setReorganizeAuthors: function () {
@@ -2365,6 +2356,30 @@ function setButtonWithVar(id, variable) {
   else
     $(id).removeClass('active')
 }
+
+function showAuthorSettings() {
+  $('address.lead.authors').each(function () {
+
+    if (!$(this).find('span.authorSettings').length)
+      $(this).prepend(`<span class=\"btn-group authorSettings\" role=\"group\" aria-label=\"Undo and Redo\">
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\"
+          onclick="rashEditor.header.removeAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </button>
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\" aria-pressed=\"false\" disabled>
+          <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+        </button>
+
+        <button type=\"button\" class=\"btn btn-default navbar-btn\"
+          onclick="rashEditor.header.addAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+
+      </span>`)
+  })
+}
 function execDerash() {
 
   rashFile = $('<html></html>')
@@ -2745,7 +2760,7 @@ function indentClosingTag(tabs, string) {
   }
 }
 
-const {ipcRenderer, webFrame} = require('electron'),
+const { ipcRenderer, webFrame } = require('electron'),
   fs = require('fs')
 
 /** Receive settings info (3) */
@@ -2758,7 +2773,7 @@ ipcRenderer.on('githubSettings', (event, args) => {
 
 ipcRenderer.on('addNewAuthor', (event, arg) => {
 
-  rashEditor.header.insertPlaceholderAuthor()
+  rashEditor.header.addAuthor()
 })
 
 ipcRenderer.on('setRemoveAuthors', (event, arg) => {

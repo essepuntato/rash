@@ -165,42 +165,30 @@ rashEditor = {
       }
     },
 
-    insertPlaceholderAuthor: function () {
+    addAuthor: function (author) {
 
       let placeholderAuthor = $(`
         <address class="lead authors">
-          <strong class="author_name">Author name</strong>
-          <code class="email"><a>author@email.com</a></code><br>
-          <span class="affiliation">Author Affiliation</span>
+          <strong class="author_name">John Doe</strong>
+          <code class="email"><a>john.doe@email.com</a></code><br>
+          <span class="affiliation">John Doe affiliation</span>
         </address>`)
       let lastAuthor
 
-      if ($('address.lead.authors').length)
-        lastAuthor = $('address.lead.authors:last()')
+      if (author)
+        lastAuthor = author
+      else if ($('address.lead.authors').length)
+        lastAuthor = $('address.lead.authors').last()
       else
         lastAuthor = $('h1.title')
 
       placeholderAuthor.insertAfter(lastAuthor)
       attachHeaderEventHandler()
+
     },
 
-    setRemoveAuthors: function () {
-
-      $('address.lead.authors').each(function () {
-
-        $(this).prepend(`<span class="btnRemove"><i class="fa fa-times" aria-hidden="true"></i></span>`)
-
-        $('span.btnRemove').on('click', function () {
-
-          $(this).parent('address').remove()
-        })
-      })
-    },
-
-    unsetRemoveAuthors: function () {
-      $('address.lead.authors').each(function () {
-        $(this).find('span.btnRemove').remove()
-      })
+    removeAuthor: function (author) {
+      author.remove()
     },
 
     setReorganizeAuthors: function () {
