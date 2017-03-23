@@ -424,7 +424,7 @@ rashEditor = {
     return max + 1
   },
 
-  insertSection: function (level, isShortcut) {
+  insertSection: function (level, isShortcut, insertedText) {
     // Restore selection if isn't restored yet and check if the selection exists and is inside the editor
     if (typeof savedSelection != "undefined" && !savedSelection.restored) rangy.restoreSelection(savedSelection);
     if (typeof rangy.getSelection() != "undefined" && caret.checkIfInEditor()) {
@@ -447,8 +447,12 @@ rashEditor = {
 
       id = !id.length ? 1 : this.getLastSectionId(id)
 
+      insertedText = insertedText ? insertedText : '<br/>'
+
+      console.log(text)
+
       // Insert new section
-      document.execCommand("insertHTML", false, '<section class="pointer" id="section' + id + '"><h1><br/></h1></section>');
+      document.execCommand("insertHTML", false, `<section class="pointer" id="section${id}"><h1>${insertedText}</h1></section>`);
 
       if (isShortcut) {
         caret.selectNode(text);

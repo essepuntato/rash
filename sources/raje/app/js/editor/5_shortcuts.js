@@ -93,7 +93,10 @@ rashEditor.
 
           //bibliography
           bibliography: $(node).parents('section[role="doc-bibliography"]').last(),
-          endnote: $(node).parents('section[role="doc-endnotes"]').last()
+          endnote: $(node).parents('section[role="doc-endnotes"]').last(),
+
+          //paragraph
+          paragraph: $(node).parents('p, div').first()
         };
 
         // header
@@ -166,6 +169,27 @@ rashEditor.
         else if (parent.endnote.length) {
           rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
           return false
+        }
+
+        // paragraph
+        else if (parent.paragraph.length) {
+          //TODO check if has # as first character
+          let text = parent.paragraph.text()
+          let deepness = 0
+          let isHash = true
+
+          while (isHash) {
+            if (text.substring(0, 1) == '#') {
+              text = text.substring(1, text.length)
+              deepness++
+            }
+            else
+              isHash = false
+          }
+          if (deepness > 0) {
+            rashEditor.insertSection(deepness, true, text);
+            return false
+          }
         }
       }
       return true;

@@ -837,7 +837,7 @@ rashEditor = {
     return max + 1
   },
 
-  insertSection: function (level, isShortcut) {
+  insertSection: function (level, isShortcut, insertedText) {
     // Restore selection if isn't restored yet and check if the selection exists and is inside the editor
     if (typeof savedSelection != "undefined" && !savedSelection.restored) rangy.restoreSelection(savedSelection);
     if (typeof rangy.getSelection() != "undefined" && caret.checkIfInEditor()) {
@@ -860,8 +860,12 @@ rashEditor = {
 
       id = !id.length ? 1 : this.getLastSectionId(id)
 
+      insertedText = insertedText ? insertedText : '<br/>'
+
+      console.log(text)
+
       // Insert new section
-      document.execCommand("insertHTML", false, '<section class="pointer" id="section' + id + '"><h1><br/></h1></section>');
+      document.execCommand("insertHTML", false, `<section class="pointer" id="section${id}"><h1>${insertedText}</h1></section>`);
 
       if (isShortcut) {
         caret.selectNode(text);
@@ -1357,7 +1361,10 @@ rashEditor.
 
           //bibliography
           bibliography: $(node).parents('section[role="doc-bibliography"]').last(),
-          endnote: $(node).parents('section[role="doc-endnotes"]').last()
+          endnote: $(node).parents('section[role="doc-endnotes"]').last(),
+
+          //paragraph
+          paragraph: $(node).parents('p, div').first()
         };
 
         // header
@@ -1430,6 +1437,27 @@ rashEditor.
         else if (parent.endnote.length) {
           rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
           return false
+        }
+
+        // paragraph
+        else if (parent.paragraph.length) {
+          //TODO check if has # as first character
+          let text = parent.paragraph.text()
+          let deepness = 0
+          let isHash = true
+
+          while (isHash) {
+            if (text.substring(0, 1) == '#') {
+              text = text.substring(1, text.length)
+              deepness++
+            }
+            else
+              isHash = false
+          }
+          if (deepness > 0) {
+            rashEditor.insertSection(deepness, true, text);
+            return false
+          }
         }
       }
       return true;
