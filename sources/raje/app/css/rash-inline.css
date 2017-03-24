@@ -96,18 +96,6 @@ span.authorSettings:hover{
   cursor: pointer
 }
 
-span.authorSettings i.fa-trash-o{
-  color: #DA4453
-}
-
-span.authorSettings i.fa-arrows-alt{
-  color: #656D78
-}
-
-span.authorSettings i.fa-plus{
-  color: #37BC9B
-}
-
 li.ui-state-default:hover{
   cursor: move
 }

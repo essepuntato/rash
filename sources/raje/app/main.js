@@ -1,7 +1,7 @@
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
-const { ipcMain, Menu, globalShortcut, dialog, shell } = electron
+const { systemPreferences, ipcMain, Menu, globalShortcut, dialog, shell } = electron
 
 const apiRequests = require('superagent')
 const path = require('path')
@@ -578,19 +578,24 @@ function chooseGithub(callback) {
   })
 }
 
+systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
+systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
+
 const menuUtils = {
   File: {
     label: 'File',
     submenu: [
       {
-        label: 'New Article'
+        label: 'New Article',
+        enabled: false,
       },
       {
-        label: 'Open Article...'
+        label: 'Open Article...',
+        enabled: false,
       },
       {
         label: 'Open Recent',
-        submenu: []
+        enabled: false,
       },
       {
         label: 'Save',
@@ -601,7 +606,7 @@ const menuUtils = {
       },
       {
         label: 'Export As',
-        submenu: []
+        enabled: false,
       }
     ]
   },
@@ -654,19 +659,22 @@ const menuUtils = {
         label: 'Editor mode',
         click() {
           mainWindow.webContents.send('setEditorMode')
-        }
+        },
+        enabled: false
       },
       {
         label: 'Preview mode',
         click() {
           mainWindow.webContents.send('setPreviewMode')
-        }
+        },
+        enabled: false
       },
       {
         type: 'separator'
       },
       {
         label: 'Show Rawgit',
+        enabled: false
       },
       {
         type: 'separator'
