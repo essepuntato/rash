@@ -109,27 +109,26 @@ function showNavbar() {
 
               </div>
           </div>
-            <!--
 
-            <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
-
-              <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sections
-                <span class="caret"></span>
-              </button>
-              <ul class=\"dropdown-menu\" aria-labelledby=\"sectionDropdown\">
-                <li onclick=\"rashEditor.section.addAbstract()\" id=\"addAbstract\"><a>Abstract</a></li>
-                <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
-                <li onclick=\"rashEditor.insertBibliographySection()\" id=\"addBibliography\"><a>Bibliography</a></li>
-                <li role=\"separator\" class=\"divider\"></li>
-              </ul>
-            </div>
-
-            -->
             <ul class="nav navbar-nav navbar-right">
+
               <li>
-              <span id="github"></span>
-                
+                <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
+                  <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sections
+                    <span class="caret"></span>
+                  </button>
+                  <ul class=\"dropdown-menu\" aria-labelledby=\"sectionDropdown\">
+                    <li onclick=\"rashEditor.section.addAbstract()\" id=\"addAbstract\"><a>Abstract</a></li>
+                    <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
+                    <li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>
+                    <li role=\"separator\" class=\"divider\"></li>
+                  </ul>
+                </div>
+              </li>
+
+              <li>
+                <span id="github"></span>
               </li>
             </li>
           </div>
@@ -160,15 +159,20 @@ function updateDropdown() {
       sel = rangy.getSelection();
 
     dropdown.find('li:gt(3)').remove();
+
     var nodeList = $(rangy.getSelection().anchorNode).parentsUntil(rash_inline_selector, "section"),
-      mainSection = '<li onclick=\"rashEditor.insertMainSection()\"><a>Main section</a></li>',
-      subSection = '<li onclick=\"rashEditor.insertSubSection()\"><a>Sub section</a></li>';
+      mainSection = '<li onclick=\"rashEditor.insertSection(1,false)\"><a>H1 section</a></li>',
+      subSection = '<li onclick=\"rashEditor.insertSection(2,false)\"><a>H2 section</a></li>',
+      subsubSection = '<li onclick=\"rashEditor.insertSection(3,false)\"><a>H3 section</a></li>'
 
     if (nodeList.last().attr('role') == 'doc-abstract' || !nodeList.last().attr('role'))
       dropdown.find('.dropdown-menu').append(mainSection);
 
-    if (!nodeList.last().attr('role') && nodeList.length <= 5)
+    if (!nodeList.last().attr('role') && nodeList.length <= 3)
       dropdown.find('.dropdown-menu').append(subSection);
+
+    if (!nodeList.last().attr('role') && nodeList.length <= 4)
+      dropdown.find('.dropdown-menu').append(subsubSection);
   }
 }
 /** End editNavar */
