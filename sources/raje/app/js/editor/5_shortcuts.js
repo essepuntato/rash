@@ -33,7 +33,7 @@ rashEditor.
 
         var parent = {
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
-          endnote: (node).parents('section[role="doc-endnote"]').last()
+          endnote: $(node).parents('section[role="doc-endnote"]').last()
         }
 
         if (!parent.endnote.length) {

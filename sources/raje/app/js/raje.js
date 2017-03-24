@@ -739,7 +739,7 @@ rashEditor = {
       caret.appendOrPrependZeroSpace();
 
       if (sel.isCollapsed) {
-        document.execCommand("insertHTML", false, `<code>${ZERO_SPACE}</code>${ZERO_SPACE}`);
+        document.execCommand("insertHTML", false, `<${element}>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
       }
       else {
 
@@ -1285,7 +1285,7 @@ rashEditor.
 
         var parent = {
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
-          endnote: (node).parents('section[role="doc-endnote"]').last()
+          endnote: $(node).parents('section[role="doc-endnote"]').last()
         }
 
         if (!parent.endnote.length) {
@@ -2383,13 +2383,23 @@ function refreshToolbar() {
     else
       $('nav#editNavbar .navbar-left button[title]').removeAttr('disabled')
 
+    // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
-    em = $(sel.anchorNode).parents('em, i').length > 0
-
     setButtonWithVar('#btnStrong', strong)
+
+    // activate/deactivate em button
+    em = $(sel.anchorNode).parents('em, i').length > 0
     setButtonWithVar('#btnEm', em)
 
+    // activate/deactivate code button
+    code = $(sel.anchorNode).parents('code').length > 0 && !$(sel.anchorNode).parents('pre').length
+    setButtonWithVar('#btnInlineCode', code)
 
+    // activate/deactivate quote button
+    q = $(sel.anchorNode).parents('q').length > 0
+    setButtonWithVar('#btnInlineQuote', q)
+
+    //Disable behaviours 
     if (caret.checkIfInHeading())
       $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
   }

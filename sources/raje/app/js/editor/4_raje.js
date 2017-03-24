@@ -313,7 +313,7 @@ rashEditor = {
       caret.appendOrPrependZeroSpace();
 
       if (sel.isCollapsed) {
-        document.execCommand("insertHTML", false, `<code>${ZERO_SPACE}</code>${ZERO_SPACE}`);
+        document.execCommand("insertHTML", false, `<${element}>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
       }
       else {
 
