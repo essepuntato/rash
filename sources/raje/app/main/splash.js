@@ -27,7 +27,7 @@ module.exports = {
     this.replaceFile(articlePath)
 
     this.createSettingsFile(folderPath, toSaveSettings)
-    this.openEditorWindow(mainWindow, toSaveSettings.fullPath)
+    this.openEditorWindow(mainWindow, toSaveSettings.fullPath, toSaveSettings.title)
 
     return toSaveSettings
   },
@@ -71,9 +71,11 @@ module.exports = {
     })
   },
 
-  openEditorWindow: function (mainWindow, articlePath) {
+  openEditorWindow: function (mainWindow, articlePath, title) {
     mainWindow.loadURL(`file://${articlePath}`)
     mainWindow.maximize()
+    if (title)
+      mainWindow.webContents.send('updateTitle', title)
   },
 
   createSettingsFile: function (folderPath, settings) {
@@ -81,5 +83,9 @@ module.exports = {
     fs.writeFile(`${folderPath}/.raje`, JSON.stringify(settings), (err) => {
       if (err) throw err
     })
+  },
+
+  checkPath: function (path) {
+    return fs.existsSync(path)
   }
 }

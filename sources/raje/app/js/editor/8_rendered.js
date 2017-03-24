@@ -67,6 +67,10 @@ ipcRenderer.on('updateMessageDealer', (event, arg) => {
   showMessageDealer(arg.text, arg.style, arg.delay)
 })
 
+ipcRenderer.on('updateTitle', (event, title) => {
+  updateTitle(title)
+})
+
 /** check if is connected */
 function checkLogin() {
   return typeof window['settings'] !== 'undefined'

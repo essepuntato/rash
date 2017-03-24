@@ -53,30 +53,11 @@ body {
   padding-bottom: 50px;
 }
 
-#mode {
-  position: fixed;
-  right: 50px;
-  top: 0;
-  z-index: 1031;
-}
-
 #messageDealer{
   position: fixed;
   right: 50px;
   bottom: 50px;
 }
-
-#mode:hover {
-  cursor: pointer;
-}
-
-#mode>img{
-  height: 18px
-}
-
-#mode .dropdown-menu {
- left: -120px;
-}  
 
 #rashEditor li>a[data-code]{
   padding-bottom: 10px;

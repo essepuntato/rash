@@ -893,3 +893,7 @@ function showAuthorSettings() {
       </span>`)
   })
 }
+
+function updateTitle(title) {
+  $('h1.title').text(title)
+}

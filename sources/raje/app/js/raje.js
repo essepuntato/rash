@@ -2417,6 +2417,10 @@ function showAuthorSettings() {
       </span>`)
   })
 }
+
+function updateTitle(title) {
+  $('h1.title').text(title)
+}
 function execDerash() {
 
   rashFile = $('<html></html>')
@@ -2864,6 +2868,10 @@ ipcRenderer.on('doSavefromMain', (event, arg) => {
 ipcRenderer.on('updateMessageDealer', (event, arg) => {
   hideMessageDealer()
   showMessageDealer(arg.text, arg.style, arg.delay)
+})
+
+ipcRenderer.on('updateTitle', (event, title) => {
+  updateTitle(title)
 })
 
 /** check if is connected */

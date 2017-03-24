@@ -126,9 +126,14 @@ ipcMain.on('getRecentArticles', (event, arg) => {
 
 // Initilize folder with the new given settings
 ipcMain.on('createArticle', (event, newArticleSettings) => {
-  let article = splash.initFolder(mainWindow, newArticleSettings)
-  storage.pushRecentArticles(article)
-  setEditorMenu()
+
+  if (splash.checkPath(newArticleSettings.path)) {
+    let article = splash.initFolder(mainWindow, newArticleSettings)
+    storage.pushRecentArticles(article)
+    setEditorMenu()
+    event.returnValue = false
+  } else
+    event.returnValue = "Error, the selected folder doesn't exists"
 })
 
 // Open the rticle inside the selected folder
@@ -162,7 +167,7 @@ ipcMain.on('selectDirectorySync', (event) => {
   let folder = splash.selectFolder(mainWindow)
 
   if (!folder)
-    event.returnValue = false
+    event.returnValue = ""
 
   else
     event.returnValue = folder[0]

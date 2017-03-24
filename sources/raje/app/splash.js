@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron')
+const { ipcRenderer } = require('electron')
 
 $(document).ready(function () {
 
@@ -65,10 +65,10 @@ function attachNewArticleModal() {
       <form class="form-horizontal">
 
         <div class="form-group">
-          <label class="col-sm-2 control-label">Local path</label>
+          <label class="col-sm-2 control-label">Select the folder where the article will be saved</label>
           <div class="col-sm-10">
             <div class="input-group">
-              <input id="txtPath" type="text" class="form-control" placeholder="usr/local/bin">
+              <input id="txtPath" type="text" class="form-control">
               <span class="input-group-btn">
                 <button id="btnShowFolderSelector" class="btn btn-default" type="button">Select folder</button>
               </span>
@@ -77,9 +77,9 @@ function attachNewArticleModal() {
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label">Title</label>
+          <label class="col-sm-2 control-label">Insert the name of the article</label>
           <div class="col-sm-10">
-            <input id="txtTitle" type="text" class="form-control" placeholder="spinaci-rajedoc2017"/>
+            <input id="txtTitle" type="text" class="form-control"/>
           </div>
         </div>
 
@@ -87,7 +87,7 @@ function attachNewArticleModal() {
     `,
     'footer': `
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-success" data-dismiss="modal">Commit</button>
+      <button type="button" class="btn btn-success">Create article</button>
     `
   }
 
@@ -102,8 +102,10 @@ function attachNewArticleModal() {
           'title': $('#txtTitle').val()
         }
 
-        if ((typeof settings.path !== 'undefinied' && settings.path != '') && (typeof settings.title !== 'undefinied' && settings.title != ''))
-          ipcRenderer.send('createArticle', settings)
+        if ((typeof settings.path !== 'undefinied' && settings.path != '') && (typeof settings.title !== 'undefinied' && settings.title != '')) {
+          let res = ipcRenderer.sendSync('createArticle', settings)
+          if (res) alert(res)
+        }
       }
     },
     //btnShowFolderSelector
