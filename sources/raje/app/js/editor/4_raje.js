@@ -298,14 +298,6 @@ rashEditor = {
       biblio.append(`<a data-type="addBiblioentry" class="list-group-item">+ add new biblioentry</a>`)
       referenceables += '<p><b>Biblioentry</b></p>' + biblio[0].outerHTML
 
-      /** retrieve endnotes */
-      let endnotes = $('<div class="list-group">')
-      $(rash_inline_selector + '>section[role="doc-endnotes"] section').each(function () {
-        endnotes.append(`<a data-type="endnote" data-ref="${$(this).attr('id')}" class="list-group-item">${$(this).find('p').text()}</a>`)
-      })
-      endnotes.append(`<a data-type="addEndnote" class="list-group-item">+ add new footnote</a>`)
-      referenceables += '<p><b>Footnotes</b></p>' + endnotes[0].outerHTML
-
       return referenceables
     }
   },
@@ -379,27 +371,6 @@ rashEditor = {
       }
       createReference();
     }
-  },
-
-  getCrossRefList: function () {
-
-    var references = [];
-
-    //TODO get sections reference
-    $('section').each(function () {
-      references.push(
-        $(this).attr('role') ?
-          'section[' + $(this).attr('role') + ']' :
-          'section#' + $(this).attr('id')
-      );
-    });
-
-    //TODO get figures references
-    $('figure').each(function (index) {
-
-    });
-
-    console.log(references);
   },
 
   /* END cross-res */

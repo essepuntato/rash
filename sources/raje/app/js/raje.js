@@ -157,6 +157,11 @@ window.handleCrossRef = function () {
   window['crossReference'].showModal();
 };
 
+window.handleFootnote = function () {
+  window['footnote'] = new rashEditor.crossRef()
+  window['footnote'].addEndnote(rashEditor.insertEndnote())
+}
+
 window.handleTableBox = function () {
   var id = 'table_' + ($(this).findNumber(tablebox_selector) + 1);
   window[id] = new rashEditor.Table(id);
@@ -715,14 +720,6 @@ rashEditor = {
       biblio.append(`<a data-type="addBiblioentry" class="list-group-item">+ add new biblioentry</a>`)
       referenceables += '<p><b>Biblioentry</b></p>' + biblio[0].outerHTML
 
-      /** retrieve endnotes */
-      let endnotes = $('<div class="list-group">')
-      $(rash_inline_selector + '>section[role="doc-endnotes"] section').each(function () {
-        endnotes.append(`<a data-type="endnote" data-ref="${$(this).attr('id')}" class="list-group-item">${$(this).find('p').text()}</a>`)
-      })
-      endnotes.append(`<a data-type="addEndnote" class="list-group-item">+ add new footnote</a>`)
-      referenceables += '<p><b>Footnotes</b></p>' + endnotes[0].outerHTML
-
       return referenceables
     }
   },
@@ -796,27 +793,6 @@ rashEditor = {
       }
       createReference();
     }
-  },
-
-  getCrossRefList: function () {
-
-    var references = [];
-
-    //TODO get sections reference
-    $('section').each(function () {
-      references.push(
-        $(this).attr('role') ?
-          'section[' + $(this).attr('role') + ']' :
-          'section#' + $(this).attr('id')
-      );
-    });
-
-    //TODO get figures references
-    $('figure').each(function (index) {
-
-    });
-
-    console.log(references);
   },
 
   /* END cross-res */
@@ -1304,14 +1280,18 @@ rashEditor.
         var node = sel.anchorNode
 
         var parent = {
-          reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last()
+          reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
+          endnote: (node).parents('section[role="doc-endnote"]').last()
         }
 
-        if (parent.reference.length) {
-          rashEditor.exitInline(parent.reference)
-          return false
+        if (!parent.endnote.length) {
+          if (parent.reference.length) {
+            rashEditor.exitInline(parent.reference)
+            return false
+          }
         }
-
+        else
+          return true
       }
     })
 
@@ -1583,7 +1563,7 @@ function showNavbar() {
                 </button>
 
                 <button id="btnFootnote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"\" title=\"Footnote\">
+                  onClick=\"handleFootnote()\" title=\"Footnote\">
                     <i class="fa fa-asterisk" aria-hidden="true"></i>
                 </button>
 
@@ -1878,15 +1858,6 @@ function addCrossRefModal() {
         $(info.selector).modal('hide')
 
         window['crossReference'].addBiblioentry(rashEditor.insertBibliography())
-      }
-    },
-    {
-      'selector': '.list-group>a[data-type="addEndnote"]',
-      'trigger': 'click',
-      'behaviour': function () {
-        $(info.selector).modal('hide');
-
-        window['crossReference'].addEndnote(rashEditor.insertEndnote())
       }
     }
   ]
@@ -2375,19 +2346,18 @@ function hideMessageDealer() {
 function updateGithubButton() {
   if (settings && settings.avatar && checkSoftware()) {
     $('span#github').html(`
-      <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
-          <li role="separator" class="divider"></li>
-          <li><a onclick="addCommitModal()">Push</a></li>
-          <li role="separator" class="divider"></li>
-          <!-- todo -->
-          <li><a onclick="githubLogout()">Logout</a></li>
-        </ul>
-      </div>`)
+        <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\">
+          <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
+            <li role="separator" class="divider"></li>
+            <li><a onclick="addCommitModal()">Push</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a onclick="githubLogout()">Logout</a></li>
+          </ul>
+        </div>`)
 
   } else {
 
@@ -2396,28 +2366,6 @@ function updateGithubButton() {
       data-toggle=\"tooltip\" title=\"Login with github\">
         <i class=\"fa fa-github\" aria-hidden=\"true\"></i>
       </button>`)
-  }
-}
-
-function updateModeButton() {
-  if (settings && settings.avatar && checkSoftware()) {
-    $('#mode>button').prepend(`<img class="avatar" src="${settings.avatar}" alt="Github profile picture"/>`)
-
-    $('#mode>ul.dropdown-menu').html(`
-      <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
-      <li role="separator" class="divider"></li>
-      <li><a onclick="addCommitModal()">Push</a></li>
-      <li role="separator" class="divider"></li>
-      <!-- todo -->
-      <li><a onclick="githubLogout()">Logout</a></li>
-    `)
-  } else {
-
-    $('#mode').find('img.avatar').remove()
-    $('#mode>ul.dropdown-menu').html(`
-      <li>
-        <a onclick="githubLogin()">Login w/ Github</a></li>
-      </ul>`)
   }
 }
 

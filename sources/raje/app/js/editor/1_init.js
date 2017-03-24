@@ -157,6 +157,11 @@ window.handleCrossRef = function () {
   window['crossReference'].showModal();
 };
 
+window.handleFootnote = function () {
+  window['footnote'] = new rashEditor.crossRef()
+  window['footnote'].addEndnote(rashEditor.insertEndnote())
+}
+
 window.handleTableBox = function () {
   var id = 'table_' + ($(this).findNumber(tablebox_selector) + 1);
   window[id] = new rashEditor.Table(id);

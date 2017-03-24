@@ -39,7 +39,7 @@ function showNavbar() {
                 </button>
 
                 <button id="btnFootnote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"\" title=\"Footnote\">
+                  onClick=\"handleFootnote()\" title=\"Footnote\">
                     <i class="fa fa-asterisk" aria-hidden="true"></i>
                 </button>
 
@@ -334,15 +334,6 @@ function addCrossRefModal() {
         $(info.selector).modal('hide')
 
         window['crossReference'].addBiblioentry(rashEditor.insertBibliography())
-      }
-    },
-    {
-      'selector': '.list-group>a[data-type="addEndnote"]',
-      'trigger': 'click',
-      'behaviour': function () {
-        $(info.selector).modal('hide');
-
-        window['crossReference'].addEndnote(rashEditor.insertEndnote())
       }
     }
   ]
@@ -831,19 +822,18 @@ function hideMessageDealer() {
 function updateGithubButton() {
   if (settings && settings.avatar && checkSoftware()) {
     $('span#github').html(`
-      <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
-          <li role="separator" class="divider"></li>
-          <li><a onclick="addCommitModal()">Push</a></li>
-          <li role="separator" class="divider"></li>
-          <!-- todo -->
-          <li><a onclick="githubLogout()">Logout</a></li>
-        </ul>
-      </div>`)
+        <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\">
+          <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
+            <li role="separator" class="divider"></li>
+            <li><a onclick="addCommitModal()">Push</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a onclick="githubLogout()">Logout</a></li>
+          </ul>
+        </div>`)
 
   } else {
 
@@ -852,28 +842,6 @@ function updateGithubButton() {
       data-toggle=\"tooltip\" title=\"Login with github\">
         <i class=\"fa fa-github\" aria-hidden=\"true\"></i>
       </button>`)
-  }
-}
-
-function updateModeButton() {
-  if (settings && settings.avatar && checkSoftware()) {
-    $('#mode>button').prepend(`<img class="avatar" src="${settings.avatar}" alt="Github profile picture"/>`)
-
-    $('#mode>ul.dropdown-menu').html(`
-      <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
-      <li role="separator" class="divider"></li>
-      <li><a onclick="addCommitModal()">Push</a></li>
-      <li role="separator" class="divider"></li>
-      <!-- todo -->
-      <li><a onclick="githubLogout()">Logout</a></li>
-    `)
-  } else {
-
-    $('#mode').find('img.avatar').remove()
-    $('#mode>ul.dropdown-menu').html(`
-      <li>
-        <a onclick="githubLogin()">Login w/ Github</a></li>
-      </ul>`)
   }
 }
 
