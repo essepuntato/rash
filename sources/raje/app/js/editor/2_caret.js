@@ -21,6 +21,10 @@ caret = {
     return $(window.getSelection().anchorNode).parents('nav#editNavbar').length;
   },
 
+  checkIfInHeading: function () {
+    return $(window.getSelection().anchorNode).parents('h1,h2,h3').length;
+  },
+
   checkIfBorder: function () {
     var sel = rangy.getSelection(),
       node = sel.anchorNode;

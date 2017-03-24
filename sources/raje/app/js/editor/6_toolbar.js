@@ -33,24 +33,9 @@ function showNavbar() {
                   <i class=\"fa fa-italic\" aria-hidden=\"true\"></i>
                 </button>
 
-                <button id="btnReference" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"handleCrossRef()\" title=\"Reference\">
-                  <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
-                </button>
-
-                <button id="btnFootnote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"handleFootnote()\" title=\"Footnote\">
-                    <i class="fa fa-asterisk" aria-hidden="true"></i>
-                </button>
-
                 <button id="btnInlineCode" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onClick=\"rashEditor.insertInline(INLINE.CODE)\" title=\"Code\">
                   <i class=\"fa fa-code\" aria-hidden=\"true\"></i>
-                </button>
-
-                <button id="btnLink" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"handleExternalLink()\" title=\"External link\">
-                  <i class="fa fa-globe" aria-hidden="true"></i>
                 </button>
 
                 <button id="btnInlineQuote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
@@ -68,9 +53,24 @@ function showNavbar() {
                   <i class=\"fa fa-subscript\" aria-hidden=\"true\"></i>
                 </button>
 
+                <button id="btnReference" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleCrossRef()\" title=\"Reference\">
+                  <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
+                </button>
+
+                <button id="btnFootnote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleFootnote()\" title=\"Footnote\">
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                </button>
+
+                <button id="btnLink" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleExternalLink()\" title=\"External link\">
+                  <i class="fa fa-globe" aria-hidden="true"></i>
+                </button>
+
               </div>
 
-              <div class=\"btn-group\" role=\"group\" aria-label=\"Textual elements\">
+              <div class=\"btn-group\" role=\"group\" aria-label=\"Block elements\">
               
                 <button id="btnBlockCode" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onclick=\"rashEditor.insertCodeBlock()\" title=\"Code block\" aria-pressed=\"false\">
@@ -860,6 +860,10 @@ function refreshToolbar() {
 
     setButtonWithVar('#btnStrong', strong)
     setButtonWithVar('#btnEm', em)
+
+
+    if (caret.checkIfInHeading())
+      $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
   }
 }
 
