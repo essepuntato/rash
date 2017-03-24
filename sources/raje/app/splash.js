@@ -77,7 +77,7 @@ function attachNewArticleModal() {
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label">Insert the name of the article</label>
+          <label class="col-sm-2 control-label">Insert the name of the File</label>
           <div class="col-sm-10">
             <input id="txtTitle" type="text" class="form-control"/>
           </div>
