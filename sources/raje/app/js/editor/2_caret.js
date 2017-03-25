@@ -77,7 +77,7 @@ caret = {
     var sel = rangy.getSelection();
 
     sel.refresh();
-    sel.addRange(range);
+    sel.setSingleRange(range);
   },
   /**
    * Move selection to startOffset of current node
@@ -115,5 +115,69 @@ caret = {
   moveTo: function (node, focus) {
 
     rangy.getSelection().collapse(node, focus);
+  },
+
+  navigateToHeaderSelect: function (to) {
+    this.selectNode(to)
+    this.navigate(to)
+  },
+
+  navigateToHeaderStart: function (to) {
+    this.moveStart(to)
+    this.navigate(to)
+  },
+
+  navigate: function (to) {
+    to.attr('contenteditable', 'true')
+    to.addClass('mousetrap')
+    to.focus()
+  },
+
+  /**
+   * 
+   */
+  getNextElement: function (currentElement) {
+    let header = $('header.page-header')
+    let firstHeader = $(rash_inline_selector + ' > section:first() > h1')
+
+    if (currentElement.is('h1')) {
+      if (!header.find('address.lead.authors').length)
+        rashEditor.header.addAuthor()
+      caret.navigateToHeaderSelect(header.find('address.lead.authors:first() > strong.author_name'))
+    }
+
+    else if (currentElement.is('code.email')) {
+      let address = currentElement.parents('address.lead.authors')
+      if (!address.find('span.affiliation').length)
+        rashEditor.header.addAffiliation()
+      else
+        caret.navigateToHeaderSelect(address.find('span.affiliation:first()'))
+    }
+
+    else if (currentElement.is('span.affiliation')) {
+
+      let address = currentElement.parents('address.lead.authors')
+
+      if (address.next().is('address'))
+        caret.navigateToHeaderSelect(address.next().find('strong.author_name'))
+
+      else if (address.next().is('p.acm_subject_categories'))
+        caret.navigateToHeaderSelect(address.next().find('code:first()'))
+
+      else if (address.next().is('p.keywords'))
+        caret.navigateToHeaderSelect(address.next().find('ul'))
+
+      else
+        caret.navigateToHeaderStart(firstHeader)
+    }
+
+    else if (currentElement.is('p.acm_subject_categories')) {
+
+      if (currentElement.next().is('p.keywords'))
+        caret.navigateToHeaderSelect(currentElement.next().find('ul'))
+
+      else
+        caret.navigateToHeaderStart(firstHeader)
+    }
   }
 };

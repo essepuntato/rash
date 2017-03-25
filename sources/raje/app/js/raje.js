@@ -229,10 +229,11 @@ $(document).ready(function () {
 
 function attachHeaderEventHandler() {
 
-  $(meta_headers_selector).on('dblclick', function () {
+  $(meta_headers_selector).on('click', function () {
     if (checkLogin()) {
       $(this).attr('contenteditable', 'true')
       $(this).addClass('mousetrap')
+      $(this).focus()
     }
   })
 
@@ -366,7 +367,7 @@ caret = {
     var sel = rangy.getSelection();
 
     sel.refresh();
-    sel.addRange(range);
+    sel.setSingleRange(range);
   },
   /**
    * Move selection to startOffset of current node
@@ -404,6 +405,70 @@ caret = {
   moveTo: function (node, focus) {
 
     rangy.getSelection().collapse(node, focus);
+  },
+
+  navigateToHeaderSelect: function (to) {
+    this.selectNode(to)
+    this.navigate(to)
+  },
+
+  navigateToHeaderStart: function (to) {
+    this.moveStart(to)
+    this.navigate(to)
+  },
+
+  navigate: function (to) {
+    to.attr('contenteditable', 'true')
+    to.addClass('mousetrap')
+    to.focus()
+  },
+
+  /**
+   * 
+   */
+  getNextElement: function (currentElement) {
+    let header = $('header.page-header')
+    let firstHeader = $(rash_inline_selector + ' > section:first() > h1')
+
+    if (currentElement.is('h1')) {
+      if (!header.find('address.lead.authors').length)
+        rashEditor.header.addAuthor()
+      caret.navigateToHeaderSelect(header.find('address.lead.authors:first() > strong.author_name'))
+    }
+
+    else if (currentElement.is('code.email')) {
+      let address = currentElement.parents('address.lead.authors')
+      if (!address.find('span.affiliation').length)
+        rashEditor.header.addAffiliation()
+      else
+        caret.navigateToHeaderSelect(address.find('span.affiliation:first()'))
+    }
+
+    else if (currentElement.is('span.affiliation')) {
+
+      let address = currentElement.parents('address.lead.authors')
+
+      if (address.next().is('address'))
+        caret.navigateToHeaderSelect(address.next().find('strong.author_name'))
+
+      else if (address.next().is('p.acm_subject_categories'))
+        caret.navigateToHeaderSelect(address.next().find('code:first()'))
+
+      else if (address.next().is('p.keywords'))
+        caret.navigateToHeaderSelect(address.next().find('ul'))
+
+      else
+        caret.navigateToHeaderStart(firstHeader)
+    }
+
+    else if (currentElement.is('p.acm_subject_categories')) {
+
+      if (currentElement.next().is('p.keywords'))
+        caret.navigateToHeaderSelect(currentElement.next().find('ul'))
+
+      else
+        caret.navigateToHeaderStart(firstHeader)
+    }
   }
 };
 
@@ -523,7 +588,7 @@ rashEditor = {
       } else {
 
         $('header').append('<p class="keywords"><strong>Keywords</strong></p>')
-        $('p.keywords').append('<ul class="list-inline"><li><code>Keyword</code></li></ul>')
+        $('p.keywords').append(`<ul class="list-inline"><li><code>${ZERO_SPACE}Type here the keyword</code></li></ul>`)
 
         attachHeaderEventHandler()
       }
@@ -541,11 +606,14 @@ rashEditor = {
       if ($('header').find('p.acm_subject_categories').length) {
 
         let selectedKeyword = $(sel.anchorNode).parentsUntil('p.acm_subject_categories').last(),
-          newElement = $(`<br/><code>Placeholder subject</code>`)
+          newElement = $(`<br/><code data-pointer>${ZERO_SPACE}</code>`)
 
         selectedKeyword.after(newElement)
-
         attachHeaderEventHandler()
+
+        caret.navigateToHeaderStart($('code[data-pointer]'))
+        $('code[data-pointer]').removeAttr('data-pointer')
+        sel.move('character', 1)
 
       } else {
 
@@ -554,13 +622,13 @@ rashEditor = {
         else
           $('header').append('<p class="acm_subject_categories"><strong>ACM Subject Categories</strong></p>')
 
-        $('p.acm_subject_categories').append('<br/><code>Placeholder subject</code>')
+        $('p.acm_subject_categories').append(`<br/><code>${ZERO_SPACE}Type here the category</code>`)
         attachHeaderEventHandler()
       }
     },
 
     removeSubject: function (subject) {
-      subject.before().remove()
+      subject.prev('br').remove()
       subject.remove()
 
       if (!$('p.acm_subject_categories').find('code').length)
@@ -573,13 +641,21 @@ rashEditor = {
       if (sel.rangeCount && sel.isCollapsed && caret.checkIfInHeader()) {
 
         let selectedKeyword = $(sel.anchorNode).parentsUntil('address.lead.authors').last(),
-          newElement = $(`<br/><span class="affiliation">Placeholder affiliation</span>`)
+          newElement = $(`<br/><span class="affiliation placeholder">${ZERO_SPACE}Add an additional affiliation or press ENTER to proceed.</span>`)
 
         selectedKeyword.after(newElement)
-
         attachHeaderEventHandler()
+
+        caret.navigateToHeaderStart($('span.affiliation.placeholder'))
+        sel.move('character', 1)
       }
     },
+
+    removeAffiliation: function (affiliation) {
+      affiliation.prev('br').remove()
+      affiliation.remove()
+    },
+
     insertSubTitle: function () {
       var sel = rangy.getSelection()
       if (sel.rangeCount && sel.isCollapsed && caret.checkIfInHeader()) {
@@ -595,9 +671,9 @@ rashEditor = {
 
       let placeholderAuthor = $(`
         <address class="lead authors">
-          <strong class="author_name">John Doe</strong>
-          <code class="email"><a>john.doe@email.com</a></code><br>
-          <span class="affiliation">John Doe affiliation</span>
+          <strong class="author_name">${ZERO_SPACE}John Doe</strong>
+          <code class="email"><a>${ZERO_SPACE}john.doe@email.com</a></code>
+          <br><span class="affiliation">${ZERO_SPACE}John Doe affiliation</span>
         </address>`)
       let lastAuthor
 
@@ -1267,6 +1343,15 @@ rashEditor.
       document.execCommand("insertHTML", false, text);
     });
 
+    var alphabet = [
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+      'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', 'space', ',',
+      'shift+a', 'shift+b', 'shift+c', 'shift+d', 'shift+e', 'shift+f', 'shift+g',
+      'shift+h', 'shift+i', 'shift+j', 'shift+k', 'shift+l', 'shift+m', 'shift+n',
+      'shift+o', 'shift+p', 'shift+q', 'shift+r', 'shift+s', 'shift+t', 'shift+u',
+      'shift+v', 'shift+w', 'shift+y', 'shift+z'
+    ];
+
     Mousetrap.bind('mod+s', function (event) {
       executeSave()
       return false
@@ -1306,16 +1391,20 @@ rashEditor.
         var parent = {
           keywords: $(node).parents('p.keywords').last(),
           categories: $(node).parents('p.acm_subject_categories').last(),
-          code: $(node).parents('code').last()
+          current_subject: $(node).parents('p.acm_subject_categories > code').last(),
+          affiliation: $(node).parents('span.affiliation').last()
         }
 
         if (parent.keywords.length && parent.keywords.find('ul.list-inline').text() == '') {
           rashEditor.header.removeKeyword(parent.keywords)
 
-        } else if (parent.categories.length && (parent.code.text().length == 1 || sel.toString().length == parent.code.text().length)) {
-          rashEditor.header.removeSubject(parent.code)
-        }
+        } else if (parent.categories.length && (parent.current_subject.text().length == 1 || sel.toString().length == parent.current_subject.text().length)) {
+          rashEditor.header.removeSubject(parent.current_subject)
 
+        } else if (parent.affiliation.length && (parent.affiliation.text().length == 1 || sel.toString().length == parent.affiliation.text().length)) {
+          rashEditor.header.removeAffiliation(parent.affiliation)
+
+        }
       }
     })
 
@@ -1326,9 +1415,17 @@ rashEditor.
         var parent = {
 
           //header
-          keywords: $(node).parents('p.keywords').last(),
-          subjects: $(node).parents('p.acm_subject_categories').last(),
+          subtitle: $(node).parents('h1.title > small').last(),
           title: $(node).parents('h1.title').last(),
+          author: {
+            name: $(node).parents('strong.author_name').last(),
+            email: $(node).parents('code.email').last(),
+            affiliation: $(node).parents('span.affiliation').last()
+          },
+          keywords: $(node).parents('p.keywords').last(),
+          current_keyword: $(node).parents('p.keywords code').last(),
+          subjects: $(node).parents('p.acm_subject_categories').last(),
+          current_subject: $(node).parents('p.acm_subject_categories > code').last(),
           affiliation: $(node).parents('span.affiliation').last(),
 
           //cross reference
@@ -1356,20 +1453,53 @@ rashEditor.
         };
 
         // header
-        if (parent.title.length) {
-          rashEditor.header.insertSubTitle()
+        if (parent.subtitle.length) {
+          caret.getNextElement(parent.title)
+          return false
+
+        } else if (parent.title.length) {
+          caret.getNextElement(parent.title)
+          //rashEditor.header.insertSubTitle()
+          return false
+
+        } else if (parent.author.name.length) {
+          caret.navigateToHeaderStart($(sel.anchorNode).parents('address.lead.authors').find('code.email'))
+          //sel.move('character', 1)
+          return false
+
+        } else if (parent.author.email.length) {
+          caret.getNextElement(parent.author.email)
           return false
 
         } else if (parent.affiliation.length) {
-          rashEditor.header.addAffiliation()
-          return false
 
-        } else if (parent.keywords.length) {
-          rashEditor.header.insertKeyword()
+          if (parent.affiliation.hasClass('placeholder')) {
+            caret.getNextElement(parent.affiliation)
+            parent.affiliation.prev('br').remove()
+            parent.affiliation.remove()
+          }
+          else
+            rashEditor.header.addAffiliation()
           return false
 
         } else if (parent.subjects.length) {
-          rashEditor.header.insertSubject()
+          if (parent.current_subject.text().length == 1) {
+            caret.getNextElement(parent.subjects)
+            parent.current_subject.prev('br').remove()
+            parent.current_subject.remove()
+          } else
+            rashEditor.header.insertSubject()
+
+          return false
+        }
+
+        else if (parent.keywords.length) {
+          if (parent.current_keyword.text().length == 1) {
+            caret.getNextElement(parent.keywords)
+            parent.current_keyword.remove()
+          } else
+            rashEditor.header.insertKeyword()
+
           return false
 
         }
@@ -1451,15 +1581,22 @@ rashEditor.
       return true;
     });
 
-    var alphabet = [
-      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-      'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', 'space', ',',
-      'shift+a', 'shift+b', 'shift+c', 'shift+d', 'shift+e', 'shift+f', 'shift+g',
-      'shift+h', 'shift+i', 'shift+j', 'shift+k', 'shift+l', 'shift+m', 'shift+n',
-      'shift+o', 'shift+p', 'shift+q', 'shift+r', 'shift+s', 'shift+t', 'shift+u',
-      'shift+v', 'shift+w', 'shift+y', 'shift+z'
-    ];
+    Mousetrap.bind(alphabet, function (event, sequence) {
+      var sel = rangy.getSelection();
+      if (typeof window.getSelection != "undefined" && (caret.checkIfInHeader())) {
 
+        var node = sel.anchorNode;
+
+        var parent = {
+          placeholderAffiliation: $(node).parents('span.affiliation.placeholder').last()
+        }
+
+        if (parent.placeholderAffiliation.length) {
+
+          parent.placeholderAffiliation.removeClass('placeholder')
+        }
+      }
+    })
 
     //Map section and ordered list
     var sections = [

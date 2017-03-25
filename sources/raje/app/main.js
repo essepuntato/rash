@@ -54,9 +54,9 @@ function createWindow() {
 
   setSplashMenu()
 
-  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/demo_toolbar/js/raje.js`))
+  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
-  fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/demo_toolbar/css/rash-inline.css`))
+  //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))
 
   mainWindow.on('close', (event) => {
@@ -642,17 +642,16 @@ const menuUtils = {
       {
         label: 'Add new author',
         click() { mainWindow.webContents.send('addNewAuthor') }
+      }, {
+        label: 'Insert ACM subject category',
+        click() {
+          mainWindow.webContents.send('insertSubject')
+        }
       },
       {
         label: 'Insert keyword',
         click() {
           mainWindow.webContents.send('insertKeyword')
-        }
-      },
-      {
-        label: 'Insert subject',
-        click() {
-          mainWindow.webContents.send('insertSubject')
         }
       }
     ]

@@ -97,7 +97,7 @@ rashEditor = {
       } else {
 
         $('header').append('<p class="keywords"><strong>Keywords</strong></p>')
-        $('p.keywords').append('<ul class="list-inline"><li><code>Keyword</code></li></ul>')
+        $('p.keywords').append(`<ul class="list-inline"><li><code>${ZERO_SPACE}Type here the keyword</code></li></ul>`)
 
         attachHeaderEventHandler()
       }
@@ -115,11 +115,14 @@ rashEditor = {
       if ($('header').find('p.acm_subject_categories').length) {
 
         let selectedKeyword = $(sel.anchorNode).parentsUntil('p.acm_subject_categories').last(),
-          newElement = $(`<br/><code>Placeholder subject</code>`)
+          newElement = $(`<br/><code data-pointer>${ZERO_SPACE}</code>`)
 
         selectedKeyword.after(newElement)
-
         attachHeaderEventHandler()
+
+        caret.navigateToHeaderStart($('code[data-pointer]'))
+        $('code[data-pointer]').removeAttr('data-pointer')
+        sel.move('character', 1)
 
       } else {
 
@@ -128,13 +131,13 @@ rashEditor = {
         else
           $('header').append('<p class="acm_subject_categories"><strong>ACM Subject Categories</strong></p>')
 
-        $('p.acm_subject_categories').append('<br/><code>Placeholder subject</code>')
+        $('p.acm_subject_categories').append(`<br/><code>${ZERO_SPACE}Type here the category</code>`)
         attachHeaderEventHandler()
       }
     },
 
     removeSubject: function (subject) {
-      subject.before().remove()
+      subject.prev('br').remove()
       subject.remove()
 
       if (!$('p.acm_subject_categories').find('code').length)
@@ -147,13 +150,21 @@ rashEditor = {
       if (sel.rangeCount && sel.isCollapsed && caret.checkIfInHeader()) {
 
         let selectedKeyword = $(sel.anchorNode).parentsUntil('address.lead.authors').last(),
-          newElement = $(`<br/><span class="affiliation">Placeholder affiliation</span>`)
+          newElement = $(`<br/><span class="affiliation placeholder">${ZERO_SPACE}Add an additional affiliation or press ENTER to proceed.</span>`)
 
         selectedKeyword.after(newElement)
-
         attachHeaderEventHandler()
+
+        caret.navigateToHeaderStart($('span.affiliation.placeholder'))
+        sel.move('character', 1)
       }
     },
+
+    removeAffiliation: function (affiliation) {
+      affiliation.prev('br').remove()
+      affiliation.remove()
+    },
+
     insertSubTitle: function () {
       var sel = rangy.getSelection()
       if (sel.rangeCount && sel.isCollapsed && caret.checkIfInHeader()) {
@@ -169,9 +180,9 @@ rashEditor = {
 
       let placeholderAuthor = $(`
         <address class="lead authors">
-          <strong class="author_name">John Doe</strong>
-          <code class="email"><a>john.doe@email.com</a></code><br>
-          <span class="affiliation">John Doe affiliation</span>
+          <strong class="author_name">${ZERO_SPACE}John Doe</strong>
+          <code class="email"><a>${ZERO_SPACE}john.doe@email.com</a></code>
+          <br><span class="affiliation">${ZERO_SPACE}John Doe affiliation</span>
         </address>`)
       let lastAuthor
 

@@ -229,10 +229,11 @@ $(document).ready(function () {
 
 function attachHeaderEventHandler() {
 
-  $(meta_headers_selector).on('dblclick', function () {
+  $(meta_headers_selector).on('click', function () {
     if (checkLogin()) {
       $(this).attr('contenteditable', 'true')
       $(this).addClass('mousetrap')
+      $(this).focus()
     }
   })
 

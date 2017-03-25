@@ -15,6 +15,15 @@ rashEditor.
       document.execCommand("insertHTML", false, text);
     });
 
+    var alphabet = [
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+      'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', 'space', ',',
+      'shift+a', 'shift+b', 'shift+c', 'shift+d', 'shift+e', 'shift+f', 'shift+g',
+      'shift+h', 'shift+i', 'shift+j', 'shift+k', 'shift+l', 'shift+m', 'shift+n',
+      'shift+o', 'shift+p', 'shift+q', 'shift+r', 'shift+s', 'shift+t', 'shift+u',
+      'shift+v', 'shift+w', 'shift+y', 'shift+z'
+    ];
+
     Mousetrap.bind('mod+s', function (event) {
       executeSave()
       return false
@@ -54,16 +63,20 @@ rashEditor.
         var parent = {
           keywords: $(node).parents('p.keywords').last(),
           categories: $(node).parents('p.acm_subject_categories').last(),
-          code: $(node).parents('code').last()
+          current_subject: $(node).parents('p.acm_subject_categories > code').last(),
+          affiliation: $(node).parents('span.affiliation').last()
         }
 
         if (parent.keywords.length && parent.keywords.find('ul.list-inline').text() == '') {
           rashEditor.header.removeKeyword(parent.keywords)
 
-        } else if (parent.categories.length && (parent.code.text().length == 1 || sel.toString().length == parent.code.text().length)) {
-          rashEditor.header.removeSubject(parent.code)
-        }
+        } else if (parent.categories.length && (parent.current_subject.text().length == 1 || sel.toString().length == parent.current_subject.text().length)) {
+          rashEditor.header.removeSubject(parent.current_subject)
 
+        } else if (parent.affiliation.length && (parent.affiliation.text().length == 1 || sel.toString().length == parent.affiliation.text().length)) {
+          rashEditor.header.removeAffiliation(parent.affiliation)
+
+        }
       }
     })
 
@@ -74,9 +87,17 @@ rashEditor.
         var parent = {
 
           //header
-          keywords: $(node).parents('p.keywords').last(),
-          subjects: $(node).parents('p.acm_subject_categories').last(),
+          subtitle: $(node).parents('h1.title > small').last(),
           title: $(node).parents('h1.title').last(),
+          author: {
+            name: $(node).parents('strong.author_name').last(),
+            email: $(node).parents('code.email').last(),
+            affiliation: $(node).parents('span.affiliation').last()
+          },
+          keywords: $(node).parents('p.keywords').last(),
+          current_keyword: $(node).parents('p.keywords code').last(),
+          subjects: $(node).parents('p.acm_subject_categories').last(),
+          current_subject: $(node).parents('p.acm_subject_categories > code').last(),
           affiliation: $(node).parents('span.affiliation').last(),
 
           //cross reference
@@ -104,20 +125,53 @@ rashEditor.
         };
 
         // header
-        if (parent.title.length) {
-          rashEditor.header.insertSubTitle()
+        if (parent.subtitle.length) {
+          caret.getNextElement(parent.title)
+          return false
+
+        } else if (parent.title.length) {
+          caret.getNextElement(parent.title)
+          //rashEditor.header.insertSubTitle()
+          return false
+
+        } else if (parent.author.name.length) {
+          caret.navigateToHeaderStart($(sel.anchorNode).parents('address.lead.authors').find('code.email'))
+          //sel.move('character', 1)
+          return false
+
+        } else if (parent.author.email.length) {
+          caret.getNextElement(parent.author.email)
           return false
 
         } else if (parent.affiliation.length) {
-          rashEditor.header.addAffiliation()
-          return false
 
-        } else if (parent.keywords.length) {
-          rashEditor.header.insertKeyword()
+          if (parent.affiliation.hasClass('placeholder')) {
+            caret.getNextElement(parent.affiliation)
+            parent.affiliation.prev('br').remove()
+            parent.affiliation.remove()
+          }
+          else
+            rashEditor.header.addAffiliation()
           return false
 
         } else if (parent.subjects.length) {
-          rashEditor.header.insertSubject()
+          if (parent.current_subject.text().length == 1) {
+            caret.getNextElement(parent.subjects)
+            parent.current_subject.prev('br').remove()
+            parent.current_subject.remove()
+          } else
+            rashEditor.header.insertSubject()
+
+          return false
+        }
+
+        else if (parent.keywords.length) {
+          if (parent.current_keyword.text().length == 1) {
+            caret.getNextElement(parent.keywords)
+            parent.current_keyword.remove()
+          } else
+            rashEditor.header.insertKeyword()
+
           return false
 
         }
@@ -199,15 +253,22 @@ rashEditor.
       return true;
     });
 
-    var alphabet = [
-      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-      'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', 'space', ',',
-      'shift+a', 'shift+b', 'shift+c', 'shift+d', 'shift+e', 'shift+f', 'shift+g',
-      'shift+h', 'shift+i', 'shift+j', 'shift+k', 'shift+l', 'shift+m', 'shift+n',
-      'shift+o', 'shift+p', 'shift+q', 'shift+r', 'shift+s', 'shift+t', 'shift+u',
-      'shift+v', 'shift+w', 'shift+y', 'shift+z'
-    ];
+    Mousetrap.bind(alphabet, function (event, sequence) {
+      var sel = rangy.getSelection();
+      if (typeof window.getSelection != "undefined" && (caret.checkIfInHeader())) {
 
+        var node = sel.anchorNode;
+
+        var parent = {
+          placeholderAffiliation: $(node).parents('span.affiliation.placeholder').last()
+        }
+
+        if (parent.placeholderAffiliation.length) {
+
+          parent.placeholderAffiliation.removeClass('placeholder')
+        }
+      }
+    })
 
     //Map section and ordered list
     var sections = [
