@@ -215,13 +215,13 @@ $(document).ready(function () {
 
     rashEditor.init();
 
-
-
     attachHeaderEventHandler()
 
     initFigureReferences()
 
     $('footer button.dropdown-toggle').addClass('disabled')
+
+    addHeaderZeroSpaces()
 
     bodyContent = $(rash_inline_selector).html()
   }
@@ -288,7 +288,29 @@ function refreshReferences() {
 
   references()
 }
+
+function addHeaderZeroSpaces() {
+  $('address.lead.authors').each(function () {
+    let author_name = $(this).find('strong.author_name')
+    let email = $(this).find('code.email')
+
+    author_name.html(ZERO_SPACE + author_name.html())
+    email.html(ZERO_SPACE + email.html())
+
+    $(this).find('span.affiliation').each(function () {
+      $(this).html(ZERO_SPACE + $(this).html())
+    })
+  })
+
+  $('p.acm_subject_categories > code, p.keywords code').each(function () {
+    $(this).html(ZERO_SPACE + $(this).html())
+  })
+}
 caret = {
+
+  move: function (type, count) {
+    rangy.getSelection().move(type, count)
+  },
 
   moveAfterNode: function (node) {
     var selection = window.getSelection(),
@@ -433,7 +455,8 @@ caret = {
     if (currentElement.is('h1')) {
       if (!header.find('address.lead.authors').length)
         rashEditor.header.addAuthor()
-      caret.navigateToHeaderSelect(header.find('address.lead.authors:first() > strong.author_name'))
+      caret.navigateToHeaderStart(header.find('address.lead.authors:first() > strong.author_name'))
+      this.move('character', 1)
     }
 
     else if (currentElement.is('code.email')) {
@@ -441,21 +464,29 @@ caret = {
       if (!address.find('span.affiliation').length)
         rashEditor.header.addAffiliation()
       else
-        caret.navigateToHeaderSelect(address.find('span.affiliation:first()'))
+        caret.navigateToHeaderStart(address.find('span.affiliation:first()'))
+
+      this.move('character', 1)
     }
 
     else if (currentElement.is('span.affiliation')) {
 
       let address = currentElement.parents('address.lead.authors')
 
-      if (address.next().is('address'))
-        caret.navigateToHeaderSelect(address.next().find('strong.author_name'))
+      if (address.next().is('address')) {
+        caret.navigateToHeaderStart(address.next().find('strong.author_name'))
+        this.move('character', 1)
+      }
 
-      else if (address.next().is('p.acm_subject_categories'))
-        caret.navigateToHeaderSelect(address.next().find('code:first()'))
+      else if (address.next().is('p.acm_subject_categories')) {
+        caret.navigateToHeaderStart(address.next().find('code:first()'))
+        this.move('character', 1)
+      }
 
-      else if (address.next().is('p.keywords'))
-        caret.navigateToHeaderSelect(address.next().find('ul'))
+      else if (address.next().is('p.keywords')) {
+        caret.navigateToHeaderStart(address.next().find('ul'))
+        this.move('character', 1)
+      }
 
       else
         caret.navigateToHeaderStart(firstHeader)
@@ -463,12 +494,17 @@ caret = {
 
     else if (currentElement.is('p.acm_subject_categories')) {
 
-      if (currentElement.next().is('p.keywords'))
-        caret.navigateToHeaderSelect(currentElement.next().find('ul'))
+      if (currentElement.next().is('p.keywords')) {
+        caret.navigateToHeaderStart(currentElement.next().find('ul'))
+        this.move('character', 1)
+      }
 
       else
         caret.navigateToHeaderStart(firstHeader)
     }
+
+    else
+      caret.navigateToHeaderStart(firstHeader)
   }
 };
 

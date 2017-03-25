@@ -215,13 +215,13 @@ $(document).ready(function () {
 
     rashEditor.init();
 
-
-
     attachHeaderEventHandler()
 
     initFigureReferences()
 
     $('footer button.dropdown-toggle').addClass('disabled')
+
+    addHeaderZeroSpaces()
 
     bodyContent = $(rash_inline_selector).html()
   }
@@ -287,4 +287,22 @@ function refreshReferences() {
   })
 
   references()
+}
+
+function addHeaderZeroSpaces() {
+  $('address.lead.authors').each(function () {
+    let author_name = $(this).find('strong.author_name')
+    let email = $(this).find('code.email')
+
+    author_name.html(ZERO_SPACE + author_name.html())
+    email.html(ZERO_SPACE + email.html())
+
+    $(this).find('span.affiliation').each(function () {
+      $(this).html(ZERO_SPACE + $(this).html())
+    })
+  })
+
+  $('p.acm_subject_categories > code, p.keywords code').each(function () {
+    $(this).html(ZERO_SPACE + $(this).html())
+  })
 }
