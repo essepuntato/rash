@@ -135,7 +135,7 @@ rashEditor.
           return false
 
         } else if (parent.author.name.length) {
-          caret.navigateToHeaderStart($(sel.anchorNode).parents('address.lead.authors').find('code.email'))
+          caret.getNextElement(parent.author.name)
           //sel.move('character', 1)
           return false
 

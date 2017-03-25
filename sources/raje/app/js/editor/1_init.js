@@ -292,7 +292,7 @@ function refreshReferences() {
 function addHeaderZeroSpaces() {
   $('address.lead.authors').each(function () {
     let author_name = $(this).find('strong.author_name')
-    let email = $(this).find('code.email')
+    let email = $(this).find('code.email > a')
 
     author_name.html(ZERO_SPACE + author_name.html())
     email.html(ZERO_SPACE + email.html())

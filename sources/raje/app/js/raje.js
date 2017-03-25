@@ -292,7 +292,7 @@ function refreshReferences() {
 function addHeaderZeroSpaces() {
   $('address.lead.authors').each(function () {
     let author_name = $(this).find('strong.author_name')
-    let email = $(this).find('code.email')
+    let email = $(this).find('code.email > a')
 
     author_name.html(ZERO_SPACE + author_name.html())
     email.html(ZERO_SPACE + email.html())
@@ -457,6 +457,10 @@ caret = {
         rashEditor.header.addAuthor()
       caret.navigateToHeaderStart(header.find('address.lead.authors:first() > strong.author_name'))
       this.move('character', 1)
+    }
+
+    else if (currentElement.is('strong.author_name')) {
+      caret.navigateToHeaderStart(currentElement.next())
     }
 
     else if (currentElement.is('code.email')) {
@@ -1499,7 +1503,7 @@ rashEditor.
           return false
 
         } else if (parent.author.name.length) {
-          caret.navigateToHeaderStart($(sel.anchorNode).parents('address.lead.authors').find('code.email'))
+          caret.getNextElement(parent.author.name)
           //sel.move('character', 1)
           return false
 

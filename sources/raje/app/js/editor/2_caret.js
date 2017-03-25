@@ -151,6 +151,10 @@ caret = {
       this.move('character', 1)
     }
 
+    else if (currentElement.is('strong.author_name')) {
+      caret.navigateToHeaderStart(currentElement.next())
+    }
+
     else if (currentElement.is('code.email')) {
       let address = currentElement.parents('address.lead.authors')
       if (!address.find('span.affiliation').length)
