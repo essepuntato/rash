@@ -557,7 +557,7 @@ rashEditor = {
   },
 
   insertCodeBlock: function () {
-    document.execCommand("insertHTML", false, '<pre><code><br/></code></pre>');
+    document.execCommand("insertHTML", false, `<pre>${ZERO_SPACE}<code><br/></code></pre>`);
   },
 
   insertUnorderedList: function () {
@@ -1038,7 +1038,7 @@ rashEditor = {
   insertAcknowledgementSection: function () {
     if (!$(rash_inline_selector).hasAcknowledgments()) {
       var ack = `
-        <section role=\"doc-acknowledgements\">
+        <section id="ack" role=\"doc-acknowledgements\">
           <h1>Acknowledgements</h1>
           <p><br/></p>
         </section>`;
@@ -1619,11 +1619,7 @@ rashEditor.
 
         // blocks
         else if (parent.pre.length) {
-          rashEditor.insertParagraph(parent.pre[0]);
-          return false;
-
-        } else if (parent.blockquote.length) {
-          rashEditor.insertParagraph(parent.blockquote[0]);
+          document.execCommand('insertHTML', false, '\n')
           return false;
 
         } else if (parent.figure.length) {
@@ -1683,6 +1679,48 @@ rashEditor.
         if (parent.placeholderAffiliation.length) {
 
           parent.placeholderAffiliation.removeClass('placeholder')
+        }
+      }
+    })
+
+    Mousetrap.bind('shift+enter', function (event) {
+      var sel = rangy.getSelection();
+      if (typeof window.getSelection != "undefined" && (caret.checkIfInEditor() || caret.checkIfInHeader())) {
+        var node = sel.anchorNode;
+        var parent = {
+          title: $(node).parents('h1.title').last(),
+          pre: $(node).parents('pre').last(),
+          blockquote: $(node).parents('blockquote').last()
+        }
+
+        if (parent.title.length) {
+          rashEditor.header.insertSubTitle()
+          return false
+        }
+
+        else if (parent.pre.length) {
+          rashEditor.insertParagraph(parent.pre[0])
+          return false
+        }
+
+        else if (parent.blockquote.length) {
+          rashEditor.insertParagraph(parent.blockquote[0])
+          return false
+        }
+      }
+    })
+
+    Mousetrap.bind('tab', function (event) {
+      var sel = rangy.getSelection();
+      if (typeof window.getSelection != "undefined" && (caret.checkIfInEditor() || caret.checkIfInHeader())) {
+        var node = sel.anchorNode;
+        var parent = {
+          pre: $(node).parents('pre').last()
+        }
+
+        if (parent.pre.length) {
+          document.execCommand('insertHTML', false, TAB)
+          return false
         }
       }
     })

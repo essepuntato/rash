@@ -26,7 +26,7 @@ rashEditor = {
   },
 
   insertCodeBlock: function () {
-    document.execCommand("insertHTML", false, '<pre><code><br/></code></pre>');
+    document.execCommand("insertHTML", false, `<pre>${ZERO_SPACE}<code><br/></code></pre>`);
   },
 
   insertUnorderedList: function () {
@@ -507,7 +507,7 @@ rashEditor = {
   insertAcknowledgementSection: function () {
     if (!$(rash_inline_selector).hasAcknowledgments()) {
       var ack = `
-        <section role=\"doc-acknowledgements\">
+        <section id="ack" role=\"doc-acknowledgements\">
           <h1>Acknowledgements</h1>
           <p><br/></p>
         </section>`;

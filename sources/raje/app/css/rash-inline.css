@@ -93,3 +93,16 @@ img.avatar{
 span.affiliation.placeholder{
   color:#999
 }
+
+pre{
+  position: relative
+}
+
+pre::after{
+  position: absolute;
+  top: 0;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: rgba('0,0,0,.5');
+  content: "enter = new line"
+}
