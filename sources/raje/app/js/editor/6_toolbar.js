@@ -108,12 +108,8 @@ function showNavbar() {
                 </button>
 
               </div>
-          </div>
 
-            <ul class="nav navbar-nav navbar-right">
-
-              <li>
-                <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
+              <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
                   <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sections
                     <span class="caret"></span>
@@ -125,7 +121,9 @@ function showNavbar() {
                     <li role=\"separator\" class=\"divider\"></li>
                   </ul>
                 </div>
-              </li>
+          </div>
+
+            <ul class="nav navbar-nav navbar-right">
 
               <li>
                 <span id="github"></span>

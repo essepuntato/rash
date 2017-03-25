@@ -793,6 +793,16 @@ rashEditor = {
         $(`section[role="doc-endnote"]`).each(function () {
           $(this).find('sup.hidden-print.cgen').remove()
         })
+
+        if (ref.includes('bib') || ref.includes('fn'))
+          caret.moveStart($(`#${ref}`))
+        else {
+          let sel = rangy.getSelection()
+          sel.refresh()
+          caret.move('character', 1)
+          caret.moveAfterNode(sel.anchorNode)
+        }
+
       }
     }
 
@@ -1067,7 +1077,7 @@ rashEditor = {
         <section id=\"bibreflist\" role=\"doc-bibliography\">
           <h1>References</h1>
           <ol>
-            <li id=\"bib1\" role=\"doc-biblioentry\"><p><br/></p></li>
+            <li id=\"bib${inserted}\" role=\"doc-biblioentry\"><p><br/></p></li>
           </ol>
         </section>`
       var node
@@ -1110,6 +1120,7 @@ rashEditor = {
     }
 
     $(node).sanitizeFromSpecialChars()
+    caret.moveStart($(`li#bib${inserted}`))
     return inserted
   },
 
@@ -1853,12 +1864,8 @@ function showNavbar() {
                 </button>
 
               </div>
-          </div>
 
-            <ul class="nav navbar-nav navbar-right">
-
-              <li>
-                <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
+              <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
                   <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sections
                     <span class="caret"></span>
@@ -1870,7 +1877,9 @@ function showNavbar() {
                     <li role=\"separator\" class=\"divider\"></li>
                   </ul>
                 </div>
-              </li>
+          </div>
+
+            <ul class="nav navbar-nav navbar-right">
 
               <li>
                 <span id="github"></span>

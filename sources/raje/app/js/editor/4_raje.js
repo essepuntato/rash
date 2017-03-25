@@ -262,6 +262,16 @@ rashEditor = {
         $(`section[role="doc-endnote"]`).each(function () {
           $(this).find('sup.hidden-print.cgen').remove()
         })
+
+        if (ref.includes('bib') || ref.includes('fn'))
+          caret.moveStart($(`#${ref}`))
+        else {
+          let sel = rangy.getSelection()
+          sel.refresh()
+          caret.move('character', 1)
+          caret.moveAfterNode(sel.anchorNode)
+        }
+
       }
     }
 
@@ -536,7 +546,7 @@ rashEditor = {
         <section id=\"bibreflist\" role=\"doc-bibliography\">
           <h1>References</h1>
           <ol>
-            <li id=\"bib1\" role=\"doc-biblioentry\"><p><br/></p></li>
+            <li id=\"bib${inserted}\" role=\"doc-biblioentry\"><p><br/></p></li>
           </ol>
         </section>`
       var node
@@ -579,6 +589,7 @@ rashEditor = {
     }
 
     $(node).sanitizeFromSpecialChars()
+    caret.moveStart($(`li#bib${inserted}`))
     return inserted
   },
 
