@@ -805,42 +805,80 @@ rashEditor = {
     }
 
     this.getAllReferenceables = function () {
-      let referenceables = ''
+      let referenceables = $(`<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>`)
 
-      /** retrieve sections */
-      let sections = $('<div class="list-group">')
-      $(rash_inline_selector + '>section[role]').each(function () {
-        sections.append(`<a data-type="role" data-ref="${$(this).attr('role')}" class="list-group-item">${$(this).find('h1:first-child').text()}</a>`)
+      let sections = $(this.createCollapsable('Sections'))
+
+      $(`${rash_inline_selector} section`).each(function () {
+        let title = $(this).find('h1, h2, h3, h4, h5, h6').first().text()
+        sections.find('#listSections').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${title}</a>`)
       })
-      $(rash_inline_selector + '>section:not([role])').each(function () {
-        sections.append(`<a data-type="section" data-ref="${$(this).attr('id')}" class="list-group-item">${$(this).find('h1:first-child').text()}</a>`)
+      referenceables.append(sections)
+
+      if ($(`${rash_inline_selector} figure table`).length) {
+
+        let tables = $(this.createCollapsable('Tables'))
+
+        $(`${rash_inline_selector} figure:has(table)`).each(function () {
+          let text = $(this).find('figcaption').text()
+          tables.find('#listTables').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
+        })
+
+        referenceables.append(tables)
+      }
+
+      if ($(`${rash_inline_selector} figure img`).length) {
+        let figures = $(this.createCollapsable('Figures'))
+
+        $(`${rash_inline_selector} figure:has(img)`).each(function () {
+          let text = $(this).find('figcaption').text()
+          figures.find('#listFigures').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
+        })
+
+        referenceables.append(figures)
+      }
+
+      if ($(`${rash_inline_selector} figure span[data-mathml]`).length) {
+
+        let formulas = $(this.createCollapsable('Formulas'))
+
+        $(`${rash_inline_selector} figure:has(span[data-mathml])`).each(function () {
+          let text = $(this).find('span.cgen').text()
+          formulas.find('#listFormulas').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">Formula ${text}</a>`)
+        })
+
+        referenceables.append(formulas)
+      }
+
+      let references = $(this.createCollapsable('References'))
+
+      references.find('#listReferences').append(`<a data-type="addBiblioentry" class="list-group-item">+ add new bibliographic reference</a>`)
+
+      $(`${rash_inline_selector}>section[role="doc-bibliography"] li`).each(function () {
+        let position = $(this).index() + 1
+        let text = $(this).find('p').text().replace('[X]', '')
+        references.find('#listReferences').append(`<a data-type="biblioentry" data-ref="${$(this).attr('id')}" class="list-group-item">[${position}] ${text}</a>`)
       })
-      referenceables += '<p><b>Sections</b></p>' + sections[0].outerHTML
 
-      /** retrieve blocks */
-      let blocks = $('<div class="list-group">')
-      $(rash_inline_selector + '>section figure').each(function () {
-        let text
-        if ($(this).find('figcaption').length)
-          text = $(this).find('figcaption').text()
+      referenceables.append(references)
 
-        else
-          text = 'Formula ' + $(this).find('span.cgen').text()
+      return referenceables[0].innerHTML
+    }
 
-
-        blocks.append(`<a data-type="box" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
-      })
-      referenceables += '<p><b>blocks</b></p>' + blocks[0].outerHTML
-
-      /** retrieve bibliography */
-      let biblio = $('<div class="list-group">')
-      $(rash_inline_selector + '>section[role="doc-bibliography"] li').each(function () {
-        biblio.append(`<a data-type="biblioentry" data-ref="${$(this).attr('id')}" class="list-group-item">${$(this).find('p').text()}</a>`)
-      })
-      biblio.append(`<a data-type="addBiblioentry" class="list-group-item">+ add new biblioentry</a>`)
-      referenceables += '<p><b>Biblioentry</b></p>' + biblio[0].outerHTML
-
-      return referenceables
+    this.createCollapsable = function (name) {
+      return `
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse${name}" aria-expanded="true" aria-controls="collapseOne">
+                  ${name}
+                </a>
+              </h4>
+            </div>
+            <div id="collapse${name}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div id="list${name}" class="list-group"></div>
+            </div>
+          </div>`
     }
   },
 
@@ -1759,7 +1797,7 @@ function showNavbar() {
                 </button>
 
                 <button id="btnReference" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"handleCrossRef()\" title=\"Reference\">
+                  onClick=\"handleCrossRef()\" title=\"Cross-reference\">
                   <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
                 </button>
 
@@ -2007,7 +2045,7 @@ function addCrossRefModal() {
   let info = {
     'id': 'crossRefModal',
     'selector': '#crossRefModal',
-    'title': 'Select element to reference'
+    'title': 'Select the element to cross-refers'
   }
 
   let html = {
@@ -2015,8 +2053,7 @@ function addCrossRefModal() {
       ${window['crossReference'].getAllReferenceables()}
     `,
     'footer': `
-      <button type="button" class="btn btn-error" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-success" data-dismiss="modal">Create reference</button>
+      <button type="button" class="btn" data-dismiss="modal">Close</button>
     `
   }
 

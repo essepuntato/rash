@@ -54,7 +54,7 @@ function showNavbar() {
                 </button>
 
                 <button id="btnReference" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
-                  onClick=\"handleCrossRef()\" title=\"Reference\">
+                  onClick=\"handleCrossRef()\" title=\"Cross-reference\">
                   <i class=\"fa fa-link\" aria-hidden=\"true\"></i>
                 </button>
 
@@ -302,7 +302,7 @@ function addCrossRefModal() {
   let info = {
     'id': 'crossRefModal',
     'selector': '#crossRefModal',
-    'title': 'Select element to reference'
+    'title': 'Select the element to cross-refers'
   }
 
   let html = {
@@ -310,8 +310,7 @@ function addCrossRefModal() {
       ${window['crossReference'].getAllReferenceables()}
     `,
     'footer': `
-      <button type="button" class="btn btn-error" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-success" data-dismiss="modal">Create reference</button>
+      <button type="button" class="btn" data-dismiss="modal">Close</button>
     `
   }
 
