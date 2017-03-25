@@ -362,7 +362,9 @@ rashEditor = {
       caret.appendOrPrependZeroSpace();
 
       if (sel.isCollapsed) {
-        document.execCommand("insertHTML", false, `<${element}>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
+        document.execCommand("insertHTML", false, `<${element} data-pointer>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
+        caret.moveStart($(`${element}[data-pointer]`))
+        $(`${element}[data-pointer]`).removeAttr('data-pointer')
       }
       else {
 
