@@ -1058,8 +1058,6 @@ rashEditor = {
     } else {
       caret.moveStart($(section_acknowledgement_selector + ' > h1'));
     }
-
-
   },
 
   /**
@@ -2580,8 +2578,7 @@ function updateGithubButton() {
             <img class="avatar" src="${settings.avatar}" alt="Github profile picture"/> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li class="disabled"><a>Signed as <b>${settings.login}</b></a></li>
-            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">Signed as <b>${settings.login}</b></li>
             <li><a onclick="addCommitModal()">Push</a></li>
             <li role="separator" class="divider"></li>
             <li><a onclick="githubLogout()">Logout</a></li>
@@ -2625,8 +2622,13 @@ function refreshToolbar() {
     setButtonWithVar('#btnInlineQuote', q)
 
     //Disable behaviours 
-    if (caret.checkIfInHeading())
+    if (caret.checkIfInHeading()) {
       $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
+
+      $('button#btnStrong').removeAttr('disabled')
+      $('button#btnEm').removeAttr('disabled')
+      $('button#btnInlineCode').removeAttr('disabled')
+    }
   }
 }
 
@@ -2641,16 +2643,19 @@ function showAuthorSettings() {
   $('address.lead.authors').each(function () {
 
     if (!$(this).find('span.authorSettings').length)
-      $(this).prepend(`<span class=\"btn-group authorSettings\" role=\"group\" aria-label=\"Undo and Redo\">
+      $(this).prepend(`<span class=\"btn-group btn-group-sm authorSettings\" role=\"group\" aria-label=\"Undo and Redo\">
 
         <button type=\"button\" class=\"btn btn-default navbar-btn\"
           onclick="rashEditor.header.removeAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </button>
 
-        <button type=\"button\" class=\"btn btn-default navbar-btn\" aria-pressed=\"false\" disabled>
+        <!--
+        <button id="btnToggleReorganize" type=\"button\" class=\"btn btn-default navbar-btn\" 
+          onclick="rashEditor.header.handleReorganizeAuthors()" aria-pressed=\"false\">
           <i class="fa fa-arrows-alt" aria-hidden="true"></i>
         </button>
+        -->
 
         <button type=\"button\" class=\"btn btn-default navbar-btn\"
           onclick="rashEditor.header.addAuthor($(this).parents('address.lead.authors'))" aria-pressed=\"false\">

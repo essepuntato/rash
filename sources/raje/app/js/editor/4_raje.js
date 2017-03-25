@@ -527,8 +527,6 @@ rashEditor = {
     } else {
       caret.moveStart($(section_acknowledgement_selector + ' > h1'));
     }
-
-
   },
 
   /**
