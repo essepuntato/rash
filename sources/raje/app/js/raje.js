@@ -202,9 +202,6 @@ $(document).ready(function () {
     $(rash_inline_selector).setEditable()
 
     $(rash_inline_selector).addClass('mousetrap');
-    $(rash_inline_selector).on('focus', function (event) {
-      updateDropdown();
-    });
 
     updateGithubButton()
 
@@ -1866,7 +1863,7 @@ function showNavbar() {
               
                 <button id="btnBlockCode" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onclick=\"rashEditor.insertCodeBlock()\" title=\"Code block\" aria-pressed=\"false\">
-                  <i class=\"fa fa-code\" aria-hidden=\"true\"></i>
+                  <b>{ }</b>
                 </button>
 
                 <button id="btnBlockQuote" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
@@ -1896,21 +1893,27 @@ function showNavbar() {
 
                 <button id="btnBoxFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onClick=\"handleFormulaBox();\" title=\"Formula\">
-                  <i class=\"fa\">&radic;</i>
+                  <b>&radic;</b>
                 </button>
 
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
                   <button class=\"btn btn-default navbar-btn\" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sections
+                    Insert sections
                     <span class="caret"></span>
                   </button>
                   <ul class=\"dropdown-menu\" aria-labelledby=\"sectionDropdown\">
                     <li onclick=\"rashEditor.section.addAbstract()\" id=\"addAbstract\"><a>Abstract</a></li>
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
-                    <li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>
+                    <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
+                    <li onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -1939,8 +1942,6 @@ function showNavbar() {
   $('#sectionDropdown').on('hide.bs.dropdown', function (event) {
     rangy.restoreSelection(savedSelection);
   });
-
-  updateDropdown();
 }
 
 function updateDropdown() {
@@ -1948,21 +1949,19 @@ function updateDropdown() {
     var dropdown = $('#sectionDropdown'),
       sel = rangy.getSelection();
 
-    dropdown.find('li:gt(3)').remove();
+    var nodeList = $(rangy.getSelection().anchorNode).parentsUntil(rash_inline_selector, "section")
 
-    var nodeList = $(rangy.getSelection().anchorNode).parentsUntil(rash_inline_selector, "section"),
-      mainSection = '<li onclick=\"rashEditor.insertSection(1,false)\"><a>H1 section</a></li>',
-      subSection = '<li onclick=\"rashEditor.insertSection(2,false)\"><a>H2 section</a></li>',
-      subsubSection = '<li onclick=\"rashEditor.insertSection(3,false)\"><a>H3 section</a></li>'
+    if (nodeList) {
 
-    if (nodeList.last().attr('role') == 'doc-abstract' || !nodeList.last().attr('role'))
-      dropdown.find('.dropdown-menu').append(mainSection);
+      let count = nodeList.length + 1
+      dropdown.find('li').removeClass('disabled')
 
-    if (!nodeList.last().attr('role') && nodeList.length <= 3)
-      dropdown.find('.dropdown-menu').append(subSection);
+      for (let x = 0; x < count - 1; x++)
+        if (nodeList[x].hasAttribute('role'))
+          count = 0
 
-    if (!nodeList.last().attr('role') && nodeList.length <= 4)
-      dropdown.find('.dropdown-menu').append(subsubSection);
+      dropdown.find(`li:gt(${2 + count})`).addClass('disabled')
+    }
   }
 }
 /** End editNavar */
@@ -2638,10 +2637,17 @@ function refreshToolbar() {
   let sel = rangy.getSelection()
   if (typeof window.getSelection != "undefined") {
 
-    if (caret.checkIfInHeader())
+    //enable/disable clickable add section buttons in dropdown
+    updateDropdown()
+
+    if (caret.checkIfInHeader()) {
       $('nav#editNavbar .navbar-left button[title]').attr('disabled', true)
-    else
+      $('#sectionDropdown > button').addClass('disabled')
+    }
+    else {
       $('nav#editNavbar .navbar-left button[title]').removeAttr('disabled')
+      $('#sectionDropdown > button').removeClass('disabled')
+    }
 
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
@@ -2658,6 +2664,18 @@ function refreshToolbar() {
     // activate/deactivate quote button
     q = $(sel.anchorNode).parents('q').length > 0
     setButtonWithVar('#btnInlineQuote', q)
+
+    blockcode = $(sel.anchorNode).parents('pre').length
+    setButtonWithVar('#btnBlockCode', blockcode)
+
+    blockquote = $(sel.anchorNode).parents('blockquote').length
+    setButtonWithVar('#btnBlockQuote', blockquote)
+
+    ol = $(sel.anchorNode).parents('ol').length
+    setButtonWithVar('#btnOrderedList', ol)
+
+    ul = $(sel.anchorNode).parents('ul').length
+    setButtonWithVar('#btnUnorderedList', ul)
 
     //Disable behaviours 
     if (caret.checkIfInHeading()) {

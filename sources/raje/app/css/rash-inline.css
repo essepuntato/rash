@@ -19,6 +19,10 @@ ul#sortable{
   padding-left: 0
 }
 
+ul.dropdown-menu > li:hover{
+  cursor: pointer
+}
+
 /* Editor styles */
 
 ol,ul{

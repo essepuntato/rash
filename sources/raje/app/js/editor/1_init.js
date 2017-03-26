@@ -202,9 +202,6 @@ $(document).ready(function () {
     $(rash_inline_selector).setEditable()
 
     $(rash_inline_selector).addClass('mousetrap');
-    $(rash_inline_selector).on('focus', function (event) {
-      updateDropdown();
-    });
 
     updateGithubButton()
 
