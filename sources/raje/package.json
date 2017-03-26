@@ -1,0 +1,20 @@
+{
+  "name": "RAJE",
+  "version": "0.0.1",
+  "scripts": {
+    "dist": "electron-packager ./app --all --out=./dist --overwrite",
+    "dist-osx": "electron-packager ./app --platform=darwin --out=./dist --overwrite",
+    "dist-win": "electron-packager ./app --platform=win32 --out=./dist --overwrite"
+  },
+  "repository": "https://github.com/gspinaci/raje-software",
+  "author": "Gianmarco Spinaci <spino9330@gmail.com>",
+  "license": "ISC",
+  "build": {
+    "appId": "unibo.gspinaci.raje",
+    "app-category-type": "public.app-category.productivity"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.5.1",
+    "electron-prebuilt": "^1.4.13"
+  }
+}

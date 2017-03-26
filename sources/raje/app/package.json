@@ -1,0 +1,27 @@
+{
+  "name": "RAJE",
+  "version": "0.0.1",
+  "description": "RAJE: RAsh Javascript Editor",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/gspinaci/raje-software",
+  "author": "Gianmarco Spinaci <spino9330@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.4.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-watch": "^4.3.11"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "electron-json-storage": "^3.0.0",
+    "electron-spell-check-provider": "^1.0.0",
+    "jquery": "^3.1.1",
+    "octonode": "^0.7.7",
+    "request": "^2.79.0",
+    "superagent": "^3.3.2"
+  }
+}
