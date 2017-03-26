@@ -1606,18 +1606,21 @@ rashEditor.
         }
 
         //cross reference
-
-        else if (parent.formula_inline.length) {
-          rashEditor.renderInlineFormula(parent.formula_inline)
-          return false
-        }
-
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
         }
 
         // inlines
-        else if (parent.crossRef.length) {
+        else if (parent.formula_inline.length) {
+          if (parent.formula_inline.find('span[data-mathml]').length)
+            rashEditor.exitInline(parent.formula_inline)
+
+          else
+            rashEditor.renderInlineFormula(parent.formula_inline)
+
+          return false
+
+        } else if (parent.crossRef.length) {
           rashEditor.exitInline(parent.crossRef);
           return false;
 
