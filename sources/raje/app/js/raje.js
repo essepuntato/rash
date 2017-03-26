@@ -526,9 +526,6 @@ const ONE_SPACE = '&nbsp;';
 
 const messageDealer = 'div#messageDealer';
 
-let strong = false
-let em = false
-
 rashEditor = {
 
   /* und/redo */
@@ -554,7 +551,11 @@ rashEditor = {
   },
 
   insertCodeBlock: function () {
-    document.execCommand("insertHTML", false, `<pre>${ZERO_SPACE}<code><br/></code></pre>`);
+    let sel = rangy.getSelection()
+    let string = '<br>'
+    if (sel && !sel.isCollapsed)
+      string = sel.toString()
+    document.execCommand("insertHTML", false, `<pre>${ZERO_SPACE}<code>${string}</code></pre>`);
   },
 
   insertUnorderedList: function () {
