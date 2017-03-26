@@ -37,8 +37,9 @@ rashEditor = {
     document.execCommand("insertOrderedList");
   },
 
-  insertQuoteBlock: function () {
-    document.execCommand("insertHTML", false, '<blockquote><p><br/></p></blockquote>');
+  insertQuoteBlock: function (text) {
+    let string = (text) ? text : '<br>'
+    document.execCommand("insertHTML", false, `<blockquote><p>${string}</p></blockquote>`);
   },
 
   insertBold: function () {

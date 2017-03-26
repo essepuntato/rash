@@ -309,12 +309,17 @@ rashEditor.
       if (typeof window.getSelection != "undefined" && (caret.checkIfInEditor() || caret.checkIfInHeader())) {
         var node = sel.anchorNode;
         var parent = {
-          pre: $(node).parents('pre').last()
+          pre: $(node).parents('pre').last(),
+          paragraph: $(node).parents('p, div').first()
         }
 
         if (parent.pre.length) {
           document.execCommand('insertHTML', false, TAB)
           return false
+
+        } else if (parent.paragraph.length) {
+          caret.selectNode(parent.paragraph)
+          rashEditor.insertQuoteBlock(parent.paragraph.text())
         }
       }
     })
