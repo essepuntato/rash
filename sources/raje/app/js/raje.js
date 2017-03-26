@@ -1684,21 +1684,46 @@ rashEditor.
 
         // paragraph
         else if (parent.paragraph.length) {
-          //TODO check if has # as first character
-          let text = parent.paragraph.text()
-          let deepness = 0
-          let isHash = true
 
-          while (isHash) {
-            if (text.substring(0, 1) == '#') {
-              text = text.substring(1, text.length).trim()
-              deepness++
+          let text = parent.paragraph.text()
+
+          //Check if a section is needed to be inserted
+          if (text.substring(0, 1) == '#') {
+            let deepness = 0
+            let isHash = true
+
+            while (isHash) {
+              if (text.substring(0, 1) == '#') {
+                text = text.substring(1, text.length).trim()
+                deepness++
+              }
+              else
+                isHash = false
             }
-            else
-              isHash = false
+            if (deepness > 0) {
+              rashEditor.insertSection(deepness, true, text);
+              return false
+            }
           }
-          if (deepness > 0) {
-            rashEditor.insertSection(deepness, true, text);
+
+          else if (text.substring(0, 1) == '*') {
+
+            //delete *
+            caret.moveStart(parent.paragraph)
+            caret.move('character', 1)
+            document.execCommand('delete')
+
+            rashEditor.insertUnorderedList()
+            return false
+
+          } else if (text.substring(0, 2) == '1.') {
+
+            caret.moveStart(parent.paragraph)
+            caret.move('character', 2)
+            document.execCommand('delete')
+            document.execCommand('delete')
+
+            rashEditor.insertOrderedList()
             return false
           }
         }
@@ -1780,18 +1805,6 @@ rashEditor.
       '# enter'
     ];
 
-    var orderedListMaps = [
-      '1 . enter',
-      '2 . enter',
-      '3 . enter',
-      '4 . enter',
-      '5 . enter',
-      '6 . enter',
-      '7 . enter',
-      '8 . enter',
-      '9 . enter'
-    ];
-
     // New sections can be added only in a new line
     Mousetrap.bind(sections, function (event, sequence) {
       sequence = sequence.replace('enter', '').replace(/\s/g, ''),
@@ -1803,16 +1816,6 @@ rashEditor.
         return false;
       }
 
-    });
-
-    Mousetrap.bind('* enter', function (event) {
-      rashEditor.insertUnorderedList()
-      return false;
-    });
-
-    Mousetrap.bind(orderedListMaps, function (event) {
-      rashEditor.insertOrderedList()
-      return false;
     });
 
     Mousetrap.bind('mod+shift+f', function (event) {
