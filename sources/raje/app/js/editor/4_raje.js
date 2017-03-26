@@ -516,6 +516,25 @@ rashEditor = {
     }
   },
 
+  insertAbstractSection: function () {
+
+    if (!$(rash_inline_selector).hasAbstract()) {
+      var abs = `
+        <section id="abs" role=\"doc-abstract\">
+          <h1>Abstract</h1>
+          <p><br/></p>
+        </section>`;
+
+      $(rash_inline_selector).prepend(ZERO_SPACE)
+      caret.moveStart($(rash_inline_selector))
+      document.execCommand("insertHTML", false, abs);
+      $(section_abstract_selector).sanitizeFromSpecialChars()
+      caret.moveStart($(section_abstract_selector))
+    }
+    else
+      caret.moveStart($(section_abstract_selector + '>h1'))
+  },
+
   insertAcknowledgementSection: function () {
     if (!$(rash_inline_selector).hasAcknowledgments()) {
       var ack = `

@@ -1044,6 +1044,25 @@ rashEditor = {
     }
   },
 
+  insertAbstractSection: function () {
+
+    if (!$(rash_inline_selector).hasAbstract()) {
+      var abs = `
+        <section id="abs" role=\"doc-abstract\">
+          <h1>Abstract</h1>
+          <p><br/></p>
+        </section>`;
+
+      $(rash_inline_selector).prepend(ZERO_SPACE)
+      caret.moveStart($(rash_inline_selector))
+      document.execCommand("insertHTML", false, abs);
+      $(section_abstract_selector).sanitizeFromSpecialChars()
+      caret.moveStart($(section_abstract_selector))
+    }
+    else
+      caret.moveStart($(section_abstract_selector + '>h1'))
+  },
+
   insertAcknowledgementSection: function () {
     if (!$(rash_inline_selector).hasAcknowledgments()) {
       var ack = `
@@ -1931,16 +1950,16 @@ function showNavbar() {
                     <span class="caret"></span>
                   </button>
                   <ul class=\"dropdown-menu\" aria-labelledby=\"sectionDropdown\">
-                    <li onclick=\"rashEditor.section.addAbstract()\" id=\"addAbstract\"><a>Abstract</a></li>
+                    <li onclick=\"rashEditor.insertAbstractSection()\" id=\"addAbstract\"><a>Abstract</a></li>
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
                     <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
-                    <li onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
-                    <li onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
-                    <li onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
-                    <li onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
-                    <li onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
-                    <li onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -1984,8 +2003,13 @@ function updateDropdown() {
       dropdown.find('li').removeClass('disabled')
 
       for (let x = 0; x < count - 1; x++)
-        if (nodeList[x].hasAttribute('role'))
-          count = 0
+        if (nodeList[x].hasAttribute('role')) {
+          if (nodeList[x].getAttribute('role') == 'doc-abstract')
+            count = 1
+
+          else
+            count = 0
+        }
 
       dropdown.find(`li:gt(${2 + count})`).addClass('disabled')
     }
