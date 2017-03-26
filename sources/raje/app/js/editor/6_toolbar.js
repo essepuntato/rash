@@ -43,6 +43,11 @@ function showNavbar() {
                   <i class=\"fa fa-quote-right\" aria-hidden=\"true\"></i>
                 </button>
 
+                <button id="btnInlineFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"rashEditor.insertInlineFormula()\" title=\"Inline formula\">
+                  <b>∑</b>
+                </button>
+
                 <button id="btnSup" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onClick=\"rashEditor.insertSuperscript()\" title=\"Sup\">
                   <i class=\"fa fa-superscript\" aria-hidden=\"true\"></i>
@@ -67,7 +72,6 @@ function showNavbar() {
                   onClick=\"handleExternalLink()\" title=\"External link\">
                   <i class="fa fa-globe" aria-hidden="true"></i>
                 </button>
-
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Block elements\">

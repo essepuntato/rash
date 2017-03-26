@@ -361,7 +361,7 @@ rashEditor = {
     }
   },
 
-  insertInline: function (element) {
+  insertInline: function (element, isFormula) {
     var sel = rangy.getSelection();
     if (sel.rangeCount && caret.checkIfInEditor()) {
       /*
@@ -371,13 +371,24 @@ rashEditor = {
 
       caret.appendOrPrependZeroSpace();
 
+      let string
+
+      if (isFormula)
+        string = `<${element} class="rash-math" data-formula data-pointer>\`\`${ZERO_SPACE}\`\`</${element}>${ZERO_SPACE}`
+
+      else
+        string = `<${element} data-pointer>${ZERO_SPACE}</${element}>${ZERO_SPACE}`
+
       if (sel.isCollapsed) {
-        document.execCommand("insertHTML", false, `<${element} data-pointer>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
+        document.execCommand("insertHTML", false, string);
         caret.moveStart($(`${element}[data-pointer]`))
         $(`${element}[data-pointer]`).removeAttr('data-pointer')
+
+        if (isFormula) {
+          caret.move('character', 2)
+        }
       }
       else {
-
         var range = sel.getRangeAt(0);
         var text = range.toString();
         document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
@@ -386,26 +397,27 @@ rashEditor = {
   },
 
   insertInlineFormula: function () {
+
+    this.insertInline('span', true)
+
+    /*
     var sel = rangy.getSelection();
     if (sel.rangeCount && sel.isCollapsed && caret.checkIfInEditor()) {
-      /*
+      
         Check if selection is at the parentElement start or end
         In this case add ZERO_SPACE ascii_code to allow normal contenteditable behaviour
-      */
+      
       caret.appendOrPrependZeroSpace();
-      document.execCommand("insertHTML", false, '<span class=\"inline_formula\"> formula </span>');
-      caret.sanitizeElement(sel);
+      document.execCommand("insertHTML", false, `<span class="rash-math" data-formula>\`\`${ZERO_SPACE}\`\`</span>`);
+      caret.moveStart($('span[data-formula]'))
+      caret.move('character', 2)
+      //caret.sanitizeElement(sel);
+      
     }
+    */
   },
 
-  renderInlineFormula: function () {
-    var node = $('.inline_formula');
-    caret.selectNode(node);
-    var range = rangy.getSelection().getRangeAt(0);
-
-    var text = range.toString();
-    document.execCommand('delete');
-    document.execCommand('insertHTML', false, '`' + text + '`');
+  renderInlineFormula: function (formula) {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   },
 

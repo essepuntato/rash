@@ -121,7 +121,10 @@ rashEditor.
           endnote: $(node).parents('section[role="doc-endnotes"]').last(),
 
           //paragraph
-          paragraph: $(node).parents('p, div').first()
+          paragraph: $(node).parents('p, div').first(),
+
+          //formula_inline
+          formula_inline: $(node).parents('span[data-formula]')
         };
 
         // header
@@ -177,6 +180,11 @@ rashEditor.
         }
 
         //cross reference
+
+        else if (parent.formula_inline.length) {
+          rashEditor.renderInlineFormula(parent.formula_inline)
+          return false
+        }
 
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)

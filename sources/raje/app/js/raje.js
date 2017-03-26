@@ -889,7 +889,7 @@ rashEditor = {
     }
   },
 
-  insertInline: function (element) {
+  insertInline: function (element, isFormula) {
     var sel = rangy.getSelection();
     if (sel.rangeCount && caret.checkIfInEditor()) {
       /*
@@ -899,13 +899,24 @@ rashEditor = {
 
       caret.appendOrPrependZeroSpace();
 
+      let string
+
+      if (isFormula)
+        string = `<${element} class="rash-math" data-formula data-pointer>\`\`${ZERO_SPACE}\`\`</${element}>${ZERO_SPACE}`
+
+      else
+        string = `<${element} data-pointer>${ZERO_SPACE}</${element}>${ZERO_SPACE}`
+
       if (sel.isCollapsed) {
-        document.execCommand("insertHTML", false, `<${element} data-pointer>${ZERO_SPACE}</${element}>${ZERO_SPACE}`);
+        document.execCommand("insertHTML", false, string);
         caret.moveStart($(`${element}[data-pointer]`))
         $(`${element}[data-pointer]`).removeAttr('data-pointer')
+
+        if (isFormula) {
+          caret.move('character', 2)
+        }
       }
       else {
-
         var range = sel.getRangeAt(0);
         var text = range.toString();
         document.execCommand("insertHTML", false, '<' + element + '>' + text + '</' + element + '>');
@@ -914,26 +925,27 @@ rashEditor = {
   },
 
   insertInlineFormula: function () {
+
+    this.insertInline('span', true)
+
+    /*
     var sel = rangy.getSelection();
     if (sel.rangeCount && sel.isCollapsed && caret.checkIfInEditor()) {
-      /*
+      
         Check if selection is at the parentElement start or end
         In this case add ZERO_SPACE ascii_code to allow normal contenteditable behaviour
-      */
+      
       caret.appendOrPrependZeroSpace();
-      document.execCommand("insertHTML", false, '<span class=\"inline_formula\"> formula </span>');
-      caret.sanitizeElement(sel);
+      document.execCommand("insertHTML", false, `<span class="rash-math" data-formula>\`\`${ZERO_SPACE}\`\`</span>`);
+      caret.moveStart($('span[data-formula]'))
+      caret.move('character', 2)
+      //caret.sanitizeElement(sel);
+      
     }
+    */
   },
 
-  renderInlineFormula: function () {
-    var node = $('.inline_formula');
-    caret.selectNode(node);
-    var range = rangy.getSelection().getRangeAt(0);
-
-    var text = range.toString();
-    document.execCommand('delete');
-    document.execCommand('insertHTML', false, '`' + text + '`');
+  renderInlineFormula: function (formula) {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   },
 
@@ -1535,7 +1547,10 @@ rashEditor.
           endnote: $(node).parents('section[role="doc-endnotes"]').last(),
 
           //paragraph
-          paragraph: $(node).parents('p, div').first()
+          paragraph: $(node).parents('p, div').first(),
+
+          //formula_inline
+          formula_inline: $(node).parents('span[data-formula]')
         };
 
         // header
@@ -1591,6 +1606,11 @@ rashEditor.
         }
 
         //cross reference
+
+        else if (parent.formula_inline.length) {
+          rashEditor.renderInlineFormula(parent.formula_inline)
+          return false
+        }
 
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
@@ -1832,6 +1852,11 @@ function showNavbar() {
                   <i class=\"fa fa-quote-right\" aria-hidden=\"true\"></i>
                 </button>
 
+                <button id="btnInlineFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"rashEditor.insertInlineFormula()\" title=\"Inline formula\">
+                  <b>∑</b>
+                </button>
+
                 <button id="btnSup" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
                   onClick=\"rashEditor.insertSuperscript()\" title=\"Sup\">
                   <i class=\"fa fa-superscript\" aria-hidden=\"true\"></i>
@@ -1856,7 +1881,6 @@ function showNavbar() {
                   onClick=\"handleExternalLink()\" title=\"External link\">
                   <i class="fa fa-globe" aria-hidden="true"></i>
                 </button>
-
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Block elements\">
