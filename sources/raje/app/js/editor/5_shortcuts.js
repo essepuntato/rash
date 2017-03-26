@@ -242,7 +242,7 @@ rashEditor.
 
           while (isHash) {
             if (text.substring(0, 1) == '#') {
-              text = text.substring(1, text.length)
+              text = text.substring(1, text.length).trim()
               deepness++
             }
             else
