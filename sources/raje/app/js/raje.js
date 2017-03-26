@@ -2726,12 +2726,6 @@ function refreshToolbar() {
     q = $(sel.anchorNode).parents('q').length > 0
     setButtonWithVar('#btnInlineQuote', q)
 
-    blockcode = $(sel.anchorNode).parents('pre').length
-    setButtonWithVar('#btnBlockCode', blockcode)
-
-    blockquote = $(sel.anchorNode).parents('blockquote').length
-    setButtonWithVar('#btnBlockQuote', blockquote)
-
     ol = $(sel.anchorNode).parents('ol').length
     setButtonWithVar('#btnOrderedList', ol)
 
