@@ -54,7 +54,7 @@ function createWindow() {
 
   setSplashMenu()
 
-  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
+  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/tina/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
   //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))
@@ -638,26 +638,6 @@ const menuUtils = {
       },
       {
         type: 'separator'
-      },
-      {
-        label: 'Insert Title',
-        click() { }
-      },
-      {
-        label: 'Insert Author',
-        click() { mainWindow.webContents.send('addNewAuthor') }
-      },
-      {
-        label: 'Insert ACM Subject Category',
-        click() {
-          mainWindow.webContents.send('insertSubject')
-        }
-      },
-      {
-        label: 'Insert Keyword',
-        click() {
-          mainWindow.webContents.send('insertKeyword')
-        }
       }
     ]
   },
@@ -682,8 +662,35 @@ const menuUtils = {
         type: 'separator'
       },
       {
-        label: 'Show Rawgit',
-        enabled: false
+        label: 'Insert Title',
+        click() { }
+      },
+      {
+        label: 'Insert Author',
+        click() { mainWindow.webContents.send('addNewAuthor') }
+      },
+      {
+        label: 'Insert ACM Subject Category',
+        click() {
+          mainWindow.webContents.send('insertSubject')
+        }
+      },
+      {
+        label: 'Insert Keyword',
+        click() {
+          mainWindow.webContents.send('insertKeyword')
+        }
+      },
+      {
+        label: 'Toggle Change Authors Position',
+        click() {
+          if (reorganizingAuthors)
+            mainWindow.webContents.send('unsetReorganizeAuthors')
+          else
+            mainWindow.webContents.send('setReorganizeAuthors')
+
+          reorganizingAuthors = !reorganizingAuthors
+        }
       },
       {
         type: 'separator'

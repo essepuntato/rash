@@ -123,12 +123,12 @@ function showNavbar() {
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
                     <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -872,6 +872,7 @@ function refreshToolbar() {
     updateDropdown()
 
     $('#editNavbar button').removeAttr('disabled')
+    $('#sectionDropdown > button').removeClass('disabled')
 
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0

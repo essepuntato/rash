@@ -659,8 +659,13 @@ rashEditor = {
 
     } else {
 
-      if (!node)
-        node = $('section[role="doc-endnotes"]>section:last-child')
+      if (!node) {
+        if ($('section[role="doc-endnotes"]>section').length)
+          node = $('section[role="doc-endnotes"]>section:last-child')
+        else
+          node = $('section[role="doc-endnotes"]>h1')
+      }
+
 
       let getNextEndnote = function () {
         let max = -1
