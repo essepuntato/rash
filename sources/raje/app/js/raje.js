@@ -331,7 +331,7 @@ caret = {
   },
 
   checkIfInHeading: function () {
-    return $(window.getSelection().anchorNode).parents('h1,h2,h3').length;
+    return $(window.getSelection().anchorNode).parents('h1,h2,h3,h4,h5,h6').length;
   },
 
   checkIfBorder: function () {
@@ -1550,6 +1550,9 @@ rashEditor.
           //cross reference
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
 
+          //headings
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6').first(),
+
           //inlines
           crossRef: $(node).parents('a.cgen').last(),
           code_inline: $(node).parents('code').last(),
@@ -1629,6 +1632,13 @@ rashEditor.
         //cross reference
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
+        }
+
+        //headings
+        else if (parent.headings.length) {
+          console.log(caret.checkIfBorder())
+          if (caret.checkIfBorder() != 1)
+            return false
         }
 
         // inlines
@@ -1756,7 +1766,8 @@ rashEditor.
         var parent = {
           title: $(node).parents('h1.title').last(),
           pre: $(node).parents('pre').last(),
-          blockquote: $(node).parents('blockquote').last()
+          blockquote: $(node).parents('blockquote').last(),
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6')
         }
 
         if (parent.title.length) {
@@ -1771,6 +1782,10 @@ rashEditor.
 
         else if (parent.blockquote.length) {
           rashEditor.insertParagraph(parent.blockquote[0])
+          return false
+        }
+
+        else if (parent.headings.length) {
           return false
         }
       }
@@ -2710,6 +2725,8 @@ function refreshToolbar() {
       $('#sectionDropdown > button').removeClass('disabled')
     }
 
+    $('#editNavbar button').removeAttr('disabled')
+
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
     setButtonWithVar('#btnStrong', strong)
@@ -2732,14 +2749,17 @@ function refreshToolbar() {
     ul = $(sel.anchorNode).parents('ul').length
     setButtonWithVar('#btnUnorderedList', ul)
 
-    //Disable behaviours 
-    if (caret.checkIfInHeading()) {
-      $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
+    let figure = $(sel.anchorNode).parents('figure').length
+    disableButtonWithVar('#btnBoxTable, #btnBoxFormula, #btnBoxFigure', figure)
 
-      $('button#btnStrong').removeAttr('disabled')
-      $('button#btnEm').removeAttr('disabled')
-      $('button#btnInlineCode').removeAttr('disabled')
+    disableButtonWithVar('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button', caret.checkIfInHeading())
+    if (caret.checkIfInHeading()) {
+      $('#btnStrong, #btnEm, #btnInlineCode').removeAttr('disabled')
     }
+
+
+    //disableButtonWithVar('#btnStrong, #btnEm, #btnInlineCode', caret.checkIfInHeading())
+
   }
 }
 
@@ -2748,6 +2768,13 @@ function setButtonWithVar(id, variable) {
     $(id).addClass('active')
   else
     $(id).removeClass('active')
+}
+
+function disableButtonWithVar(id, variable) {
+  if (variable)
+    $(id).attr('disabled', true)
+  else
+    $(id).removeAttr('disabled')
 }
 
 function showAuthorSettings() {

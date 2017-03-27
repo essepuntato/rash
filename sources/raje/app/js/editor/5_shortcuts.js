@@ -103,6 +103,9 @@ rashEditor.
           //cross reference
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
 
+          //headings
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6').first(),
+
           //inlines
           crossRef: $(node).parents('a.cgen').last(),
           code_inline: $(node).parents('code').last(),
@@ -182,6 +185,13 @@ rashEditor.
         //cross reference
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
+        }
+
+        //headings
+        else if (parent.headings.length) {
+          console.log(caret.checkIfBorder())
+          if (caret.checkIfBorder() != 1)
+            return false
         }
 
         // inlines
@@ -309,7 +319,8 @@ rashEditor.
         var parent = {
           title: $(node).parents('h1.title').last(),
           pre: $(node).parents('pre').last(),
-          blockquote: $(node).parents('blockquote').last()
+          blockquote: $(node).parents('blockquote').last(),
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6')
         }
 
         if (parent.title.length) {
@@ -324,6 +335,10 @@ rashEditor.
 
         else if (parent.blockquote.length) {
           rashEditor.insertParagraph(parent.blockquote[0])
+          return false
+        }
+
+        else if (parent.headings.length) {
           return false
         }
       }

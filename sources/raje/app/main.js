@@ -54,7 +54,7 @@ function createWindow() {
 
   setSplashMenu()
 
-  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
+  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
   //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))

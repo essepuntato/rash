@@ -26,7 +26,7 @@ caret = {
   },
 
   checkIfInHeading: function () {
-    return $(window.getSelection().anchorNode).parents('h1,h2,h3').length;
+    return $(window.getSelection().anchorNode).parents('h1,h2,h3,h4,h5,h6').length;
   },
 
   checkIfBorder: function () {

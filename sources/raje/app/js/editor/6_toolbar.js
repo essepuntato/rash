@@ -869,6 +869,8 @@ function refreshToolbar() {
       $('#sectionDropdown > button').removeClass('disabled')
     }
 
+    $('#editNavbar button').removeAttr('disabled')
+
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
     setButtonWithVar('#btnStrong', strong)
@@ -891,14 +893,17 @@ function refreshToolbar() {
     ul = $(sel.anchorNode).parents('ul').length
     setButtonWithVar('#btnUnorderedList', ul)
 
-    //Disable behaviours 
-    if (caret.checkIfInHeading()) {
-      $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
+    let figure = $(sel.anchorNode).parents('figure').length
+    disableButtonWithVar('#btnBoxTable, #btnBoxFormula, #btnBoxFigure', figure)
 
-      $('button#btnStrong').removeAttr('disabled')
-      $('button#btnEm').removeAttr('disabled')
-      $('button#btnInlineCode').removeAttr('disabled')
+    disableButtonWithVar('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button', caret.checkIfInHeading())
+    if (caret.checkIfInHeading()) {
+      $('#btnStrong, #btnEm, #btnInlineCode').removeAttr('disabled')
     }
+
+
+    //disableButtonWithVar('#btnStrong, #btnEm, #btnInlineCode', caret.checkIfInHeading())
+
   }
 }
 
@@ -907,6 +912,13 @@ function setButtonWithVar(id, variable) {
     $(id).addClass('active')
   else
     $(id).removeClass('active')
+}
+
+function disableButtonWithVar(id, variable) {
+  if (variable)
+    $(id).attr('disabled', true)
+  else
+    $(id).removeAttr('disabled')
 }
 
 function showAuthorSettings() {
