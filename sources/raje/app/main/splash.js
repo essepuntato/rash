@@ -13,6 +13,9 @@ module.exports = {
    * */
   initFolder: function (mainWindow, settings) {
 
+    settings.title = settings.title.replace(/\s\s+/g, ' ')
+    settings.title = settings.title.replace(' ', '_')
+
     let folderPath = `${settings.path}/${settings.title}`
     let articlePath = `${folderPath}/${settings.title}.html`
     let toSaveSettings = {
