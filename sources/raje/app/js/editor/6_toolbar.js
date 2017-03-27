@@ -253,8 +253,19 @@ function addTableModal() {
 
       $("#customizeTable").on("click", function (event) {
         event.preventDefault();
-        window[id].addDelRows($("input#rows").val() - window[id].getRows());
-        window[id].addDelCols($("input#cols").val() - window[id].getCols());
+
+        let inputRows, inputColumns
+        try {
+          inputRows = Number($("input#rows").val())
+          inputColumns = Number($("input#cols").val())
+
+          window[id].addDelRows($("input#rows").val() - window[id].getRows());
+          window[id].addDelCols($("input#cols").val() - window[id].getCols());
+        }
+        catch (err) {
+          alert('Error, please type only numbers')
+        }
+
       });
 
       $("#top").on("click", function (event) {

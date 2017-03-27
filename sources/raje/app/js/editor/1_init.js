@@ -63,6 +63,11 @@ jQuery.fn.extend({
       setEditState()
     })
 
+    $(this).bind('dragover drop', function (event) {
+      event.preventDefault();
+      return false;
+    });
+
     /**
      * Get when call event to disable or activate toolbar elements
      */
