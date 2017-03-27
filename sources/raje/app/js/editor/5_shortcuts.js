@@ -34,6 +34,7 @@ rashEditor.
       return false
     });
 
+
     Mousetrap.bind('space', function (event) {
       var sel = rangy.getSelection()
 
@@ -42,17 +43,12 @@ rashEditor.
 
         var parent = {
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
-          endnote: $(node).parents('section[role="doc-endnote"]').last()
         }
 
-        if (!parent.endnote.length) {
-          if (parent.reference.length) {
-            rashEditor.exitInline(parent.reference)
-            return false
-          }
+        if (parent.reference.length) {
+          rashEditor.exitInline(parent.reference)
+          return false
         }
-        else
-          return true
       }
     })
 
@@ -242,7 +238,8 @@ rashEditor.
 
         /** endnotes */
         else if (parent.endnote.length) {
-          rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
+          rashEditor.insertParagraph(parent.paragraph[0]);
+          //rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
           return false
         }
 

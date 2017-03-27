@@ -123,12 +123,12 @@ function showNavbar() {
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
                     <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).attr('disabled')) rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -871,15 +871,6 @@ function refreshToolbar() {
     //enable/disable clickable add section buttons in dropdown
     updateDropdown()
 
-    if (caret.checkIfInHeader()) {
-      $('nav#editNavbar .navbar-left button[title]').attr('disabled', true)
-      $('#sectionDropdown > button').addClass('disabled')
-    }
-    else {
-      $('nav#editNavbar .navbar-left button[title]').removeAttr('disabled')
-      $('#sectionDropdown > button').removeClass('disabled')
-    }
-
     $('#editNavbar button').removeAttr('disabled')
 
     // activate/deactivate strong button
@@ -907,11 +898,20 @@ function refreshToolbar() {
     let figure = $(sel.anchorNode).parents('figure').length
     disableButtonWithVar('#btnBoxTable, #btnBoxFormula, #btnBoxFigure', figure)
 
-    disableButtonWithVar('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button', caret.checkIfInHeading())
     if (caret.checkIfInHeading()) {
+      $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
       $('#btnStrong, #btnEm, #btnInlineCode').removeAttr('disabled')
     }
 
+    if ($(sel.anchorNode).parents('section[role="doc-bibliography"]').length) {
+      $('nav#editNavbar button').attr('disabled', true)
+      $('#btnLink').removeAttr('disabled')
+    }
+
+    if (caret.checkIfInHeader()) {
+      $('#editNavbar button').attr('disabled', true)
+      $('#sectionDropdown > button').addClass('disabled')
+    }
 
     //disableButtonWithVar('#btnStrong, #btnEm, #btnInlineCode', caret.checkIfInHeading())
 
