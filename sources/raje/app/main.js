@@ -54,7 +54,7 @@ function createWindow() {
 
   setSplashMenu()
 
-  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
+  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
   //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))
@@ -551,8 +551,11 @@ function setEditorMenu() {
     if (err) throw err
 
     let template = [menuUtils.File, menuUtils.Edit, menuUtils.RASH, menu, menuUtils.Help]
-    if (process.platform === 'darwin')
+    if (process.platform === 'darwin') {
+      systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
+      systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
       template.unshift(menuUtils.MacOSX)
+    }
 
     updateMenu(template)
   })
@@ -582,9 +585,6 @@ function chooseGithub(callback) {
     return callback(null, menuUtils.GithubNoLogin)
   })
 }
-
-systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
-systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
 
 const menuUtils = {
   File: {
