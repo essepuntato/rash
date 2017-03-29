@@ -706,8 +706,11 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!$('h1.title small').length)
-          document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
+        if (!title.find('small').length) {
+          title.append(`<br/><small>${ZERO_SPACE}</small>`)
+          caret.moveStart(title.find('small'))
+          caret.move('character', 1)
+        }
       }
     },
 
@@ -1585,17 +1588,22 @@ rashEditor.
 
         // header
         if (parent.subtitle.length) {
-          caret.getNextElement(parent.title)
+          if (parent.subtitle.text().length == 1) {
+            caret.getNextElement(parent.title)
+            parent.subtitle.prev('br').remove()
+            parent.subtitle.remove()
+          }
+          else
+            caret.getNextElement(parent.title)
           return false
 
         } else if (parent.title.length) {
-          caret.getNextElement(parent.title)
-          //rashEditor.header.insertSubTitle()
+          //caret.getNextElement(parent.title)
+          rashEditor.header.insertSubTitle()
           return false
 
         } else if (parent.author.name.length) {
           caret.getNextElement(parent.author.name)
-          //sel.move('character', 1)
           return false
 
         } else if (parent.author.email.length) {
@@ -1762,6 +1770,7 @@ rashEditor.
         if (parent.placeholderAffiliation.length) {
 
           parent.placeholderAffiliation.removeClass('placeholder')
+          parent.placeholderAffiliation.text('')
         }
       }
     })

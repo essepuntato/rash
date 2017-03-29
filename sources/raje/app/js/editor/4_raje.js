@@ -173,8 +173,11 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!$('h1.title small').length)
-          document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
+        if (!title.find('small').length) {
+          title.append(`<br/><small>${ZERO_SPACE}</small>`)
+          caret.moveStart(title.find('small'))
+          caret.move('character', 1)
+        }
       }
     },
 
