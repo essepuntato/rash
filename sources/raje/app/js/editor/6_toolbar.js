@@ -239,6 +239,19 @@ function addTableModal() {
       $(this).find("input#rows").val(window[id].getRows());
       $(this).find("input#cols").val(window[id].getCols());
 
+      $(this).find("input#cols, input#rows").on('keypress', function (e) {
+        if (e.key == 'e')
+          e.preventDefault()
+        else if (e.key == ',')
+          e.preventDefault()
+        else if (e.key == '.')
+          e.preventDefault()
+        else if (e.key == '-')
+          e.preventDefault()
+        else if (e.key == '+')
+          e.preventDefault()
+      })
+
       $("button").removeClass("active");
       if (window[id].hasTopHeading())
         $(this).find("button#top").addClass("active");
