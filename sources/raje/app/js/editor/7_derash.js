@@ -142,9 +142,16 @@ function derashBody() {
     body.append(section)
   })
 
+  // Formula block
   body.find('span[data-mathml]').each(function () {
     let mathml = $(this).data('mathml')
     $(this).parents('figure').html(`<p>${mathml}</p>`)
+  })
+
+  // Formula inline
+  body.find('span[data-formula]:has(span[data-mathml])').each(function () {
+    let mathml = $(this).find('span[data-mathml]').data('mathml')
+    $(this).html(`<span class="rash-math">${mathml}</span>`)
   })
 
   body.find('tbody').each(function () { })
