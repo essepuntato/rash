@@ -380,7 +380,7 @@ function addFormulaEditorModal(id) {
           </div>
         </div>
         <div class="row">
-          <textarea class="form-control" id="formula_input" columns="3"></textarea>
+          <textarea class="form-control" id="formula_input" columns="3" autofocus></textarea>
         </div>
         <div class="row">
           <div class="btn-group btn-group-justified" role="group" aria-label="Math formulas editor">

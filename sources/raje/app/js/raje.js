@@ -1443,8 +1443,19 @@ rashEditor = {
       if (undefined !== this.selection) {
         rangy.restoreSelection(this.selection);
 
+        let paragraph = $(rangy.getSelection().anchorNode).parents('p').first()
+
+        let string
+
+        if (paragraph.text().length != 0) {
+          string = `<p><figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure></p>`
+          rashEditor.insertParagraph(paragraph[0])
+        }
+        else
+          string = `<figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure>`
+
         // render formula
-        document.execCommand("insertHTML", false, "<figure id=\"" + this.id + "\"><p class=\"rash-math\">\`\`" + asciiFormula + "\`\`</p></figure>");
+        document.execCommand("insertHTML", false, string);
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
         //get mathml 
@@ -1454,6 +1465,8 @@ rashEditor = {
         captions()
         formulas()
         refreshReferences()
+
+        caret.moveAfterNode($(`figure#${this.id} > p > span.cgen`)[0])
       }
     };
   }
@@ -2255,7 +2268,7 @@ function addFormulaEditorModal(id) {
           </div>
         </div>
         <div class="row">
-          <textarea class="form-control" id="formula_input" columns="3"></textarea>
+          <textarea class="form-control" id="formula_input" columns="3" autofocus></textarea>
         </div>
         <div class="row">
           <div class="btn-group btn-group-justified" role="group" aria-label="Math formulas editor">
