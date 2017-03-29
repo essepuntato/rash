@@ -387,11 +387,14 @@ rashEditor = {
       if (sel.isCollapsed) {
         document.execCommand("insertHTML", false, string);
         caret.moveStart($(`${element}[data-pointer]`))
-        $(`${element}[data-pointer]`).removeAttr('data-pointer')
+
+        caret.move('character', 1)
 
         if (isFormula) {
           caret.move('character', 2)
         }
+
+        $(`${element}[data-pointer]`).removeAttr('data-pointer')
       }
       else {
         var range = sel.getRangeAt(0);
