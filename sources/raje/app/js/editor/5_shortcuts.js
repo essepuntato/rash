@@ -7,7 +7,7 @@ rashEditor.
   init = function () {
 
     // paste only text, without style
-    $(rash_inline_selector)[0].addEventListener("paste", function (e) {
+    $(document)[0].addEventListener("paste", function (e) {
 
       e.preventDefault();
 
@@ -34,6 +34,7 @@ rashEditor.
       return false
     });
 
+
     Mousetrap.bind('space', function (event) {
       var sel = rangy.getSelection()
 
@@ -42,17 +43,12 @@ rashEditor.
 
         var parent = {
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
-          endnote: $(node).parents('section[role="doc-endnote"]').last()
         }
 
-        if (!parent.endnote.length) {
-          if (parent.reference.length) {
-            rashEditor.exitInline(parent.reference)
-            return false
-          }
+        if (parent.reference.length) {
+          rashEditor.exitInline(parent.reference)
+          return false
         }
-        else
-          return true
       }
     })
 
@@ -103,6 +99,9 @@ rashEditor.
           //cross reference
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
 
+          //headings
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6').first(),
+
           //inlines
           crossRef: $(node).parents('a.cgen').last(),
           code_inline: $(node).parents('code').last(),
@@ -129,17 +128,22 @@ rashEditor.
 
         // header
         if (parent.subtitle.length) {
-          caret.getNextElement(parent.title)
+          if (parent.subtitle.text().length == 1) {
+            caret.getNextElement(parent.title)
+            parent.subtitle.prev('br').remove()
+            parent.subtitle.remove()
+          }
+          else
+            caret.getNextElement(parent.title)
           return false
 
         } else if (parent.title.length) {
-          caret.getNextElement(parent.title)
-          //rashEditor.header.insertSubTitle()
+          //caret.getNextElement(parent.title)
+          rashEditor.header.insertSubTitle()
           return false
 
         } else if (parent.author.name.length) {
           caret.getNextElement(parent.author.name)
-          //sel.move('character', 1)
           return false
 
         } else if (parent.author.email.length) {
@@ -182,6 +186,13 @@ rashEditor.
         //cross reference
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
+        }
+
+        //headings
+        else if (parent.headings.length) {
+          console.log(caret.checkIfBorder())
+          if (caret.checkIfBorder() != 1)
+            return false
         }
 
         // inlines
@@ -232,7 +243,8 @@ rashEditor.
 
         /** endnotes */
         else if (parent.endnote.length) {
-          rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
+          rashEditor.insertParagraph(parent.paragraph[0]);
+          //rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
           return false
         }
 
@@ -298,6 +310,7 @@ rashEditor.
         if (parent.placeholderAffiliation.length) {
 
           parent.placeholderAffiliation.removeClass('placeholder')
+          parent.placeholderAffiliation.text('')
         }
       }
     })
@@ -309,7 +322,8 @@ rashEditor.
         var parent = {
           title: $(node).parents('h1.title').last(),
           pre: $(node).parents('pre').last(),
-          blockquote: $(node).parents('blockquote').last()
+          blockquote: $(node).parents('blockquote').last(),
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6')
         }
 
         if (parent.title.length) {
@@ -324,6 +338,10 @@ rashEditor.
 
         else if (parent.blockquote.length) {
           rashEditor.insertParagraph(parent.blockquote[0])
+          return false
+        }
+
+        else if (parent.headings.length) {
           return false
         }
       }

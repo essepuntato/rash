@@ -54,9 +54,9 @@ function createWindow() {
 
   setSplashMenu()
 
-  fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/js/raje.js`))
+  //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/test/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
-  //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/prova/css/rash-inline.css`))
+  //fs.createReadStream('css/rash-inline.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/test/css/rash-inline.css`))
   //fs.createReadStream('css/rash.css').pipe(fs.createWriteStream(`/Users/spino93/Desktop/spinaci-rajedoc2016/css/rash.css`))
 
   mainWindow.on('close', (event) => {
@@ -551,8 +551,11 @@ function setEditorMenu() {
     if (err) throw err
 
     let template = [menuUtils.File, menuUtils.Edit, menuUtils.RASH, menu, menuUtils.Help]
-    if (process.platform === 'darwin')
+    if (process.platform === 'darwin') {
+      systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
+      systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
       template.unshift(menuUtils.MacOSX)
+    }
 
     updateMenu(template)
   })
@@ -582,9 +585,6 @@ function chooseGithub(callback) {
     return callback(null, menuUtils.GithubNoLogin)
   })
 }
-
-systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
-systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
 
 const menuUtils = {
   File: {
@@ -638,26 +638,6 @@ const menuUtils = {
       },
       {
         type: 'separator'
-      },
-      {
-        label: 'Insert Title',
-        click() { }
-      },
-      {
-        label: 'Insert Author',
-        click() { mainWindow.webContents.send('addNewAuthor') }
-      },
-      {
-        label: 'Insert ACM Subject Category',
-        click() {
-          mainWindow.webContents.send('insertSubject')
-        }
-      },
-      {
-        label: 'Insert Keyword',
-        click() {
-          mainWindow.webContents.send('insertKeyword')
-        }
       }
     ]
   },
@@ -682,8 +662,35 @@ const menuUtils = {
         type: 'separator'
       },
       {
-        label: 'Show Rawgit',
-        enabled: false
+        label: 'Insert Title',
+        click() { }
+      },
+      {
+        label: 'Insert Author',
+        click() { mainWindow.webContents.send('addNewAuthor') }
+      },
+      {
+        label: 'Insert ACM Subject Category',
+        click() {
+          mainWindow.webContents.send('insertSubject')
+        }
+      },
+      {
+        label: 'Insert Keyword',
+        click() {
+          mainWindow.webContents.send('insertKeyword')
+        }
+      },
+      {
+        label: 'Toggle Change Authors Position',
+        click() {
+          if (reorganizingAuthors)
+            mainWindow.webContents.send('unsetReorganizeAuthors')
+          else
+            mainWindow.webContents.send('setReorganizeAuthors')
+
+          reorganizingAuthors = !reorganizingAuthors
+        }
       },
       {
         type: 'separator'

@@ -63,6 +63,11 @@ jQuery.fn.extend({
       setEditState()
     })
 
+    $(this).bind('dragover drop', function (event) {
+      event.preventDefault();
+      return false;
+    });
+
     /**
      * Get when call event to disable or activate toolbar elements
      */
@@ -178,6 +183,12 @@ window.handleFormulaBox = function () {
   var id = 'formula_' + $(rash_inline_selector).getNextFormulaID()
   window[id] = new rashEditor.Formula(id);
   window[id].showModal();
+};
+
+window.handleListingBox = function () {
+  var id = 'table_' + ($(this).findNumber(listingbox_selector) + 1);
+  window[id] = new rashEditor.Listing(id);
+  window[id].add();
 };
 
 $(document).ready(function () {
@@ -331,7 +342,7 @@ caret = {
   },
 
   checkIfInHeading: function () {
-    return $(window.getSelection().anchorNode).parents('h1,h2,h3').length;
+    return $(window.getSelection().anchorNode).parents('h1,h2,h3,h4,h5,h6').length;
   },
 
   checkIfBorder: function () {
@@ -526,6 +537,17 @@ const ONE_SPACE = '&nbsp;';
 
 const messageDealer = 'div#messageDealer';
 
+Array.prototype.indexOfContent = function (searchTerm) {
+  let index = -1;
+  for (var i = 0, len = this.length; i < len; i++) {
+    if (this[i].content == searchTerm) {
+      index = i;
+      break;
+    }
+  }
+  return index
+}
+
 rashEditor = {
 
   /* und/redo */
@@ -701,8 +723,11 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!$('h1.title small').length)
-          document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
+        if (!title.find('small').length) {
+          title.append(`<br/><small>${ZERO_SPACE}</small>`)
+          caret.moveStart(title.find('small'))
+          caret.move('character', 1)
+        }
       }
     },
 
@@ -859,6 +884,18 @@ rashEditor = {
         referenceables.append(formulas)
       }
 
+      if ($(`${rash_inline_selector} ${listingbox_selector}`).length) {
+
+        let formulas = $(this.createCollapsable('Listings'))
+
+        $(`${rash_inline_selector} figure:has(pre)`).each(function () {
+          let text = $(this).find('figcaption').text()
+          formulas.find('#listListings').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
+        })
+
+        referenceables.append(formulas)
+      }
+
       let references = $(this.createCollapsable('References'))
 
       references.find('#listReferences').append(`<a data-type="addBiblioentry" class="list-group-item">+ add new bibliographic reference</a>`)
@@ -912,11 +949,14 @@ rashEditor = {
       if (sel.isCollapsed) {
         document.execCommand("insertHTML", false, string);
         caret.moveStart($(`${element}[data-pointer]`))
-        $(`${element}[data-pointer]`).removeAttr('data-pointer')
+
+        caret.move('character', 1)
 
         if (isFormula) {
           caret.move('character', 2)
         }
+
+        $(`${element}[data-pointer]`).removeAttr('data-pointer')
       }
       else {
         var range = sel.getRangeAt(0);
@@ -1187,8 +1227,13 @@ rashEditor = {
 
     } else {
 
-      if (!node)
-        node = $('section[role="doc-endnotes"]>section:last-child')
+      if (!node) {
+        if ($('section[role="doc-endnotes"]>section').length)
+          node = $('section[role="doc-endnotes"]>section:last-child')
+        else
+          node = $('section[role="doc-endnotes"]>h1')
+      }
+
 
       let getNextEndnote = function () {
         let max = -1
@@ -1427,8 +1472,19 @@ rashEditor = {
       if (undefined !== this.selection) {
         rangy.restoreSelection(this.selection);
 
+        let paragraph = $(rangy.getSelection().anchorNode).parents('p').first()
+
+        let string
+
+        if (paragraph.text().length != 0) {
+          string = `<p><figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure></p>`
+          rashEditor.insertParagraph(paragraph[0])
+        }
+        else
+          string = `<figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure>`
+
         // render formula
-        document.execCommand("insertHTML", false, "<figure id=\"" + this.id + "\"><p class=\"rash-math\">\`\`" + asciiFormula + "\`\`</p></figure>");
+        document.execCommand("insertHTML", false, string);
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
         //get mathml 
@@ -1438,9 +1494,25 @@ rashEditor = {
         captions()
         formulas()
         refreshReferences()
+
+        caret.moveAfterNode($(`figure#${this.id} > p > span.cgen`)[0])
       }
     };
-  }
+  },
+
+  Listing: function (id) {
+    this.selection;
+    this.id = id;
+
+    this.add = function () {
+      let sel = rangy.getSelection()
+      let string = '<br>'
+      if (sel && !sel.isCollapsed)
+        string = sel.toString()
+      document.execCommand("insertHTML", false, `<figure id="${this.id}"><pre>${ZERO_SPACE}<code>${string}</code></pre><figcaption>Caption of the <code>listing</code>.</figcaption></figure>`);
+      captions()
+    }
+  },
 
   /* END boxes */
 };
@@ -1454,7 +1526,7 @@ rashEditor.
   init = function () {
 
     // paste only text, without style
-    $(rash_inline_selector)[0].addEventListener("paste", function (e) {
+    $(document)[0].addEventListener("paste", function (e) {
 
       e.preventDefault();
 
@@ -1481,6 +1553,7 @@ rashEditor.
       return false
     });
 
+
     Mousetrap.bind('space', function (event) {
       var sel = rangy.getSelection()
 
@@ -1489,17 +1562,12 @@ rashEditor.
 
         var parent = {
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
-          endnote: $(node).parents('section[role="doc-endnote"]').last()
         }
 
-        if (!parent.endnote.length) {
-          if (parent.reference.length) {
-            rashEditor.exitInline(parent.reference)
-            return false
-          }
+        if (parent.reference.length) {
+          rashEditor.exitInline(parent.reference)
+          return false
         }
-        else
-          return true
       }
     })
 
@@ -1550,6 +1618,9 @@ rashEditor.
           //cross reference
           reference: $(node).parents('a[href]:has(span.cgen),a[href]:has(sup.cgen)').last(),
 
+          //headings
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6').first(),
+
           //inlines
           crossRef: $(node).parents('a.cgen').last(),
           code_inline: $(node).parents('code').last(),
@@ -1576,17 +1647,22 @@ rashEditor.
 
         // header
         if (parent.subtitle.length) {
-          caret.getNextElement(parent.title)
+          if (parent.subtitle.text().length == 1) {
+            caret.getNextElement(parent.title)
+            parent.subtitle.prev('br').remove()
+            parent.subtitle.remove()
+          }
+          else
+            caret.getNextElement(parent.title)
           return false
 
         } else if (parent.title.length) {
-          caret.getNextElement(parent.title)
-          //rashEditor.header.insertSubTitle()
+          //caret.getNextElement(parent.title)
+          rashEditor.header.insertSubTitle()
           return false
 
         } else if (parent.author.name.length) {
           caret.getNextElement(parent.author.name)
-          //sel.move('character', 1)
           return false
 
         } else if (parent.author.email.length) {
@@ -1629,6 +1705,13 @@ rashEditor.
         //cross reference
         else if (parent.reference.length) {
           rashEditor.exitInline(parent.reference)
+        }
+
+        //headings
+        else if (parent.headings.length) {
+          console.log(caret.checkIfBorder())
+          if (caret.checkIfBorder() != 1)
+            return false
         }
 
         // inlines
@@ -1679,7 +1762,8 @@ rashEditor.
 
         /** endnotes */
         else if (parent.endnote.length) {
-          rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
+          rashEditor.insertParagraph(parent.paragraph[0]);
+          //rashEditor.insertEndnote($(node).parents('section[role="doc-endnote"]').last())
           return false
         }
 
@@ -1745,6 +1829,7 @@ rashEditor.
         if (parent.placeholderAffiliation.length) {
 
           parent.placeholderAffiliation.removeClass('placeholder')
+          parent.placeholderAffiliation.text('')
         }
       }
     })
@@ -1756,7 +1841,8 @@ rashEditor.
         var parent = {
           title: $(node).parents('h1.title').last(),
           pre: $(node).parents('pre').last(),
-          blockquote: $(node).parents('blockquote').last()
+          blockquote: $(node).parents('blockquote').last(),
+          headings: $(node).parents('h1, h2, h3, h4, h5, h6')
         }
 
         if (parent.title.length) {
@@ -1771,6 +1857,10 @@ rashEditor.
 
         else if (parent.blockquote.length) {
           rashEditor.insertParagraph(parent.blockquote[0])
+          return false
+        }
+
+        else if (parent.headings.length) {
           return false
         }
       }
@@ -1952,6 +2042,11 @@ function showNavbar() {
                   <b>&radic;</b>
                 </button>
 
+                <button id="btnBoxFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleListingBox()\" title=\"Listing\">
+                  <i class="fa fa-list-alt" aria-hidden="true"></i>
+                </button>
+
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
@@ -1964,12 +2059,12 @@ function showNavbar() {
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
                     <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -2080,6 +2175,19 @@ function addTableModal() {
       $(this).find("input#rows").val(window[id].getRows());
       $(this).find("input#cols").val(window[id].getCols());
 
+      $(this).find("input#cols, input#rows").on('keypress', function (e) {
+        if (e.key == 'e')
+          e.preventDefault()
+        else if (e.key == ',')
+          e.preventDefault()
+        else if (e.key == '.')
+          e.preventDefault()
+        else if (e.key == '-')
+          e.preventDefault()
+        else if (e.key == '+')
+          e.preventDefault()
+      })
+
       $("button").removeClass("active");
       if (window[id].hasTopHeading())
         $(this).find("button#top").addClass("active");
@@ -2094,8 +2202,19 @@ function addTableModal() {
 
       $("#customizeTable").on("click", function (event) {
         event.preventDefault();
-        window[id].addDelRows($("input#rows").val() - window[id].getRows());
-        window[id].addDelCols($("input#cols").val() - window[id].getCols());
+
+        let inputRows, inputColumns
+        try {
+          inputRows = Number($("input#rows").val())
+          inputColumns = Number($("input#cols").val())
+
+          window[id].addDelRows($("input#rows").val() - window[id].getRows());
+          window[id].addDelCols($("input#cols").val() - window[id].getCols());
+        }
+        catch (err) {
+          alert('Error, please type only numbers')
+        }
+
       });
 
       $("#top").on("click", function (event) {
@@ -2210,7 +2329,7 @@ function addFormulaEditorModal(id) {
           </div>
         </div>
         <div class="row">
-          <textarea class="form-control" id="formula_input" columns="3"></textarea>
+          <textarea class="form-control" id="formula_input" columns="3" autofocus></textarea>
         </div>
         <div class="row">
           <div class="btn-group btn-group-justified" role="group" aria-label="Math formulas editor">
@@ -2701,14 +2820,8 @@ function refreshToolbar() {
     //enable/disable clickable add section buttons in dropdown
     updateDropdown()
 
-    if (caret.checkIfInHeader()) {
-      $('nav#editNavbar .navbar-left button[title]').attr('disabled', true)
-      $('#sectionDropdown > button').addClass('disabled')
-    }
-    else {
-      $('nav#editNavbar .navbar-left button[title]').removeAttr('disabled')
-      $('#sectionDropdown > button').removeClass('disabled')
-    }
+    $('#editNavbar button').removeAttr('disabled')
+    $('#sectionDropdown > button').removeClass('disabled')
 
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
@@ -2732,14 +2845,26 @@ function refreshToolbar() {
     ul = $(sel.anchorNode).parents('ul').length
     setButtonWithVar('#btnUnorderedList', ul)
 
-    //Disable behaviours 
+    let figure = $(sel.anchorNode).parents('figure').length
+    disableButtonWithVar('#btnBoxTable, #btnBoxFormula, #btnBoxFigure', figure)
+
     if (caret.checkIfInHeading()) {
       $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
-
-      $('button#btnStrong').removeAttr('disabled')
-      $('button#btnEm').removeAttr('disabled')
-      $('button#btnInlineCode').removeAttr('disabled')
+      $('#btnStrong, #btnEm, #btnInlineCode').removeAttr('disabled')
     }
+
+    if ($(sel.anchorNode).parents('section[role="doc-bibliography"]').length) {
+      $('nav#editNavbar button').attr('disabled', true)
+      $('#btnLink').removeAttr('disabled')
+    }
+
+    if (caret.checkIfInHeader()) {
+      $('#editNavbar button').attr('disabled', true)
+      $('#sectionDropdown > button').addClass('disabled')
+    }
+
+    //disableButtonWithVar('#btnStrong, #btnEm, #btnInlineCode', caret.checkIfInHeading())
+
   }
 }
 
@@ -2748,6 +2873,13 @@ function setButtonWithVar(id, variable) {
     $(id).addClass('active')
   else
     $(id).removeClass('active')
+}
+
+function disableButtonWithVar(id, variable) {
+  if (variable)
+    $(id).attr('disabled', true)
+  else
+    $(id).removeAttr('disabled')
 }
 
 function showAuthorSettings() {
@@ -2839,6 +2971,8 @@ function derashHeader() {
 
   /* authors */
 
+  let affiliations = []
+
   $('header address.lead.authors').each(function () {
 
     let email = $(this).find('code.email').text()
@@ -2848,13 +2982,20 @@ function derashHeader() {
 
     $(this).find('span.affiliation').each(function (index) {
 
-      let affiliations = [], link = $()
+      console.log($(this).text())
+      console.log(affiliations.indexOfContent($(this).text()))
+
+      if (affiliations.indexOfContent($(this).text()) > -1) {
+        let pos = affiliations.indexOfContent($(this).text())
+        index = parseInt(affiliations[pos].index.replace('affiliation', ''))
+
+      } else {
+        index = affiliations.length + 1
+      }
 
       //create new affiliation
       let affiliation = {
-        'index': typeof $('meta[content="' + $(this).text() + '"]').attr('about') === 'undefined' ?
-          'affiliation' + index :
-          $('meta[content="' + $(this).text() + '"]').attr('about'),
+        'index': `affiliation${index}`,
         'content': $(this).text()
       }
 
@@ -2869,13 +3010,13 @@ function derashHeader() {
         if (affiliations[i].index == affiliation.index)
           affiliations.pop()
       }
-
-      //check if affiliation already exists
-      for (var i = 0; i < affiliations.length; i++) {
-        head.append(`<meta about="${affiliations[i].index}" typeof="schema:Organization" property="schema:name" content="${affiliations[i].content}"/>`)
-      }
     })
   })
+
+  for (var i = 0; i < affiliations.length; i++) {
+    head.append(`<meta about="${affiliations[i].index}" typeof="schema:Organization" property="schema:name" content="${affiliations[i].content}"/>`)
+  }
+
   /* /End authors */
 
   /** keywords */
@@ -2924,9 +3065,16 @@ function derashBody() {
     body.append(section)
   })
 
+  // Formula block
   body.find('span[data-mathml]').each(function () {
     let mathml = $(this).data('mathml')
     $(this).parents('figure').html(`<p>${mathml}</p>`)
+  })
+
+  // Formula inline
+  body.find('span[data-formula]:has(span[data-mathml])').each(function () {
+    let mathml = $(this).find('span[data-mathml]').data('mathml')
+    $(this).html(`<span class="rash-math">${mathml}</span>`)
   })
 
   body.find('tbody').each(function () { })

@@ -173,8 +173,11 @@ rashEditor = {
 
         let title = $(sel.anchorNode).parents('h1')
 
-        if (!$('h1.title small').length)
-          document.execCommand("insertHTML", false, `<br/><small>${ZERO_SPACE}</small>`)
+        if (!title.find('small').length) {
+          title.append(`<br/><small>${ZERO_SPACE}</small>`)
+          caret.moveStart(title.find('small'))
+          caret.move('character', 1)
+        }
       }
     },
 
@@ -331,6 +334,18 @@ rashEditor = {
         referenceables.append(formulas)
       }
 
+      if ($(`${rash_inline_selector} ${listingbox_selector}`).length) {
+
+        let formulas = $(this.createCollapsable('Listings'))
+
+        $(`${rash_inline_selector} figure:has(pre)`).each(function () {
+          let text = $(this).find('figcaption').text()
+          formulas.find('#listListings').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
+        })
+
+        referenceables.append(formulas)
+      }
+
       let references = $(this.createCollapsable('References'))
 
       references.find('#listReferences').append(`<a data-type="addBiblioentry" class="list-group-item">+ add new bibliographic reference</a>`)
@@ -384,11 +399,14 @@ rashEditor = {
       if (sel.isCollapsed) {
         document.execCommand("insertHTML", false, string);
         caret.moveStart($(`${element}[data-pointer]`))
-        $(`${element}[data-pointer]`).removeAttr('data-pointer')
+
+        caret.move('character', 1)
 
         if (isFormula) {
           caret.move('character', 2)
         }
+
+        $(`${element}[data-pointer]`).removeAttr('data-pointer')
       }
       else {
         var range = sel.getRangeAt(0);
@@ -659,8 +677,13 @@ rashEditor = {
 
     } else {
 
-      if (!node)
-        node = $('section[role="doc-endnotes"]>section:last-child')
+      if (!node) {
+        if ($('section[role="doc-endnotes"]>section').length)
+          node = $('section[role="doc-endnotes"]>section:last-child')
+        else
+          node = $('section[role="doc-endnotes"]>h1')
+      }
+
 
       let getNextEndnote = function () {
         let max = -1
@@ -899,8 +922,19 @@ rashEditor = {
       if (undefined !== this.selection) {
         rangy.restoreSelection(this.selection);
 
+        let paragraph = $(rangy.getSelection().anchorNode).parents('p').first()
+
+        let string
+
+        if (paragraph.text().length != 0) {
+          string = `<p><figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure></p>`
+          rashEditor.insertParagraph(paragraph[0])
+        }
+        else
+          string = `<figure id="${this.id}"><p class="rash-math">\`\`${asciiFormula}\`\`</p></figure>`
+
         // render formula
-        document.execCommand("insertHTML", false, "<figure id=\"" + this.id + "\"><p class=\"rash-math\">\`\`" + asciiFormula + "\`\`</p></figure>");
+        document.execCommand("insertHTML", false, string);
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
         //get mathml 
@@ -910,9 +944,25 @@ rashEditor = {
         captions()
         formulas()
         refreshReferences()
+
+        caret.moveAfterNode($(`figure#${this.id} > p > span.cgen`)[0])
       }
     };
-  }
+  },
+
+  Listing: function (id) {
+    this.selection;
+    this.id = id;
+
+    this.add = function () {
+      let sel = rangy.getSelection()
+      let string = '<br>'
+      if (sel && !sel.isCollapsed)
+        string = sel.toString()
+      document.execCommand("insertHTML", false, `<figure id="${this.id}"><pre>${ZERO_SPACE}<code>${string}</code></pre><figcaption>Caption of the <code>listing</code>.</figcaption></figure>`);
+      captions()
+    }
+  },
 
   /* END boxes */
 };

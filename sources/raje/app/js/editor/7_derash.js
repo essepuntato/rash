@@ -57,6 +57,8 @@ function derashHeader() {
 
   /* authors */
 
+  let affiliations = []
+
   $('header address.lead.authors').each(function () {
 
     let email = $(this).find('code.email').text()
@@ -66,13 +68,20 @@ function derashHeader() {
 
     $(this).find('span.affiliation').each(function (index) {
 
-      let affiliations = [], link = $()
+      console.log($(this).text())
+      console.log(affiliations.indexOfContent($(this).text()))
+
+      if (affiliations.indexOfContent($(this).text()) > -1) {
+        let pos = affiliations.indexOfContent($(this).text())
+        index = parseInt(affiliations[pos].index.replace('affiliation', ''))
+
+      } else {
+        index = affiliations.length + 1
+      }
 
       //create new affiliation
       let affiliation = {
-        'index': typeof $('meta[content="' + $(this).text() + '"]').attr('about') === 'undefined' ?
-          'affiliation' + index :
-          $('meta[content="' + $(this).text() + '"]').attr('about'),
+        'index': `affiliation${index}`,
         'content': $(this).text()
       }
 
@@ -87,13 +96,13 @@ function derashHeader() {
         if (affiliations[i].index == affiliation.index)
           affiliations.pop()
       }
-
-      //check if affiliation already exists
-      for (var i = 0; i < affiliations.length; i++) {
-        head.append(`<meta about="${affiliations[i].index}" typeof="schema:Organization" property="schema:name" content="${affiliations[i].content}"/>`)
-      }
     })
   })
+
+  for (var i = 0; i < affiliations.length; i++) {
+    head.append(`<meta about="${affiliations[i].index}" typeof="schema:Organization" property="schema:name" content="${affiliations[i].content}"/>`)
+  }
+
   /* /End authors */
 
   /** keywords */
@@ -142,9 +151,16 @@ function derashBody() {
     body.append(section)
   })
 
+  // Formula block
   body.find('span[data-mathml]').each(function () {
     let mathml = $(this).data('mathml')
     $(this).parents('figure').html(`<p>${mathml}</p>`)
+  })
+
+  // Formula inline
+  body.find('span[data-formula]:has(span[data-mathml])').each(function () {
+    let mathml = $(this).find('span[data-mathml]').data('mathml')
+    $(this).html(`<span class="rash-math">${mathml}</span>`)
   })
 
   body.find('tbody').each(function () { })

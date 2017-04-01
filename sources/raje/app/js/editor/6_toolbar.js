@@ -111,6 +111,11 @@ function showNavbar() {
                   <b>&radic;</b>
                 </button>
 
+                <button id="btnBoxFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleListingBox()\" title=\"Listing\">
+                  <i class="fa fa-list-alt" aria-hidden="true"></i>
+                </button>
+
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
@@ -123,12 +128,12 @@ function showNavbar() {
                     <li onclick=\"rashEditor.insertAcknowledgementSection()\" id=\"addAbstract\"><a>Acknowledgement</a></li>
                     <!--<li onclick=\"rashEditor.insertBibliography()\" id=\"addBibliography\"><a>Bibliography</a></li>-->
                     <li role=\"separator\" class=\"divider\"></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
-                    <li class="disabled" onclick=\"rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(1,false)\"><a>Section 1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(2,false)\"><a>Section 1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(3,false)\"><a>Section 1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(4,false)\"><a>Section 1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(5,false)\"><a>Section 1.1.1.1.1.</a></li>
+                    <li class="disabled" onclick=\"if(!$(this).hasClass('disabled')) rashEditor.insertSection(6,false)\"><a>Section 1.1.1.1.1.1.</a></li>
                   </ul>
                 </div>
           </div>
@@ -239,6 +244,19 @@ function addTableModal() {
       $(this).find("input#rows").val(window[id].getRows());
       $(this).find("input#cols").val(window[id].getCols());
 
+      $(this).find("input#cols, input#rows").on('keypress', function (e) {
+        if (e.key == 'e')
+          e.preventDefault()
+        else if (e.key == ',')
+          e.preventDefault()
+        else if (e.key == '.')
+          e.preventDefault()
+        else if (e.key == '-')
+          e.preventDefault()
+        else if (e.key == '+')
+          e.preventDefault()
+      })
+
       $("button").removeClass("active");
       if (window[id].hasTopHeading())
         $(this).find("button#top").addClass("active");
@@ -253,8 +271,19 @@ function addTableModal() {
 
       $("#customizeTable").on("click", function (event) {
         event.preventDefault();
-        window[id].addDelRows($("input#rows").val() - window[id].getRows());
-        window[id].addDelCols($("input#cols").val() - window[id].getCols());
+
+        let inputRows, inputColumns
+        try {
+          inputRows = Number($("input#rows").val())
+          inputColumns = Number($("input#cols").val())
+
+          window[id].addDelRows($("input#rows").val() - window[id].getRows());
+          window[id].addDelCols($("input#cols").val() - window[id].getCols());
+        }
+        catch (err) {
+          alert('Error, please type only numbers')
+        }
+
       });
 
       $("#top").on("click", function (event) {
@@ -369,7 +398,7 @@ function addFormulaEditorModal(id) {
           </div>
         </div>
         <div class="row">
-          <textarea class="form-control" id="formula_input" columns="3"></textarea>
+          <textarea class="form-control" id="formula_input" columns="3" autofocus></textarea>
         </div>
         <div class="row">
           <div class="btn-group btn-group-justified" role="group" aria-label="Math formulas editor">
@@ -860,14 +889,8 @@ function refreshToolbar() {
     //enable/disable clickable add section buttons in dropdown
     updateDropdown()
 
-    if (caret.checkIfInHeader()) {
-      $('nav#editNavbar .navbar-left button[title]').attr('disabled', true)
-      $('#sectionDropdown > button').addClass('disabled')
-    }
-    else {
-      $('nav#editNavbar .navbar-left button[title]').removeAttr('disabled')
-      $('#sectionDropdown > button').removeClass('disabled')
-    }
+    $('#editNavbar button').removeAttr('disabled')
+    $('#sectionDropdown > button').removeClass('disabled')
 
     // activate/deactivate strong button
     strong = $(sel.anchorNode).parents('strong, b').length > 0
@@ -891,14 +914,26 @@ function refreshToolbar() {
     ul = $(sel.anchorNode).parents('ul').length
     setButtonWithVar('#btnUnorderedList', ul)
 
-    //Disable behaviours 
+    let figure = $(sel.anchorNode).parents('figure').length
+    disableButtonWithVar('#btnBoxTable, #btnBoxFormula, #btnBoxFigure', figure)
+
     if (caret.checkIfInHeading()) {
       $('nav#editNavbar div[aria-label="Inline elements"] button, nav#editNavbar div[aria-label="Block elements"] button').attr('disabled', true)
-
-      $('button#btnStrong').removeAttr('disabled')
-      $('button#btnEm').removeAttr('disabled')
-      $('button#btnInlineCode').removeAttr('disabled')
+      $('#btnStrong, #btnEm, #btnInlineCode').removeAttr('disabled')
     }
+
+    if ($(sel.anchorNode).parents('section[role="doc-bibliography"]').length) {
+      $('nav#editNavbar button').attr('disabled', true)
+      $('#btnLink').removeAttr('disabled')
+    }
+
+    if (caret.checkIfInHeader()) {
+      $('#editNavbar button').attr('disabled', true)
+      $('#sectionDropdown > button').addClass('disabled')
+    }
+
+    //disableButtonWithVar('#btnStrong, #btnEm, #btnInlineCode', caret.checkIfInHeading())
+
   }
 }
 
@@ -907,6 +942,13 @@ function setButtonWithVar(id, variable) {
     $(id).addClass('active')
   else
     $(id).removeClass('active')
+}
+
+function disableButtonWithVar(id, variable) {
+  if (variable)
+    $(id).attr('disabled', true)
+  else
+    $(id).removeAttr('disabled')
 }
 
 function showAuthorSettings() {

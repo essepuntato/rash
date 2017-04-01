@@ -63,6 +63,11 @@ jQuery.fn.extend({
       setEditState()
     })
 
+    $(this).bind('dragover drop', function (event) {
+      event.preventDefault();
+      return false;
+    });
+
     /**
      * Get when call event to disable or activate toolbar elements
      */
@@ -178,6 +183,12 @@ window.handleFormulaBox = function () {
   var id = 'formula_' + $(rash_inline_selector).getNextFormulaID()
   window[id] = new rashEditor.Formula(id);
   window[id].showModal();
+};
+
+window.handleListingBox = function () {
+  var id = 'table_' + ($(this).findNumber(listingbox_selector) + 1);
+  window[id] = new rashEditor.Listing(id);
+  window[id].add();
 };
 
 $(document).ready(function () {
