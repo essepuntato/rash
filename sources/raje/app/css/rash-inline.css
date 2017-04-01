@@ -97,7 +97,7 @@ img.avatar{
 span.affiliation.placeholder{
   color:#999
 }
-
+/*
 pre{
   position: relative
 }
@@ -110,3 +110,7 @@ pre::after{
   background-color: rgba('0,0,0,.5');
   content: "enter = new line"
 }
+
+figure > pref::after{
+  display: none
+}*/

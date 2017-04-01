@@ -334,6 +334,18 @@ rashEditor = {
         referenceables.append(formulas)
       }
 
+      if ($(`${rash_inline_selector} ${listingbox_selector}`).length) {
+
+        let formulas = $(this.createCollapsable('Listings'))
+
+        $(`${rash_inline_selector} figure:has(pre)`).each(function () {
+          let text = $(this).find('figcaption').text()
+          formulas.find('#listListings').append(`<a data-type="role" data-ref="${$(this).attr('id')}" class="list-group-item">${text}</a>`)
+        })
+
+        referenceables.append(formulas)
+      }
+
       let references = $(this.createCollapsable('References'))
 
       references.find('#listReferences').append(`<a data-type="addBiblioentry" class="list-group-item">+ add new bibliographic reference</a>`)
@@ -936,7 +948,21 @@ rashEditor = {
         caret.moveAfterNode($(`figure#${this.id} > p > span.cgen`)[0])
       }
     };
-  }
+  },
+
+  Listing: function (id) {
+    this.selection;
+    this.id = id;
+
+    this.add = function () {
+      let sel = rangy.getSelection()
+      let string = '<br>'
+      if (sel && !sel.isCollapsed)
+        string = sel.toString()
+      document.execCommand("insertHTML", false, `<figure id="${this.id}"><pre>${ZERO_SPACE}<code>${string}</code></pre><figcaption>Caption of the <code>listing</code>.</figcaption></figure>`);
+      captions()
+    }
+  },
 
   /* END boxes */
 };

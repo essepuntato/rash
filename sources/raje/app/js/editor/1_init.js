@@ -185,6 +185,12 @@ window.handleFormulaBox = function () {
   window[id].showModal();
 };
 
+window.handleListingBox = function () {
+  var id = 'table_' + ($(this).findNumber(listingbox_selector) + 1);
+  window[id] = new rashEditor.Listing(id);
+  window[id].add();
+};
+
 $(document).ready(function () {
 
   /* START .rash_inline */

@@ -111,6 +111,11 @@ function showNavbar() {
                   <b>&radic;</b>
                 </button>
 
+                <button id="btnBoxFormula" type=\"button\" class=\"btn btn-default navbar-btn\" data-toggle=\"tooltip\"
+                  onClick=\"handleListingBox()\" title=\"Listing\">
+                  <i class="fa fa-list-alt" aria-hidden="true"></i>
+                </button>
+
               </div>
 
               <div class=\"btn-group\" role=\"group\" aria-label=\"Sections\" id=\"sectionDropdown\">
