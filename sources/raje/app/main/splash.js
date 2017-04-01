@@ -77,6 +77,7 @@ module.exports = {
   openEditorWindow: function (mainWindow, articlePath, title) {
     mainWindow.loadURL(`file://${articlePath}`)
     mainWindow.maximize()
+    //mainWindow.webContents.toggleDevTools()
     if (title)
       mainWindow.webContents.send('updateTitle', title)
   },
