@@ -1526,7 +1526,7 @@ rashEditor.
   init = function () {
 
     // paste only text, without style
-    $(rash_inline_selector)[0].addEventListener("paste", function (e) {
+    $(document)[0].addEventListener("paste", function (e) {
 
       e.preventDefault();
 
