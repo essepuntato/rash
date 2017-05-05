@@ -46,13 +46,15 @@ function createWindow() {
   })
 
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'splash.html'),
+    pathname: path.join(__dirname, 'placeholder.html'),
     //pathname: path.join(__dirname, 'app', 'spinaci-rajedoc2016.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-  setSplashMenu()
+  mainWindow.maximize()
+
+  //setSplashMenu()
 
   //fs.createReadStream('js/raje.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/test/js/raje.js`))
   //fs.createReadStream('js/rash.js').pipe(fs.createWriteStream(`/Users/spino93/Desktop/dummylol/js/rash.js`))
