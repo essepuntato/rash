@@ -3,9 +3,10 @@
  * Initilize TinyMCE editor with all required options
  */
 
-// TinyMCE editor global reference
-let Editor
+// TinyMCE DomQuery variable
+let dom = tinymce.dom.DomQuery
 
+// Invisible space constant
 const ZERO_SPACE = '&#8203;'
 
 tinymce.init({
@@ -17,36 +18,19 @@ tinymce.init({
   content_css: ['css/bootstrap.min.css', 'css/rash.css'],
 
   // Set plugins
-  plugins: "fullscreen link codesample inline_code",
+  plugins: "fullscreen link codesample inline_code inline_quote section table noneditable",
 
   // Remove menubar
   menubar: false,
 
   // Custom toolbar
-  toolbar: 'undo redo bold italic link codesample superscript subscript inline_code',
+  toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table figure | section',
 
   // Setup full screen on init
   setup: function (editor) {
 
-    // Setup global variable
-    Editor = editor
-
     editor.on('init', function (e) {
       editor.execCommand('mceFullScreen');
-    });
-
-    // Intercept enter key press
-    editor.on('KeyDown', function (e) {
-
-      // Enter key press event
-      if (e.keyCode == 13) {
-
-        // inline code
-        if (editor.selection.getNode().nodeName == 'CODE') {
-          e.preventDefault()
-          //Rajemce.inline.code.exit()
-        }
-      }
     });
   },
 
@@ -60,7 +44,17 @@ tinymce.init({
   target_list: false,
 
   // Hide title
-  link_title: false
+  link_title: false,
+
+  // Set formats
+  formats: {
+    inline_code: {
+      inline: 'code'
+    },
+    inline_quote: {
+      inline: 'q'
+    }
+  }
 });
 
 $(document).ready(function () {
@@ -84,10 +78,58 @@ tinymce.PluginManager.add('inline_code', function (editor, url) {
 
     // Button behaviour
     onclick: function () {
-      Rajemce.inline.code.insert()
+      Rajemce.inline.code.handle()
     }
   });
 });
+
+tinymce.PluginManager.add('inline_quote', function (editor, url) {
+
+  // Add a button that handle the inline element
+  editor.addButton('inline_quote', {
+    text: 'inline_quote',
+    icon: false,
+    tooltip: 'Inline quote',
+
+    // Button behaviour
+    onclick: function () {
+      Rajemce.inline.quote.handle()
+    }
+  });
+});
+
+/**
+ * RASH section plugin RAJE
+ */
+tinymce.PluginManager.add('section', function (editor, url) {
+
+  editor.addButton('section', {
+    type: 'menubutton',
+    text: 'Headings',
+    icons: false,
+
+    // Sections sub menu
+    menu: [{
+      text: 'Abstract',
+      onclick: function () {}
+    }, {
+      text: 'Acknowledgements',
+      onclick: function () {}
+    }, {
+      text: 'Heading 1.',
+      onclick: function () {
+        Rajemce.section.insertRaw(1)
+      }
+    }, {
+      text: 'Heading 1.1.',
+      onclick: function () {
+        Rajemce.section.insertRaw(2)
+      }
+    }]
+  })
+})
+
+
 
 /**
  * RajeMCE class
@@ -98,29 +140,94 @@ Rajemce = {
   // Inline elements
   inline: {
 
-    // Inline code functions
     code: {
-
       /**
-       * Insert inline code element
-       * It checks if the selection is collapsed, and add the right element
+       * Insert or exit from inline code element
        */
-      insert: function () {
+      handle: function () {
 
-        // Displayed text of the code
-        let text = ZERO_SPACE
+        let name = tinymce.activeEditor.selection.getNode().nodeName
 
-        // Check if the selection is collapsed
-        if (!Editor.selection.isCollapsed())
-          text = Editor.selection.getContent()
+        if (name == 'CODE')
+          tinymce.activeEditor.formatter.remove('inline_code')
 
-        // Insert the element with the right text
-        Editor.execCommand('mceInsertContent', false, `<code>${text}</code>`)
-      },
+        else
+          tinymce.activeEditor.formatter.apply('inline_code')
+      }
+    },
 
-      exit: function () {
+    quote: {
+      /**
+       * Insert or exit from inline quote element
+       */
+      handle: function () {
 
+        let name = tinymce.activeEditor.selection.getNode().nodeName
+
+        if (name == 'Q')
+          tinymce.activeEditor.formatter.remove('inline_quote')
+
+        else
+          tinymce.activeEditor.formatter.apply('inline_quote')
+      }
+    }
+  },
+
+  // Section functions
+  section: {
+    insertRaw: function (level) {
+
+      // Reference of the selected element
+      let selectedElement = tinymce.activeEditor.selection.getNode()
+
+      // HTML string to insert
+      let text = ''
+      let newSection = `<section><h1>${ZERO_SPACE}`
+
+      // Get deepness of the current section and add section closures 
+      let deepness = dom(selectedElement).parentsUntil('body#tinymce').length - level + 1
+
+      if (deepness == 0)
+        newSection += '</section>'
+
+      // Block all non-permitted behaviours
+      if (deepness >= 0) {
+
+        while (deepness > 0) {
+          text += '</section>'
+          deepness--
+        }
+
+        // Full text to insert with p text
+        newSection = text + newSection + `${dom(selectedElement).text()}</h1>`
+
+        // Delete preceding element
+        dom(selectedElement).remove()
+
+        // Close current section and open the new one
+        tinymce.activeEditor.execCommand('mceInsertRawHtml', false, newSection)
+
+        // It doesn't work
+        headingDimension()
+
+        console.log(dom('section'))
       }
     }
   }
+}
+
+// Modularize rash
+
+function headingDimension() {
+  /* Heading dimensions */
+  $("h1").each(function () {
+    var counter = 0;
+    $(this).parents("section").each(function () {
+      if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
+        counter++;
+      }
+    });
+    $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+  });
+  /* /END Heading dimensions */
 }
