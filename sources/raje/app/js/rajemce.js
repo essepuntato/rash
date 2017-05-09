@@ -9,60 +9,67 @@ let dom = tinymce.dom.DomQuery
 // Invisible space constant
 const ZERO_SPACE = '&#8203;'
 
-tinymce.init({
-
-  // Select the element to wrap
-  selector: '#raje_root',
-
-  // Set the styles of the content wrapped inside the element
-  content_css: ['css/bootstrap.min.css', 'css/rash.css'],
-
-  // Set plugins
-  plugins: "fullscreen link codesample inline_code inline_quote section table noneditable",
-
-  // Remove menubar
-  menubar: false,
-
-  // Custom toolbar
-  toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table figure | section',
-
-  // Setup full screen on init
-  setup: function (editor) {
-
-    editor.on('init', function (e) {
-      editor.execCommand('mceFullScreen');
-    });
-  },
-
-  // Set default target
-  default_link_target: "_blank",
-
-  // Prepend protocol if the link starts with www
-  link_assume_external_targets: true,
-
-  // Hide target list
-  target_list: false,
-
-  // Hide title
-  link_title: false,
-
-  // Set formats
-  formats: {
-    inline_code: {
-      inline: 'code'
-    },
-    inline_quote: {
-      inline: 'q'
-    }
-  }
-});
-
 $(document).ready(function () {
   //hide footer
   $('footer.footer').hide()
 
   //attach whole body inside a placeholder div
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
+
+  tinymce.init({
+
+    // Select the element to wrap
+    selector: '#raje_root',
+
+    // Set the styles of the content wrapped inside the element
+    content_css: ['css/bootstrap.min.css', 'css/rash.css'],
+
+    // Set plugins
+    plugins: "fullscreen link codesample inline_code inline_quote section table noneditable",
+
+    // Remove menubar
+    menubar: false,
+
+    // Custom toolbar
+    toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table figure | section',
+
+    // Setup full screen on init
+    setup: function (editor) {
+
+      editor.on('init', function (e) {
+        editor.execCommand('mceFullScreen');
+      });
+    },
+
+    // Set default target
+    default_link_target: "_blank",
+
+    // Prepend protocol if the link starts with www
+    link_assume_external_targets: true,
+
+    // Hide target list
+    target_list: false,
+
+    // Hide title
+    link_title: false,
+
+    // Set formats
+    formats: {
+      inline_code: {
+        inline: 'code'
+      },
+      inline_quote: {
+        inline: 'q'
+      },
+
+      sections: {
+        block: 'section'
+      },
+      heading: {
+        block: 'h1'
+      }
+    }
+  });
 })
 
 /**
@@ -83,6 +90,9 @@ tinymce.PluginManager.add('inline_code', function (editor, url) {
   });
 });
 
+/**
+ *  Inline quote plugin RAJE
+ */
 tinymce.PluginManager.add('inline_quote', function (editor, url) {
 
   // Add a button that handle the inline element
@@ -118,7 +128,7 @@ tinymce.PluginManager.add('section', function (editor, url) {
     }, {
       text: 'Heading 1.',
       onclick: function () {
-        Rajemce.section.insertRaw(1)
+        Rajemce.section.insert(1)
       }
     }, {
       text: 'Heading 1.1.',
@@ -210,8 +220,26 @@ Rajemce = {
         // It doesn't work
         headingDimension()
 
+        tinymce.activeEditor.execCommand('mceRepaint')
+
         console.log(dom('section'))
       }
+    },
+
+    insert: function(){
+
+      // Select current node
+      let selectedElement = tinymce.activeEditor.selection.getNode()
+      let newSection = dom(`<section><h1>${dom(selectedElement).html()}</h1><p></p></section>`)
+
+      // Attach the element to the parent section
+      dom(selectedElement).parent('section').after(newSection)
+
+      // Remove the selected section
+      dom(selectedElement).remove()
+
+      // Add the change to the undo manager
+      tinymce.activeEditor.undoManager.add()
     }
   }
 }
