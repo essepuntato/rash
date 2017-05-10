@@ -135,6 +135,26 @@ tinymce.PluginManager.add('section', function (editor, url) {
       onclick: function () {
         Rajemce.section.insert(2)
       }
+    }, {
+      text: 'Heading 1.1.1.',
+      onclick: function () {
+        Rajemce.section.insert(3)
+      }
+    }, {
+      text: 'Heading 1.1.1.1.',
+      onclick: function () {
+        Rajemce.section.insert(4)
+      }
+    }, {
+      text: 'Heading 1.1.1.1.1.',
+      onclick: function () {
+        Rajemce.section.insert(5)
+      }
+    }, {
+      text: 'Heading 1.1.1.1.1.1.',
+      onclick: function () {
+        Rajemce.section.insert(6)
+      }
     }]
   })
 })
@@ -189,33 +209,40 @@ Rajemce = {
 
       // Select current node
       let selectedElement = tinymce.activeEditor.selection.getNode()
+      let id = this.getNextId()
 
       // Create the section
-      let newSection = dom(`<section><h1>${ZERO_SPACE}${dom(selectedElement).html().trim()}</h1></section>`)
+      let newSection = dom(`<section id="${id}"><h${level}>${ZERO_SPACE}${dom(selectedElement).html().trim()}</h${level}></section>`)
 
       // Check what kind of section needs to be inserted
-      let deepness = dom(selectedElement).parentsUntil('body#tinymce').length - level
+      let deep = dom(selectedElement).parentsUntil('body#tinymce').length
+      let deepness = deep - level + 1
 
       if (deepness >= 0) {
 
-        // CASE: a new sub section
-        if (deepness == 0) {
-          dom(selectedElement).after(newSection)
-        } 
-        
-        // CASE: an ancestor section at any uplevel
-        else {
-
-          // Get direct parent and ancestor reference
-          let ancestorSection = dom(dom(selectedElement).parents('section')[deepness])
-          let parentSection = dom(selectedElement).parent('section')
-
+        // Check if the selected element has next sibling
+        if (this.checkHasNext(selectedElement, deep)) {
           // Clone and remove all next elements
           let successiveElements = $(selectedElement).nextAll().clone()
           $(selectedElement).nextAll().remove()
 
           // Append cloned element and add the new section
           newSection.append(successiveElements)
+        }
+
+        // CASE: a new sub section
+        if (deepness == 0) {
+          dom(selectedElement).after(newSection)
+        }
+
+        // CASE: an ancestor section at any uplevel
+        else {
+
+          // Get direct parent and ancestor reference
+          let ancestorSection = dom(dom(selectedElement).parents('section')[deepness - 1])
+          let parentSection = dom(selectedElement).parent('section')
+
+          //Add the new section
           ancestorSection.after(newSection)
         }
 
@@ -224,12 +251,38 @@ Rajemce = {
 
         // Refresh tinymce content and set the heading dimension
         tinymce.triggerSave()
-        headingDimension()
 
         // Add the change to the undo manager
         tinymce.activeEditor.undoManager.add()
         tinymce.activeEditor.setContent(tinymce.activeEditor.getContent())
       }
+    },
+
+    checkHasNext: function (selectedElement, deepness) {
+      let hasNext = dom(selectedElement).next().length > 0
+
+      if (!hasNext) {
+
+        while (deepness > 0) {
+
+          hasNext = dom(dom(selectedElement).parents('section')[deepness]).next().length > 0
+
+          deepness--
+        }
+      }
+
+      return hasNext
+    },
+
+    getNextId: function () {
+      let id = 1
+      dom('section[id]').each(function () {
+        if (dom(this).attr('id').indexOf('section') > -1) {
+          let currId = parseInt(dom(this).attr('id').replace('section', ''))
+          id = id > currId ? id : currId
+        }
+      })
+      return `section${id+1}`
     }
   }
 }
@@ -249,3 +302,12 @@ function headingDimension() {
   });
   /* /END Heading dimensions */
 }
+
+jQuery.fn.extend({
+  updateChildrenHeading: function () {
+    $(this).find('h1,h2,h3,h4,h5,h6').each(function () {
+      let l = dom(this).parentsUntil('body#tinymce').length + 1
+      dom(this).html(`<h${l}>${dom(this).html()}</h${l}>`)
+    })
+  }
+})
