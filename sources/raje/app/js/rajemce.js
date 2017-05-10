@@ -133,7 +133,7 @@ tinymce.PluginManager.add('section', function (editor, url) {
     }, {
       text: 'Heading 1.1.',
       onclick: function () {
-        Rajemce.section.insertRaw(2)
+        Rajemce.section.insert(2)
       }
     }]
   })
@@ -185,61 +185,51 @@ Rajemce = {
 
   // Section functions
   section: {
-    insertRaw: function (level) {
-
-      // Reference of the selected element
-      let selectedElement = tinymce.activeEditor.selection.getNode()
-
-      // HTML string to insert
-      let text = ''
-      let newSection = `<section><h1>${ZERO_SPACE}`
-
-      // Get deepness of the current section and add section closures 
-      let deepness = dom(selectedElement).parentsUntil('body#tinymce').length - level + 1
-
-      if (deepness == 0)
-        newSection += '</section>'
-
-      // Block all non-permitted behaviours
-      if (deepness >= 0) {
-
-        while (deepness > 0) {
-          text += '</section>'
-          deepness--
-        }
-
-        // Full text to insert with p text
-        newSection = text + newSection + `${dom(selectedElement).text()}</h1>`
-
-        // Delete preceding element
-        dom(selectedElement).remove()
-
-        // Close current section and open the new one
-        tinymce.activeEditor.execCommand('mceInsertRawHtml', false, newSection)
-
-        // It doesn't work
-        headingDimension()
-
-        tinymce.activeEditor.execCommand('mceRepaint')
-
-        console.log(dom('section'))
-      }
-    },
-
-    insert: function(){
+    insert: function (level) {
 
       // Select current node
       let selectedElement = tinymce.activeEditor.selection.getNode()
-      let newSection = dom(`<section><h1>${dom(selectedElement).html()}</h1><p></p></section>`)
 
-      // Attach the element to the parent section
-      dom(selectedElement).parent('section').after(newSection)
+      // Create the section
+      let newSection = dom(`<section><h1>${ZERO_SPACE}${dom(selectedElement).html().trim()}</h1></section>`)
 
-      // Remove the selected section
-      dom(selectedElement).remove()
+      // Check what kind of section needs to be inserted
+      let deepness = dom(selectedElement).parentsUntil('body#tinymce').length - level
 
-      // Add the change to the undo manager
-      tinymce.activeEditor.undoManager.add()
+      if (deepness >= 0) {
+
+        // CASE: a new sub section
+        if (deepness == 0) {
+          dom(selectedElement).after(newSection)
+        } 
+        
+        // CASE: an ancestor section at any uplevel
+        else {
+
+          // Get direct parent and ancestor reference
+          let ancestorSection = dom(dom(selectedElement).parents('section')[deepness])
+          let parentSection = dom(selectedElement).parent('section')
+
+          // Clone and remove all next elements
+          let successiveElements = $(selectedElement).nextAll().clone()
+          $(selectedElement).nextAll().remove()
+
+          // Append cloned element and add the new section
+          newSection.append(successiveElements)
+          ancestorSection.after(newSection)
+        }
+
+        // Remove the selected section
+        dom(selectedElement).remove()
+
+        // Refresh tinymce content and set the heading dimension
+        tinymce.triggerSave()
+        headingDimension()
+
+        // Add the change to the undo manager
+        tinymce.activeEditor.undoManager.add()
+        tinymce.activeEditor.setContent(tinymce.activeEditor.getContent())
+      }
     }
   }
 }
