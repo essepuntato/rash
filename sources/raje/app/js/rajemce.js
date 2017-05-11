@@ -246,40 +246,42 @@ Rajemce = {
       let newSection = dom(`<section id="${id}"><h${level}>${ZERO_SPACE}${dom(selectedElement).html().trim()}</h${level}></section>`)
 
       // Check what kind of section needs to be inserted
-      let deep = dom(selectedElement).parentsUntil(RAJE_SELECTOR).length + 1
-      let deepness = deep - level
+      let deepness = dom(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
 
       if (deepness >= 0) {
 
         // Get direct parent and ancestor reference
         let parentSection = $(selectedElement).parent('section')
-        let ancestorSection = dom(dom(selectedElement).parents('section')[deepness - 1])
+        let ancestorSection = $($(selectedElement).parents('section')[deepness - 1])
         let successiveElements
-
-        // Check if the selected element or the parent section have next siblings, then clone and remove them
-        if ($(selectedElement).next().length) {
-
-          successiveElements = $(selectedElement).nextAll().clone()
-          $(selectedElement).nextAll().remove()
-
-        } else if (parentSection.next().length) {
-
-          successiveElements = parentSection.nextAll().clone()
-          parentSection.nextAll().remove()
-
-        }
-
-        // Append cloned element and add the new section
-        newSection.append(successiveElements)
 
         // CASE: a new sub section
         if (deepness == 0)
           dom(selectedElement).after(newSection)
 
+        else if (deepness == 1)
+          parentSection.after(newSection)
 
         // CASE: an ancestor section at any uplevel
-        else
+        else {
+          // Check if the selected element or the parent section have next siblings, then clone and remove them
+          if ($(selectedElement).next().length) {
+
+            successiveElements = $(selectedElement).nextAll().clone()
+            $(selectedElement).nextAll().remove()
+
+          } else if (parentSection.next().length) {
+
+            successiveElements = parentSection.nextAll().clone()
+            parentSection.nextAll().remove()
+          }
+
+          // Append cloned element and add the new section
+          newSection.append(successiveElements)
+
+          // Attach the new section 
           ancestorSection.after(newSection)
+        }
 
         // Remove the selected section
         dom(selectedElement).remove()
@@ -291,6 +293,7 @@ Rajemce = {
         tinymce.activeEditor.undoManager.add()
       }
     },
+
     getNextId: function () {
       let id = 1
       dom('section[id]').each(function () {
@@ -300,24 +303,8 @@ Rajemce = {
         }
       })
       return `section${id+1}`
-    }
+    },
   }
-}
-
-// Modularize rash
-
-function headingDimension() {
-  /* Heading dimensions */
-  $("h1").each(function () {
-    var counter = 0;
-    $(this).parents("section").each(function () {
-      if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
-        counter++;
-      }
-    });
-    $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
-  });
-  /* /END Heading dimensions */
 }
 
 jQuery.fn.extend({
