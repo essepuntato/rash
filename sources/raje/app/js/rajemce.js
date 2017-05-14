@@ -76,8 +76,8 @@ $(document).ready(function () {
         if (e.keyCode == 13) {
 
           // When enter is pressed inside an header, not at the end of it
-          if (selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
-            
+          if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
+
             return false
           }
         }
@@ -269,38 +269,23 @@ Rajemce = {
         // Get direct parent and ancestor reference
         let parentSection = $(selectedElement).parent('section')
         let ancestorSection = $($(selectedElement).parents('section')[deepness - 1])
-        let successiveElements
+        let successiveElements = this.getSuccessiveElements($(selectedElement), deepness)
+
+        newSection.append(successiveElements)
 
         // CASE: a new sub section
         if (deepness == 0)
-          dom(selectedElement).after(newSection)
+          $(selectedElement).after(newSection)
 
         else if (deepness == 1)
           parentSection.after(newSection)
 
         // CASE: an ancestor section at any uplevel
-        else {
-          // Check if the selected element or the parent section have next siblings, then clone and remove them
-          if ($(selectedElement).next().length) {
-
-            successiveElements = $(selectedElement).nextAll().clone()
-            $(selectedElement).nextAll().remove()
-
-          } else if (parentSection.next().length) {
-
-            successiveElements = parentSection.nextAll().clone()
-            parentSection.nextAll().remove()
-          }
-
-          // Append cloned element and add the new section
-          newSection.append(successiveElements)
-
-          // Attach the new section 
+        else
           ancestorSection.after(newSection)
-        }
 
         // Remove the selected section
-        dom(selectedElement).remove()
+        $(selectedElement).remove()
 
         // Refresh tinymce content and set the heading dimension
         tinymce.triggerSave()
@@ -320,6 +305,24 @@ Rajemce = {
       })
       return `section${id+1}`
     },
+
+    getSuccessiveElements: function (element, deepness) {
+
+      let successiveElements = $('<div></div>')
+
+      while (deepness > 0) {
+
+        if (element.nextAll(':not(.footer)')) {
+          successiveElements.append(element.nextAll())
+          element.nextAll().remove()
+        }
+
+        element = element.parent('section')
+        deepness--
+      }
+
+      return successiveElements.html()
+    }
   }
 }
 
