@@ -66,6 +66,22 @@ $(document).ready(function () {
 
         tinymce.triggerSave()
       })
+
+      editor.on('keyDown', function (e) {
+
+        // instance of the selected element
+        let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+        // When press enter
+        if (e.keyCode == 13) {
+
+          // When enter is pressed inside an header, not at the end of it
+          if (selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
+            
+            return false
+          }
+        }
+      })
     },
 
     // Set default target
