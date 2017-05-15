@@ -354,6 +354,9 @@ Rajemce = {
       return successiveElements.html()
     },
 
+    /**
+     * 
+     */
     getLevelFromHash: function (text) {
 
       let level = 0
@@ -370,11 +373,17 @@ Rajemce = {
       return level
     },
 
+    /**
+     * Return JQeury object that represent the section
+     */
     createSection: function (text, level) {
       // Create the section
       return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
     },
 
+    /**
+     * Check what kind of section needs to be added, and preceed
+     */
     manageSection: function (selectedElement, newSection, level) {
 
       let deepness = $(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
@@ -401,6 +410,9 @@ Rajemce = {
       }
     },
 
+    /**
+     * Refresh editor and save the transaction inside the Undo buffer
+     */
     commit: function () {
 
       // Refresh tinymce content and set the heading dimension
@@ -410,6 +422,9 @@ Rajemce = {
       tinymce.activeEditor.undoManager.add()
     },
 
+    /**
+     * 
+     */
     upgrade: function () {
 
       // Get the references of selected and parent section
@@ -419,40 +434,49 @@ Rajemce = {
       // If there is a parent section upgrade is allowed
       if (parentSection.length) {
 
-        // Save the section and detach
-        let bodySection = $(selectedSection[0].outerHTML)
-        selectedSection.detach()
+        // Everything in here, is an atomic undo level
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        // Update dimension and move the section out
-        parentSection.after(bodySection)
+          // Save the section and detach
+          let bodySection = $(selectedSection[0].outerHTML)
+          selectedSection.detach()
 
-        tinymce.triggerSave()
-        bodySection.headingDimension()
+          // Update dimension and move the section out
+          parentSection.after(bodySection)
 
-        // commit
-        this.commit()
+          // Refresh tinymce content and set the heading dimension
+          bodySection.headingDimension()
+          tinymce.triggerSave()
+        })
       }
     },
 
+    /**
+     * 
+     */
     downgrade: function () {
 
+      // Get the references of selected and sibling section
       let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
       let siblingSection = selectedSection.prev('section')
 
+      // If there is a previous sibling section downgrade is allowed
       if (siblingSection.length) {
 
-        let bodySection = $(selectedSection[0].outerHTML)
-        selectedSection.detach()
+        // Everything in here, is an atomic undo level
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        // Update dimension and move the section out
-        siblingSection.append(bodySection)
+          // Save the section and detach
+          let bodySection = $(selectedSection[0].outerHTML)
+          selectedSection.detach()
 
-        // Refresh tinymce content and set the heading dimension
-        tinymce.triggerSave()
-        bodySection.headingDimension()
+          // Update dimension and move the section out
+          siblingSection.append(bodySection)
 
-        // commit
-        this.commit()
+          // Refresh tinymce content and set the heading dimension
+          bodySection.headingDimension()
+          tinymce.triggerSave()
+        })
       }
     }
   }
