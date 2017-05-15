@@ -351,7 +351,7 @@ Rajemce = {
         deepness--
       }
 
-      return successiveElements.html()
+      return $(successiveElements.html())
     },
 
     /**
@@ -393,7 +393,7 @@ Rajemce = {
         // Get direct parent and ancestor reference
         let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
 
-        if (successiveElements)
+        if (successiveElements.length)
           newSection.append(successiveElements)
 
         // CASE: sub section
@@ -407,6 +407,8 @@ Rajemce = {
         // CASE: ancestor section at any uplevel
         else
           $(selectedElement.parents('section')[deepness - 1]).after(newSection)
+
+        newSection.headingDimension()
       }
     },
 
