@@ -47,6 +47,7 @@ $(document).ready(function () {
       // Event triggered every time the selected element change
       editor.on('NodeChange', function (e) {
 
+        /*
         // disable all section button
         for (let i = SECTION_MENU_BASE; i < 8; i++)
           tinyMCE.activeEditor.buttons['section'].menu[i].disabled = true
@@ -65,6 +66,7 @@ $(document).ready(function () {
         }
 
         tinymce.triggerSave()
+        */
       })
 
       editor.on('keyDown', function (e) {
@@ -78,6 +80,7 @@ $(document).ready(function () {
           // When enter is pressed inside an header, not at the end of it
           if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
 
+            Rajemce.section.addWithEnter(selectedElement.parentsUntil(RAJE_SELECTOR).length)
             return false
           }
         }
@@ -176,32 +179,32 @@ tinymce.PluginManager.add('section', function (editor, url) {
     }, {
       text: 'Heading 1.',
       onclick: function () {
-        Rajemce.section.insert(1)
+        Rajemce.section.add(1)
       }
     }, {
       text: 'Heading 1.1.',
       onclick: function () {
-        Rajemce.section.insert(2)
+        Rajemce.section.add(2)
       }
     }, {
       text: 'Heading 1.1.1.',
       onclick: function () {
-        Rajemce.section.insert(3)
+        Rajemce.section.add(3)
       }
     }, {
       text: 'Heading 1.1.1.1.',
       onclick: function () {
-        Rajemce.section.insert(4)
+        Rajemce.section.add(4)
       }
     }, {
       text: 'Heading 1.1.1.1.1.',
       onclick: function () {
-        Rajemce.section.insert(5)
+        Rajemce.section.add(5)
       }
     }, {
       text: 'Heading 1.1.1.1.1.1.',
       onclick: function () {
-        Rajemce.section.insert(6)
+        Rajemce.section.add(6)
       }
     }]
   })
@@ -252,49 +255,52 @@ Rajemce = {
 
   // Section functions
   section: {
-    insert: function (level) {
+
+    /**
+     * Function called when a new section needs to be attached, with buttons
+     */
+    add: function (level) {
 
       // Select current node
-      let selectedElement = tinymce.activeEditor.selection.getNode()
-      let id = this.getNextId()
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // Create the section
-      let newSection = dom(`<section id="${id}"><h${level}>${ZERO_SPACE}${dom(selectedElement).html().trim()}</h${level}></section>`)
+      let newSection = this.createSection(selectedElement.html().trim(), level)
 
       // Check what kind of section needs to be inserted
-      let deepness = dom(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
+      this.manageSection(selectedElement, newSection, level)
 
-      if (deepness >= 0) {
+      // Remove the selected section
+      selectedElement.remove()
 
-        // Get direct parent and ancestor reference
-        let parentSection = $(selectedElement).parent('section')
-        let ancestorSection = $($(selectedElement).parents('section')[deepness - 1])
-        let successiveElements = this.getSuccessiveElements($(selectedElement), deepness)
-
-        newSection.append(successiveElements)
-
-        // CASE: a new sub section
-        if (deepness == 0)
-          $(selectedElement).after(newSection)
-
-        else if (deepness == 1)
-          parentSection.after(newSection)
-
-        // CASE: an ancestor section at any uplevel
-        else
-          ancestorSection.after(newSection)
-
-        // Remove the selected section
-        $(selectedElement).remove()
-
-        // Refresh tinymce content and set the heading dimension
-        tinymce.triggerSave()
-
-        // Add the change to the undo manager
-        tinymce.activeEditor.undoManager.add()
-      }
+      // Update editor and add transaction to the undo buffer
+      this.commit()
     },
 
+    /**
+     * Function called when a new section needs to be attached, with buttons
+     */
+    addWithEnter: function (level) {
+
+      // Select current node
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+      // Create the section
+      let newSection = this.createSection(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
+
+      // Check what kind of section needs to be inserted
+      this.manageSection(selectedElement, newSection, level)
+
+      // Remove the selected section
+      selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
+
+      // Update editor and add transaction to the undo buffer
+      this.commit()
+    },
+
+    /**
+     * Get the last inserted id
+     */
     getNextId: function () {
       let id = 1
       dom('section[id]').each(function () {
@@ -306,15 +312,25 @@ Rajemce = {
       return `section${id+1}`
     },
 
+    /**
+     * Retrieve and then remove every successive elements 
+     */
     getSuccessiveElements: function (element, deepness) {
 
       let successiveElements = $('<div></div>')
 
-      while (deepness > 0) {
+      while (deepness >= 0) {
 
         if (element.nextAll(':not(.footer)')) {
-          successiveElements.append(element.nextAll())
-          element.nextAll().remove()
+
+          // If the deepness is 0, only paragraph are saved (not sections)
+          if (deepness == 0) {
+            successiveElements.append(element.nextAll('p'))
+            element.nextAll().remove('p')
+          } else {
+            successiveElements.append(element.nextAll())
+            element.nextAll().remove()
+          }
         }
 
         element = element.parent('section')
@@ -322,6 +338,45 @@ Rajemce = {
       }
 
       return successiveElements.html()
+    },
+
+    createSection: function (text, level) {
+      // Create the section
+      return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
+    },
+
+    manageSection: function (selectedElement, newSection, level) {
+
+      let deepness = $(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
+
+      if (deepness >= 0) {
+
+        // Get direct parent and ancestor reference
+        let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
+
+        newSection.append(successiveElements)
+
+        // CASE: sub section
+        if (deepness == 0)
+          selectedElement.after(newSection)
+
+        // CASE: sibling section
+        else if (deepness == 1)
+          selectedElement.parent('section').after(newSection)
+
+        // CASE: ancestor section at any uplevel
+        else
+          $(selectedElement.parents('section')[deepness - 1]).after(newSection)
+      }
+    },
+
+    commit: function () {
+
+      // Refresh tinymce content and set the heading dimension
+      tinymce.triggerSave()
+
+      // Add the change to the undo manager
+      tinymce.activeEditor.undoManager.add()
     }
   }
 }
