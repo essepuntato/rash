@@ -80,8 +80,14 @@ $(document).ready(function () {
           // When enter is pressed inside an header, not at the end of it
           if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
 
-            Rajemce.section.addWithEnter(selectedElement.parentsUntil(RAJE_SELECTOR).length)
+            Rajemce.section.addWithEnter()
             return false
+          }
+
+          if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
+            let level = Rajemce.section.getLevelFromHash(selectedElement.text().trim())
+
+            Rajemce.section.add(level, selectedElement.text().substring(level).trim())
           }
         }
       })
@@ -259,16 +265,16 @@ Rajemce = {
     /**
      * Function called when a new section needs to be attached, with buttons
      */
-    add: function (level) {
+    add: function (level, text) {
 
       // Select current node
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // Create the section
-      let newSection = this.createSection(selectedElement.html().trim(), level)
+      let newSection = this.createSection(text ? text : selectedElement.html().trim(), level)
 
       // Check what kind of section needs to be inserted
-      this.manageSection(selectedElement, newSection, level)
+      this.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
 
       // Remove the selected section
       selectedElement.remove()
@@ -289,7 +295,7 @@ Rajemce = {
       let newSection = this.createSection(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
       // Check what kind of section needs to be inserted
-      this.manageSection(selectedElement, newSection, level)
+      this.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
 
       // Remove the selected section
       selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
@@ -340,6 +346,22 @@ Rajemce = {
       return successiveElements.html()
     },
 
+    getLevelFromHash: function (text) {
+
+      let level = 0
+      text = text.substring(0, text.length >= 6 ? 6 : text.length)
+
+      while (text.length > 0) {
+
+        if (text.substring(text.length - 1) == '#')
+          level++
+
+          text = text.substring(0, text.length - 1)
+      }
+
+      return level
+    },
+
     createSection: function (text, level) {
       // Create the section
       return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
@@ -354,7 +376,8 @@ Rajemce = {
         // Get direct parent and ancestor reference
         let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
 
-        newSection.append(successiveElements)
+        if (successiveElements)
+          newSection.append(successiveElements)
 
         // CASE: sub section
         if (deepness == 0)
