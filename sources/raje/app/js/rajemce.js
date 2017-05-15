@@ -279,14 +279,17 @@ Rajemce = {
       // Create the section
       let newSection = this.createSection(text ? text : selectedElement.html().trim(), level)
 
-      // Check what kind of section needs to be inserted
-      this.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
+      tinymce.activeEditor.undoManager.transact(function () {
 
-      // Remove the selected section
-      selectedElement.remove()
+        // Check what kind of section needs to be inserted
+        Rajemce.section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
 
-      // Update editor and add transaction to the undo buffer
-      this.commit()
+        // Remove the selected section
+        selectedElement.remove()
+
+        // Update editor content
+        tinymce.triggerSave()
+      })
     },
 
     /**
@@ -302,14 +305,17 @@ Rajemce = {
       // Create the section
       let newSection = this.createSection(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
-      // Check what kind of section needs to be inserted
-      this.manageSection(selectedElement, newSection, level)
+      tinymce.activeEditor.undoManager.transact(function () {
 
-      // Remove the selected section
-      selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
+        // Check what kind of section needs to be inserted
+        this.manageSection(selectedElement, newSection, level)
 
-      // Update editor and add transaction to the undo buffer
-      this.commit()
+        // Remove the selected section
+        selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
+
+        // Update editor
+        tinymce.triggerSave()
+      })
     },
 
     /**
@@ -378,7 +384,7 @@ Rajemce = {
      */
     createSection: function (text, level) {
       // Create the section
-      return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
+      return $(`<section data-pointer id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
     },
 
     /**
