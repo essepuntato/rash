@@ -18,6 +18,8 @@ $(document).ready(function () {
   //attach whole body inside a placeholder div
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
+  $('header.page-header').addClass('mceNonEditable')
+
   tinymce.init({
 
     // Select the element to wrap
@@ -44,31 +46,34 @@ $(document).ready(function () {
         editor.execCommand('mceFullScreen')
       })
 
-      /*
-            // Event triggered every time the selected element change
-            editor.on('NodeChange', function (e) {
 
-              
-              // disable all section button
-              for (let i = SECTION_MENU_BASE; i < 8; i++)
-                tinyMCE.activeEditor.buttons['section'].menu[i].disabled = true
+      // Event triggered every time the selected element change
+      editor.on('NodeChange', function (e) {
 
-              // Save the reference of the selected node
-              let selectedElement = tinymce.activeEditor.selection.getNode()
+        Rajemce.section.updateSectionStructure()
 
-              // Check if the selected node is a paragraph only here can be added a new section
-              if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
+        /*
+        // disable all section button
+        for (let i = SECTION_MENU_BASE; i < 8; i++)
+          tinyMCE.activeEditor.buttons['section'].menu[i].disabled = true
 
-                // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
-                let deepness = SECTION_MENU_BASE + dom(selectedElement).parents('section').length + 1
-                for (let x = SECTION_MENU_BASE; x < deepness; x++) {
-                  tinyMCE.activeEditor.buttons['section'].menu[x].disabled = false
-                }
-              }
+        // Save the reference of the selected node
+        let selectedElement = tinymce.activeEditor.selection.getNode()
 
-              tinymce.triggerSave()
-            })
-      */
+        // Check if the selected node is a paragraph only here can be added a new section
+        if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
+
+          // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
+          let deepness = SECTION_MENU_BASE + dom(selectedElement).parents('section').length + 1
+          for (let x = SECTION_MENU_BASE; x < deepness; x++) {
+            tinyMCE.activeEditor.buttons['section'].menu[x].disabled = false
+          }
+        }
+
+        tinymce.triggerSave()
+        */
+      })
+
       editor.on('keyDown', function (e) {
 
         // instance of the selected element
@@ -289,6 +294,8 @@ Rajemce = {
 
         // Update editor content
         tinymce.triggerSave()
+
+        $(`#${newSection.attr('id')}>h${level}:first-child`).moveCursorAtEnd()
       })
     },
 
@@ -308,13 +315,15 @@ Rajemce = {
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check what kind of section needs to be inserted
-        this.manageSection(selectedElement, newSection, level)
+        Rajemce.section.manageSection(selectedElement, newSection, level)
 
         // Remove the selected section
         selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
         // Update editor
         tinymce.triggerSave()
+
+        $(`#${newSection.attr('id')}>h${level}:first-child`).moveCursorAtStart()
       })
     },
 
@@ -384,7 +393,7 @@ Rajemce = {
      */
     createSection: function (text, level) {
       // Create the section
-      return $(`<section data-pointer id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
+      return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
     },
 
     /**
@@ -486,7 +495,30 @@ Rajemce = {
           tinymce.triggerSave()
         })
       }
-    }
+    },
+
+    /**
+     * 
+     */
+    updateSectionStructure: function () {
+
+
+      
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      let ancestorSection = selectedElement.parentsUntil(RAJE_SELECTOR)
+
+      ancestorSection.find('section').each(function () {
+
+        if ($(this).children('h1,h2,h3,h4,h5,h6').length == 0) {
+
+          console.log(tinymce.activeEditor.selection.getNode())
+
+          selectedElement.after($(this).html())
+          ancestorSection.headingDimension()
+          $(this).detach()
+        }
+      })
+    },
   }
 }
 
@@ -501,5 +533,16 @@ jQuery.fn.extend({
       });
       $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
     });
+  },
+
+  moveCursorAtEnd: function () {
+
+    tinymce.activeEditor.selection.setCursorLocation($(this)[0], 0)
+    tinymce.activeEditor.focus()
+  },
+
+  moveCursorAtStart: function () {
+    tinymce.activeEditor.selection.setCursorLocation($(this)[0], 0)
+    tinymce.activeEditor.focus()
   }
 })
