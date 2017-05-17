@@ -499,23 +499,29 @@ Rajemce = {
 
     /**
      * 
+     * After any delete, the editor must update the unvalidated elements
      */
     updateSectionStructure: function () {
 
-
-      
+      // Save selected element and ancestor section references
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
       let ancestorSection = selectedElement.parentsUntil(RAJE_SELECTOR)
 
+      // Looking for section without heading
       ancestorSection.find('section').each(function () {
-
         if ($(this).children('h1,h2,h3,h4,h5,h6').length == 0) {
 
-          console.log(tinymce.activeEditor.selection.getNode())
-
+          // Move the body of the removed section after the selected 
           selectedElement.after($(this).html())
+
+          // Refresh headings
           ancestorSection.headingDimension()
+
+          // Detach the section
           $(this).detach()
+
+          // Break 
+          return false
         }
       })
     },
