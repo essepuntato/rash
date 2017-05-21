@@ -9,7 +9,7 @@ let dom = tinymce.dom.DomQuery
 // Invisible space constant
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
-const SECTION_MENU_BASE = 2
+let flag = false
 
 $(document).ready(function () {
   //hide footer
@@ -29,13 +29,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample inline_code inline_quote section table noneditable",
+    plugins: "fullscreen link codesample inline_code inline_quote section table noneditable raje_figure",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table figure | section',
+    toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table raje_figure | section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -44,34 +44,6 @@ $(document).ready(function () {
       editor.on('init', function (e) {
 
         editor.execCommand('mceFullScreen')
-      })
-
-
-      // Event triggered every time the selected element change
-      editor.on('NodeChange', function (e) {
-
-        Rajemce.section.updateSectionStructure()
-
-        /*
-        // disable all section button
-        for (let i = SECTION_MENU_BASE; i < 8; i++)
-          tinyMCE.activeEditor.buttons['section'].menu[i].disabled = true
-
-        // Save the reference of the selected node
-        let selectedElement = tinymce.activeEditor.selection.getNode()
-
-        // Check if the selected node is a paragraph only here can be added a new section
-        if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
-
-          // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
-          let deepness = SECTION_MENU_BASE + dom(selectedElement).parents('section').length + 1
-          for (let x = SECTION_MENU_BASE; x < deepness; x++) {
-            tinyMCE.activeEditor.buttons['section'].menu[x].disabled = false
-          }
-        }
-
-        tinymce.triggerSave()
-        */
       })
 
       editor.on('keyDown', function (e) {
@@ -85,7 +57,7 @@ $(document).ready(function () {
           // When enter is pressed inside an header, not at the end of it
           if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
 
-            Rajemce.section.addWithEnter()
+            section.addWithEnter()
             return false
           }
 
@@ -97,9 +69,6 @@ $(document).ready(function () {
           }*/
         }
       })
-
-
-
     },
 
     // Set default target
@@ -121,13 +90,6 @@ $(document).ready(function () {
       },
       inline_quote: {
         inline: 'q'
-      },
-
-      sections: {
-        block: 'section'
-      },
-      heading: {
-        block: 'h1'
       }
     },
 
@@ -136,7 +98,7 @@ $(document).ready(function () {
   });
 })
 /**
- * Inline code plugin RAJE
+ * raje_inline_code plugin RAJE
  */
 tinymce.PluginManager.add('inline_code', function (editor, url) {
 
@@ -148,10 +110,26 @@ tinymce.PluginManager.add('inline_code', function (editor, url) {
 
     // Button behaviour
     onclick: function () {
-      Rajemce.inline.code.handle()
+      code.handle()
     }
-  });
-});
+  })
+
+  code = {
+    /**
+     * Insert or exit from inline code element
+     */
+    handle: function () {
+
+      let name = tinymce.activeEditor.selection.getNode().nodeName
+
+      if (name == 'CODE')
+        tinymce.activeEditor.formatter.remove('inline_code')
+
+      else
+        tinymce.activeEditor.formatter.apply('inline_code')
+    }
+  }
+})
 
 /**
  *  Inline quote plugin RAJE
@@ -166,10 +144,26 @@ tinymce.PluginManager.add('inline_quote', function (editor, url) {
 
     // Button behaviour
     onclick: function () {
-      Rajemce.inline.quote.handle()
+      quote.handle()
     }
-  });
-});
+  })
+
+  quote = {
+    /**
+     * Insert or exit from inline quote element
+     */
+    handle: function () {
+
+      let name = tinymce.activeEditor.selection.getNode().nodeName
+
+      if (name == 'Q')
+        tinymce.activeEditor.formatter.remove('inline_quote')
+
+      else
+        tinymce.activeEditor.formatter.apply('inline_quote')
+    }
+  }
+})
 
 /**
  * RASH section plugin RAJE
@@ -184,94 +178,78 @@ tinymce.PluginManager.add('section', function (editor, url) {
 
     // Sections sub menu
     menu: [{
-      text: 'Downgrade',
-      onclick: function () {
-        Rajemce.section.downgrade()
-      }
-    }, {
-      text: 'Upgrade',
-      onclick: function () {
-        Rajemce.section.upgrade()
-      }
-    }, {
       text: 'Heading 1.',
       onclick: function () {
-        Rajemce.section.add(1)
+        section.add(1)
       }
     }, {
       text: 'Heading 1.1.',
       onclick: function () {
-        Rajemce.section.add(2)
+        section.add(2)
       }
     }, {
       text: 'Heading 1.1.1.',
       onclick: function () {
-        Rajemce.section.add(3)
+        section.add(3)
       }
     }, {
       text: 'Heading 1.1.1.1.',
       onclick: function () {
-        Rajemce.section.add(4)
+        section.add(4)
       }
     }, {
       text: 'Heading 1.1.1.1.1.',
       onclick: function () {
-        Rajemce.section.add(5)
+        section.add(5)
       }
     }, {
       text: 'Heading 1.1.1.1.1.1.',
       onclick: function () {
-        Rajemce.section.add(6)
+        section.add(6)
       }
     }]
   })
-})
 
+  editor.on('keyDown', function (e) {
 
-/**
- * RajeMCE class
- * It contains every custom functions to attach to plugins
- */
-Rajemce = {
+    // Check if a deletion is called
+    if (e.keyCode == 8)
+      flag = true
+  })
 
-  // Inline elements
-  inline: {
+  editor.on('NodeChange', function (e) {
 
-    code: {
-      /**
-       * Insert or exit from inline code element
-       */
-      handle: function () {
+    //tinymce.activeEditor.controlManager.get('section').setDisabled(true);
+    /*
 
-        let name = tinymce.activeEditor.selection.getNode().nodeName
+    let menu = tinymce.activeEditor.buttons['section'].menu
 
-        if (name == 'CODE')
-          tinymce.activeEditor.formatter.remove('inline_code')
+    // Update button menu
+    for (let i = 0; i < 6; i++)
+      menu[i].disabled = true
 
-        else
-          tinymce.activeEditor.formatter.apply('inline_code')
-      }
-    },
+    // Save the reference of the selected node
+    let selectedElement = tinymce.activeEditor.selection.getNode()
 
-    quote: {
-      /**
-       * Insert or exit from inline quote element
-       */
-      handle: function () {
+    // Check if the selected node is a paragraph only here can be added a new section
+    if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
 
-        let name = tinymce.activeEditor.selection.getNode().nodeName
-
-        if (name == 'Q')
-          tinymce.activeEditor.formatter.remove('inline_quote')
-
-        else
-          tinymce.activeEditor.formatter.apply('inline_quote')
-      }
+      // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
+      let deepness = $(selectedElement).parents('section').length + 1
+      for (let i = 0; i < deepness; i++)
+        menu[i].disabled = false
     }
-  },
 
-  // Section functions
-  section: {
+    editor.theme.panel.find('toolbar buttongroup').repaint()
+    */
+
+    if (flag) {
+      flag = false
+      section.updateSectionStructure()
+    }
+  })
+
+  section = {
 
     /**
      * Function called when a new section needs to be attached, with buttons
@@ -287,15 +265,13 @@ Rajemce = {
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check what kind of section needs to be inserted
-        Rajemce.section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
+        section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
 
         // Remove the selected section
         selectedElement.remove()
 
         // Update editor content
         tinymce.triggerSave()
-
-        $(`#${newSection.attr('id')}>h${level}:first-child`).moveCursorAtEnd()
       })
     },
 
@@ -315,15 +291,13 @@ Rajemce = {
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check what kind of section needs to be inserted
-        Rajemce.section.manageSection(selectedElement, newSection, level)
+        section.manageSection(selectedElement, newSection, level)
 
         // Remove the selected section
         selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
         // Update editor
         tinymce.triggerSave()
-
-        $(`#${newSection.attr('id')}>h${level}:first-child`).moveCursorAtStart()
       })
     },
 
@@ -507,26 +481,71 @@ Rajemce = {
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
       let ancestorSection = selectedElement.parentsUntil(RAJE_SELECTOR)
 
-      // Looking for section without heading
-      ancestorSection.find('section').each(function () {
-        if ($(this).children('h1,h2,h3,h4,h5,h6').length == 0) {
+      // TODO update algorithm #issue96
 
-          // Move the body of the removed section after the selected 
-          selectedElement.after($(this).html())
+      // Get the list of the section without h1, those who have another section as first child
+      let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
 
-          // Refresh headings
-          ancestorSection.headingDimension()
+      // If there are sections to be removed
+      if (toRemoveSections.length > 0) {
 
-          // Detach the section
-          $(this).detach()
+        // Move everything after 
+        selectedElement.after(toRemoveSections.last().html())
 
-          // Break 
-          return false
-        }
-      })
+        toRemoveSections.first().remove()
+
+        ancestorSection.headingDimension()
+        tinymce.triggerSave()
+      }
     },
   }
-}
+
+})
+
+/**
+ * 
+ */
+tinymce.PluginManager.add('raje_figure', function (editor, url) {
+
+  // Add a button that handle the inline element
+  editor.addButton('raje_figure', {
+    text: 'raje_figure',
+    icon: false,
+    tooltip: 'Add figure',
+
+    // Button behaviour
+    onclick: function () {
+      figure.add()
+    }
+  })
+
+  figure = {
+    add: function () {
+
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+      // Create the section
+      let figure = `
+        <p>
+          <figure id="figure_1">
+              <p>
+                  <img src="http://i.imgur.com/DWySy0f.jpg" alt="The RASH logo!"/>
+              </p>
+              <figcaption>
+                  Caption of the figure inserted through the element 
+                  <code>img</code>.
+              </figcaption>
+          </figure>
+        </p>`
+
+      tinymce.activeEditor.undoManager.transact(function () {
+        selectedElement.after(figure)
+        tinymce.triggerSave()
+        caption()
+      })
+    }
+  }
+})
 
 jQuery.fn.extend({
   headingDimension: function () {
@@ -539,16 +558,5 @@ jQuery.fn.extend({
       });
       $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
     });
-  },
-
-  moveCursorAtEnd: function () {
-
-    tinymce.activeEditor.selection.setCursorLocation($(this)[0], 0)
-    tinymce.activeEditor.focus()
-  },
-
-  moveCursorAtStart: function () {
-    tinymce.activeEditor.selection.setCursorLocation($(this)[0], 0)
-    tinymce.activeEditor.focus()
   }
 })
