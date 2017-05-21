@@ -479,27 +479,36 @@ tinymce.PluginManager.add('section', function (editor, url) {
 
       // Save selected element and ancestor section references
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let ancestorSection = selectedElement.parentsUntil(RAJE_SELECTOR)
+      let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
 
       // TODO update algorithm #issue96
 
+      let toRemoveSections = []
+
+      ancestorSection.find('section').each(function () {
+
+        if ($(this).children().first().is('section')) {
+
+          toRemoveSections.push($(this))
+        }
+      })
+
       // Get the list of the section without h1, those who have another section as first child
-      let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
+      //let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
 
       // If there are sections to be removed
       if (toRemoveSections.length > 0) {
 
         // Move everything after 
-        selectedElement.after(toRemoveSections.last().html())
+        selectedElement.after(toRemoveSections[length].html())
 
-        toRemoveSections.first().remove()
+        toRemoveSections[0].remove()
 
-        ancestorSection.headingDimension()
+        ancestorSection.children('section').headingDimension()
         tinymce.triggerSave()
       }
     },
   }
-
 })
 
 /**
@@ -522,6 +531,7 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
   figure = {
     add: function () {
 
+      /*
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // Create the section
@@ -541,8 +551,8 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
       tinymce.activeEditor.undoManager.transact(function () {
         selectedElement.after(figure)
         tinymce.triggerSave()
-        caption()
       })
+      */
     }
   }
 })
