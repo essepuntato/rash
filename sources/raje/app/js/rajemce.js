@@ -29,13 +29,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample inline_code inline_quote section table noneditable raje_figure",
+    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table noneditable raje_figure",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript inline_code | blockquote table raje_figure | section',
+    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode | blockquote table raje_figure | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -100,7 +100,7 @@ $(document).ready(function () {
 /**
  * raje_inline_code plugin RAJE
  */
-tinymce.PluginManager.add('inline_code', function (editor, url) {
+tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
 
   // Add a button that opens a window
   editor.addButton('inline_code', {
@@ -134,7 +134,7 @@ tinymce.PluginManager.add('inline_code', function (editor, url) {
 /**
  *  Inline quote plugin RAJE
  */
-tinymce.PluginManager.add('inline_quote', function (editor, url) {
+tinymce.PluginManager.add('raje_inlineQuote', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('inline_quote', {
@@ -168,9 +168,9 @@ tinymce.PluginManager.add('inline_quote', function (editor, url) {
 /**
  * RASH section plugin RAJE
  */
-tinymce.PluginManager.add('section', function (editor, url) {
+tinymce.PluginManager.add('raje_section', function (editor, url) {
 
-  editor.addButton('section', {
+  editor.addButton('raje_section', {
     type: 'menubutton',
     text: 'Headings',
     title: 'heading',
@@ -260,7 +260,7 @@ tinymce.PluginManager.add('section', function (editor, url) {
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // Create the section
-      let newSection = this.createSection(text ? text : selectedElement.html().trim(), level)
+      let newSection = this.create(text ? text : selectedElement.html().trim(), level)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
@@ -286,7 +286,7 @@ tinymce.PluginManager.add('section', function (editor, url) {
       level = level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length
 
       // Create the section
-      let newSection = this.createSection(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
+      let newSection = this.create(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
@@ -306,9 +306,9 @@ tinymce.PluginManager.add('section', function (editor, url) {
      */
     getNextId: function () {
       let id = 1
-      dom('section[id]').each(function () {
-        if (dom(this).attr('id').indexOf('section') > -1) {
-          let currId = parseInt(dom(this).attr('id').replace('section', ''))
+      $('section[id]').each(function () {
+        if ($(this).attr('id').indexOf('section') > -1) {
+          let currId = parseInt($(this).attr('id').replace('section', ''))
           id = id > currId ? id : currId
         }
       })
@@ -365,7 +365,7 @@ tinymce.PluginManager.add('section', function (editor, url) {
     /**
      * Return JQeury object that represent the section
      */
-    createSection: function (text, level) {
+    create: function (text, level) {
       // Create the section
       return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
     },
@@ -524,35 +524,72 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
 
     // Button behaviour
     onclick: function () {
-      figure.add()
+
+
+      editor.windowManager.open({
+        title: 'Select image',
+        body: [{
+          type: 'textbox',
+          name: 'url',
+          label: 'url'
+        }, {
+          type: 'textbox',
+          name: 'alt',
+          label: 'alt'
+        }],
+        onSubmit: function (e) {
+          figure.add(e.data.url, e.data.alt)
+        }
+      })
     }
   })
 
   figure = {
-    add: function () {
 
-      /*
+    /**
+     * s
+     */
+    add: function (url, alt) {
+
+      // Get the referece of the selected element
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-      // Create the section
-      let figure = `
-        <p>
-          <figure id="figure_1">
-              <p>
-                  <img src="http://i.imgur.com/DWySy0f.jpg" alt="The RASH logo!"/>
-              </p>
-              <figcaption>
-                  Caption of the figure inserted through the element 
-                  <code>img</code>.
-              </figcaption>
-          </figure>
-        </p>`
+      if (selectedElement.text().trim().length != 0) {
+        let tmp = $('<p></p>')
+        selectedElement.after(tmp)
+
+        selectedElement = tmp
+      }
+
+      // Create the object of the figure
+      let newFigure = this.create(url, alt)
 
       tinymce.activeEditor.undoManager.transact(function () {
-        selectedElement.after(figure)
+
+        selectedElement.append(newFigure)
         tinymce.triggerSave()
       })
-      */
+    },
+
+    /**
+     * 
+     */
+    create: function (url, alt) {
+      return $(`<figure id="${this.getNextId()}"><p><img src="${url}" alt="${alt}"/></p><figcaption>Caption.</figcaption></figure>`)
+    },
+
+    /**
+     * 
+     */
+    getNextId: function () {
+      let id = 1
+      $('figurebox_selector').each(function () {
+        if ($(this).attr('id').indexOf('section') > -1) {
+          let currId = parseInt($(this).attr('id').replace('figure', ''))
+          id = id > currId ? id : currId
+        }
+      })
+      return `figure_${id+1}`
     }
   }
 })
