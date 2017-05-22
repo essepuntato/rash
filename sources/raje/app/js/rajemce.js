@@ -94,7 +94,10 @@ $(document).ready(function () {
     },
 
     // Remove "powered by tinymce"
-    branding: false
+    branding: false,
+
+    // Prevent auto br on element insert
+    apply_source_formatting : false
   });
 })
 /**
@@ -547,17 +550,19 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
   figure = {
 
     /**
-     * s
+     * 
      */
     add: function (url, alt) {
 
       // Get the referece of the selected element
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
+      // Check if the selected element is empty or not (thw way to append the figure depends on it)
       if (selectedElement.text().trim().length != 0) {
+        
+        // Add and select a new paragraph (where the figure is added)
         let tmp = $('<p></p>')
         selectedElement.after(tmp)
-
         selectedElement = tmp
       }
 
@@ -566,6 +571,7 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
 
       tinymce.activeEditor.undoManager.transact(function () {
 
+        // append the new figure
         selectedElement.append(newFigure)
         tinymce.triggerSave()
       })
