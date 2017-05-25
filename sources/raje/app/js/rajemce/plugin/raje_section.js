@@ -1,175 +1,4 @@
 /**
- * 
- * Initilize TinyMCE editor with all required options
- */
-
-// TinyMCE DomQuery variable
-let dom = tinymce.dom.DomQuery
-
-// Invisible space constant
-const ZERO_SPACE = '&#8203;'
-const RAJE_SELECTOR = 'body#tinymce'
-let flag = false
-
-$(document).ready(function () {
-  //hide footer
-  $('footer.footer').hide()
-
-  //attach whole body inside a placeholder div
-  $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
-
-  $('header.page-header').addClass('mceNonEditable')
-
-  tinymce.init({
-
-    // Select the element to wrap
-    selector: '#raje_root',
-
-    // Set the styles of the content wrapped inside the element
-    content_css: ['css/bootstrap.min.css', 'css/rash.css'],
-
-    // Set plugins
-    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table noneditable raje_figure",
-
-    // Remove menubar
-    menubar: false,
-
-    // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode | blockquote table raje_figure | raje_section',
-
-    // Setup full screen on init
-    setup: function (editor) {
-
-      // Set fullscreen 
-      editor.on('init', function (e) {
-
-        editor.execCommand('mceFullScreen')
-      })
-
-      editor.on('keyDown', function (e) {
-
-        // instance of the selected element
-        let selectedElement = $(tinymce.activeEditor.selection.getNode())
-
-        // When press enter
-        if (e.keyCode == 13) {
-
-          // When enter is pressed inside an header, not at the end of it
-          if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
-
-            section.addWithEnter()
-            return false
-          }
-
-          /*
-          if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
-            let level = Rajemce.section.getLevelFromHash(selectedElement.text().trim())
-
-            Rajemce.section.add(level, selectedElement.text().substring(level).trim())
-          }*/
-        }
-      })
-    },
-
-    // Set default target
-    default_link_target: "_blank",
-
-    // Prepend protocol if the link starts with www
-    link_assume_external_targets: true,
-
-    // Hide target list
-    target_list: false,
-
-    // Hide title
-    link_title: false,
-
-    // Set formats
-    formats: {
-      inline_code: {
-        inline: 'code'
-      },
-      inline_quote: {
-        inline: 'q'
-      }
-    },
-
-    // Remove "powered by tinymce"
-    branding: false,
-
-    // Prevent auto br on element insert
-    apply_source_formatting : false
-  });
-})
-
-/**
- * raje_inline_code plugin RAJE
- */
-tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
-
-  // Add a button that opens a window
-  editor.addButton('inline_code', {
-    text: 'inline_code',
-    icon: false,
-    tooltip: 'Inline code',
-
-    // Button behaviour
-    onclick: function () {
-      code.handle()
-    }
-  })
-
-  code = {
-    /**
-     * Insert or exit from inline code element
-     */
-    handle: function () {
-
-      let name = tinymce.activeEditor.selection.getNode().nodeName
-
-      if (name == 'CODE')
-        tinymce.activeEditor.formatter.remove('inline_code')
-
-      else
-        tinymce.activeEditor.formatter.apply('inline_code')
-    }
-  }
-})
-
-/**
- *  Inline quote plugin RAJE
- */
-tinymce.PluginManager.add('raje_inlineQuote', function (editor, url) {
-
-  // Add a button that handle the inline element
-  editor.addButton('inline_quote', {
-    text: 'inline_quote',
-    icon: false,
-    tooltip: 'Inline quote',
-
-    // Button behaviour
-    onclick: function () {
-      quote.handle()
-    }
-  })
-
-  quote = {
-    /**
-     * Insert or exit from inline quote element
-     */
-    handle: function () {
-
-      let name = tinymce.activeEditor.selection.getNode().nodeName
-
-      if (name == 'Q')
-        tinymce.activeEditor.formatter.remove('inline_quote')
-
-      else
-        tinymce.activeEditor.formatter.apply('inline_quote')
-    }
-  }
-})
-
-/**
  * RASH section plugin RAJE
  */
 tinymce.PluginManager.add('raje_section', function (editor, url) {
@@ -219,33 +48,65 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     // Check if a deletion is called
     if (e.keyCode == 8)
       flag = true
+
+    // instance of the selected element
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    // When press enter
+    if (e.keyCode == 13) {
+
+      // When enter is pressed inside an header, not at the end of it
+      if (selectedElement.is('h1,h2,h3,h4,h5,h6') && selectedElement.text().trim().length != tinymce.activeEditor.selection.getRng().startOffset) {
+
+        section.addWithEnter()
+        return false
+      }
+
+      /*
+      if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
+        let level = Rajemce.section.getLevelFromHash(selectedElement.text().trim())
+
+        Rajemce.section.add(level, selectedElement.text().substring(level).trim())
+      }*/
+    }
   })
 
   editor.on('NodeChange', function (e) {
 
-    //tinymce.activeEditor.controlManager.get('section').setDisabled(true);
+    //let button = new tinymce.ui.Control(tinymce.activeEditor.theme.panel.find("menubutton")[1])
+
     /*
-
-    let menu = tinymce.activeEditor.buttons['section'].menu
-
-    // Update button menu
     for (let i = 0; i < 6; i++)
-      menu[i].disabled = true
+      buttonMenu[i].disabled = true
+      */
 
-    // Save the reference of the selected node
-    let selectedElement = tinymce.activeEditor.selection.getNode()
+    //button.showMenu()
 
-    // Check if the selected node is a paragraph only here can be added a new section
-    if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
+    /*
+        // Update button menu
+        for (let i = 0; i < 6; i++)
+          tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].disabled = true
 
-      // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
-      let deepness = $(selectedElement).parents('section').length + 1
-      for (let i = 0; i < deepness; i++)
-        menu[i].disabled = false
-    }
+        // Save the reference of the selected node
+        let selectedElement = tinymce.activeEditor.selection.getNode()
 
-    editor.theme.panel.find('toolbar buttongroup').repaint()
+        // Check if the selected node is a paragraph only here can be added a new section
+        if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
+
+          // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
+          let deepness = $(selectedElement).parents('section').length + 1
+
+          console.log(deepness)
+          for (let i = 0; i < deepness; i++) {
+            tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].text = 'helo'
+            console.log(tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i])
+          }
+
+          tinymce.activeEditor.theme.panel.find('toolbar *')[16].repaint()
+        }
     */
+    //editor.theme.panel.find('toolbar buttongroup').repaint()
+
 
     if (flag) {
       flag = false
@@ -282,15 +143,18 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     /**
      * Function called when a new section needs to be attached, with buttons
      */
-    addWithEnter: function (level) {
+    addWithEnter: function () {
 
       // Select current node
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-      level = level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length
+      level = selectedElement.parentsUntil(RAJE_SELECTOR).length
+
+      console.log(selectedElement.text())
+      console.log(tinymce.activeEditor.selection.getRng().startOffset)
 
       // Create the section
-      let newSection = this.create(selectedElement.html().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
+      let newSection = this.create(selectedElement.text().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
@@ -298,7 +162,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         section.manageSection(selectedElement, newSection, level)
 
         // Remove the selected section
-        selectedElement.html(selectedElement.html().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
+        selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
         // Update editor
         tinymce.triggerSave()
@@ -512,105 +376,5 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         tinymce.triggerSave()
       }
     },
-  }
-})
-
-/**
- * 
- */
-tinymce.PluginManager.add('raje_figure', function (editor, url) {
-
-  // Add a button that handle the inline element
-  editor.addButton('raje_figure', {
-    text: 'raje_figure',
-    icon: false,
-    tooltip: 'Add figure',
-
-    // Button behaviour
-    onclick: function () {
-
-
-      editor.windowManager.open({
-        title: 'Select image',
-        body: [{
-          type: 'textbox',
-          name: 'url',
-          label: 'url'
-        }, {
-          type: 'textbox',
-          name: 'alt',
-          label: 'alt'
-        }],
-        onSubmit: function (e) {
-          figure.add(e.data.url, e.data.alt)
-        }
-      })
-    }
-  })
-
-  figure = {
-
-    /**
-     * 
-     */
-    add: function (url, alt) {
-
-      // Get the referece of the selected element
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
-
-      // Check if the selected element is empty or not (thw way to append the figure depends on it)
-      if (selectedElement.text().trim().length != 0) {
-        
-        // Add and select a new paragraph (where the figure is added)
-        let tmp = $('<p></p>')
-        selectedElement.after(tmp)
-        selectedElement = tmp
-      }
-
-      // Create the object of the figure
-      let newFigure = this.create(url, alt)
-
-      tinymce.activeEditor.undoManager.transact(function () {
-
-        // append the new figure
-        selectedElement.append(newFigure)
-        tinymce.triggerSave()
-      })
-    },
-
-    /**
-     * 
-     */
-    create: function (url, alt) {
-      return $(`<figure id="${this.getNextId()}"><p><img src="${url}" alt="${alt}"/></p><figcaption>Caption.</figcaption></figure>`)
-    },
-
-    /**
-     * 
-     */
-    getNextId: function () {
-      let id = 1
-      $('figurebox_selector').each(function () {
-        if ($(this).attr('id').indexOf('section') > -1) {
-          let currId = parseInt($(this).attr('id').replace('figure', ''))
-          id = id > currId ? id : currId
-        }
-      })
-      return `figure_${id+1}`
-    }
-  }
-})
-
-jQuery.fn.extend({
-  headingDimension: function () {
-    $(this).find('h1,h2,h3,h4,h5,h6').each(function () {
-      var counter = 0;
-      $(this).parents("section").each(function () {
-        if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
-          counter++;
-        }
-      });
-      $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
-    });
   }
 })
