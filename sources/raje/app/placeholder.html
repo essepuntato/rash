@@ -19,8 +19,27 @@
   </script>
   <script src="node_modules/tinymce/tinymce.min.js">
   </script>
-  <script src="js/rajemce.js">
+
+  <!-- rajemce init ad plugins -->
+  <script src="js/rajemce/init.js">
   </script>
+
+  <script src="js/rajemce/plugin/raje_figure.js">
+  </script>
+
+  <script src="js/rajemce/plugin/raje_table.js">
+  </script>
+
+  <script src="js/rajemce/plugin/raje_inlineCode.js">
+  </script>
+
+  <script src="js/rajemce/plugin/raje_inlineQuote.js">
+  </script>
+
+  <script src="js/rajemce/plugin/raje_section.js">
+  </script>
+  <!-- end rajemce init ad plugins -->
+
   <title>Placeholder title</title>
   <meta about="mailto:jon.doe@example.com" typeof="schema:Person" property="schema:name" name="dc.creator" content="John Doe"> </meta>
   <meta about="mailto:jon.doe@example.com" property="schema:email" content="jon.doe@example.com"> </meta>
@@ -35,18 +54,12 @@
   <section id="section1">
     <h1>Parent section</h1>
     <p>Para1</p>
-    <p>Para2</p>
-    <p>ABCD</p>
-    <section id="section2">
-      <h1>Sub section</h1>
-      <p>abc</p>
-      <section id="section3">
-        <h1>Sub section</h1>
-        <p>xyz</p>
-        <section id="section4">
-          <h1>Sub section</h1>
-          <p>poi</p>
-        </section>
+    <section id="section1">
+      <h1>Parent section</h1>
+      <p>Para1</p>
+      <section id="section1">
+        <h1>Parent section</h1>
+        <p>Para1</p>
       </section>
     </section>
   </section>

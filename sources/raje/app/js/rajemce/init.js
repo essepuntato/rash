@@ -29,13 +29,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure",
+    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode raje_inlineQuote | blockquote table raje_figure image | raje_section',
+    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode raje_inlineQuote | blockquote table raje_table raje_figure image | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
