@@ -44,6 +44,12 @@ $(document).ready(function () {
 
         editor.execCommand('mceFullScreen')
       })
+
+      editor.on('keyDown', function(e){
+        if(e.keyCode == 13 && e.shiftKey){
+          e.preventDefault()
+        }
+      })
     },
 
     // Set default target
@@ -74,9 +80,13 @@ $(document).ready(function () {
     // Prevent auto br on element insert
     apply_source_formatting: false,
 
-    
+    // Prevent non editable object resize
     object_resizing: false,
-    paste_block_drop: false
+
+    // Update the table popover layout
+    table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+
+    table_grid: false
   });
 })
 

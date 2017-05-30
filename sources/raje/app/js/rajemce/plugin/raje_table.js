@@ -1,7 +1,5 @@
 tinymce.PluginManager.add('raje_table', function (editor, url) {
 
-  let raje_table_flag = false
-
   // Add a button that handle the inline element
   editor.addButton('raje_table', {
     text: 'raje_table',
@@ -31,7 +29,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
   editor.on('keyDown', function (e) {
 
-    // Check if a deletion is called
+    // Handle delete
     if (e.keyCode == 8) {
 
       // Check if selection has table
@@ -52,6 +50,16 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
           }
         }
       } catch (e) {}
+    }
+
+    if (e.keyCode == 13) {
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+      if (selectedElement.is('FIGCAPTION')) {
+        selectedElement.parent('figure[id]').after('<p><br/></p>')
+        e.preventDefault()
+        return false
+      }
     }
   })
 
@@ -84,7 +92,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     create: function (width, height, id) {
 
       if (width > 0 && height > 0) {
-        let figure = $(`<figure contenteditable="false" id="${id}"></figure><br/>`)
+        let figure = $(`<figure id="${id}"></figure><br/>`)
         let table = $(`<table></table>`)
 
         for (let i = 0; i <= width; i++) {
@@ -94,17 +102,17 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
           for (let x = 0; x < height; x++) {
 
             if (i == 0)
-              row.append(`<th contenteditable="true">Heading cell ${x+1}</th>`)
+              row.append(`<th>Heading cell ${x+1}</th>`)
 
             else
-              row.append(`<td contenteditable="true"><p>Data cell ${x+1}</p></td>`)
+              row.append(`<td><p>Data cell ${x+1}</p></td>`)
           }
 
           table.append(row)
         }
 
         figure.append(table)
-        figure.append(`<figcaption contenteditable="true">Caption of the <code>table</code>.</figcaption>`)
+        figure.append(`<figcaption>Caption of the <code>table</code>.</figcaption>`)
 
         return figure
       }
