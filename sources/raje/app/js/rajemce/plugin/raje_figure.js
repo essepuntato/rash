@@ -12,7 +12,6 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
     // Button behaviour
     onclick: function () {
 
-
       editor.windowManager.open({
         title: 'Select image',
         body: [{

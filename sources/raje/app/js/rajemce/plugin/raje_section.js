@@ -3,6 +3,9 @@
  */
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
+
+let raje_section_flag = false
+
   editor.addButton('raje_section', {
     type: 'menubutton',
     text: 'Headings',
@@ -47,7 +50,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     // Check if a deletion is called
     if (e.keyCode == 8)
-      flag = true
+      raje_section_flag = true
 
     // instance of the selected element
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
@@ -108,8 +111,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     //editor.theme.panel.find('toolbar buttongroup').repaint()
 
 
-    if (flag) {
-      flag = false
+    if (raje_section_flag) {
+      raje_section_flag = false
       section.updateSectionStructure()
     }
   })

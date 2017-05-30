@@ -9,7 +9,6 @@ let dom = tinymce.dom.DomQuery
 // Invisible space constant
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
-let flag = false
 
 $(document).ready(function () {
   //hide footer
@@ -29,13 +28,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table",
+    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode raje_inlineQuote | blockquote table raje_table raje_figure image | raje_section',
+    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode raje_inlineQuote | blockquote raje_table raje_figure raje_listing | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -75,8 +74,9 @@ $(document).ready(function () {
     // Prevent auto br on element insert
     apply_source_formatting: false,
 
-    image_dimensions: false,
-    image_caption: true,
+    
+    object_resizing: false,
+    paste_block_drop: false
   });
 })
 

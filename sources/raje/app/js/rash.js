@@ -364,7 +364,7 @@ $(function() {
     $(tablebox_selector).each(function() {
         var cur_caption = $(this).parents("figure").find("figcaption");
         var cur_number = $(this).findNumber(tablebox_selector);
-        cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Table " + cur_number +
+        cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
             ". </strong>" + cur_caption.html());
     });
     $(formulabox_selector).each(function() {
