@@ -358,7 +358,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
       ancestorSection.find('section').each(function () {
 
-        if ($(this).children().first().is('section')) {
+        // Check if the current section doesn't have heading as first child
+        if (!$(this).children().first().is(':header')) {
 
           toRemoveSections.push($(this))
         }

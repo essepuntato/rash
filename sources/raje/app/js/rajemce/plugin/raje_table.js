@@ -67,23 +67,35 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     add: function (width, heigth) {
 
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newTable = this.create(width, heigth, 'table_1')
-
-      // Check if the selected element is empty or not (thw way to append the figure depends on it)
-      if (selectedElement.text().trim().length != 0) {
-
-        // Add and select a new paragraph (where the figure is added)
-        let tmp = $('<p></p>')
-        selectedElement.after(tmp)
-        selectedElement = tmp
-      }
+      let newTable = this.create(width, heigth, this.getNextId())
 
       tinymce.activeEditor.undoManager.transact(function () {
 
-        selectedElement.append(newTable)
-        tinymce.triggerSave()
-      })
+        // Check if the selected element is not empty, and add table after
+        if (selectedElement.text().trim().length != 0)
+          selectedElement.after(newTable)
 
+        // If selected element is empty, replace it with the new table
+        else
+          selectedElement.replaceWith(newTable)
+
+        tinymce.triggerSave()
+        newTable.find('table').tableCaption()
+      })
+    },
+
+    /**
+     * Get the last inserted id
+     */
+    getNextId: function () {
+      let id = 0
+      $('figure[id]>table').each(function () {
+        if ($(this).attr('id').indexOf('table') > -1) {
+          let currId = parseInt($(this).attr('id').replace('table_', ''))
+          id = id > currId ? id : currId
+        }
+      })
+      return `table_${id+1}`
     },
 
     /**
@@ -92,14 +104,14 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     create: function (width, height, id) {
 
       if (width > 0 && height > 0) {
-        let figure = $(`<figure id="${id}"></figure><br/>`)
+        let figure = $(`<figure id="${id}"></figure>`)
         let table = $(`<table></table>`)
 
-        for (let i = 0; i <= width; i++) {
+        for (let i = 0; i <= height; i++) {
 
           let row = $(`<tr></tr>`)
 
-          for (let x = 0; x < height; x++) {
+          for (let x = 0; x < width; x++) {
 
             if (i == 0)
               row.append(`<th>Heading cell ${x+1}</th>`)
@@ -117,5 +129,23 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         return figure
       }
     }
+  }
+
+  jQuery.fn.extend({
+    tableCaption: function () {
+      var cur_caption = $(this).parents("figure").find("figcaption");
+      var cur_number = $(this).findNumber(tablebox_selector);
+      cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
+        ". </strong>" + cur_caption.html());
+    }
+  })
+
+  function tableCaptions() {
+    $(tablebox_selector).each(function () {
+      var cur_caption = $(this).parents("figure").find("figcaption");
+      var cur_number = $(this).findNumber(tablebox_selector);
+      cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
+        ". </strong>" + cur_caption.html());
+    });
   }
 })

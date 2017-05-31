@@ -25,7 +25,7 @@ $(document).ready(function () {
     selector: '#raje_root',
 
     // Set the styles of the content wrapped inside the element
-    content_css: ['css/bootstrap.min.css', 'css/rash.css'],
+    content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
     plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing",
@@ -45,8 +45,8 @@ $(document).ready(function () {
         editor.execCommand('mceFullScreen')
       })
 
-      editor.on('keyDown', function(e){
-        if(e.keyCode == 13 && e.shiftKey){
+      editor.on('keyDown', function (e) {
+        if (e.keyCode == 13 && e.shiftKey) {
           e.preventDefault()
         }
       })
@@ -86,7 +86,7 @@ $(document).ready(function () {
     // Update the table popover layout
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
-    table_grid: false
+    image_advtab: true
   });
 })
 
