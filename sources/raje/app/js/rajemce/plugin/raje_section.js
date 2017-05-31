@@ -4,7 +4,7 @@
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
 
-let raje_section_flag = false
+  let raje_section_flag = false
 
   editor.addButton('raje_section', {
     type: 'menubutton',
@@ -371,7 +371,7 @@ let raje_section_flag = false
       if (toRemoveSections.length > 0) {
 
         // Move everything after 
-        selectedElement.after(toRemoveSections[length].html())
+        selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
 
         toRemoveSections[0].remove()
 
