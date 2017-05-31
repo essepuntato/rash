@@ -36,18 +36,25 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
       try {
 
-        let startNodeParent = $(tinymce.activeEditor.selection.getRng().startContainer).parents('figure[id]')
-        let endNodeParent = $(tinymce.activeEditor.selection.getRng().endContainer).parents('figure[id]')
+        let startNode = $(tinymce.activeEditor.selection.getRng().startContainer)
+        let startNodeParent = startNode.parents('figure[id]')
+
+        let endNode = $(tinymce.activeEditor.selection.getRng().endContainer)
+        let endNodeParent = endNode.parents('figure[id]')
 
         console.log(startNodeParent)
         console.log(endNodeParent)
 
         if (startNodeParent.length || endNodeParent.length) {
 
-          if (startNodeParent.attr('id') != endNodeParent.attr('id')) {
-            e.preventDefault()
+          console.log(startNode.parents('figcaption').length)
+          console.log(endNode.parents('figcaption').length)
+
+          if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
             return false
-          }
+
+          if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
+            return false
         }
       } catch (e) {}
     }
@@ -60,6 +67,15 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         e.preventDefault()
         return false
       }
+    }
+  })
+
+  editor.on('nodeChange', function (e) {
+
+    // Handle delete table
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    if (selectedElement.is('figure') && !selectedElement.find('table').length) {
+      selectedElement.remove()
     }
   })
 
@@ -89,8 +105,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
      */
     getNextId: function () {
       let id = 0
-      $('figure[id]>table').each(function () {
-        if ($(this).attr('id').indexOf('table') > -1) {
+      $('figure[id]:has(table)').each(function () {
+        if ($(this).attr('id').indexOf('table_') > -1) {
           let currId = parseInt($(this).attr('id').replace('table_', ''))
           id = id > currId ? id : currId
         }
@@ -99,13 +115,13 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     },
 
     /**
-     * Create the new table using 
+     * Create the new table using passed width and height
      */
     create: function (width, height, id) {
 
       if (width > 0 && height > 0) {
-        let figure = $(`<figure id="${id}"></figure>`)
-        let table = $(`<table></table>`)
+        let figure = $(`<figure contenteditable="false" id="${id}"></figure>`)
+        let table = $(`<table contenteditable="true"></table>`)
 
         for (let i = 0; i <= height; i++) {
 
@@ -124,7 +140,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         }
 
         figure.append(table)
-        figure.append(`<figcaption>Caption of the <code>table</code>.</figcaption>`)
+        figure.append(`<figcaption contenteditable="true">Caption of the <code>table</code>.</figcaption>`)
 
         return figure
       }
@@ -141,7 +157,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
   })
 
   function tableCaptions() {
-    $(tablebox_selector).each(function () {
+    $(RAJE_SELECTOR).find(tablebox_selector).each(function () {
       var cur_caption = $(this).parents("figure").find("figcaption");
       var cur_number = $(this).findNumber(tablebox_selector);
       cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
