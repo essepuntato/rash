@@ -32,39 +32,37 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     // Handle delete
     if (e.keyCode == 8) {
 
-      // Check if selection has table
-
       try {
 
+        // Get reference of start and end node
         let startNode = $(tinymce.activeEditor.selection.getRng().startContainer)
         let startNodeParent = startNode.parents('figure[id]')
 
         let endNode = $(tinymce.activeEditor.selection.getRng().endContainer)
         let endNodeParent = endNode.parents('figure[id]')
 
-        console.log(startNodeParent)
-        console.log(endNodeParent)
-
+        // If at least selection start or end is inside the figure
         if (startNodeParent.length || endNodeParent.length) {
 
-          console.log(startNode.parents('figcaption').length)
-          console.log(endNode.parents('figcaption').length)
-
+          // If selection doesn't start and end in the figure, but one of start or end is inside the figcaption, must block
           if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
             return false
 
+          // If the figure is not the same, must block
           if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
             return false
         }
       } catch (e) {}
     }
 
+    // Handle enter key in figcaption
     if (e.keyCode == 13) {
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-      if (selectedElement.is('FIGCAPTION')) {
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      if (selectedElement.is('figcaption')) {
+
+        //add a new paragraph after the figure
         selectedElement.parent('figure[id]').after('<p><br/></p>')
-        e.preventDefault()
         return false
       }
     }
@@ -72,11 +70,31 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
   editor.on('nodeChange', function (e) {
 
-    // Handle delete table
-    let selectedElement = $(tinymce.activeEditor.selection.getNode())
-    if (selectedElement.is('figure') && !selectedElement.find('table').length) {
-      selectedElement.remove()
-    }
+    // Handle delete table, only inside the current first level section
+    let selectedElementParent = $(tinymce.activeEditor.selection.getNode()).parentsUntil(RAJE_SELECTOR).last()
+
+    // Remove all figures with figcaption as first child (without table)
+    selectedElementParent.find('figure[id]').each(function () {
+      if ($(this).children().first().is('figcaption'))
+        $(this).remove()
+    })
+
+    // Remove all tables which are not child of a figure
+    selectedElementParent.find('table').each(function () {
+      if (!$(this).parent().is('figure[id]')) {
+        $(this).remove()
+      }
+    })
+
+    // Remove all figcaptions which are not child of a figure
+    selectedElementParent.find('figcaption').each(function () {
+      if (!$(this).parent().is('figure[id]')) {
+        $(this).remove()
+      }
+    })
+
+    // After the table is cancelled the selection is moved to the figure (with caption)
+    // If the figure has figcaption as first child, must remove
   })
 
   table = {
@@ -119,14 +137,17 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
      */
     create: function (width, height, id) {
 
+      // If width and heigth are positive
       if (width > 0 && height > 0) {
-        let figure = $(`<figure contenteditable="false" id="${id}"></figure>`)
-        let table = $(`<table contenteditable="true"></table>`)
 
+        // Create figure and table
+        let figure = $(`<figure id="${id}"></figure>`)
+        let table = $(`<table></table>`)
+
+        // Populate with width & heigth
         for (let i = 0; i <= height; i++) {
 
           let row = $(`<tr></tr>`)
-
           for (let x = 0; x < width; x++) {
 
             if (i == 0)
@@ -140,7 +161,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         }
 
         figure.append(table)
-        figure.append(`<figcaption contenteditable="true">Caption of the <code>table</code>.</figcaption>`)
+        figure.append(`<figcaption>Caption</figcaption>`)
 
         return figure
       }
