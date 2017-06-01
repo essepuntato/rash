@@ -73,6 +73,9 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     // Handle delete table, only inside the current first level section
     let selectedElementParent = $(tinymce.activeEditor.selection.getNode()).parentsUntil(RAJE_SELECTOR).last()
 
+    // After the table is cancelled the selection is moved to the figure (with caption)
+    // If the figure has figcaption as first child, must remove
+
     // Remove all figures with figcaption as first child (without table)
     selectedElementParent.find('figure[id]').each(function () {
       if ($(this).children().first().is('figcaption'))
@@ -92,9 +95,6 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         $(this).remove()
       }
     })
-
-    // After the table is cancelled the selection is moved to the figure (with caption)
-    // If the figure has figcaption as first child, must remove
   })
 
   table = {
@@ -114,6 +114,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
           selectedElement.replaceWith(newTable)
 
         tinymce.triggerSave()
+
+        // Add the caption, to change
         newTable.find('table').tableCaption()
       })
     },
@@ -176,13 +178,4 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         ". </strong>" + cur_caption.html());
     }
   })
-
-  function tableCaptions() {
-    $(RAJE_SELECTOR).find(tablebox_selector).each(function () {
-      var cur_caption = $(this).parents("figure").find("figcaption");
-      var cur_number = $(this).findNumber(tablebox_selector);
-      cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
-        ". </strong>" + cur_caption.html());
-    });
-  }
 })
