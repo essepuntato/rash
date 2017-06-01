@@ -113,6 +113,41 @@ function updateIframeFromSavedContent() {
   tinyMCE.activeEditor.setContent($('#raje_root').html())
 }
 
+/**
+ * Update table captions with a RASH funcion 
+ */
+function captions() {
+
+  /* Captions */
+  $(figurebox_selector).each(function () {
+    var cur_caption = $(this).parents("figure").find("figcaption");
+    var cur_number = $(this).findNumber(figurebox_selector);
+    cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Figure " + cur_number +
+      ". </strong>" + cur_caption.html());
+  });
+  $(tablebox_selector).each(function () {
+    var cur_caption = $(this).parents("figure").find("figcaption");
+    var cur_number = $(this).findNumber(tablebox_selector);
+    cur_caption.find('strong').remove();
+    cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
+      ". </strong>" + cur_caption.html());
+  });
+  $(formulabox_selector).each(function () {
+    var cur_caption = $(this).parents("figure").find("p");
+    var cur_number = $(this).findNumber(formulabox_selector);
+    cur_caption.html(cur_caption.html() + "<span class=\"cgen\" data-rash-original-content=\"\"> (" +
+      cur_number + ")</span>");
+  });
+  $(listingbox_selector).each(function () {
+    var cur_caption = $(this).parents("figure").find("figcaption");
+    var cur_number = $(this).findNumber(listingbox_selector);
+    cur_caption.find('strong').remove();
+    cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\">Listing " + cur_number +
+      ". </strong>" + cur_caption.html());
+  });
+  /* /END Captions */
+}
+
 jQuery.fn.extend({
 
   /**

@@ -1,10 +1,13 @@
+/**
+ * 
+ */
 tinymce.PluginManager.add('raje_listing', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_listing', {
     text: 'raje_listing',
     icon: false,
-    tooltip: 'Add listing',
+    tooltip: 'Listing',
 
     // Button behaviour
     onclick: function () {
@@ -13,29 +16,55 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
   })
 
   listing = {
+    /**
+     * 
+     */
     add: function () {
 
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newListing = `<figure id="listing_1">
-    <pre><code><br/></pre></code>
-    <figcaption>Caption of the figure.</figcaption>
-</figure>`
-
-      // Check if the selected element is empty or not (thw way to append the figure depends on it)
-      if (selectedElement.text().trim().length != 0) {
-
-        // Add and select a new paragraph (where the figure is added)
-        let tmp = $('<p></p>')
-        selectedElement.after(tmp)
-        selectedElement = tmp
-      }
+      let newListing = this.create(this.getNextId())
 
       tinymce.activeEditor.undoManager.transact(function () {
 
-        selectedElement.append(newListing)
+        // Check if the selected element is not empty, and add table after
+        if (selectedElement.text().trim().length != 0)
+          selectedElement.after(newListing)
+
+        // If selected element is empty, replace it with the new table
+        else
+          selectedElement.replaceWith(newListing)
+
+        // Save updates 
         tinymce.triggerSave()
+
+        // Update all captions with RASH function
+        captions()
+
+        // Update Rendered RASH
+        updateIframeFromSavedContent()
       })
 
-    }
+    },
+
+    /**
+     * 
+     */
+    create: function (id) {
+      return `<figure id="${id}"><pre><code><br/></code></pre><figcaption>Caption.</figcaption></figure>`
+    },
+
+    /**
+     * 
+     */
+    getNextId: function () {
+      let id = 0
+      $('figure[id]:has(pre:has(code))').each(function () {
+        if ($(this).attr('id').indexOf('listing_') > -1) {
+          let currId = parseInt($(this).attr('id').replace('listing_', ''))
+          id = id > currId ? id : currId
+        }
+      })
+      return `listing_${id+1}`
+    },
   }
 })

@@ -130,6 +130,9 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         else
           selectedElement.replaceWith(newTable)
 
+        // Save updates 
+        tinymce.triggerSave()
+
         // Update all captions with RASH function
         captions()
 
@@ -188,21 +191,5 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         }
       } catch (e) {}
     }
-  }
-
-  /**
-   * Update table captions with a RASH funcion 
-   */
-  function captions() {
-    $(tablebox_selector).each(function () {
-      var cur_caption = $(this).parents("figure").find("figcaption");
-      var cur_number = $(this).findNumber(tablebox_selector);
-      
-      // Remove the previous strong
-      cur_caption.find('strong').remove();
-      cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
-        ". </strong>" + cur_caption.html());
-    })
-    /* /END Captions */
   }
 })
