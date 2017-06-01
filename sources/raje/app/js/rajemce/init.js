@@ -100,12 +100,14 @@ $(document).ready(function () {
     // Update the table popover layout
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
-    image_advtab: true,
-
-    invalid_elements: 'span'
+    image_advtab: true
   });
 })
 
+// Update content in the iframe, with the hidden content saved
+function updateIframeFromSavedContent() {
+  tinyMCE.activeEditor.setContent($('#raje_root').html())
+}
 
 jQuery.fn.extend({
 
