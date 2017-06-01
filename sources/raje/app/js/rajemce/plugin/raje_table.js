@@ -1,14 +1,19 @@
+/**
+ * 
+ * 
+ */
 tinymce.PluginManager.add('raje_table', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_table', {
     text: 'raje_table',
     icon: false,
-    tooltip: 'Add table',
+    tooltip: 'Table',
 
     // Button behaviour
     onclick: function () {
 
+      // On click a dialog is opened
       editor.windowManager.open({
         title: 'Select Table size',
         body: [{
@@ -21,6 +26,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
           label: 'heigth'
         }],
         onSubmit: function (e) {
+
+          // Get width and heigth
           table.add(e.data.width, e.data.heigth)
         }
       })
@@ -29,7 +36,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
   editor.on('keyDown', function (e) {
 
-    // Handle delete
+    // Because some behaviours aren't accepted, RAJE must check selection and accept backspace press
+    // keyCode 8 is backspace
     if (e.keyCode == 8) {
 
       try {
@@ -44,11 +52,12 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         // If at least selection start or end is inside the figure
         if (startNodeParent.length || endNodeParent.length) {
 
-          // If selection doesn't start and end in the figure, but one of start or end is inside the figcaption, must block
+          // If selection doesn't start and end in the same figure, but one beetwen start or end is inside the figcaption, must block
           if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
             return false
 
           // If the figure is not the same, must block
+          // Because a selection can start in figureX and end in figureY
           if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
             return false
         }
@@ -98,11 +107,19 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
   })
 
   table = {
+
+    /**
+     * Add the new table (with given size) at the caret position
+     */
     add: function (width, heigth) {
 
+      // Get the reference of the current selected element
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+      // Get the reference of the new created table
       let newTable = this.create(width, heigth, this.getNextId())
 
+      // Begin atomic UNDO level 
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check if the selected element is not empty, and add table after
@@ -113,9 +130,10 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         else
           selectedElement.replaceWith(newTable)
 
-        tinymce.triggerSave()
-
+        // Update all captions with RASH function
         captions()
+
+        // Update Rendered RASH
         updateIframeFromSavedContent()
       })
     },
@@ -140,40 +158,47 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     create: function (width, height, id) {
 
       // If width and heigth are positive
-      if (width > 0 && height > 0) {
+      try {
+        if (width > 0 && height > 0) {
 
-        // Create figure and table
-        let figure = $(`<figure id="${id}"></figure>`)
-        let table = $(`<table></table>`)
+          // Create figure and table
+          let figure = $(`<figure id="${id}"></figure>`)
+          let table = $(`<table></table>`)
 
-        // Populate with width & heigth
-        for (let i = 0; i <= height; i++) {
+          // Populate with width & heigth
+          for (let i = 0; i <= height; i++) {
 
-          let row = $(`<tr></tr>`)
-          for (let x = 0; x < width; x++) {
+            let row = $(`<tr></tr>`)
+            for (let x = 0; x < width; x++) {
 
-            if (i == 0)
-              row.append(`<th>Heading cell ${x+1}</th>`)
+              if (i == 0)
+                row.append(`<th>Heading cell ${x+1}</th>`)
 
-            else
-              row.append(`<td><p>Data cell ${x+1}</p></td>`)
+              else
+                row.append(`<td><p>Data cell ${x+1}</p></td>`)
+            }
+
+            table.append(row)
           }
 
-          table.append(row)
+          figure.append(table)
+          figure.append(`<figcaption>Caption</figcaption>`)
+
+          return figure
         }
-
-        figure.append(table)
-        figure.append(`<figcaption>Caption</figcaption>`)
-
-        return figure
-      }
+      } catch (e) {}
     }
   }
 
+  /**
+   * Update table captions with a RASH funcion 
+   */
   function captions() {
     $(tablebox_selector).each(function () {
       var cur_caption = $(this).parents("figure").find("figcaption");
       var cur_number = $(this).findNumber(tablebox_selector);
+      
+      // Remove the previous strong
       cur_caption.find('strong').remove();
       cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\" >Table " + cur_number +
         ". </strong>" + cur_caption.html());

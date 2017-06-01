@@ -58,11 +58,15 @@ $(document).ready(function () {
 
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-        if (selectedElement.is('span'))
-          selectedElement.replaceWith(selectedElement.text())
+        // If the current element isn't inside header, only in section this is permitted
+        if (selectedElement.parents('section').length) {
 
-        if (selectedElement.find('span').length)
-          selectedElement.find('span').replaceWith(selectedElement.find('span').text())
+          if (selectedElement.is('span'))
+            selectedElement.replaceWith(selectedElement.text())
+
+          if (selectedElement.find('span').length)
+            selectedElement.find('span').replaceWith(selectedElement.find('span').text())
+        }
       })
     },
 
