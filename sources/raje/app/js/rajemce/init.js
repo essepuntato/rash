@@ -46,9 +46,23 @@ $(document).ready(function () {
       })
 
       editor.on('keyDown', function (e) {
+
+        // Prevent shift+enter
         if (e.keyCode == 13 && e.shiftKey) {
           e.preventDefault()
         }
+      })
+
+      // Prevent span 
+      editor.on('nodeChange', function (e) {
+
+        let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+        if (selectedElement.is('span'))
+          selectedElement.replaceWith(selectedElement.text())
+
+        if (selectedElement.find('span').length)
+          selectedElement.find('span').replaceWith(selectedElement.find('span').text())
       })
     },
 
@@ -86,7 +100,9 @@ $(document).ready(function () {
     // Update the table popover layout
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
-    image_advtab: true
+    image_advtab: true,
+
+    invalid_elements: 'span'
   });
 })
 
