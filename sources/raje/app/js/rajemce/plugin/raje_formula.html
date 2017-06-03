@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Bootstrap 101 Template</title>
+
+  <!-- Bootstrap -->
+  <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+
+
+  <style>
+    body {
+      padding: 20px
+    }
+  </style>
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="form-group text-center">
+        <p id="formula_output" class="rash-math">````</p>
+      </div>
+    </div>
+    <div class="row">
+      <textarea class="form-control" id="formula_input" columns="3" autofocus></textarea>
+    </div>
+    <!--
+    <div class="row">
+      <div class="btn-group btn-group-justified" role="group" aria-label="Math formulas editor">
+        <div class="btn-group" role="">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Operations <span class="caret"></span>
+              </button>
+          <ul class="dropdown-menu">
+            <li><a class="rash-math" data-code=\ "+\">       \`\`  +     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "-\">       \`\`  -     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "*\">       \`\`  *     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "**\">      \`\`  **    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "***\">     \`\`  ***   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "//\">      \`\`  //    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "\\\\\">    \`\`  \\\\  \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "xx\">      \`\`  xx    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "-:\">      \`\`  -:    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "@\">       \`\`  @     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "o+\">      \`\`  o+    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "o.\">      \`\`  o.    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sum\">     \`\`  sum   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "prod\">    \`\`  prod  \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "^^\">      \`\`  ^^    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "^^^\">     \`\`  ^^^   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "vv\">      \`\`  vv    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "vvv\">     \`\`  vvv   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "nn\">      \`\`  nn    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "nnn\">     \`\`  nnn   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "uu\">      \`\`  uu    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "uuu\">     \`\`  uuu   \`\`</a></li>
+          </ul>
+        </div>
+        <div class=\ "btn-group\" role=\ "\">
+          <button type=\ "button\" class=\ "btn btn-default dropdown-toggle\" data-toggle=\ "dropdown\" aria-haspopup=\ "true\" aria-expanded=\
+            "false\">
+                Misc <span class=\"caret\"></span>
+              </button>
+          <ul class=\ "dropdown-menu\">
+            <li><a class="rash-math" data-code=\ "int\">     \`\`  int     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "oint\">    \`\`  oint    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "del\">     \`\`  del     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "grad\">    \`\`  grad    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "+-\">      \`\`  +-      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "O/\">      \`\`  O/      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "oo\">      \`\`  oo      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "aleph\">   \`\`  aleph   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "/_\">      \`\`  /_      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ ":.\">      \`\`  :.      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|...|\">   \`\`  |...|   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|cdots|\"> \`\`  |cdots| \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "vdots\">   \`\`  vdots   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "ddots\">   \`\`  ddots   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|__\">     \`\`  |__     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "__|\">     \`\`  __|     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|~\">      \`\`  |~      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "~|\">      \`\`  ~|      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "CC\">      \`\`  CC      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "NN\">      \`\`  NN      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "RR\">      \`\`  RR      \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "ZZ\">      \`\`  ZZ      \`\`</a></li>
+          </ul>
+        </div>
+        <div class=\ "btn-group\" role=\ "\">
+          <button type=\ "button\" class=\ "btn btn-default dropdown-toggle\" data-toggle=\ "dropdown\" aria-haspopup=\ "true\" aria-expanded=\
+            "false\">
+                Relations <span class=\"caret\"></span>
+              </button>
+          <ul class=\ "dropdown-menu\">
+            <li><a class="rash-math" data-code=\ "=\">       \`\`  =     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "!=\">      \`\`  !=    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "<\">       \`\`  <     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ ">\">       \`\`  >     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "<=\">      \`\`  <=    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ ">=\">      \`\`  >=    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "-<\">      \`\`  -<    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ ">-\">      \`\`  >-    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "in\">      \`\`  in    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "!in\">     \`\`  !in   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sub\">     \`\`  sub   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sup\">     \`\`  sup   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sube\">    \`\`  sube  \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "supe\">    \`\`  supe  \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "-=\">      \`\`  -=    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "~=\">      \`\`  ~=    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "~~\">      \`\`  ~~    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "prop\">    \`\`  prop  \`\`</a></li>
+          </ul>
+        </div>
+        <div class=\ "btn-group\" role=\ "\">
+          <button type=\ "button\" class=\ "btn btn-default dropdown-toggle\" data-toggle=\ "dropdown\" aria-haspopup=\ "true\" aria-expanded=\
+            "false\">
+                Symbols <span class=\"caret\"></span>
+              </button>
+          <ul class=\ "dropdown-menu\">
+            <li><a class="rash-math" data-code=\ "and\">     \`\`  and   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "or\">      \`\`  or    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "not\">     \`\`  not   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "=>\">      \`\`  =>    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "if\">      \`\`  if    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "iff\">     \`\`  iff   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "AA\">      \`\`  AA    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "EE\">      \`\`  EE    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "_|_\">     \`\`  _|_   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "TT\">      \`\`  TT    \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|--\">     \`\`  |--   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "|==\">     \`\`  |==   \`\`</a></li>
+          </ul>
+        </div>
+        <div class=\ "btn-group\" role=\ "\">
+          <button type=\ "button\" class=\ "btn btn-default dropdown-toggle\" data-toggle=\ "dropdown\" aria-haspopup=\ "true\" aria-expanded=\
+            "false\">
+                Formulas <span class=\"caret\"></span>
+              </button>
+          <ul class=\ "dropdown-menu\">
+            <li><a class="rash-math" data-code=\ "|X|\">           \`\`  |X|           \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "X!\">            \`\`  X!            \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sqrt(x)\">       \`\`  sqrt(x)       \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "x^y\">           \`\`  x^y           \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "epsilon^x\">     \`\`  epsilon^x     \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "ln(x)\">         \`\`  ln(x)         \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "exp(x)\">        \`\`  exp(x)        \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "log(x)\">        \`\`  log(x)        \`\`</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="rash-math" data-code=\ "sin(x)\">        \`\`  sin(x)        \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "cos(x)\">        \`\`  cos(x)        \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "tan(x)\">        \`\`  tan(x)        \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "cot(x)\">        \`\`  cot(x)        \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sinh(x)\">       \`\`  sinh(x)       \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "cosh(x)\">       \`\`  cosh(x)       \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "tanh(x)\">       \`\`  tanh(x)       \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "coth(x)\">       \`\`  coth(x)       \`\`</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="rash-math" data-code=\ "lim_(x->oo)\">   \`\`  lim_(x->oo)   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "sum_(x=0)^n\">   \`\`  sum_(x=0)^n   \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "((a,b),(c,d))\"> \`\`  ((a,b),(c,d)) \`\`</a></li>
+            <li><a class="rash-math" data-code=\ "[[a,b],[c,d]]\"> \`\`  [[a,b],[c,d]] \`\`</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    -->
+    <div class="row">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-success">Add formula</button>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="../../jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="../../bootstrap.min.js"></script>
+
+  <script>
+    $('#formula_input').on('input propertychange paste', function () {
+
+      MathJax.Hub.processSectionDelay = 0;
+
+      MathJax.Hub.Queue([
+        'Text',
+        MathJax.Hub.getAllJax($('#formula_output')[0])[0],
+        $('#formula_input').val()
+      ])
+    })
+  </script>
+</body>
+
+</html>
