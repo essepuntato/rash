@@ -105,7 +105,7 @@ $(document).ready(function () {
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
     image_advtab: true
-  });
+  })
 })
 
 // Update content in the iframe, with the hidden content saved
@@ -122,7 +122,7 @@ function captions() {
   $(figurebox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("figcaption");
     var cur_number = $(this).findNumber(figurebox_selector);
-    cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\">Figure " + cur_number +
+    cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\">Figure " + cur_number +
       ". </strong>" + cur_caption.html());
   });
   $(tablebox_selector).each(function () {
@@ -135,7 +135,7 @@ function captions() {
   $(formulabox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("p");
     var cur_number = $(this).findNumber(formulabox_selector);
-    cur_caption.html(cur_caption.html() + "<span class=\"cgen\" data-rash-original-content=\"\"> (" +
+    cur_caption.html(cur_caption.html() + "<span class=\"cgen\" data-rash-original-content=\"\" > (" +
       cur_number + ")</span>");
   });
   $(listingbox_selector).each(function () {
