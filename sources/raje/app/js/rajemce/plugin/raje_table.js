@@ -9,6 +9,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     text: 'raje_table',
     icon: false,
     tooltip: 'Table',
+    disabledStateSelector: 'figure *',
 
     // Button behaviour
     onclick: function () {
