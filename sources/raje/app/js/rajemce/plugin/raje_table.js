@@ -20,11 +20,11 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         body: [{
           type: 'textbox',
           name: 'width',
-          label: 'width'
+          label: 'Columns'
         }, {
           type: 'textbox',
           name: 'heigth',
-          label: 'heigth'
+          label: 'Rows'
         }],
         onSubmit: function (e) {
 
@@ -39,7 +39,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
     // Because some behaviours aren't accepted, RAJE must check selection and accept backspace press
     // keyCode 8 is backspace
-    if (e.keyCode == 8) {
+    if (e.keyCode == 8 || e.keyCode == 46) {
 
       try {
 

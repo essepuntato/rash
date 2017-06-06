@@ -34,7 +34,7 @@ $(document).ready(function () {
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link codesample superscript subscript raje_inlineCode raje_inlineQuote | blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote | codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -104,7 +104,9 @@ $(document).ready(function () {
     // Update the table popover layout
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
-    image_advtab: true
+    image_advtab: true,
+
+    //extended_valid_elements: 'math,mrow,msup,mfenced,mrow,mi,mo,mn,msub'
   })
 })
 
