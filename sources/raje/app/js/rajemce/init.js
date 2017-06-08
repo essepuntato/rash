@@ -10,6 +10,8 @@ let dom = tinymce.dom.DomQuery
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
+const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
+
 $(document).ready(function () {
   //hide footer
   $('footer.footer').hide()
@@ -105,6 +107,8 @@ $(document).ready(function () {
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
     image_advtab: true,
+
+    //valid_elements : '+*[*]'
 
     //extended_valid_elements: 'math,mrow,msup,mfenced,mrow,mi,mo,mn,msub'
   })

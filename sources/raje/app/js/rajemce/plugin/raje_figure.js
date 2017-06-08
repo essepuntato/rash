@@ -7,7 +7,8 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
   editor.addButton('raje_figure', {
     text: 'raje_figure',
     icon: false,
-    tooltip: 'Add figure',
+    tooltip: 'Image block',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
     onclick: function () {

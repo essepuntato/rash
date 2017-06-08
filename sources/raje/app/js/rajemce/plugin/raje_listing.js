@@ -8,6 +8,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
     text: 'raje_listing',
     icon: false,
     tooltip: 'Listing',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
     onclick: function () {

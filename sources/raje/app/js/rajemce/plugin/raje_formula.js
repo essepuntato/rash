@@ -8,6 +8,7 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
     text: 'raje_formula',
     icon: false,
     tooltip: 'Formula',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
     onclick: function () {
@@ -52,6 +53,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
 
         // Save updates 
         tinymce.triggerSave()
+
+        MathJax.Hub.Queue([ "Typeset", MathJax.Hub ])
 
         captions()
 
