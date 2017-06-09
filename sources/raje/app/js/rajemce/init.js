@@ -30,7 +30,7 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula",
+    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula paste",
 
     // Remove menubar
     menubar: false,
@@ -107,10 +107,8 @@ $(document).ready(function () {
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
     image_advtab: true,
-
-    //valid_elements : '+*[*]'
-
-    //extended_valid_elements: 'math,mrow,msup,mfenced,mrow,mi,mo,mn,msub'
+    
+    paste_block_drop: true
   })
 })
 
