@@ -55,6 +55,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
     // Handle enter key in figcaption
     if (e.keyCode == 13)
       return handleFigureEnter(tinymce.activeEditor.selection)
+
+    e.stopPropagation()
   })
 
   // Handle strange structural modification empty figures or with caption as first child
@@ -502,6 +504,10 @@ function handleFigureDelete(sel) {
       // Because a selection can start in figureX and end in figureY
       if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
         return false
+
+      // Block delete when generated caption is selected and when caret is before 
+      if ($(sel.getNode()).is('strong') || sel.getRng().startOffset == 0 || sel.getRng().startOffset == 1)
+        return false
     }
     return true
   } catch (e) {
@@ -524,12 +530,16 @@ function handleFigureEnter(sel) {
     selectedElement.parent('figure[id]').after('<p><br/></p>')
 
     //move caret to new p
-    moveCaret(selectedElement.parent('figure[id]')[0].nextSibling,true)
+    moveCaret(selectedElement.parent('figure[id]')[0].nextSibling, true)
     return false
   }
   return true
 }
 
+/**
+ * 
+ * @param {*} sel 
+ */
 function handleFigureChange(sel) {
 
   // Handle delete table, only inside the current first level section
