@@ -524,7 +524,7 @@ function handleFigureEnter(sel) {
     selectedElement.parent('figure[id]').after('<p><br/></p>')
 
     //move caret to new p
-    sel.select(selectedElement.parent('figure[id]')[0].nextSibling)
+    moveCaret(selectedElement.parent('figure[id]')[0].nextSibling,true)
     return false
   }
   return true
