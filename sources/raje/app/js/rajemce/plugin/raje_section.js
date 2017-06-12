@@ -68,8 +68,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
       var valid =
         (keycode > 47 && keycode < 58) || // number keys
-        keycode == 32 || // spacebar & return key(s) (if you want to allow carriage returns)
-        (keycode > 64 && keycode < 91) || // letter keys
+        //keycode == 32 || // spacebar & return key(s) (if you want to allow carriage returns)
+        //(keycode > 64 && keycode < 91) || // letter keys
         (keycode > 95 && keycode < 112) || // numpad keys
         (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
         (keycode > 218 && keycode < 223); // [\]' (in order)
@@ -110,8 +110,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             tinymce.triggerSave()
             return false
           } // Block delete in header of section[role]
-          else if (startNode.parents('h1').length || (endNode.parents('h1').length && endNode.parents('section[role]').length))
-            return false
+          //else if (startNode.parents('h1').length || (endNode.parents('h1').length && endNode.parents('section[role]').length))
+            //return false
 
         } else
           raje_section_flag = true
@@ -142,12 +142,15 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           return false
         }
       }
-      /*
+      
       if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
-        let level = Rajemce.section.getLevelFromHash(selectedElement.text().trim())
 
-        Rajemce.section.add(level, selectedElement.text().substring(level).trim())
-      }*/
+        let level = section.getLevelFromHash(selectedElement.text().trim())
+
+        console.log(selectedElement.text().substring(level).trim())
+
+        section.add(level, selectedElement.text().substring(level).trim())
+      }
     }
   })
 
