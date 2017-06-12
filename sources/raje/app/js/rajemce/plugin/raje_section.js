@@ -15,6 +15,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     // Sections sub menu
     menu: [{
       text: 'Heading 1.',
+      type: 'menuitem',
       onclick: function () {
         section.add(1)
       }
@@ -43,17 +44,80 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       onclick: function () {
         section.add(6)
       }
+    }, {
+      text: 'Abstract',
+      onclick: function () {
+        section.addAbstract()
+      }
+    }, {
+      text: 'Acknowledgements',
+      onclick: function () {
+        section.addAcknowledgements()
+      }
     }]
   })
 
   editor.on('keyDown', function (e) {
 
-    // Check if a deletion is called
-    if (e.keyCode == 8)
-      raje_section_flag = true
-
     // instance of the selected element
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    try {
+
+      var keycode = e.keyCode;
+
+      var valid =
+        (keycode > 47 && keycode < 58) || // number keys
+        keycode == 32 || // spacebar & return key(s) (if you want to allow carriage returns)
+        (keycode > 64 && keycode < 91) || // letter keys
+        (keycode > 95 && keycode < 112) || // numpad keys
+        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+        (keycode > 218 && keycode < 223); // [\]' (in order)
+
+      let startNode = $(tinymce.activeEditor.selection.getRng().startContainer)
+      let endNode = $(tinymce.activeEditor.selection.getRng().endContainer)
+
+      // Block editability of section[role]>h1
+      if (valid && (startNode.parents('section[role]').length || endNode.parents('section[role').length) && (startNode.parents('h1').length > 0 || endNode.parents('h1').length > 0))
+        return false
+
+      // Check if a deletion is called
+      if (e.keyCode == 8 || e.keyCode == 46) {
+
+        // Block remove from header
+        if (selectedElement.is('header') || selectedElement.attr('data-mce-caret') == 'after' || selectedElement.attr('data-mce-caret') == 'before')
+          return false
+
+        // If start or end is inside special section
+        else if (startNode.parents('section[role]').length || endNode.parents('section[role]').length) {
+
+          let startOffset = tinymce.activeEditor.selection.getRng().startOffset
+          let startOffsetNode = 0
+          let endOffset = tinymce.activeEditor.selection.getRng().endOffset
+          let endOffsetNode = tinymce.activeEditor.selection.getRng().endContainer.length
+
+          if (
+
+            // Check if the selection contains the entire section
+            startOffset == startOffsetNode && endOffset == endOffsetNode &&
+
+            // Check if the selection starts from h1
+            (startNode.parents('h1').length != endNode.parents('h1').length) && (startNode.parents('h1').length || endNode.parents('h1').length) &&
+
+            // Check if the selection ends in the last child
+            (startNode.parents('section[role]').children().length == $(tinymce.activeEditor.selection.getRng().endContainer).parentsUntil('section[role]').index() + 1)) {
+            selectedElement.remove()
+            tinymce.triggerSave()
+            return false
+          } // Block delete in header of section[role]
+          else if (startNode.parents('h1').length || (endNode.parents('h1').length && endNode.parents('section[role]').length))
+            return false
+
+        } else
+          raje_section_flag = true
+      }
+
+    } catch (exception) {}
 
     // When press enter
     if (e.keyCode == 13) {
@@ -65,6 +129,19 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         return false
       }
 
+      // If selection is before/after header
+      if (selectedElement.is('p')) {
+
+        // Block enter before header
+        if (selectedElement.attr('data-mce-caret') == 'before')
+          return false
+
+        // Add new section after header
+        if (selectedElement.attr('data-mce-caret') == 'after') {
+          section.add(1)
+          return false
+        }
+      }
       /*
       if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
         let level = Rajemce.section.getLevelFromHash(selectedElement.text().trim())
@@ -151,32 +228,33 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       // Select current node
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-      level = selectedElement.parentsUntil(RAJE_SELECTOR).length
+      // If the section isn't special
+      if (!selectedElement.parent().attr('role')) {
 
-      console.log(selectedElement.text())
-      console.log(tinymce.activeEditor.selection.getRng().startOffset)
+        level = selectedElement.parentsUntil(RAJE_SELECTOR).length
 
-      // Create the section
-      let newSection = this.create(selectedElement.text().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
+        // Create the section
+        let newSection = this.create(selectedElement.text().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
-      tinymce.activeEditor.undoManager.transact(function () {
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        // Check what kind of section needs to be inserted
-        section.manageSection(selectedElement, newSection, level)
+          // Check what kind of section needs to be inserted
+          section.manageSection(selectedElement, newSection, level)
 
-        // Remove the selected section
-        selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
+          // Remove the selected section
+          selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
-        // Update editor
-        tinymce.triggerSave()
-      })
+          // Update editor
+          tinymce.triggerSave()
+        })
+      }
     },
 
     /**
      * Get the last inserted id
      */
     getNextId: function () {
-      let id = 1
+      let id = 0
       $('section[id]').each(function () {
         if ($(this).attr('id').indexOf('section') > -1) {
           let currId = parseInt($(this).attr('id').replace('section', ''))
@@ -237,8 +315,9 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
      * Return JQeury object that represent the section
      */
     create: function (text, level) {
-      // Create the section
-      return $(`<section id="${this.getNextId()}"><h${level}>${ZERO_SPACE}${text}</h${level}></section>`)
+      // Create the section 
+      // Version2 removed ${ZERO_SPACE} from text
+      return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
     },
 
     /**
@@ -380,5 +459,28 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         tinymce.triggerSave()
       }
     },
+
+
+    addAbstract: function () {
+
+      if (!$('section[role=doc-abstract]').length) {
+        tinymce.triggerSave()
+        tinymce.activeEditor.undoManager.transact(function () {
+          $('header').after(`<section role="doc-abstract"><h1>Abstract</h1></section>`)
+          updateIframeFromSavedContent()
+        })
+      }
+    },
+
+    addAcknowledgements: function () {
+
+      if (!$('section[role=doc-acknowledgement]').length) {
+        tinymce.triggerSave()
+        tinymce.activeEditor.undoManager.transact(function () {
+          $('section:last-of-type').after(`<section role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
+          updateIframeFromSavedContent()
+        })
+      }
+    }
   }
 })
