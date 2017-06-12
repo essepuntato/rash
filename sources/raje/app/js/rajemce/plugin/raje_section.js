@@ -244,6 +244,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           // Remove the selected section
           selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
+          moveCaret(newSection[0],true)
+
           // Update editor
           tinymce.triggerSave()
         })

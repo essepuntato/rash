@@ -107,7 +107,7 @@ $(document).ready(function () {
     table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
     image_advtab: true,
-    
+
     paste_block_drop: true
   })
 })
@@ -115,6 +115,15 @@ $(document).ready(function () {
 // Update content in the iframe, with the hidden content saved
 function updateIframeFromSavedContent() {
   tinyMCE.activeEditor.setContent($('#raje_root').html())
+}
+
+/**
+ * Accept a js object that exists in frame
+ * @param {*} element 
+ */
+function moveCaret(element,toStart) {
+  tinymce.activeEditor.selection.select(element)
+  tinymce.activeEditor.selection.collapse(toStart)
 }
 
 jQuery.fn.extend({
