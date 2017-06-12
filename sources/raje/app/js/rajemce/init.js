@@ -121,9 +121,29 @@ function updateIframeFromSavedContent() {
  * Accept a js object that exists in frame
  * @param {*} element 
  */
-function moveCaret(element,toStart) {
+function moveCaret(element, toStart) {
   tinymce.activeEditor.selection.select(element)
   tinymce.activeEditor.selection.collapse(toStart)
+}
+
+/**
+ * Create custom into notification
+ * @param {*} text 
+ * @param {*} timeout 
+ */
+function notify(text, type, timeout) {
+
+  // Display only one notification, blocking all others
+  if (tinymce.activeEditor.notificationManager.getNotifications().length == 0) {
+
+    let notify = {
+      text: text,
+      type: type ? type : 'info',
+      timeout: timeout ? timeout : 1000
+    }
+
+    tinymce.activeEditor.notificationManager.open(notify)
+  }
 }
 
 jQuery.fn.extend({

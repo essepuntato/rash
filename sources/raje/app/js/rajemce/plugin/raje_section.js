@@ -109,9 +109,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             selectedElement.remove()
             tinymce.triggerSave()
             return false
-          } // Block delete in header of section[role]
-          //else if (startNode.parents('h1').length || (endNode.parents('h1').length && endNode.parents('section[role]').length))
-            //return false
+          }
 
         } else
           raje_section_flag = true
@@ -142,7 +140,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           return false
         }
       }
-      
+
       if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
 
         let level = section.getLevelFromHash(selectedElement.text().trim())
@@ -247,12 +245,13 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           // Remove the selected section
           selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
-          moveCaret(newSection[0],true)
+          moveCaret(newSection[0], true)
 
           // Update editor
           tinymce.triggerSave()
         })
-      }
+      } else
+        notify('Error, headers of special sections (abstract, acknowledments) cannot be splitted', 'error', 4000)
     },
 
     /**
