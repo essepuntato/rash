@@ -517,7 +517,7 @@ function handleFigureDelete(sel) {
 
 /**
  * 
- * @param {*} sel 
+ * @param {*} sel => tinymce selection
  * 
  * Add a paragraph after the figure
  */
@@ -526,19 +526,23 @@ function handleFigureEnter(sel) {
   let selectedElement = $(sel.getNode())
   if (selectedElement.is('figcaption')) {
 
-    //add a new paragraph after the figure
-    selectedElement.parent('figure[id]').after('<p><br/></p>')
+    tinymce.activeEditor.undoManager.transact(function () {
 
-    //move caret to new p
-    moveCaret(selectedElement.parent('figure[id]')[0].nextSibling, true)
+      //add a new paragraph after the figure
+      selectedElement.parent('figure[id]').after('<p><br/></p>')
+
+      //move caret at the start of new p
+      tinymce.activeEditor.selection.setCursorLocation(selectedElement.parent('figure[id]')[0].nextSibling,0)
+    })
     return false
-  }
+  } else if (selectedElement.is('th'))
+    return false
   return true
 }
 
 /**
  * 
- * @param {*} sel 
+ * @param {*} sel => tinymce selection
  */
 function handleFigureChange(sel) {
 
