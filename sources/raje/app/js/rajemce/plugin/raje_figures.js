@@ -266,7 +266,7 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
     // Button behaviour
     onclick: function () {
       editor.windowManager.open({
-        title: 'My dialog',
+        title: 'Math formula editor',
         url: 'js/rajemce/plugin/raje_formula.html',
         onClose: function () {
 

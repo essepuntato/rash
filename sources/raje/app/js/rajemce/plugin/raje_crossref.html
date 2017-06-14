@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+
+  <style>
+    body {
+      padding: 20px
+    }
+  </style>
+
+  <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <script src="../../../node_modules/tinymce/tinymce.min.js">
+  </script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="../../jquery.min.js">
+  </script>
+  <script type="text/javascript" src="../../bootstrap.min.js">
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      var args = top.tinymce.activeEditor.windowManager.getParams()
+
+      if (args.sections) {
+        $('#accordion').append(
+          `
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSection" aria-expanded="true" aria-controls="collapseOne">
+                  Sections
+                </a>
+              </h4>
+            </div>
+            <div id="collapseSection" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div id="listSection" class="list-group">
+              </div>
+            </div>
+          </div>`
+        )
+
+
+        args.sections.forEach(function (section) {
+          $('#listSection').append(
+            `<a data-type="role" data-reference="${section.reference}" data-text="${section.text}" class="list-group-item">${section.level?section.level:''} ${section.text}</a>`
+          )
+        })
+
+        $('a[data-reference]').on('click', function () {
+
+          // Save cross_ref data
+          window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
+
+          // Close the window
+          window.parent.tinyMCE.activeEditor.windowManager.close()
+        })
+      }
+    })
+  </script>
+</body>
+
+</html>

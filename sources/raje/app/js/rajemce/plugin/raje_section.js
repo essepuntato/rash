@@ -470,7 +470,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       if (!$('section[role=doc-abstract]').length) {
         tinymce.triggerSave()
         tinymce.activeEditor.undoManager.transact(function () {
-          $('header').after(`<section role="doc-abstract"><h1>Abstract</h1></section>`)
+          $('header').after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1></section>`)
           updateIframeFromSavedContent()
         })
       }
@@ -481,7 +481,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       if (!$('section[role=doc-acknowledgement]').length) {
         tinymce.triggerSave()
         tinymce.activeEditor.undoManager.transact(function () {
-          $('section:last-of-type').after(`<section role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
+          $('section:last-of-type').after(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
           updateIframeFromSavedContent()
         })
       }
