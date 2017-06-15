@@ -39,41 +39,55 @@
     $(document).ready(function () {
       var args = top.tinymce.activeEditor.windowManager.getParams()
 
-      if (args.sections) {
-        $('#accordion').append(
-          `
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSection" aria-expanded="true" aria-controls="collapseOne">
-                  Sections
-                </a>
-              </h4>
-            </div>
-            <div id="collapseSection" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-              <div id="listSection" class="list-group">
-              </div>
-            </div>
-          </div>`
-        )
+      if (args.sections.length) {
 
-
+        addPanel('Section')
         args.sections.forEach(function (section) {
           $('#listSection').append(
             `<a data-type="role" data-reference="${section.reference}" data-text="${section.text}" class="list-group-item">${section.level?section.level:''} ${section.text}</a>`
           )
         })
+      }
 
-        $('a[data-reference]').on('click', function () {
-
-          // Save cross_ref data
-          window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
-
-          // Close the window
-          window.parent.tinyMCE.activeEditor.windowManager.close()
+      if (args.tables.length) {
+        
+        addPanel('Tables')
+        args.tables.forEach(function (table) {
+          $('#listTables').append(
+            `<a data-type="role" data-reference="${table.reference}" data-text="${table.text}" class="list-group-item">${table.text}</a>`
+          )
         })
       }
+
+      $('a[data-reference]').on('click', function () {
+
+        // Save cross_ref data
+        window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
+
+        // Close the window
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
     })
+
+    function addPanel(name) {
+
+      $('#accordion').append(
+        `
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse${name}" aria-expanded="true" aria-controls="collapseOne">
+                  ${name}
+                </a>
+              </h4>
+            </div>
+            <div id="collapse${name}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div id="list${name}" class="list-group">
+              </div>
+            </div>
+          </div>`
+      )
+    }
   </script>
 </body>
 

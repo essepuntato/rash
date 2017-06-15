@@ -323,7 +323,9 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
 
         captions()
 
-        console.log($('figure#' + id).html())
+        //console.log($('figure#' + id).html())
+        //console.log($('figure#'+id).find('span[data-mathml]').attr('data-mathml'))
+        //$('figure#'+id).find('p').replaceWith(`<p>${$('figure#'+id).find('span[data-mathml]').attr('data-mathml')}</p>`)
 
         // Update Rendered RASH
         updateIframeFromSavedContent()

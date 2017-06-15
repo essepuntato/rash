@@ -108,7 +108,9 @@ $(document).ready(function () {
 
     image_advtab: true,
 
-    paste_block_drop: true
+    paste_block_drop: true,
+
+    allow_unsafe_link_target: true
   })
 })
 
