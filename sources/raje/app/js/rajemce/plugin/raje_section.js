@@ -194,297 +194,340 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       section.updateSectionStructure()
     }
   })
+})
 
-  section = {
+section = {
 
-    /**
-     * Function called when a new section needs to be attached, with buttons
-     */
-    add: function (level, text) {
+  /**
+   * Function called when a new section needs to be attached, with buttons
+   */
+  add: function (level, text) {
 
-      // Select current node
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    // Select current node
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    // Create the section
+    let newSection = this.create(text ? text : selectedElement.html().trim(), level)
+
+    tinymce.activeEditor.undoManager.transact(function () {
+
+      // Check what kind of section needs to be inserted
+      section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
+
+      // Remove the selected section
+      selectedElement.remove()
+
+      // Update editor content
+      tinymce.triggerSave()
+    })
+  },
+
+  /**
+   * Function called when a new section needs to be attached, with buttons
+   */
+  addWithEnter: function () {
+
+    // Select current node
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    // If the section isn't special
+    if (!selectedElement.parent().attr('role')) {
+
+      level = selectedElement.parentsUntil(RAJE_SELECTOR).length
 
       // Create the section
-      let newSection = this.create(text ? text : selectedElement.html().trim(), level)
+      let newSection = this.create(selectedElement.text().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check what kind of section needs to be inserted
-        section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
+        section.manageSection(selectedElement, newSection, level)
 
         // Remove the selected section
-        selectedElement.remove()
+        selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
-        // Update editor content
+        moveCaret(newSection[0], true)
+
+        // Update editor
         tinymce.triggerSave()
       })
-    },
+    } else
+      notify('Error, headers of special sections (abstract, acknowledments) cannot be splitted', 'error', 4000)
+  },
 
-    /**
-     * Function called when a new section needs to be attached, with buttons
-     */
-    addWithEnter: function () {
+  /**
+   * Get the last inserted id
+   */
+  getNextId: function () {
+    let id = 0
+    $('section[id]').each(function () {
+      if ($(this).attr('id').indexOf('section') > -1) {
+        let currId = parseInt($(this).attr('id').replace('section', ''))
+        id = id > currId ? id : currId
+      }
+    })
+    return `section${id+1}`
+  },
 
-      // Select current node
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+  /**
+   * Retrieve and then remove every successive elements 
+   */
+  getSuccessiveElements: function (element, deepness) {
 
-      // If the section isn't special
-      if (!selectedElement.parent().attr('role')) {
+    let successiveElements = $('<div></div>')
 
-        level = selectedElement.parentsUntil(RAJE_SELECTOR).length
+    while (deepness >= 0) {
 
-        // Create the section
-        let newSection = this.create(selectedElement.text().trim().substring(tinymce.activeEditor.selection.getRng().startOffset), level)
+      if (element.nextAll(':not(.footer)')) {
 
-        tinymce.activeEditor.undoManager.transact(function () {
-
-          // Check what kind of section needs to be inserted
-          section.manageSection(selectedElement, newSection, level)
-
-          // Remove the selected section
-          selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
-
-          moveCaret(newSection[0], true)
-
-          // Update editor
-          tinymce.triggerSave()
-        })
-      } else
-        notify('Error, headers of special sections (abstract, acknowledments) cannot be splitted', 'error', 4000)
-    },
-
-    /**
-     * Get the last inserted id
-     */
-    getNextId: function () {
-      let id = 0
-      $('section[id]').each(function () {
-        if ($(this).attr('id').indexOf('section') > -1) {
-          let currId = parseInt($(this).attr('id').replace('section', ''))
-          id = id > currId ? id : currId
+        // If the deepness is 0, only paragraph are saved (not sections)
+        if (deepness == 0) {
+          successiveElements.append(element.nextAll('p'))
+          element.nextAll().remove('p')
+        } else {
+          successiveElements.append(element.nextAll())
+          element.nextAll().remove()
         }
-      })
-      return `section${id+1}`
-    },
-
-    /**
-     * Retrieve and then remove every successive elements 
-     */
-    getSuccessiveElements: function (element, deepness) {
-
-      let successiveElements = $('<div></div>')
-
-      while (deepness >= 0) {
-
-        if (element.nextAll(':not(.footer)')) {
-
-          // If the deepness is 0, only paragraph are saved (not sections)
-          if (deepness == 0) {
-            successiveElements.append(element.nextAll('p'))
-            element.nextAll().remove('p')
-          } else {
-            successiveElements.append(element.nextAll())
-            element.nextAll().remove()
-          }
-        }
-
-        element = element.parent('section')
-        deepness--
       }
 
-      return $(successiveElements.html())
-    },
-
-    /**
-     * 
-     */
-    getLevelFromHash: function (text) {
-
-      let level = 0
-      text = text.substring(0, text.length >= 6 ? 6 : text.length)
-
-      while (text.length > 0) {
-
-        if (text.substring(text.length - 1) == '#')
-          level++
-
-          text = text.substring(0, text.length - 1)
-      }
-
-      return level
-    },
-
-    /**
-     * Return JQeury object that represent the section
-     */
-    create: function (text, level) {
-      // Create the section 
-      // Version2 removed ${ZERO_SPACE} from text
-      return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
-    },
-
-    /**
-     * Check what kind of section needs to be added, and preceed
-     */
-    manageSection: function (selectedElement, newSection, level) {
-
-      let deepness = $(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
-
-      if (deepness >= 0) {
-
-        // Get direct parent and ancestor reference
-        let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
-
-        if (successiveElements.length)
-          newSection.append(successiveElements)
-
-        // CASE: sub section
-        if (deepness == 0)
-          selectedElement.after(newSection)
-
-        // CASE: sibling section
-        else if (deepness == 1)
-          selectedElement.parent('section').after(newSection)
-
-        // CASE: ancestor section at any uplevel
-        else
-          $(selectedElement.parents('section')[deepness - 1]).after(newSection)
-
-        newSection.headingDimension()
-      }
-    },
-
-    /**
-     * Refresh editor and save the transaction inside the Undo buffer
-     */
-    commit: function () {
-
-      // Refresh tinymce content and set the heading dimension
-      tinymce.triggerSave()
-
-      // Add the change to the undo manager
-      tinymce.activeEditor.undoManager.add()
-    },
-
-    /**
-     * 
-     */
-    upgrade: function () {
-
-      // Get the references of selected and parent section
-      let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
-      let parentSection = selectedSection.parent('section')
-
-      // If there is a parent section upgrade is allowed
-      if (parentSection.length) {
-
-        // Everything in here, is an atomic undo level
-        tinymce.activeEditor.undoManager.transact(function () {
-
-          // Save the section and detach
-          let bodySection = $(selectedSection[0].outerHTML)
-          selectedSection.detach()
-
-          // Update dimension and move the section out
-          parentSection.after(bodySection)
-
-          // Refresh tinymce content and set the heading dimension
-          bodySection.headingDimension()
-          tinymce.triggerSave()
-        })
-      }
-    },
-
-    /**
-     * 
-     */
-    downgrade: function () {
-
-      // Get the references of selected and sibling section
-      let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
-      let siblingSection = selectedSection.prev('section')
-
-      // If there is a previous sibling section downgrade is allowed
-      if (siblingSection.length) {
-
-        // Everything in here, is an atomic undo level
-        tinymce.activeEditor.undoManager.transact(function () {
-
-          // Save the section and detach
-          let bodySection = $(selectedSection[0].outerHTML)
-          selectedSection.detach()
-
-          // Update dimension and move the section out
-          siblingSection.append(bodySection)
-
-          // Refresh tinymce content and set the heading dimension
-          bodySection.headingDimension()
-          tinymce.triggerSave()
-        })
-      }
-    },
-
-    /**
-     * 
-     * After any delete, the editor must update the unvalidated elements
-     */
-    updateSectionStructure: function () {
-
-      // Save selected element and ancestor section references
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
-
-      // TODO update algorithm #issue96
-
-      let toRemoveSections = []
-
-      ancestorSection.find('section').each(function () {
-
-        // Check if the current section doesn't have heading as first child
-        if (!$(this).children().first().is(':header')) {
-
-          toRemoveSections.push($(this))
-        }
-      })
-
-      // Get the list of the section without h1, those who have another section as first child
-      //let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
-
-      // If there are sections to be removed
-      if (toRemoveSections.length > 0) {
-
-        // Move everything after 
-        selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
-
-        toRemoveSections[0].remove()
-
-        ancestorSection.children('section').headingDimension()
-        tinymce.triggerSave()
-      }
-    },
-
-
-    addAbstract: function () {
-
-      if (!$('section[role=doc-abstract]').length) {
-        tinymce.triggerSave()
-        tinymce.activeEditor.undoManager.transact(function () {
-          $('header').after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1></section>`)
-          updateIframeFromSavedContent()
-        })
-      }
-    },
-
-    addAcknowledgements: function () {
-
-      if (!$('section[role=doc-acknowledgement]').length) {
-        tinymce.triggerSave()
-        tinymce.activeEditor.undoManager.transact(function () {
-          $('section:last-of-type').after(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
-          updateIframeFromSavedContent()
-        })
-      }
+      element = element.parent('section')
+      deepness--
     }
+
+    return $(successiveElements.html())
+  },
+
+  /**
+   * 
+   */
+  getLevelFromHash: function (text) {
+
+    let level = 0
+    text = text.substring(0, text.length >= 6 ? 6 : text.length)
+
+    while (text.length > 0) {
+
+      if (text.substring(text.length - 1) == '#')
+        level++
+
+        text = text.substring(0, text.length - 1)
+    }
+
+    return level
+  },
+
+  /**
+   * Return JQeury object that represent the section
+   */
+  create: function (text, level) {
+    // Create the section 
+    // Version2 removed ${ZERO_SPACE} from text
+    return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
+  },
+
+  /**
+   * Check what kind of section needs to be added, and preceed
+   */
+  manageSection: function (selectedElement, newSection, level) {
+
+    let deepness = $(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
+
+    if (deepness >= 0) {
+
+      // Get direct parent and ancestor reference
+      let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
+
+      if (successiveElements.length)
+        newSection.append(successiveElements)
+
+      // CASE: sub section
+      if (deepness == 0)
+        selectedElement.after(newSection)
+
+      // CASE: sibling section
+      else if (deepness == 1)
+        selectedElement.parent('section').after(newSection)
+
+      // CASE: ancestor section at any uplevel
+      else
+        $(selectedElement.parents('section')[deepness - 1]).after(newSection)
+
+      newSection.headingDimension()
+    }
+  },
+
+  /**
+   * Refresh editor and save the transaction inside the Undo buffer
+   */
+  commit: function () {
+
+    // Refresh tinymce content and set the heading dimension
+    tinymce.triggerSave()
+
+    // Add the change to the undo manager
+    tinymce.activeEditor.undoManager.add()
+  },
+
+  /**
+   * 
+   */
+  upgrade: function () {
+
+    // Get the references of selected and parent section
+    let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
+    let parentSection = selectedSection.parent('section')
+
+    // If there is a parent section upgrade is allowed
+    if (parentSection.length) {
+
+      // Everything in here, is an atomic undo level
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // Save the section and detach
+        let bodySection = $(selectedSection[0].outerHTML)
+        selectedSection.detach()
+
+        // Update dimension and move the section out
+        parentSection.after(bodySection)
+
+        // Refresh tinymce content and set the heading dimension
+        bodySection.headingDimension()
+        tinymce.triggerSave()
+      })
+    }
+  },
+
+  /**
+   * 
+   */
+  downgrade: function () {
+
+    // Get the references of selected and sibling section
+    let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
+    let siblingSection = selectedSection.prev('section')
+
+    // If there is a previous sibling section downgrade is allowed
+    if (siblingSection.length) {
+
+      // Everything in here, is an atomic undo level
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // Save the section and detach
+        let bodySection = $(selectedSection[0].outerHTML)
+        selectedSection.detach()
+
+        // Update dimension and move the section out
+        siblingSection.append(bodySection)
+
+        // Refresh tinymce content and set the heading dimension
+        bodySection.headingDimension()
+        tinymce.triggerSave()
+      })
+    }
+  },
+
+  /**
+   * 
+   * After any delete, the editor must update the unvalidated elements
+   */
+  updateSectionStructure: function () {
+
+    // Save selected element and ancestor section references
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
+
+    // TODO update algorithm #issue96
+
+    let toRemoveSections = []
+
+    ancestorSection.find('section').each(function () {
+
+      // Check if the current section doesn't have heading as first child
+      if (!$(this).children().first().is(':header')) {
+
+        toRemoveSections.push($(this))
+      }
+    })
+
+    // Get the list of the section without h1, those who have another section as first child
+    //let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
+
+    // If there are sections to be removed
+    if (toRemoveSections.length > 0) {
+
+      // Move everything after 
+      selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
+
+      toRemoveSections[0].remove()
+
+      ancestorSection.children('section').headingDimension()
+      tinymce.triggerSave()
+    }
+  },
+
+
+  addAbstract: function () {
+
+    if (!$('section[role=doc-abstract]').length) {
+      tinymce.triggerSave()
+      tinymce.activeEditor.undoManager.transact(function () {
+        $('header').after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1></section>`)
+        updateIframeFromSavedContent()
+      })
+    }
+  },
+
+  addAcknowledgements: function () {
+
+    if (!$('section[role=doc-acknowledgement]').length) {
+      tinymce.triggerSave()
+      tinymce.activeEditor.undoManager.transact(function () {
+        $('section:last-of-type').after(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
+        updateIframeFromSavedContent()
+      })
+    }
+  },
+
+  addBibliography: function () {
+
+    if (!$('section[role-bibliography]').length) {
+
+      let bibliography = $(`<section id="doc-bibliography" role="doc-bibliography"><h1>References</h1><ul></ul></section>`)
+
+      if ($('section[role=doc-acknowledgement]').length)
+        $('section[role=doc-acknowledgement]').after(bibliography)
+
+      if ($('section:not([role])').length)
+        $('section:not([role])').last().after(bibliography)
+
+      else
+        $('section[role=doc-abstract]').after(bibliography)
+
+      section.addBiblioentry(section.getNextBiblioentryId())
+
+      updateIframeFromSavedContent()
+    }
+  },
+
+  getNextBiblioentryId: function () {
+    const SUFFIX = 'biblioentry_'
+
+    let lastId = 0
+
+    $('li[doc-biblioentry]').each(function () {
+      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
+      lastId = currentId > lastId ? currentId : lastId
+    })
+
+    return `${SUFFIX}${lastId+1}`
+  },
+
+  addBiblioentry: function (id, text) {
+
+    if ($('section[role=doc-bibliography]').length)
+      $('section[role=doc-bibliography] ul').append(`<li id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+
+    else
+      section.addBibliography()
   }
-})
+}

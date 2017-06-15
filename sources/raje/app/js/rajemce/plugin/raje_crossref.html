@@ -50,7 +50,7 @@
       }
 
       if (args.tables.length) {
-        
+
         addPanel('Tables')
         args.tables.forEach(function (table) {
           $('#listTables').append(
@@ -59,12 +59,40 @@
         })
       }
 
+      if (args.listings.length) {
+
+        addPanel('Listings')
+        args.listings.forEach(function (listing) {
+          $('#listListings').append(
+            `<a data-type="role" data-reference="${listing.reference}" data-text="${listing.text}" class="list-group-item">${listing.text}</a>`
+          )
+        })
+      }
+
+      addPanel('References')
+
+      $('#listReferences').append(
+        `<a data-type="role" id="addNewReference" class="list-group-item">+ Add new reference</a>`
+      )
+
+      args.references.forEach(function (reference) {
+        $('#listReferences').append(
+          `<a data-type="role" data-reference="${reference.reference}" data-text="${reference.text}" class="list-group-item">${reference.text}</a>`
+        )
+      })
+
       $('a[data-reference]').on('click', function () {
 
         // Save cross_ref data
-        window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
+        if ($(this).attr('data-reference'))
+          window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
 
         // Close the window
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
+
+      $('a#addNewReference').on('click', function () {
+        window.parent.tinyMCE.get('raje_root').createNewReference = true
         window.parent.tinyMCE.activeEditor.windowManager.close()
       })
     })

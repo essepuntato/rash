@@ -1,12 +1,11 @@
 tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
-  let bookmark
-
   // Add a button that handle the inline element
   editor.addButton('raje_crossref', {
     text: 'raje_crossref',
     icon: false,
     tooltip: 'Cross-reference',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
     onclick: function () {
@@ -15,7 +14,9 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
       let referenceableList = {
         sections: crossref.getAllReferenceableSections(),
-        tables: crossref.getAllReferenceableTables()
+        tables: crossref.getAllReferenceableTables(),
+        listings: crossref.getAllReferenceableListings(),
+        references: crossref.getAllReferenceableReferences()
       }
 
       editor.windowManager.open({
@@ -25,13 +26,34 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
           height: 800,
           onClose: function () {
 
-            // If at least formula is written
+            // This is called if a normal reference is selected from modal
             if (tinymce.activeEditor.reference != null) {
 
+              // Create the empty anchor and update its content
               crossref.add(tinymce.activeEditor.reference)
+              crossref.update()
 
-              // Set formula null
+              // Set variable null for successive usages
               tinymce.activeEditor.reference = null
+            }
+
+            // This is called if "add new reference" is called
+            if (tinymce.activeEditor.createNewReference) {
+
+              // Get successive biblioentry id
+              let reference = section.getNextBiblioentryId()
+
+              // Create the reference that points to the next id
+              crossref.add(reference)
+
+              // Add the next biblioentry
+              section.addBiblioentry(reference)
+
+              // Update the reference
+              crossref.update()
+
+              // Set variable null for successive usages
+              tinymce.activeEditor.createNewReference = null
             }
           }
         },
@@ -101,6 +123,32 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
       return tables
     },
 
+    getAllReferenceableListings: function () {
+      let listings = []
+
+      $('figure:has(pre:has(code))').each(function () {
+        listings.push({
+          reference: $(this).attr('id'),
+          text: $(this).find('figcaption').text()
+        })
+      })
+
+      return listings
+    },
+
+    getAllReferenceableReferences: function () {
+      let references = []
+
+      $('section[role=doc-bibliography] li').each(function () {
+        references.push({
+          reference: $(this).attr('id'),
+          text: $(this).text()
+        })
+      })
+
+      return references
+    },
+
     add: function (reference) {
 
       tinymce.activeEditor.undoManager.transact(function () {
@@ -108,15 +156,22 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
         // Create the empty reference
         tinymce.activeEditor.selection.setContent(`<a contenteditable="false" href="#${reference}">&nbsp;</a>`)
         tinymce.triggerSave()
-
-        // Update the reference (in saved content)
-        references()
-
-        // Update editor with the right references
-        updateIframeFromSavedContent()
       })
+    },
+
+    update: function () {
+
+      // Update the reference (in saved content)
+      references()
+
+      // Update editor with the right references
+      updateIframeFromSavedContent()
     }
   }
+})
+
+tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
+
 })
 
 function references() {

@@ -143,7 +143,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
           }
 
           figure.append(table)
-          figure.append(`<figcaption>Caption</figcaption>`)
+          figure.append(`<figcaption>Caption.</figcaption>`)
 
           return figure
         }
