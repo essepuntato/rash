@@ -54,6 +54,11 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       onclick: function () {
         section.addAcknowledgements()
       }
+    }, {
+      text: 'References',
+      onclick: function () {
+        section.addBiblioentry()
+      }
     }]
   })
 
@@ -149,9 +154,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
           section.addBiblioentry(section.getNextBiblioentryId())
           updateIframeFromSavedContent()
-        } 
-        
-        else if (selectedElement.is('p'))
+        } else if (selectedElement.is('p'))
           section.addBiblioentry(section.getNextBiblioentryId(), null, selectedElement.parent('li'))
 
         return false
