@@ -77,7 +77,7 @@
 
       args.references.forEach(function (reference) {
         $('#listReferences').append(
-          `<a data-type="role" data-reference="${reference.reference}" data-text="${reference.text}" class="list-group-item">${reference.text}</a>`
+          `<a data-type="role" data-reference="${reference.reference}" data-text="${reference.text}" class="list-group-item">${reference.level}. ${reference.text}</a>`
         )
       })
 

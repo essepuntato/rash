@@ -141,6 +141,23 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         }
       }
 
+      if (selectedElement.parents('section[role=doc-bibliography]').length) {
+
+        tinymce.triggerSave()
+
+        if (selectedElement.is('h1')) {
+
+          section.addBiblioentry(section.getNextBiblioentryId())
+          updateIframeFromSavedContent()
+        } 
+        
+        else if (selectedElement.is('p'))
+          section.addBiblioentry(section.getNextBiblioentryId(), null, selectedElement.parent('li'))
+
+        return false
+      }
+
+      /*
       if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
 
         let level = section.getLevelFromHash(selectedElement.text().trim())
@@ -149,6 +166,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         section.add(level, selectedElement.text().substring(level).trim())
       }
+      */
     }
   })
 
@@ -514,7 +532,7 @@ section = {
 
     let lastId = 0
 
-    $('li[doc-biblioentry]').each(function () {
+    $('li[role=doc-biblioentry]').each(function () {
       let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
       lastId = currentId > lastId ? currentId : lastId
     })
@@ -522,12 +540,25 @@ section = {
     return `${SUFFIX}${lastId+1}`
   },
 
-  addBiblioentry: function (id, text) {
+  addBiblioentry: function (id, text, listItem) {
 
-    if ($('section[role=doc-bibliography]').length)
-      $('section[role=doc-bibliography] ul').append(`<li id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+    tinymce.activeEditor.undoManager.transact(function () {
+      // If bibliography exists
+      if ($('section[role=doc-bibliography]').length) {
 
-    else
-      section.addBibliography()
+        // If it doesn't have ul
+        if (!$('section[role=doc-bibliography]').find('ul').length)
+          $('section[role=doc-bibliography]').append('<ul></ul>')
+
+        // Append new li to ul
+        if (!listItem)
+          $('section[role=doc-bibliography] ul').append(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+
+        else
+          listItem.after(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+
+      } else
+        section.addBibliography()
+    })
   }
 }

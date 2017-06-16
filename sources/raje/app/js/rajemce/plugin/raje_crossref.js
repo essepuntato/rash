@@ -142,7 +142,8 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
       $('section[role=doc-bibliography] li').each(function () {
         references.push({
           reference: $(this).attr('id'),
-          text: $(this).text()
+          text: $(this).text(),
+          level: $(this).index() + 1
         })
       })
 

@@ -58,6 +58,7 @@ $(document).ready(function () {
       // Prevent span 
       editor.on('nodeChange', function (e) {
 
+        /*
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
         // If the current element isn't inside header, only in section this is permitted
@@ -69,6 +70,7 @@ $(document).ready(function () {
           if (selectedElement.find('span').length)
             selectedElement.find('span').replaceWith(selectedElement.find('span').text())
         }
+        */
       })
     },
 
