@@ -90,7 +90,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       if (e.keyCode == 8 || e.keyCode == 46) {
 
         // Block remove from header
-        if (selectedElement.is('header') || selectedElement.attr('data-mce-caret') == 'after' || selectedElement.attr('data-mce-caret') == 'before')
+        if (selectedElement.is('header') || (selectedElement.attr('data-mce-caret') == 'after' && selectedElement.parent().is(RAJE_SELECTOR)) || (selectedElement.attr('data-mce-caret') && selectedElement.parent().is(RAJE_SELECTOR)) == 'before')
           return false
 
         // If start or end is inside special section
@@ -175,6 +175,21 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   editor.on('NodeChange', function (e) {
 
+    // Remove every li[role=doc-biblioentry] without child p
+
+    tinymce.triggerSave()
+
+    let update = false
+    $('li[role=doc-biblioentry]').each(function () {
+      if (!$(this).children().first().is('p')) {
+
+        $(this).remove()
+        update = true
+      }
+    })
+
+    if(update)
+      updateIframeFromSavedContent()
     //let button = new tinymce.ui.Control(tinymce.activeEditor.theme.panel.find("menubutton")[1])
 
     /*
