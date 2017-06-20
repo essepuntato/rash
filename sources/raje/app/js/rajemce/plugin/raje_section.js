@@ -150,11 +150,14 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         tinymce.triggerSave()
 
+        console.log(selectedElement)
+
         if (selectedElement.is('h1')) {
 
           section.addBiblioentry(section.getNextBiblioentryId())
           updateIframeFromSavedContent()
-        } else if (selectedElement.is('p'))
+
+        } else if (selectedElement.is('p') || selectedElement.is('li'))
           section.addBiblioentry(section.getNextBiblioentryId(), null, selectedElement.parent('li'))
 
         return false
@@ -188,7 +191,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       }
     })
 
-    if(update)
+    if (update)
       updateIframeFromSavedContent()
     //let button = new tinymce.ui.Control(tinymce.activeEditor.theme.panel.find("menubutton")[1])
 
@@ -500,8 +503,9 @@ section = {
       tinymce.triggerSave()
     }
   },
-
-
+  /**
+   * 
+   */
   addAbstract: function () {
 
     if (!$('section[role=doc-abstract]').length) {
@@ -513,6 +517,9 @@ section = {
     }
   },
 
+  /**
+   * 
+   */
   addAcknowledgements: function () {
 
     if (!$('section[role=doc-acknowledgement]').length) {
@@ -523,13 +530,17 @@ section = {
       })
     }
   },
-
+  /**
+   * This is called if bibliography section is missing, it's added in the right place
+   */
   addBibliography: function () {
 
+    // If the section doesn't exist
     if (!$('section[role-bibliography]').length) {
 
       let bibliography = $(`<section id="doc-bibliography" role="doc-bibliography"><h1>References</h1><ul></ul></section>`)
 
+      // Select the right place to insert
       if ($('section[role=doc-acknowledgement]').length)
         $('section[role=doc-acknowledgement]').after(bibliography)
 
@@ -539,12 +550,17 @@ section = {
       else
         $('section[role=doc-abstract]').after(bibliography)
 
+      // Add a single biblioentry
       section.addBiblioentry(section.getNextBiblioentryId())
 
+      // Update editor 
       updateIframeFromSavedContent()
     }
   },
 
+  /**
+   * Return the right biblioentry id
+   */
   getNextBiblioentryId: function () {
     const SUFFIX = 'biblioentry_'
 
@@ -558,6 +574,10 @@ section = {
     return `${SUFFIX}${lastId+1}`
   },
 
+  /**
+   * This method is the main one. It's called because all times the intent is to add a new biblioentry (single reference)
+   * Then it checks if is necessary to add the entire <section> or only the missing <ol>
+   */
   addBiblioentry: function (id, text, listItem) {
 
     tinymce.activeEditor.undoManager.transact(function () {
@@ -568,12 +588,18 @@ section = {
         if (!$('section[role=doc-bibliography]').find('ul').length)
           $('section[role=doc-bibliography]').append('<ul></ul>')
 
+        let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+
         // Append new li to ul
+        // Or insert the new li right after the current one
         if (!listItem)
-          $('section[role=doc-bibliography] ul').append(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+          $('section[role=doc-bibliography] ul').append(newItem)
 
         else
-          listItem.after(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+          listItem.after(newItem)
+
+        // Move caret to the new element
+        tinymce.activeEditor.selection.setCursorLocation(newItem[0], true)
 
       } else
         section.addBibliography()
