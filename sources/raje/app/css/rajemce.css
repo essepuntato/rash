@@ -4,3 +4,7 @@ table.mce-item-table,
 .mce-item-table caption {
   border: 1px solid black!important
 }
+
+section:not([role]) ol>li {
+  margin: 0 0 10px
+}
