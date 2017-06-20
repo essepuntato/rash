@@ -175,6 +175,19 @@ tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
 
 })
 
+tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
+
+  editor.addButton('raje_footnotes', {
+    text: 'raje_footnotes',
+    icon: false,
+    tooltip: 'Footnote',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
+
+    // Button behaviour
+    onclick: function () {}
+  })
+})
+
 function references() {
   /* References */
   $("a[href]").each(function () {
