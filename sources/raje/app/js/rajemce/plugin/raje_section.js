@@ -64,6 +64,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       text: 'References',
       onclick: function () {
 
+        tinymce.triggerSave()
+
         // TODO change here
         tinymce.activeEditor.undoManager.transact(function () {
           // Add new biblioentry
@@ -219,7 +221,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     if (update)
       updateIframeFromSavedContent()
-*/
+    */
     /*
     $('section[role]').each(function(){
       if (!$(this).children().first().is('h1')) {
