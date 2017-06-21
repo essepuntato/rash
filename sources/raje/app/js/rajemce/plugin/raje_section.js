@@ -63,7 +63,20 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     }, {
       text: 'References',
       onclick: function () {
-        section.addBiblioentry()
+
+        // TODO change here
+        tinymce.activeEditor.undoManager.transact(function () {
+          // Add new biblioentry
+          section.addBiblioentry()
+
+          // Update iframe
+          updateIframeFromSavedContent()
+
+          //TODO move caret #105
+          tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`li[role=doc-biblioentry]:last-child`)[0], true)
+
+          tinymce.activeEditor.focus()
+        })
       }
     }]
   })
@@ -156,16 +169,22 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         tinymce.triggerSave()
 
-        console.log(selectedElement)
+        let id
 
+        // Pressing enter in h1 will add a new biblioentry and caret reposition
         if (selectedElement.is('h1')) {
 
-          section.addBiblioentry(section.getNextBiblioentryId())
+          id = section.getNextBiblioentryId()
+          section.addBiblioentry(id)
           updateIframeFromSavedContent()
 
-        } else if (selectedElement.is('p') || selectedElement.is('li'))
-          section.addBiblioentry(section.getNextBiblioentryId(), null, selectedElement.parent('li'))
+        } else if (selectedElement.is('p') || selectedElement.is('li')) {
 
+          id = section.getNextBiblioentryId()
+          section.addBiblioentry(id, null, selectedElement.parent('li'))
+        }
+
+        moveCaret(tinymce.activeEditor.dom.get(id), true)
         return false
       }
 
@@ -186,6 +205,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     // Remove every li[role=doc-biblioentry] without child p
 
+    /*
     tinymce.triggerSave()
 
     let update = false
@@ -199,7 +219,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     if (update)
       updateIframeFromSavedContent()
-
+*/
     /*
     $('section[role]').each(function(){
       if (!$(this).children().first().is('h1')) {
@@ -595,6 +615,8 @@ section = {
     // Add ul in bibliography section if not exists
     if (!$(BIBLIOGRAPHY_SELECTOR).find('ul').length)
       $(BIBLIOGRAPHY_SELECTOR).append('<ul></ul>')
+
+    id = (id) ? id : section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
 
     let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
 

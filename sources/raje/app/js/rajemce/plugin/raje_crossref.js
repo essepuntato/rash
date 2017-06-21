@@ -26,24 +26,31 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
           height: 800,
           onClose: function () {
 
-            // This is called if "add new reference" is called
+            /**
+             * 
+             * This behaviour is called when user press "ADD NEW REFERENCE" 
+             * button from the modal
+             */
             if (tinymce.activeEditor.createNewReference) {
 
-              // Get successive biblioentry id
-              let id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
+              tinymce.activeEditor.undoManager.transact(function () {
 
-              // Create the reference that points to the next id
-              crossref.add(id)
+                // Get successive biblioentry id
+                let id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
 
-              // Add the next biblioentry
-              section.addBiblioentry(id)
+                // Create the reference that points to the next id
+                crossref.add(id)
 
-              // Update the reference
-              crossref.update()
+                // Add the next biblioentry
+                section.addBiblioentry(id)
 
-              // Move caret to start of the new biblioentry element
-              // Issue #105
-              moveCaret(tinymce.activeEditor.dom.get(id), true)
+                // Update the reference
+                crossref.update()
+
+                // Move caret to start of the new biblioentry element
+                // Issue #105
+                moveCaret(tinymce.activeEditor.dom.get(id), true)
+              })
 
               // Set variable null for successive usages
               tinymce.activeEditor.createNewReference = null
@@ -52,9 +59,17 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
             // This is called if a normal reference is selected from modal
             if (tinymce.activeEditor.reference != null) {
 
-              // Create the empty anchor and update its content
-              crossref.add(tinymce.activeEditor.reference)
-              crossref.update()
+              tinymce.activeEditor.undoManager.transact(function () {
+
+                // Create the empty anchor and update its content
+                crossref.add(tinymce.activeEditor.reference)
+                crossref.update()
+
+                // This select the last element (last by order) and collapse the selection after the node
+                // #105
+                tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`a[href="#${tinymce.activeEditor.reference}"]:last-child`)[0])
+                tinymce.activeEditor.selection.collapse(false)
+              })
 
               // Set variable null for successive usages
               tinymce.activeEditor.reference = null

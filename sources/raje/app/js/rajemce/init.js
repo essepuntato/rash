@@ -72,6 +72,15 @@ $(document).ready(function () {
         }
         */
       })
+
+      // Update saved content on undo and redo events
+      editor.on('Undo', function (e) {
+        tinymce.triggerSave()
+      })
+
+      editor.on('Redo', function (e) {
+        tinymce.triggerSave()
+      })
     },
 
     // Set default target
