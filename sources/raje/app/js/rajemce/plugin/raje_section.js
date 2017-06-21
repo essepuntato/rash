@@ -1,8 +1,14 @@
 /**
  * RASH section plugin RAJE
  */
-tinymce.PluginManager.add('raje_section', function (editor, url) {
 
+const BIBLIOGRAPHY_SELECTOR = 'section[role=doc-bibliography]'
+const BIBLIOENTRY_SELECTOR = 'li[role=doc-biblioentry]'
+
+const ENDNOTES_SELECTOR = 'section[role=doc-endnotes]'
+const ENDNOTE_SELECTOR = 'section[role=doc-endnote]'
+
+tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   let raje_section_flag = false
 
@@ -193,6 +199,15 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     if (update)
       updateIframeFromSavedContent()
+
+    /*
+    $('section[role]').each(function(){
+      if (!$(this).children().first().is('h1')) {
+        $(this).remove()
+        updateIframeFromSavedContent()
+      }
+    })
+    */
     //let button = new tinymce.ui.Control(tinymce.activeEditor.theme.panel.find("menubutton")[1])
 
     /*
@@ -523,38 +538,19 @@ section = {
   addAcknowledgements: function () {
 
     if (!$('section[role=doc-acknowledgement]').length) {
-      tinymce.triggerSave()
+
+      let ack = $(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1><p><br/></p></section>`)
+
       tinymce.activeEditor.undoManager.transact(function () {
-        $('section:last-of-type').after(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
+
+        if ($('section:not([role])').length)
+          $('section:not([role])').last().after(ack)
+
+        else if ($('section[role=doc-abstract]').length)
+          $('section[role=doc-abstract]').after(ack)
+
         updateIframeFromSavedContent()
       })
-    }
-  },
-  /**
-   * This is called if bibliography section is missing, it's added in the right place
-   */
-  addBibliography: function () {
-
-    // If the section doesn't exist
-    if (!$('section[role-bibliography]').length) {
-
-      let bibliography = $(`<section id="doc-bibliography" role="doc-bibliography"><h1>References</h1><ul></ul></section>`)
-
-      // Select the right place to insert
-      if ($('section[role=doc-acknowledgement]').length)
-        $('section[role=doc-acknowledgement]').after(bibliography)
-
-      if ($('section:not([role])').length)
-        $('section:not([role])').last().after(bibliography)
-
-      else
-        $('section[role=doc-abstract]').after(bibliography)
-
-      // Add a single biblioentry
-      section.addBiblioentry(section.getNextBiblioentryId())
-
-      // Update editor 
-      updateIframeFromSavedContent()
     }
   },
 
@@ -580,29 +576,87 @@ section = {
    */
   addBiblioentry: function (id, text, listItem) {
 
-    tinymce.activeEditor.undoManager.transact(function () {
-      // If bibliography exists
-      if ($('section[role=doc-bibliography]').length) {
+    // Add bibliography section if not exists
+    if (!$(BIBLIOGRAPHY_SELECTOR).length) {
 
-        // If it doesn't have ul
-        if (!$('section[role=doc-bibliography]').find('ul').length)
-          $('section[role=doc-bibliography]').append('<ul></ul>')
+      let bibliography = $(`<section id="doc-bibliography" role="doc-bibliography"><h1>References</h1><ul></ul></section>`)
 
-        let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+      // Select the right place to insert
+      if ($('section[role=doc-acknowledgement]').length)
+        $('section[role=doc-acknowledgement]').after(bibliography)
 
-        // Append new li to ul
-        // Or insert the new li right after the current one
-        if (!listItem)
-          $('section[role=doc-bibliography] ul').append(newItem)
+      if ($('section:not([role])').length)
+        $('section:not([role])').last().after(bibliography)
 
-        else
-          listItem.after(newItem)
+      else
+        $('section[role=doc-abstract]').after(bibliography)
+    }
 
-        // Move caret to the new element
-        tinymce.activeEditor.selection.setCursorLocation(newItem[0], true)
+    // Add ul in bibliography section if not exists
+    if (!$(BIBLIOGRAPHY_SELECTOR).find('ul').length)
+      $(BIBLIOGRAPHY_SELECTOR).append('<ul></ul>')
 
-      } else
-        section.addBibliography()
+    let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+
+    // Append new li to ul
+    // Or insert the new li right after the current one
+    if (!listItem)
+      $(`${BIBLIOGRAPHY_SELECTOR} ul`).append(newItem)
+
+    else
+      listItem.after(newItem)
+
+    return newItem
+  },
+
+  getNextEndnoteId: function () {
+    const SUFFIX = 'endnote_'
+
+    let lastId = 0
+
+    $('section[role=doc-endnote]').each(function () {
+      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
+      lastId = currentId > lastId ? currentId : lastId
     })
+
+    return `${SUFFIX}${lastId+1}`
+  },
+
+  addEndnote: function (id) {
+
+    // Add the section if it not exists
+    if (!$('section[role=doc-endnotes]').length) {
+
+      let endnotes = $(`<section id="doc-endnotes" role="doc-endnotes"><h1>Footnotes</h1></section>`)
+
+      // Select the right place to insert
+      if ($('section[role=doc-bibliography]').length)
+        $('section[role=doc-bibliography]').after(endnotes)
+
+      else if ($('section[role=doc-acknowledgement]').length)
+        $('section[role=doc-acknowledgement]').after(endnotes)
+
+      else if ($('section:not([role])').length)
+        $('section:not([role])').last().after(endnotes)
+
+      else
+        $('section[role=doc-abstract]').after(endnotes)
+    }
+
+    // Create and append the new endnote
+    let endnote = $(`<section role="doc-endnote" id="${id}"><p><br/></p></section>`)
+    $('section[role=doc-endnotes]').append(endnote)
+  },
+
+  getSuccessiveElementId: function (elementSelector, SUFFIX) {
+
+    let lastId = 0
+
+    $(elementSelector).each(function () {
+      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
+      lastId = currentId > lastId ? currentId : lastId
+    })
+
+    return `${SUFFIX}${lastId+1}`
   }
 }

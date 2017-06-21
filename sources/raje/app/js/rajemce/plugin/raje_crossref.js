@@ -26,6 +26,29 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
           height: 800,
           onClose: function () {
 
+            // This is called if "add new reference" is called
+            if (tinymce.activeEditor.createNewReference) {
+
+              // Get successive biblioentry id
+              let id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
+
+              // Create the reference that points to the next id
+              crossref.add(id)
+
+              // Add the next biblioentry
+              section.addBiblioentry(id)
+
+              // Update the reference
+              crossref.update()
+
+              // Move caret to start of the new biblioentry element
+              // Issue #105
+              moveCaret(tinymce.activeEditor.dom.get(id), true)
+
+              // Set variable null for successive usages
+              tinymce.activeEditor.createNewReference = null
+            }
+
             // This is called if a normal reference is selected from modal
             if (tinymce.activeEditor.reference != null) {
 
@@ -35,25 +58,6 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
               // Set variable null for successive usages
               tinymce.activeEditor.reference = null
-            }
-
-            // This is called if "add new reference" is called
-            if (tinymce.activeEditor.createNewReference) {
-
-              // Get successive biblioentry id
-              let reference = section.getNextBiblioentryId()
-
-              // Create the reference that points to the next id
-              crossref.add(reference)
-
-              // Add the next biblioentry
-              section.addBiblioentry(reference)
-
-              // Update the reference
-              crossref.update()
-
-              // Set variable null for successive usages
-              tinymce.activeEditor.createNewReference = null
             }
           }
         },
@@ -152,12 +156,9 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
     add: function (reference) {
 
-      tinymce.activeEditor.undoManager.transact(function () {
-
-        // Create the empty reference
-        tinymce.activeEditor.selection.setContent(`<a contenteditable="false" href="#${reference}">&nbsp;</a>`)
-        tinymce.triggerSave()
-      })
+      // Create the empty reference
+      tinymce.activeEditor.selection.setContent(`<a contenteditable="false" href="#${reference}">&nbsp;</a>`)
+      tinymce.triggerSave()
     },
 
     update: function () {
@@ -173,10 +174,6 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
 tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
 
-})
-
-tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
-
   editor.addButton('raje_footnotes', {
     text: 'raje_footnotes',
     icon: false,
@@ -184,7 +181,20 @@ tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
-    onclick: function () {}
+    onclick: function () {
+
+      // Get successive biblioentry id
+      let reference = section.getSuccessiveElementId(ENDNOTE_SELECTOR, 'endnote_')
+
+      // Create the reference that points to the next id
+      crossref.add(reference)
+
+      // Add the next biblioentry
+      section.addEndnote(reference)
+
+      // Update the reference
+      crossref.update()
+    }
   })
 })
 
