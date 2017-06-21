@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6.1, February 10, 2017
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6.2, June 20, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -107,7 +107,7 @@ Under the following terms:
             <p>This paper introduces the <em>Research Articles in Simplified HTML</em> (<em><code>RASH</code></em>) format <a href="#RASH2015"></a>, i.e., a markup language that restricts the use of <a href="http://www.w3.org/TR/html5/">HTML</a> elements to only <strong>31 elements</strong> for writing academic research articles. It is possible to includes also <strong><a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a> annotations</strong> within any element of the language, and also allows one to specify other RDF annotations in <a href="http://www.w3.org/TR/turtle/">Turtle</a>, <a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. In addition, RASH strictly follows the <a href="https://rawgit.com/w3c/aria/master/aria/dpub.html">Digital Publishing WAI-ARIA Module 1.0</a> (which is currently an editor draft) for expressing structural semantics on various markup elements used.</p>
             <p>Concerning its theoretical foundations, RASH is entirely based on a strong theory on <em>structural patterns</em> for XML documents <a href="#Patterns2014"></a>. The systematic use of these structural patterns is an added value in all stages of the documents' lifecycle: they can be guidelines for creating well-engineered documents and vocabularies, rules to extract structural components from legacy documents, indicators to study to what extent documents share design principles and community guidelines.</p>
             <p>Note that this is a meta-document, since it has been actually defined by using RASH itself as markup language. Thus you can easily access the HTML code of this page to understand how the various elements are rendered by the browser.</p>
-            <p>Any RASH documents begins as a simple (X)HTML5 document, by specifying the XML declaration and generic DOCTYPE followed by document element <code>html</code> with the usual namespace and with additional (and mandatory) prefix declarations (through the attribute <code>prefix</code>). The element <code>html</code> contains the element <code>head</code>, for defining metadata of the document, and the element <code>body</code>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
+            <p>Any RASH documents begins as a simple HTML5 document, by specifying the generic HTML DOCTYPE followed by document element <code>html</code> with the usual namespace and with additional (and mandatory) prefix declarations (through the attribute <code>prefix</code>). The element <code>html</code> contains the element <code>head</code>, for defining metadata of the document, and the element <code>body</code>, for including the whole content of the document. The whole structure of a RASH document is then introduced as follows:</p>
             <pre><code>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE html&gt;
