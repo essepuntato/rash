@@ -66,19 +66,23 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         tinymce.triggerSave()
 
-        // TODO change here
-        tinymce.activeEditor.undoManager.transact(function () {
-          // Add new biblioentry
-          section.addBiblioentry()
+        // Only if bibliography section doesn't exists
+        if (!$(BIBLIOGRAPHY_SELECTOR).length) {
 
-          // Update iframe
-          updateIframeFromSavedContent()
+          // TODO change here
+          tinymce.activeEditor.undoManager.transact(function () {
+            // Add new biblioentry
+            section.addBiblioentry()
 
-          //TODO move caret #105
-          tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`li[role=doc-biblioentry]:last-child`)[0], true)
+            // Update iframe
+            updateIframeFromSavedContent()
 
-          tinymce.activeEditor.focus()
-        })
+            //TODO move caret #105
+            tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
+
+            tinymce.activeEditor.focus()
+          })
+        }
       }
     }]
   })
@@ -292,6 +296,9 @@ section = {
 
       // Remove the selected section
       selectedElement.remove()
+
+      moveCaret(newSection[0], true)
+      tinymce.activeEditor.focus()
 
       // Update editor content
       tinymce.triggerSave()
