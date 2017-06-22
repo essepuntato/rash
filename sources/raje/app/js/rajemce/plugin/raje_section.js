@@ -168,6 +168,33 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             return false
           }
 
+          // Chek if inside the selection to remove, there is bibliography
+          let hasBibliography = false
+          $(tinymce.activeEditor.selection.getContent()).each(function () {
+            if ($(this).is(BIBLIOGRAPHY_SELECTOR))
+              hasBibliography = true
+          })
+
+          if (hasBibliography) {
+
+            tinymce.activeEditor.undoManager.transact(function () {
+
+              // Execute normal delete
+              tinymce.activeEditor.execCommand('delete')
+
+              // Update saved content
+              tinymce.triggerSave()
+
+              // Remove selector without hader
+              $(BIBLIOGRAPHY_SELECTOR).remove()
+
+              // Update iframe and restore selection
+              updateIframeFromSavedContent()
+            })
+
+            return false
+          }
+
           // If selection contains at least one biblioentry element
           if (tinymce.activeEditor.selection.getContent().indexOf('doc-biblioentry') != -1) {
 
@@ -181,7 +208,6 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           }
         }
       }
-
     } catch (exception) {}
 
     // #################################
@@ -322,7 +348,6 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       raje_section_flag = false
 
       section.updateSectionStructure()
-      //section.updateBibliographySection()
     }
   })
 })
