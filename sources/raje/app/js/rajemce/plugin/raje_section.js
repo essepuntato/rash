@@ -8,6 +8,12 @@ const BIBLIOENTRY_SELECTOR = 'li[role=doc-biblioentry]'
 const ENDNOTES_SELECTOR = 'section[role=doc-endnotes]'
 const ENDNOTE_SELECTOR = 'section[role=doc-endnote]'
 
+const ABSTRACT_SELECTOR = 'section[role=doc-abstract]'
+const ACKNOWLEDGEMENTS_SELECTOR = 'section[role=doc-acknowledgements]'
+
+const SECTION_SELECTOR = 'section:not([role])'
+const NON_EDITABLE_HEADER_SELECTOR = 'header.page-header.container.cgen'
+
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   let raje_section_flag = false
@@ -20,71 +26,74 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     // Sections sub menu
     menu: [{
-      text: 'Heading 1.',
-      type: 'menuitem',
-      onclick: function () {
-        section.add(1)
-      }
-    }, {
-      text: 'Heading 1.1.',
-      onclick: function () {
-        section.add(2)
-      }
-    }, {
-      text: 'Heading 1.1.1.',
-      onclick: function () {
-        section.add(3)
-      }
-    }, {
-      text: 'Heading 1.1.1.1.',
-      onclick: function () {
-        section.add(4)
-      }
-    }, {
-      text: 'Heading 1.1.1.1.1.',
-      onclick: function () {
-        section.add(5)
-      }
-    }, {
-      text: 'Heading 1.1.1.1.1.1.',
-      onclick: function () {
-        section.add(6)
-      }
-    }, {
-      text: 'Abstract',
-      onclick: function () {
-        section.addAbstract()
-      }
-    }, {
-      text: 'Acknowledgements',
-      onclick: function () {
-        section.addAcknowledgements()
-      }
-    }, {
-      text: 'References',
-      onclick: function () {
+        text: 'Heading 1.',
+        type: 'menuitem',
+        onclick: function () {
+          section.add(1)
+        }
+      }, {
+        text: 'Heading 1.1.',
+        onclick: function () {
+          section.add(2)
+        }
+      }, {
+        text: 'Heading 1.1.1.',
+        onclick: function () {
+          section.add(3)
+        }
+      }, {
+        text: 'Heading 1.1.1.1.',
+        onclick: function () {
+          section.add(4)
+        }
+      }, {
+        text: 'Heading 1.1.1.1.1.',
+        onclick: function () {
+          section.add(5)
+        }
+      }, {
+        text: 'Heading 1.1.1.1.1.1.',
+        onclick: function () {
+          section.add(6)
+        }
+      }, {
+        text: 'Abstract',
+        onclick: function () {
 
-        tinymce.triggerSave()
+          section.addAbstract()
+        }
+      },
+      {
+        text: 'Acknowledgements',
+        onclick: function () {
+          section.addAcknowledgements()
+        }
+      },
+      {
+        text: 'References',
+        onclick: function () {
 
-        // Only if bibliography section doesn't exists
-        if (!$(BIBLIOGRAPHY_SELECTOR).length) {
+          tinymce.triggerSave()
 
-          // TODO change here
-          tinymce.activeEditor.undoManager.transact(function () {
-            // Add new biblioentry
-            section.addBiblioentry()
+          // Only if bibliography section doesn't exists
+          if (!$(BIBLIOGRAPHY_SELECTOR).length) {
 
-            // Update iframe
-            updateIframeFromSavedContent()
+            // TODO change here
+            tinymce.activeEditor.undoManager.transact(function () {
+              // Add new biblioentry
+              section.addBiblioentry()
 
-            //TODO move caret #105
-            tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
+              // Update iframe
+              updateIframeFromSavedContent()
 
-            tinymce.activeEditor.focus()
-          })
+              //move caret and set focus to active aditor #105
+              tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
+              tinymce.activeEditor.focus()
+            })
+          }
         }
       }
-    }]
+    ]
   })
 
   editor.on('keyDown', function (e) {
@@ -552,13 +561,21 @@ section = {
    */
   addAbstract: function () {
 
-    if (!$('section[role=doc-abstract]').length) {
-      tinymce.triggerSave()
+    if (!$(ABSTRACT_SELECTOR).length) {
+
       tinymce.activeEditor.undoManager.transact(function () {
-        $('header').after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1></section>`)
+
+        // This section can only be placed after non editable header
+        $(NON_EDITABLE_HEADER_SELECTOR).after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1><p><br/></p></section>`)
+
         updateIframeFromSavedContent()
+
+        //move caret and set focus to active aditor #105
+        tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > p`)[0])
+        tinymce.activeEditor.focus()
       })
     }
+
   },
 
   /**
@@ -566,42 +583,36 @@ section = {
    */
   addAcknowledgements: function () {
 
-    if (!$('section[role=doc-acknowledgement]').length) {
+    if (!$(ACKNOWLEDGEMENTS_SELECTOR).length) {
 
       let ack = $(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1><p><br/></p></section>`)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
-        if ($('section:not([role])').length)
-          $('section:not([role])').last().after(ack)
+        // Insert this section after last non special section 
+        // OR after abstract section 
+        // OR after non editable header
+        if ($(SECTION_SELECTOR).length)
+          $(SECTION_SELECTOR).last().after(ack)
 
-        else if ($('section[role=doc-abstract]').length)
-          $('section[role=doc-abstract]').after(ack)
+        else if ($(ABSTRACT_SELECTOR).length)
+          $(ABSTRACT_SELECTOR).after(ack)
+
+        else
+          $(NON_EDITABLE_HEADER_SELECTOR).after(ack)
 
         updateIframeFromSavedContent()
+
+        //move caret and set focus to active aditor #105
+        tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > p`)[0], true)
+        tinymce.activeEditor.focus()
       })
     }
   },
 
   /**
-   * Return the right biblioentry id
-   */
-  getNextBiblioentryId: function () {
-    const SUFFIX = 'biblioentry_'
-
-    let lastId = 0
-
-    $('li[role=doc-biblioentry]').each(function () {
-      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
-      lastId = currentId > lastId ? currentId : lastId
-    })
-
-    return `${SUFFIX}${lastId+1}`
-  },
-
-  /**
    * This method is the main one. It's called because all times the intent is to add a new biblioentry (single reference)
-   * Then it checks if is necessary to add the entire <section> or only the missing <ol>
+   * Then it checks if is necessary to add the entire <section> or only the missing <ul>
    */
   addBiblioentry: function (id, text, listItem) {
 
@@ -610,75 +621,82 @@ section = {
 
       let bibliography = $(`<section id="doc-bibliography" role="doc-bibliography"><h1>References</h1><ul></ul></section>`)
 
-      // Select the right place to insert
-      if ($('section[role=doc-acknowledgement]').length)
-        $('section[role=doc-acknowledgement]').after(bibliography)
+      // This section is added after acknowledgements section
+      // OR after last non special section
+      // OR after abstract section
+      // OR after non editable header 
+      if ($(ACKNOWLEDGEMENTS_SELECTOR).length)
+        $(ACKNOWLEDGEMENTS_SELECTOR).after(bibliography)
 
-      if ($('section:not([role])').length)
-        $('section:not([role])').last().after(bibliography)
+      else if ($(SECTION_SELECTOR).length)
+        $(SECTION_SELECTOR).last().after(bibliography)
+
+      else if ($(ABSTRACT_SELECTOR).length)
+        $(ABSTRACT_SELECTOR).after(bibliography)
 
       else
-        $('section[role=doc-abstract]').after(bibliography)
+        $(NON_EDITABLE_HEADER_SELECTOR).after(bibliography)
+
     }
 
     // Add ul in bibliography section if not exists
     if (!$(BIBLIOGRAPHY_SELECTOR).find('ul').length)
       $(BIBLIOGRAPHY_SELECTOR).append('<ul></ul>')
 
+    // IF id and text aren't passed as parameters, these can be retrieved or init from here
     id = (id) ? id : section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
+    text = text ? text : '<br/>'
 
-    let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text ? text : '<br/>'}</p></li>`)
+    let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text}</p></li>`)
 
-    // Append new li to ul
-    // Or insert the new li right after the current one
+    // Append new li to ul at last position
+    // OR insert the new li right after the current one
     if (!listItem)
       $(`${BIBLIOGRAPHY_SELECTOR} ul`).append(newItem)
 
     else
       listItem.after(newItem)
-
-    return newItem
   },
 
-  getNextEndnoteId: function () {
-    const SUFFIX = 'endnote_'
-
-    let lastId = 0
-
-    $('section[role=doc-endnote]').each(function () {
-      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
-      lastId = currentId > lastId ? currentId : lastId
-    })
-
-    return `${SUFFIX}${lastId+1}`
-  },
-
+  /**
+   * 
+   */
   addEndnote: function (id) {
 
     // Add the section if it not exists
-    if (!$('section[role=doc-endnotes]').length) {
+    if (!$(ENDNOTE_SELECTOR).length) {
 
       let endnotes = $(`<section id="doc-endnotes" role="doc-endnotes"><h1>Footnotes</h1></section>`)
 
-      // Select the right place to insert
-      if ($('section[role=doc-bibliography]').length)
-        $('section[role=doc-bibliography]').after(endnotes)
+      // Insert this section after bibliography section
+      // OR after acknowledgements section
+      // OR after non special section selector
+      // OR after abstract section
+      // OR after non editable header 
+      if ($(BIBLIOGRAPHY_SELECTOR).length)
+        $(BIBLIOGRAPHY_SELECTOR).after(endnotes)
 
-      else if ($('section[role=doc-acknowledgement]').length)
-        $('section[role=doc-acknowledgement]').after(endnotes)
+      else if ($(ACKNOWLEDGEMENTS_SELECTOR).length)
+        $(ACKNOWLEDGEMENTS_SELECTOR).after(endnotes)
 
-      else if ($('section:not([role])').length)
-        $('section:not([role])').last().after(endnotes)
+      else if ($(SECTION_SELECTOR).length)
+        $(SECTION_SELECTOR).last().after(endnotes)
+
+      else if ($(ABSTRACT_SELECTOR).length)
+        $(ABSTRACT_SELECTOR).after(endnotes)
 
       else
-        $('section[role=doc-abstract]').after(endnotes)
+        $(NON_EDITABLE_HEADER_SELECTOR).after(endnotes)
     }
 
     // Create and append the new endnote
     let endnote = $(`<section role="doc-endnote" id="${id}"><p><br/></p></section>`)
-    $('section[role=doc-endnotes]').append(endnote)
+    $(ENDNOTES_SELECTOR).append(endnote)
   },
 
+  /**
+   * 
+   */
   getSuccessiveElementId: function (elementSelector, SUFFIX) {
 
     let lastId = 0
