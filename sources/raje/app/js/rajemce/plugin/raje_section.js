@@ -2,6 +2,10 @@
  * RASH section plugin RAJE
  */
 
+const NON_EDITABLE_HEADER_SELECTOR = 'header.page-header.container.cgen'
+const BIBLIOENTRY_SUFFIX = 'biblioentry_'
+const ENDNOTE_SUFFIX = 'endnote_'
+
 const BIBLIOGRAPHY_SELECTOR = 'section[role=doc-bibliography]'
 const BIBLIOENTRY_SELECTOR = 'li[role=doc-biblioentry]'
 
@@ -11,12 +15,8 @@ const ENDNOTE_SELECTOR = 'section[role=doc-endnote]'
 const ABSTRACT_SELECTOR = 'section[role=doc-abstract]'
 const ACKNOWLEDGEMENTS_SELECTOR = 'section[role=doc-acknowledgements]'
 
-const SECTION_SELECTOR = 'section:not([role])'
+const SECTION_SELECTOR = 'div#raje_root > section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
-const NON_EDITABLE_HEADER_SELECTOR = 'header.page-header.container.cgen'
-
-const BIBLIOENTRY_SUFFIX = 'biblioentry_'
-const ENDNOTE_SUFFIX = 'endnote_'
 
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
@@ -333,7 +333,8 @@ section = {
       // Remove the selected section
       selectedElement.remove()
 
-      moveCaret(newSection[0], true)
+      // The caret is moved at the end
+      moveCaret(newSection[0], false)
       tinymce.activeEditor.focus()
 
       // Update editor content
