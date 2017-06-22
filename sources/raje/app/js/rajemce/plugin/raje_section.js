@@ -12,6 +12,7 @@ const ABSTRACT_SELECTOR = 'section[role=doc-abstract]'
 const ACKNOWLEDGEMENTS_SELECTOR = 'section[role=doc-acknowledgements]'
 
 const SECTION_SELECTOR = 'section:not([role])'
+const SPECIAL_SECTION_SELECTOR = 'section[role]'
 const NON_EDITABLE_HEADER_SELECTOR = 'header.page-header.container.cgen'
 
 tinymce.PluginManager.add('raje_section', function (editor, url) {
@@ -103,40 +104,45 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     try {
 
-      var keycode = e.keyCode;
+      let keycode = e.keyCode
 
-      var valid =
+      // Save bounds of current selection (start and end)
+      let startNode = $(tinymce.activeEditor.selection.getRng().startContainer)
+      let endNode = $(tinymce.activeEditor.selection.getRng().endContainer)
+
+      const SPECIAL_CHARS =
         (keycode > 47 && keycode < 58) || // number keys
-        //keycode == 32 || // spacebar & return key(s) (if you want to allow carriage returns)
-        //(keycode > 64 && keycode < 91) || // letter keys
         (keycode > 95 && keycode < 112) || // numpad keys
         (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
         (keycode > 218 && keycode < 223); // [\]' (in order)
 
-      let startNode = $(tinymce.activeEditor.selection.getRng().startContainer)
-      let endNode = $(tinymce.activeEditor.selection.getRng().endContainer)
-
-      // Block editability of section[role]>h1
-      if (valid && (startNode.parents('section[role]').length || endNode.parents('section[role').length) && (startNode.parents('h1').length > 0 || endNode.parents('h1').length > 0))
+      // Block special chars in special elements
+      if (SPECIAL_CHARS &&
+        (startNode.parents(SPECIAL_SECTION_SELECTOR).length || endNode.parents(SPECIAL_SECTION_SELECTOR).length) &&
+        (startNode.parents('h1').length > 0 || endNode.parents('h1').length > 0))
         return false
 
-      // Check if a deletion is called
+      // #################################
+      // ### BACKSPACE && CANC PRESSED ###
+      // #################################
       if (e.keyCode == 8 || e.keyCode == 46) {
 
-        // Block remove from header
-        if (selectedElement.is('header') || (selectedElement.attr('data-mce-caret') == 'after' && selectedElement.parent().is(RAJE_SELECTOR)) || (selectedElement.attr('data-mce-caret') && selectedElement.parent().is(RAJE_SELECTOR)) == 'before')
+        // Prevent remove from header
+        if (selectedElement.is(NON_EDITABLE_HEADER_SELECTOR) ||
+          (selectedElement.attr('data-mce-caret') == 'after' && selectedElement.parent().is(RAJE_SELECTOR)) ||
+          (selectedElement.attr('data-mce-caret') && selectedElement.parent().is(RAJE_SELECTOR)) == 'before')
           return false
 
-        // If start or end is inside special section
-        else if (startNode.parents('section[role]').length || endNode.parents('section[role]').length) {
+        // If SELECTION STARTS or ENDS in special section
+        else if (startNode.parents(SPECIAL_SECTION_SELECTOR).length || endNode.parents(SPECIAL_SECTION_SELECTOR).length) {
 
           let startOffset = tinymce.activeEditor.selection.getRng().startOffset
           let startOffsetNode = 0
           let endOffset = tinymce.activeEditor.selection.getRng().endOffset
           let endOffsetNode = tinymce.activeEditor.selection.getRng().endContainer.length
 
+          // Completely remove the current special section if is entirely selected
           if (
-
             // Check if the selection contains the entire section
             startOffset == startOffsetNode && endOffset == endOffsetNode &&
 
@@ -144,8 +150,14 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             (startNode.parents('h1').length != endNode.parents('h1').length) && (startNode.parents('h1').length || endNode.parents('h1').length) &&
 
             // Check if the selection ends in the last child
-            (startNode.parents('section[role]').children().length == $(tinymce.activeEditor.selection.getRng().endContainer).parentsUntil('section[role]').index() + 1)) {
-            selectedElement.remove()
+            (startNode.parents(SPECIAL_SECTION_SELECTOR).children().length == $(tinymce.activeEditor.selection.getRng().endContainer).parentsUntil(SPECIAL_SECTION_SELECTOR).index() + 1)) {
+
+          }
+
+          // Remove the current special section if selection is at the start of h1 AND selection is collapsed 
+          if (tinymce.activeEditor.selection.isCollapsed() && (startNode.parents('h1').length || startNode.is('h1')) && startOffset == 0) {
+
+            selectedElement.parent(SPECIAL_SECTION_SELECTOR).remove()
             tinymce.triggerSave()
             return false
           }
