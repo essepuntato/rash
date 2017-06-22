@@ -125,10 +125,20 @@ $(document).ready(function () {
   })
 })
 
-// Update content in the iframe, with the hidden content saved
+/**
+ * Update content in the iframe, with the one stored by tinymce
+ * And save/restore the selection
+ */
 function updateIframeFromSavedContent() {
+
+  // Save the bookmark 
+  let bookmark = tinymce.activeEditor.selection.getBookmark(2, true)
+
+  // Update iframe content
   tinymce.activeEditor.setContent($('#raje_root').html())
-  tinymce.activeEditor.focus()
+
+  // Restore the bookmark 
+  tinymce.activeEditor.selection.moveToBookmark(bookmark)
 }
 
 /**

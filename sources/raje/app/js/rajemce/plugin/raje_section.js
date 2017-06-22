@@ -21,6 +21,7 @@ const SPECIAL_SECTION_SELECTOR = 'section[role]'
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   let raje_section_flag = false
+  let raje_stored_selection
 
   editor.addButton('raje_section', {
     type: 'menubutton',
@@ -130,6 +131,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       // #################################
       if (e.keyCode == 8 || e.keyCode == 46) {
 
+        raje_section_flag = true
+
         // Prevent remove from header
         if (selectedElement.is(NON_EDITABLE_HEADER_SELECTOR) ||
           (selectedElement.attr('data-mce-caret') == 'after' && selectedElement.parent().is(RAJE_SELECTOR)) ||
@@ -165,8 +168,18 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             return false
           }
 
-        } else
-          raje_section_flag = true
+          // If selection contains at least one biblioentry element
+          if (tinymce.activeEditor.selection.getContent().indexOf('doc-biblioentry') != -1) {
+
+            // Both delete event and update are stored in a single undo level
+            tinymce.activeEditor.undoManager.transact(function () {
+              tinymce.activeEditor.execCommand('delete')
+              section.updateBibliographySection()
+            })
+
+            return false
+          }
+        }
       }
 
     } catch (exception) {}
@@ -304,10 +317,12 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     */
     //editor.theme.panel.find('toolbar buttongroup').repaint()
 
-
+    // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
       raje_section_flag = false
+
       section.updateSectionStructure()
+      //section.updateBibliographySection()
     }
   })
 })
@@ -474,18 +489,6 @@ section = {
 
       newSection.headingDimension()
     }
-  },
-
-  /**
-   * Refresh editor and save the transaction inside the Undo buffer
-   */
-  commit: function () {
-
-    // Refresh tinymce content and set the heading dimension
-    tinymce.triggerSave()
-
-    // Add the change to the undo manager
-    tinymce.activeEditor.undoManager.add()
   },
 
   /**
@@ -684,6 +687,23 @@ section = {
 
     else
       listItem.after(newItem)
+  },
+
+  /**
+   * 
+   */
+  updateBibliographySection: function () {
+
+    // Synchronize iframe and stored content
+    tinymce.triggerSave()
+
+    // Remove all sections without p child
+    $(`${BIBLIOENTRY_SELECTOR}:not(:has(p))`).each(function () {
+      $(this).remove()
+    })
+
+    // update iframe
+    updateIframeFromSavedContent()
   },
 
   /**
