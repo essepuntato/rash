@@ -15,6 +15,9 @@ const SECTION_SELECTOR = 'section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
 const NON_EDITABLE_HEADER_SELECTOR = 'header.page-header.container.cgen'
 
+const BIBLIOENTRY_SUFFIX = 'biblioentry_'
+const ENDNOTE_SUFFIX = 'endnote_'
+
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   let raje_section_flag = false
@@ -168,7 +171,9 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     } catch (exception) {}
 
-    // When press enter
+    // #################################
+    // ######### ENTER PRESSED #########
+    // #################################
     if (e.keyCode == 13) {
 
       // When enter is pressed inside an header, not at the end of it
@@ -185,6 +190,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         if (selectedElement.attr('data-mce-caret') == 'before')
           return false
 
+
         // Add new section after header
         if (selectedElement.attr('data-mce-caret') == 'after') {
           section.add(1)
@@ -192,7 +198,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         }
       }
 
-      if (selectedElement.parents('section[role=doc-bibliography]').length) {
+      // If enter is pressed inside bibliography selector
+      if (selectedElement.parents(BIBLIOGRAPHY_SELECTOR).length) {
 
         tinymce.triggerSave()
 
@@ -201,30 +208,38 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         // Pressing enter in h1 will add a new biblioentry and caret reposition
         if (selectedElement.is('h1')) {
 
-          id = section.getNextBiblioentryId()
+          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
           section.addBiblioentry(id)
           updateIframeFromSavedContent()
+        }
 
-        } else if (selectedElement.is('p') || selectedElement.is('li')) {
+        // If selected element is inside text
+        else if (selectedElement.is('p')) {
 
-          id = section.getNextBiblioentryId()
+          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
           section.addBiblioentry(id, null, selectedElement.parent('li'))
         }
 
-        moveCaret(tinymce.activeEditor.dom.get(id), true)
+        // If selected element is without text
+        else if (selectedElement.is('li')) {
+
+          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
+          section.addBiblioentry(id, null, selectedElement)
+        }
+
+        // Move caret #105
+        moveCaret(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}#${id} > p`)[0], true)
         return false
       }
 
-      /*
+      // Adding sections with shortcuts
       if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
 
         let level = section.getLevelFromHash(selectedElement.text().trim())
-
-        console.log(selectedElement.text().substring(level).trim())
-
         section.add(level, selectedElement.text().substring(level).trim())
+
+        return false
       }
-      */
     }
   })
 
@@ -308,7 +323,7 @@ section = {
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
     // Create the section
-    let newSection = this.create(text ? text : selectedElement.html().trim(), level)
+    let newSection = this.create(text != null ? text : selectedElement.html().trim(), level)
 
     tinymce.activeEditor.undoManager.transact(function () {
 

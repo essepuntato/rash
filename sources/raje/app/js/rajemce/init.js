@@ -127,7 +127,8 @@ $(document).ready(function () {
 
 // Update content in the iframe, with the hidden content saved
 function updateIframeFromSavedContent() {
-  tinyMCE.activeEditor.setContent($('#raje_root').html())
+  tinymce.activeEditor.setContent($('#raje_root').html())
+  tinymce.activeEditor.focus()
 }
 
 /**

@@ -36,7 +36,7 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
               tinymce.activeEditor.undoManager.transact(function () {
 
                 // Get successive biblioentry id
-                let id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
+                let id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
 
                 // Create the reference that points to the next id
                 crossref.add(id)
