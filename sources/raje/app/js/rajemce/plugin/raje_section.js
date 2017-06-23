@@ -202,6 +202,10 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             tinymce.activeEditor.undoManager.transact(function () {
               tinymce.activeEditor.execCommand('delete')
               section.updateBibliographySection()
+              updateReferences()
+
+              // update iframe
+              updateIframeFromSavedContent()
             })
 
             return false
@@ -741,9 +745,6 @@ section = {
     $(`${BIBLIOENTRY_SELECTOR}:not(:has(p))`).each(function () {
       $(this).remove()
     })
-
-    // update iframe
-    updateIframeFromSavedContent()
   },
 
   /**
