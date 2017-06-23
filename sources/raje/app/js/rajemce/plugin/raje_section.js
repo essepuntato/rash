@@ -271,13 +271,21 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         return false
       }
 
-      // Adding sections with shortcuts
-      if (selectedElement.is('p') && selectedElement.text().trim().indexOf('#') != -1) {
+      // Adding sections with shortcuts #
+      if (selectedElement.is('p') && selectedElement.text().trim().substring(0, 1) == '#') {
 
         let level = section.getLevelFromHash(selectedElement.text().trim())
-        section.add(level, selectedElement.text().substring(level).trim())
+        let deepness = $(selectedElement).parentsUntil(RAJE_SELECTOR).length - level + 1
 
-        return false
+        // Insert section only if caret is inside abstract section, and user is going to insert a sub section
+        // OR the cursor isn't inside other special sections
+        if ((selectedElement.parents(ABSTRACT_SELECTOR).length && deepness == 1) || (!selectedElement.parents(ACKNOWLEDGEMENTS_SELECTOR).length &&
+            !selectedElement.parents(BIBLIOGRAPHY_SELECTOR) &&
+            !selectedElement.parents(ENDNOTES_SELECTOR))) {
+
+          section.add(level, selectedElement.text().substring(level).trim())
+          return false
+        }
       }
     }
   })
@@ -368,17 +376,18 @@ section = {
     tinymce.activeEditor.undoManager.transact(function () {
 
       // Check what kind of section needs to be inserted
-      section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)
+      if (section.manageSection(selectedElement, newSection, level ? level : selectedElement.parentsUntil(RAJE_SELECTOR).length)) {
 
-      // Remove the selected section
-      selectedElement.remove()
+        // Remove the selected section
+        selectedElement.remove()
 
-      // The caret is moved at the end
-      moveCaret(newSection[0], false)
-      tinymce.activeEditor.focus()
+        // The caret is moved at the end
+        moveCaret(newSection[0], false)
+        tinymce.activeEditor.focus()
 
-      // Update editor content
-      tinymce.triggerSave()
+        // Update editor content
+        tinymce.triggerSave()
+      }
     })
   },
 
@@ -494,6 +503,12 @@ section = {
 
     if (deepness >= 0) {
 
+      // Block insert selection if caret is inside special section, and user is going to insert a sub section
+      if ((selectedElement.parents(SPECIAL_SECTION_SELECTOR).length && deepness != 1) || (selectedElement.parents(ACKNOWLEDGEMENTS_SELECTOR).length &&
+          selectedElement.parents(BIBLIOGRAPHY_SELECTOR) &&
+          selectedElement.parents(ENDNOTES_SELECTOR)))
+        return false
+
       // Get direct parent and ancestor reference
       let successiveElements = this.getSuccessiveElements(selectedElement, deepness)
 
@@ -513,6 +528,8 @@ section = {
         $(selectedElement.parents('section')[deepness - 1]).after(newSection)
 
       newSection.headingDimension()
+
+      return true
     }
   },
 
