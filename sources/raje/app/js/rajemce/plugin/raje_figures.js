@@ -81,8 +81,15 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Check if the selected element is not empty, and add table after
-        if (selectedElement.text().trim().length != 0)
-          selectedElement.after(newTable)
+        if (selectedElement.text().trim().length != 0) {
+
+          // If selection is at start of the selected element
+          if (tinymce.activeEditor.selection.getRng().startOffset == 0)
+            selectedElement.before(newTable)
+
+          else
+            selectedElement.after(newTable)
+        }
 
         // If selected element is empty, replace it with the new table
         else
@@ -507,9 +514,6 @@ function handleFigureDelete(sel) {
       if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
         return false
 
-      // Block delete when generated caption is selected and when caret is before 
-      if ($(sel.getNode()).is('strong') || sel.getRng().startOffset == 0 || sel.getRng().startOffset == 1)
-        return false
     }
     return true
   } catch (e) {
@@ -534,7 +538,7 @@ function handleFigureEnter(sel) {
       selectedElement.parent('figure[id]').after('<p><br/></p>')
 
       //move caret at the start of new p
-      tinymce.activeEditor.selection.setCursorLocation(selectedElement.parent('figure[id]')[0].nextSibling,0)
+      tinymce.activeEditor.selection.setCursorLocation(selectedElement.parent('figure[id]')[0].nextSibling, 0)
     })
     return false
   } else if (selectedElement.is('th'))
@@ -547,6 +551,8 @@ function handleFigureEnter(sel) {
  * @param {*} sel => tinymce selection
  */
 function handleFigureChange(sel) {
+
+  tinymce.triggerSave()
 
   // Handle delete table, only inside the current first level section
   let selectedElementParent = $(sel.getNode()).parentsUntil(RAJE_SELECTOR).last()
@@ -573,4 +579,10 @@ function handleFigureChange(sel) {
       $(this).remove()
     }
   })
+
+  // If rash-generated section is delete, re-add it
+  if ($('figcaption:not(:has(strong))').length) {
+    captions()
+    updateIframeFromSavedContent()
+  }
 }
