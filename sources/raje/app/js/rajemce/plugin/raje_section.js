@@ -279,9 +279,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         // Insert section only if caret is inside abstract section, and user is going to insert a sub section
         // OR the cursor isn't inside other special sections
-        if ((selectedElement.parents(ABSTRACT_SELECTOR).length && deepness == 1) || (!selectedElement.parents(ACKNOWLEDGEMENTS_SELECTOR).length &&
-            !selectedElement.parents(BIBLIOGRAPHY_SELECTOR) &&
-            !selectedElement.parents(ENDNOTES_SELECTOR))) {
+        if ((selectedElement.parents(ABSTRACT_SELECTOR).length && deepness > 0) || !selectedElement.parents(SPECIAL_SECTION_SELECTOR).length) {
 
           section.add(level, selectedElement.text().substring(level).trim())
           return false
