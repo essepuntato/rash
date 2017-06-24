@@ -2,8 +2,8 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_crossref', {
-    text: 'raje_crossref',
-    icon: false,
+    title: 'raje_crossref',
+    icon: 'icon-anchor',
     tooltip: 'Cross-reference',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 

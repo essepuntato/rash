@@ -8,3 +8,14 @@ table.mce-item-table,
 section:not([role]) ol>li {
   margin: 0 0 10px
 }
+
+i.mce-i-icon-anchor:before {
+  content: "\f13d";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-inline-code:before {
+  content: "\f13d";
+  font-family: FontAwesome;
+}
+
