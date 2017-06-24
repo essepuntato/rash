@@ -16,8 +16,8 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_table', {
-    text: 'raje_table',
-    icon: false,
+    title: 'raje_table',
+    icon: 'icon-table',
     tooltip: 'Table',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -169,8 +169,8 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_figure', {
-    text: 'raje_figure',
-    icon: false,
+    title: 'raje_figure',
+    icon: 'icon-figure',
     tooltip: 'Image block',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -268,8 +268,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_formula', {
-    text: 'raje_formula',
-    icon: false,
+    title: 'raje_formula',
+    icon: 'icon-formula',
     tooltip: 'Formula',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -376,8 +376,8 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_listing', {
-    text: 'raje_listing',
-    icon: false,
+    title: 'raje_listing',
+    icon: 'icon-listing',
     tooltip: 'Listing',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 

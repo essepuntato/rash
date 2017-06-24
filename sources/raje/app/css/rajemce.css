@@ -19,3 +19,27 @@ i.mce-i-icon-inline-code:before {
   font-family: FontAwesome;
 }
 
+i.mce-i-icon-inline-quote:before {
+  content: "\f10e";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-table:before {
+  content: "\f0ce";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-figure:before {
+  content: "\f03e";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-listing:before {
+  content: "\f022";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-formula:before {
+  content: "\f1ec";
+  font-family: FontAwesome;
+}
