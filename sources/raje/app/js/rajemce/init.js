@@ -36,7 +36,7 @@ $(document).ready(function () {
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {

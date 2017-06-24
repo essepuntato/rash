@@ -1,6 +1,9 @@
 /**
  * raje_inline_code plugin RAJE
  */
+
+const INLINE_ERRORS = 'Error, Inline elements can be ONLY created inside the same paragraph'
+
 tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
 
   // Add a button that opens a window
@@ -27,8 +30,6 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
   })
 
   code = {
-
-    ELEMENT: `<code>${ZERO_SPACE}</code>`,
     /**
      * Insert or exit from inline code element
      */
@@ -38,9 +39,29 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
 
       // If there isn't any inline code
       if (!selectedElement.is('code') && !selectedElement.parents('code').length) {
+
+        let text = ZERO_SPACE
+
+        // Check if the selection starts and ends in the same paragraph
+        if (!tinymce.activeEditor.selection.isCollapsed()) {
+
+          let startNode = tinymce.activeEditor.selection.getStart()
+          let endNode = tinymce.activeEditor.selection.getEnd()
+
+          // Notify the error and exit
+          if (startNode != endNode) {
+            notify(INLINE_ERRORS, 'error', 3000)
+            return false
+          }
+
+          // Save the selected content as text
+          text += tinymce.activeEditor.selection.getContent()
+        }
+
+        // Update the current selection with code element
         tinymce.activeEditor.undoManager.transact(function () {
 
-          tinymce.activeEditor.selection.setContent(code.ELEMENT)
+          tinymce.activeEditor.selection.setContent(`<code>${text}</code>`)
           tinymce.triggerSave()
         })
       }
@@ -55,8 +76,8 @@ tinymce.PluginManager.add('raje_inlineQuote', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_inlineQuote', {
-    text: 'inline_quote',
-    icon: false,
+    title: 'inline_quote',
+    icon: 'icon-inline-quote',
     tooltip: 'Inline quote',
 
     // Button behaviour
