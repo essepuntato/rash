@@ -49,8 +49,11 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
   editor.on('keyDown', function (e) {
 
     // keyCode 8 is backspace, 46 is canc
-    if (e.keyCode == 8 || e.keyCode == 46)
+    if (e.keyCode == 8)
       return handleFigureDelete(tinymce.activeEditor.selection)
+
+    if (e.keyCode == 46)
+      return handleFigureCanc(tinymce.activeEditor.selection)
 
     // Handle enter key in figcaption
     if (e.keyCode == 13)
@@ -515,6 +518,48 @@ function handleFigureDelete(sel) {
         return false
 
     }
+
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
+function handleFigureCanc(sel) {
+
+  try {
+    // Get reference of start and end node
+    let startNode = $(sel.getRng().startContainer)
+    let startNodeParent = startNode.parents('figure[id]')
+
+    let endNode = $(sel.getRng().endContainer)
+    let endNodeParent = endNode.parents('figure[id]')
+
+    // If at least selection start or end is inside the figure
+    if (startNodeParent.length || endNodeParent.length) {
+
+      // If selection doesn't start and end in the same figure, but one beetwen start or end is inside the figcaption, must block
+      if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
+        return false
+
+      // If the figure is not the same, must block
+      // Because a selection can start in figureX and end in figureY
+      if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
+        return false
+
+    }
+
+    // Current element can be or text or p
+    let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
+
+    // Remove table on canc at the end of the previous element
+    if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is('figure[id]')) {
+      tinymce.activeEditor.undoManager.transact(function () {
+        paragraph.next().remove()
+      })
+      return false
+    }
+
     return true
   } catch (e) {
     return false
@@ -560,26 +605,30 @@ function handleFigureChange(sel) {
   // After the table is cancelled the selection is moved to the figure (with caption)
   // If the figure has figcaption as first child, must remove
 
-  // Remove all figures with figcaption as first child (without table)
-  selectedElementParent.find('figure[id]').each(function () {
-    if ($(this).children().first().is('figcaption'))
-      $(this).remove()
-  })
+  /*
+    tinymce.activeEditor.undoManager.transact(function () {
 
-  // Remove all tables which are not child of a figure
-  selectedElementParent.find('table').each(function () {
-    if (!$(this).parent().is('figure[id]')) {
-      $(this).remove()
-    }
-  })
+      // Remove all figures with figcaption as first child (without table)
+      selectedElementParent.find('figure[id]').each(function () {
+        if ($(this).children().first().is('figcaption'))
+          $(this).remove()
+      })
 
-  // Remove all figcaptions which are not child of a figure
-  selectedElementParent.find('figcaption').each(function () {
-    if (!$(this).parent().is('figure[id]')) {
-      $(this).remove()
-    }
-  })
+      // Remove all tables which are not child of a figure
+      selectedElementParent.find('table').each(function () {
+        if (!$(this).parent().is('figure[id]')) {
+          $(this).remove()
+        }
+      })
 
+      // Remove all figcaptions which are not child of a figure
+      selectedElementParent.find('figcaption').each(function () {
+        if (!$(this).parent().is('figure[id]')) {
+          $(this).remove()
+        }
+      })
+    })
+  */
   // If rash-generated section is delete, re-add it
   if ($('figcaption:not(:has(strong))').length) {
     captions()
