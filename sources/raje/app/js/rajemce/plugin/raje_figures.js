@@ -268,8 +268,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_formula', {
-    title: 'raje_formula',
-    icon: 'icon-formula',
+    text: 'raje_formula',
+    icon: false,
     tooltip: 'Formula',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -376,8 +376,8 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_listing', {
-    title: 'raje_listing',
-    icon: 'icon-listing',
+    text: 'raje_listing',
+    icon: false,
     tooltip: 'Listing',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 

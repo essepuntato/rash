@@ -2,6 +2,8 @@
  * raje_inline_code plugin RAJE
  */
 
+const DISABLE_SELECTOR_INLINE = 'figure, h1,h2,h3,h4,h5,h6, section[role=doc-bibliography]'
+
 const INLINE_ERRORS = 'Error, Inline elements can be ONLY created inside the same paragraph'
 
 tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
@@ -11,6 +13,7 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
     title: 'inline_code',
     icon: 'icon-inline-code',
     tooltip: 'Inline code',
+    disabledStateSelector: DISABLE_SELECTOR_INLINE,
 
     // Button behaviour
     onclick: function () {
@@ -79,6 +82,7 @@ tinymce.PluginManager.add('raje_inlineQuote', function (editor, url) {
     title: 'inline_quote',
     icon: 'icon-inline-quote',
     tooltip: 'Inline quote',
+    disabledStateSelector: DISABLE_SELECTOR_INLINE,
 
     // Button behaviour
     onclick: function () {
