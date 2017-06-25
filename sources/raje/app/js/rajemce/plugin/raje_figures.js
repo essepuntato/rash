@@ -8,6 +8,7 @@
  *  raje_listing
  */
 
+const FIGURE_SELECTOR = 'figure[id]'
 
 /**
  * Raje_table
@@ -114,7 +115,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
      */
     getNextId: function () {
       let id = 0
-      $('figure[id]:has(table)').each(function () {
+      $(`${FIGURE_SELECTOR}:has(table)`).each(function () {
         if ($(this).attr('id').indexOf('table_') > -1) {
           let currId = parseInt($(this).attr('id').replace('table_', ''))
           id = id > currId ? id : currId
@@ -500,10 +501,10 @@ function handleFigureDelete(sel) {
   try {
     // Get reference of start and end node
     let startNode = $(sel.getRng().startContainer)
-    let startNodeParent = startNode.parents('figure[id]')
+    let startNodeParent = startNode.parents(FIGURE_SELECTOR)
 
     let endNode = $(sel.getRng().endContainer)
-    let endNodeParent = endNode.parents('figure[id]')
+    let endNodeParent = endNode.parents(FIGURE_SELECTOR)
 
     // If at least selection start or end is inside the figure
     if (startNodeParent.length || endNodeParent.length) {
@@ -530,10 +531,10 @@ function handleFigureCanc(sel) {
   try {
     // Get reference of start and end node
     let startNode = $(sel.getRng().startContainer)
-    let startNodeParent = startNode.parents('figure[id]')
+    let startNodeParent = startNode.parents(FIGURE_SELECTOR)
 
     let endNode = $(sel.getRng().endContainer)
-    let endNodeParent = endNode.parents('figure[id]')
+    let endNodeParent = endNode.parents(FIGURE_SELECTOR)
 
     // If at least selection start or end is inside the figure
     if (startNodeParent.length || endNodeParent.length) {
@@ -553,7 +554,7 @@ function handleFigureCanc(sel) {
     let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
 
     // Remove table on canc at the end of the previous element
-    if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is('figure[id]')) {
+    if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is(FIGURE_SELECTOR)) {
       tinymce.activeEditor.undoManager.transact(function () {
         paragraph.next().remove()
       })
@@ -580,10 +581,10 @@ function handleFigureEnter(sel) {
     tinymce.activeEditor.undoManager.transact(function () {
 
       //add a new paragraph after the figure
-      selectedElement.parent('figure[id]').after('<p><br/></p>')
+      selectedElement.parent(FIGURE_SELECTOR).after('<p><br/></p>')
 
       //move caret at the start of new p
-      tinymce.activeEditor.selection.setCursorLocation(selectedElement.parent('figure[id]')[0].nextSibling, 0)
+      tinymce.activeEditor.selection.setCursorLocation(selectedElement.parent(FIGURE_SELECTOR)[0].nextSibling, 0)
     })
     return false
   } else if (selectedElement.is('th'))
@@ -609,21 +610,21 @@ function handleFigureChange(sel) {
     tinymce.activeEditor.undoManager.transact(function () {
 
       // Remove all figures with figcaption as first child (without table)
-      selectedElementParent.find('figure[id]').each(function () {
+      selectedElementParent.find(FIGURE_SELECTOR).each(function () {
         if ($(this).children().first().is('figcaption'))
           $(this).remove()
       })
 
       // Remove all tables which are not child of a figure
       selectedElementParent.find('table').each(function () {
-        if (!$(this).parent().is('figure[id]')) {
+        if (!$(this).parent().is(FIGURE_SELECTOR)) {
           $(this).remove()
         }
       })
 
       // Remove all figcaptions which are not child of a figure
       selectedElementParent.find('figcaption').each(function () {
-        if (!$(this).parent().is('figure[id]')) {
+        if (!$(this).parent().is(FIGURE_SELECTOR)) {
           $(this).remove()
         }
       })
