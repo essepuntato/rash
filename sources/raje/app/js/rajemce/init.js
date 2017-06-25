@@ -58,19 +58,21 @@ $(document).ready(function () {
       // Prevent span 
       editor.on('nodeChange', function (e) {
 
-        /*
+
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
         // If the current element isn't inside header, only in section this is permitted
         if (selectedElement.parents('section').length) {
 
-          if (selectedElement.is('span'))
-            selectedElement.replaceWith(selectedElement.text())
+          // Remove span normally created with bold
+          if (selectedElement.is('span#_mce_caret')) {
+            let bm = tinymce.activeEditor.selection.getBookmark()
+            selectedElement.replaceWith(selectedElement.html())
+            tinymce.activeEditor.selection.moveToBookmark(bm)
+          }
 
-          if (selectedElement.find('span').length)
-            selectedElement.find('span').replaceWith(selectedElement.find('span').text())
         }
-        */
+
       })
 
       // Update saved content on undo and redo events

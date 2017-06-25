@@ -528,43 +528,39 @@ function handleFigureDelete(sel) {
 
 function handleFigureCanc(sel) {
 
-  try {
-    // Get reference of start and end node
-    let startNode = $(sel.getRng().startContainer)
-    let startNodeParent = startNode.parents(FIGURE_SELECTOR)
+  // Get reference of start and end node
+  let startNode = $(sel.getRng().startContainer)
+  let startNodeParent = startNode.parents(FIGURE_SELECTOR)
 
-    let endNode = $(sel.getRng().endContainer)
-    let endNodeParent = endNode.parents(FIGURE_SELECTOR)
+  let endNode = $(sel.getRng().endContainer)
+  let endNodeParent = endNode.parents(FIGURE_SELECTOR)
 
-    // If at least selection start or end is inside the figure
-    if (startNodeParent.length || endNodeParent.length) {
+  // If at least selection start or end is inside the figure
+  if (startNodeParent.length || endNodeParent.length) {
 
-      // If selection doesn't start and end in the same figure, but one beetwen start or end is inside the figcaption, must block
-      if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
-        return false
-
-      // If the figure is not the same, must block
-      // Because a selection can start in figureX and end in figureY
-      if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
-        return false
-
-    }
-
-    // Current element can be or text or p
-    let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
-
-    // Remove table on canc at the end of the previous element
-    if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is(FIGURE_SELECTOR)) {
-      tinymce.activeEditor.undoManager.transact(function () {
-        paragraph.next().remove()
-      })
+    // If selection doesn't start and end in the same figure, but one beetwen start or end is inside the figcaption, must block
+    if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
       return false
-    }
 
-    return true
-  } catch (e) {
+    // If the figure is not the same, must block
+    // Because a selection can start in figureX and end in figureY
+    if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
+      return false
+
+  }
+  
+  // Current element can be or text or p
+  let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
+
+  // Remove table on canc at the end of the previous element
+  if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is(FIGURE_SELECTOR)) {
+    tinymce.activeEditor.undoManager.transact(function () {
+      paragraph.next().remove()
+    })
     return false
   }
+
+  return true
 }
 
 /**
@@ -600,36 +596,6 @@ function handleFigureChange(sel) {
 
   tinymce.triggerSave()
 
-  // Handle delete table, only inside the current first level section
-  let selectedElementParent = $(sel.getNode()).parentsUntil(RAJE_SELECTOR).last()
-
-  // After the table is cancelled the selection is moved to the figure (with caption)
-  // If the figure has figcaption as first child, must remove
-
-  /*
-    tinymce.activeEditor.undoManager.transact(function () {
-
-      // Remove all figures with figcaption as first child (without table)
-      selectedElementParent.find(FIGURE_SELECTOR).each(function () {
-        if ($(this).children().first().is('figcaption'))
-          $(this).remove()
-      })
-
-      // Remove all tables which are not child of a figure
-      selectedElementParent.find('table').each(function () {
-        if (!$(this).parent().is(FIGURE_SELECTOR)) {
-          $(this).remove()
-        }
-      })
-
-      // Remove all figcaptions which are not child of a figure
-      selectedElementParent.find('figcaption').each(function () {
-        if (!$(this).parent().is(FIGURE_SELECTOR)) {
-          $(this).remove()
-        }
-      })
-    })
-  */
   // If rash-generated section is delete, re-add it
   if ($('figcaption:not(:has(strong))').length) {
     captions()
