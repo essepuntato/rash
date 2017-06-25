@@ -195,11 +195,12 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             return false
           }
 
-          // If selection contains at least one biblioentry element
-          if (tinymce.activeEditor.selection.getContent().indexOf('doc-biblioentry') != -1) {
+          // if selection starts or ends in a biblioentry
+          if (startNode.parents(BIBLIOENTRY_SELECTOR).length || endNode.parents(BIBLIOENTRY_SELECTOR).length) {
 
             // Both delete event and update are stored in a single undo level
             tinymce.activeEditor.undoManager.transact(function () {
+
               tinymce.activeEditor.execCommand('delete')
               section.updateBibliographySection()
               updateReferences()
@@ -284,7 +285,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         // Insert section only if caret is inside abstract section, and user is going to insert a sub section
         // OR the cursor isn't inside other special sections
         // AND selectedElement isn't inside a figure
-        if (((selectedElement.parents(ABSTRACT_SELECTOR).length && deepness > 0) || !selectedElement.parents(SPECIAL_SECTION_SELECTOR).length) && !selectedElement.parents(FIGURE_SELECTOR).length ) {
+        if (((selectedElement.parents(ABSTRACT_SELECTOR).length && deepness > 0) || !selectedElement.parents(SPECIAL_SECTION_SELECTOR).length) && !selectedElement.parents(FIGURE_SELECTOR).length) {
 
           section.add(level, selectedElement.text().substring(level).trim())
           return false

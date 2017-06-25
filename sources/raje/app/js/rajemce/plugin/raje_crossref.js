@@ -336,8 +336,10 @@ function updateReferences() {
       let original_content = $(this).attr('data-rash-original-content')
       let original_reference = $(this).attr('data-rash-original-reference')
 
-      $(this).replaceWith(`<a href="${original_reference}">${original_content}</a>`)
+      $(this).parent('a').replaceWith(`<a href="${original_reference}">${original_content}</a>`)
     })
+
+    //tinymce.triggerSave()
 
     references()
   }
