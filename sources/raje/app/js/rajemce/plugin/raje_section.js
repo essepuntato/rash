@@ -194,7 +194,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
             return false
           }
-
+          
           // if selection starts or ends in a biblioentry
           if (startNode.parents(BIBLIOENTRY_SELECTOR).length || endNode.parents(BIBLIOENTRY_SELECTOR).length) {
 
@@ -296,65 +296,30 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   editor.on('NodeChange', function (e) {
 
-    // Remove every li[role=doc-biblioentry] without child p
-
     /*
-    tinymce.triggerSave()
-
-    let update = false
-    $('li[role=doc-biblioentry]').each(function () {
-      if (!$(this).children().first().is('p')) {
-
-        $(this).remove()
-        update = true
-      }
-    })
-
-    if (update)
-      updateIframeFromSavedContent()
-    */
-    /*
-    $('section[role]').each(function(){
-      if (!$(this).children().first().is('h1')) {
-        $(this).remove()
-        updateIframeFromSavedContent()
-      }
-    })
-    */
-    //let button = new tinymce.ui.Control(tinymce.activeEditor.theme.panel.find("menubutton")[1])
-
-    /*
+    // Update button menu
     for (let i = 0; i < 6; i++)
-      buttonMenu[i].disabled = true
-      */
+      tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].disabled = true
 
-    //button.showMenu()
+    // Save the reference of the selected node
+    let selectedElement = tinymce.activeEditor.selection.getNode()
 
-    /*
-        // Update button menu
-        for (let i = 0; i < 6; i++)
-          tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].disabled = true
+    // Check if the selected node is a paragraph only here can be added a new section
+    if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
 
-        // Save the reference of the selected node
-        let selectedElement = tinymce.activeEditor.selection.getNode()
+      // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
+      let deepness = $(selectedElement).parents('section').length + 1
 
-        // Check if the selected node is a paragraph only here can be added a new section
-        if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
+      console.log(deepness)
+      for (let i = 0; i < deepness; i++) {
+        tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].text = 'helo'
+        console.log(tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i])
+      }
 
-          // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
-          let deepness = $(selectedElement).parents('section').length + 1
-
-          console.log(deepness)
-          for (let i = 0; i < deepness; i++) {
-            tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].text = 'helo'
-            console.log(tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i])
-          }
-
-          tinymce.activeEditor.theme.panel.find('toolbar *')[16].repaint()
-        }
+      tinymce.activeEditor.theme.panel.find('toolbar *')[16].repaint()
+    }
     */
-    //editor.theme.panel.find('toolbar buttongroup').repaint()
-
+    
     // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
       raje_section_flag = false
@@ -630,7 +595,9 @@ section = {
       toRemoveSections[0].remove()
 
       ancestorSection.children('section').headingDimension()
-      tinymce.triggerSave()
+      
+      updateReferences()
+      updateIframeFromSavedContent()
     }
   },
   /**
