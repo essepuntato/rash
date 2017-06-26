@@ -163,8 +163,16 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           // Remove the current special section if selection is at the start of h1 AND selection is collapsed 
           if (tinymce.activeEditor.selection.isCollapsed() && (startNode.parents('h1').length || startNode.is('h1')) && startOffset == 0) {
 
-            selectedElement.parent(SPECIAL_SECTION_SELECTOR).remove()
-            tinymce.triggerSave()
+            tinymce.activeEditor.undoManager.transact(function () {
+              
+              selectedElement.parent(SPECIAL_SECTION_SELECTOR).remove()
+              tinymce.triggerSave()
+
+              // Update references
+              updateReferences()
+              updateIframeFromSavedContent()
+            })
+
             return false
           }
 
@@ -194,7 +202,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
             return false
           }
-          
+
           // if selection starts or ends in a biblioentry
           if (startNode.parents(BIBLIOENTRY_SELECTOR).length || endNode.parents(BIBLIOENTRY_SELECTOR).length) {
 
@@ -319,7 +327,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       tinymce.activeEditor.theme.panel.find('toolbar *')[16].repaint()
     }
     */
-    
+
     // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
       raje_section_flag = false
@@ -595,7 +603,7 @@ section = {
       toRemoveSections[0].remove()
 
       ancestorSection.children('section').headingDimension()
-      
+
       updateReferences()
       updateIframeFromSavedContent()
     }
