@@ -202,8 +202,11 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
   editor.on('keyDown', function (e) {
 
     // keyCode 8 is backspace
-    if (e.keyCode == 8 || e.keyCode == 46)
+    if (e.keyCode == 8)
       return handleFigureDelete(tinymce.activeEditor.selection)
+
+    if (e.keyCode == 46)
+      return handleFigureCanc(tinymce.activeEditor.selection)
 
     // Handle enter key in figcaption
     if (e.keyCode == 13)
@@ -300,8 +303,11 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
   editor.on('keyDown', function (e) {
 
     // keyCode 8 is backspace
-    if (e.keyCode == 8 || e.keyCode == 46)
+    if (e.keyCode == 8)
       return handleFigureDelete(tinymce.activeEditor.selection)
+
+    if (e.keyCode == 46)
+      return handleFigureCanc(tinymce.activeEditor.selection)
 
     // Handle enter key in figcaption
     if (e.keyCode == 13)
@@ -394,8 +400,11 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
   editor.on('keyDown', function (e) {
 
     // keyCode 8 is backspace
-    if (e.keyCode == 8 || e.keyCode == 46)
+    if (e.keyCode == 8)
       return handleFigureDelete(tinymce.activeEditor.selection)
+
+    if (e.keyCode == 46)
+      return handleFigureCanc(tinymce.activeEditor.selection)
 
     // Handle enter key in figcaption
     if (e.keyCode == 13)
@@ -580,15 +589,33 @@ function handleFigureCanc(sel) {
 
   }
 
+  // This algorithm doesn't work if caret is in empty text element
+
   // Current element can be or text or p
   let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
+  // Save all chldren nodes (text included)
+  let paragraphContent = paragraph.contents()
 
-  // Remove table on canc at the end of the previous element
-  if (sel.isCollapsed() && sel.getRng().startOffset == paragraph.text().length && paragraph.next().is(FIGURE_SELECTOR)) {
-    tinymce.activeEditor.undoManager.transact(function () {
-      paragraph.next().remove()
-    })
-    return false
+  // If next there is a figure
+  if (paragraph.next().is(FIGURE_SELECTOR)) {
+
+    if (endNode[0].nodeType == 3) {
+
+      // If the end node is a text inside a strong, its index will be -1.
+      // In this case the editor must iterate until it face a inline element
+      if (paragraphContent.index(endNode) == -1) //&& paragraph.parents(SECTION_SELECTOR).length)
+        endNode = endNode.parent()
+
+      // If index of the inline element is equal of children node length
+      // AND the cursor is at the last position
+      // Remove the next figure in one undo level
+      if (paragraphContent.index(endNode) + 1 == paragraphContent.length && paragraphContent.last().text().length == sel.getRng().endOffset) {
+        tinymce.activeEditor.undoManager.transact(function () {
+          paragraph.next().remove()
+        })
+        return false
+      }
+    }
   }
 
   return true

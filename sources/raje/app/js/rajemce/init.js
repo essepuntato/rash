@@ -64,13 +64,16 @@ $(document).ready(function () {
         // If the current element isn't inside header, only in section this is permitted
         if (selectedElement.parents('section').length) {
 
-          // Remove span normally created with bold
-          if (selectedElement.is('span#_mce_caret')) {
+          if (selectedElement.is('span#_mce_caret[data-mce-bogus]') || selectedElement.parent().is('span#_mce_caret[data-mce-bogus]')) {
+            
+            // Remove span normally created with bold
+            if (selectedElement.parent().is('span#_mce_caret[data-mce-bogus]'))
+              selectedElement = selectedElement.parent()
+
             let bm = tinymce.activeEditor.selection.getBookmark()
             selectedElement.replaceWith(selectedElement.html())
             tinymce.activeEditor.selection.moveToBookmark(bm)
           }
-
         }
 
       })
@@ -118,7 +121,9 @@ $(document).ready(function () {
 
     image_advtab: true,
 
-    paste_block_drop: true
+    paste_block_drop: true,
+
+    invalid_elements: 'span[data-mce-bogus]'
   })
 })
 
