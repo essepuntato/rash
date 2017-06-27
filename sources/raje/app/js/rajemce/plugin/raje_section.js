@@ -32,32 +32,37 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     // Sections sub menu
     menu: [{
         text: 'Heading 1.',
-        type: 'menuitem',
+        disabled: true,
         onclick: function () {
           section.add(1)
         }
       }, {
         text: 'Heading 1.1.',
+        disabled: true,
         onclick: function () {
           section.add(2)
         }
       }, {
         text: 'Heading 1.1.1.',
+        disabled: true,
         onclick: function () {
           section.add(3)
         }
       }, {
         text: 'Heading 1.1.1.1.',
+        disabled: true,
         onclick: function () {
           section.add(4)
         }
       }, {
         text: 'Heading 1.1.1.1.1.',
+        disabled: true,
         onclick: function () {
           section.add(5)
         }
       }, {
         text: 'Heading 1.1.1.1.1.1.',
+        disabled: true,
         onclick: function () {
           section.add(6)
         }
@@ -164,7 +169,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           if (tinymce.activeEditor.selection.isCollapsed() && (startNode.parents('h1').length || startNode.is('h1')) && startOffset == 0) {
 
             tinymce.activeEditor.undoManager.transact(function () {
-              
+
+              // Remove the section and update 
               selectedElement.parent(SPECIAL_SECTION_SELECTOR).remove()
               tinymce.triggerSave()
 
@@ -304,29 +310,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   editor.on('NodeChange', function (e) {
 
-    /*
-    // Update button menu
-    for (let i = 0; i < 6; i++)
-      tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].disabled = true
-
-    // Save the reference of the selected node
-    let selectedElement = tinymce.activeEditor.selection.getNode()
-
-    // Check if the selected node is a paragraph only here can be added a new section
-    if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
-
-      // Get the deepness of the section which is the number of button to enable (+1 i.e. the 1st level subsection)
-      let deepness = $(selectedElement).parents('section').length + 1
-
-      console.log(deepness)
-      for (let i = 0; i < deepness; i++) {
-        tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i].text = 'helo'
-        console.log(tinymce.activeEditor.theme.panel.find('toolbar *')[16].settings.menu[i])
-      }
-
-      tinymce.activeEditor.theme.panel.find('toolbar *')[16].repaint()
-    }
-    */
+    updateSectionToolbar()
 
     // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
