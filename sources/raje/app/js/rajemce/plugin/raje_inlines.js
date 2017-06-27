@@ -27,7 +27,8 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
     if (e.keyCode == 13) {
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-      if (selectedElement.is('code'))
+      // If the current element is code, but it isn't inside pre
+      if (selectedElement.is('code') && !selectedElement.parents(FIGURE_SELECTOR).length)
         return false
     }
   })

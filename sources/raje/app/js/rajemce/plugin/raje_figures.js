@@ -10,6 +10,8 @@
 
 const FIGURE_SELECTOR = 'figure[id]'
 
+let remove_listing = 0
+
 /**
  * Raje_table
  */
@@ -425,6 +427,8 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
         // Update all captions with RASH function
         captions()
 
+        tinymce.activeEditor.selection.select(newListing.find('code')[0])
+        tinymce.activeEditor.selection.collapse(false)
         // Update Rendered RASH
         updateIframeFromSavedContent()
       })
@@ -435,7 +439,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
      * 
      */
     create: function (id) {
-      return `<figure id="${id}"><pre><code><br/></code></pre><figcaption>Caption.</figcaption></figure>`
+      return $(`<figure id="${id}"><pre><code>${ZERO_SPACE}</code></pre><figcaption>Caption.</figcaption></figure>`)
     },
 
     /**
@@ -518,6 +522,29 @@ function handleFigureDelete(sel) {
       if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
         return false
 
+      // If at start of code element prevent
+      if (startNode.parents(FIGURE_SELECTOR).find('pre').length) {
+
+        // If at the start of pre>code, pressing 2times backspace will remove everything 
+        if ((startNode.parent().is('code') && sel.getRng().startOffset == 1)) {
+
+          remove_listing++
+
+          notify('Press BACKSPACE again to remove the current listing', null, 3000)
+
+          if (remove_listing == 2) {
+            tinymce.activeEditor.undoManager.transact(function () {
+              startNode.parents(FIGURE_SELECTOR).remove()
+            })
+            remove_listing = 0
+          }
+
+          return false
+        }
+
+        if (startNode.parent().is('pre') && sel.getRng().startOffset == 0)
+          return false
+      }
     }
 
     return true
@@ -526,6 +553,10 @@ function handleFigureDelete(sel) {
   }
 }
 
+/**
+ * 
+ * @param {*} sel 
+ */
 function handleFigureCanc(sel) {
 
   // Get reference of start and end node
@@ -548,7 +579,7 @@ function handleFigureCanc(sel) {
       return false
 
   }
-  
+
   // Current element can be or text or p
   let paragraph = startNode.is('p') ? startNode : startNode.parents('p').first()
 
@@ -593,6 +624,7 @@ function handleFigureEnter(sel) {
  * @param {*} sel => tinymce selection
  */
 function handleFigureChange(sel) {
+  3
 
   tinymce.triggerSave()
 
