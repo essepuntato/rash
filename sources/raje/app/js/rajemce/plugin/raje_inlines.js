@@ -2,7 +2,7 @@
  * raje_inline_code plugin RAJE
  */
 
-const DISABLE_SELECTOR_INLINE = 'figure, h1,h2,h3,h4,h5,h6, section[role=doc-bibliography]'
+const DISABLE_SELECTOR_INLINE = 'figure, section[role=doc-bibliography]'
 
 const INLINE_ERRORS = 'Error, Inline elements can be ONLY created inside the same paragraph'
 
@@ -28,8 +28,19 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // If the current element is code, but it isn't inside pre
-      if (selectedElement.is('code') && !selectedElement.parents(FIGURE_SELECTOR).length)
+      if (selectedElement.is('code') && !selectedElement.parents(FIGURE_SELECTOR).length) {
+
+        let contents = selectedElement.parent().contents()
+        let index = contents.index(selectedElement)
+
+        // Move caret to the next node (also text)
+        if (contents[index + 1] != null) {
+          tinymce.activeEditor.selection.setCursorLocation(contents[index + 1], 0)
+          tinymce.activeEditor.selection.setContent(ZERO_SPACE)
+        }
+
         return false
+      }
     }
   })
 
