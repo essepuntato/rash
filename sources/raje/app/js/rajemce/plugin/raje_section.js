@@ -32,37 +32,31 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
     // Sections sub menu
     menu: [{
         text: 'Heading 1.',
-        disabled: true,
         onclick: function () {
           section.add(1)
         }
       }, {
         text: 'Heading 1.1.',
-        disabled: true,
         onclick: function () {
           section.add(2)
         }
       }, {
         text: 'Heading 1.1.1.',
-        disabled: true,
         onclick: function () {
           section.add(3)
         }
       }, {
         text: 'Heading 1.1.1.1.',
-        disabled: true,
         onclick: function () {
           section.add(4)
         }
       }, {
         text: 'Heading 1.1.1.1.1.',
-        disabled: true,
         onclick: function () {
           section.add(5)
         }
       }, {
         text: 'Heading 1.1.1.1.1.1.',
-        disabled: true,
         onclick: function () {
           section.add(6)
         }
@@ -310,7 +304,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   editor.on('NodeChange', function (e) {
 
-    updateSectionToolbar()
+    section.updateSectionToolbar()
 
     // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
@@ -757,5 +751,26 @@ section = {
     })
 
     return `${SUFFIX}${lastId+1}`
+  },
+
+  updateSectionToolbar: function () {
+
+    // Dropdown menu reference
+    let menu = $('div#mceu_31-body[role=menu]')
+
+    // Disable all sub buttons
+    menu.children(':lt(6)').addClass('mce-disabled')
+    // Save current selected element
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    // If current element is p
+    if (selectedElement.is('p') || selectedElement.parent().is('p')) {
+
+      // Get deepness of the section
+      let deepness = selectedElement.parents('section').length + 1
+
+      // Remove disabling class on first {deepness} menu items
+      menu.children(`:lt(${deepness})`).removeClass('mce-disabled')
+    }
   }
 }

@@ -45,7 +45,6 @@ $(document).ready(function () {
       editor.on('init', function (e) {
 
         editor.execCommand('mceFullScreen')
-        updateSectionToolbar()
       })
 
       editor.on('keyDown', function (e) {
@@ -58,7 +57,6 @@ $(document).ready(function () {
 
       // Prevent span 
       editor.on('nodeChange', function (e) {
-
 
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
@@ -168,24 +166,6 @@ function notify(text, type, timeout) {
     }
 
     tinymce.activeEditor.notificationManager.open(notify)
-  }
-}
-
-function updateSectionToolbar() {
-  //menu.children().first().find('span.mce-text')
-
-  // Dropdown menu reference
-  let menu = $('div#mceu_31-body[role=menu]')
-
-  // Disable all sub buttons
-  menu.children(':lt(6)').addClass('mce-disabled')
-
-  let selectedElement = tinymce.activeEditor.selection.getNode()
-  if (tinymce.activeEditor.selection.getNode().nodeName == 'P') {
-
-    let deepness = $(selectedElement).parents('section').length + 1
-    menu.children(`:lt(${deepness})`).removeClass('mce-disabled')
-
   }
 }
 
