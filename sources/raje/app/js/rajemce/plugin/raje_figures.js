@@ -385,8 +385,8 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
 
   // Add a button that handle the inline element
   editor.addButton('raje_listing', {
-    text: 'raje_listing',
-    icon: false,
+    title: 'raje_listing',
+    icon: 'icon-listing',
     tooltip: 'Listing',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -409,6 +409,22 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
     // Handle enter key in figcaption
     if (e.keyCode == 13)
       return handleFigureEnter(tinymce.activeEditor.selection)
+
+    if (e.keyCode == 9) {
+      if (tinymce.activeEditor.selection.isCollapsed() && $(tinymce.activeEditor.selection.getNode()).parents(`code,${FIGURE_SELECTOR}`).length) {
+        tinymce.activeEditor.selection.setContent('\t')
+        return false
+      }
+    }
+
+    if (e.keyCode == 37) {
+      let range = tinymce.activeEditor.selection.getRng()
+      let startNode = $(range.startContainer)
+      if (startNode.parent().is('code') && (startNode.parent().contents().index(startNode) == 0 && range.startOffset == 1)) {
+        tinymce.activeEditor.selection.setCursorLocation(startNode.parents(FIGURE_SELECTOR).prev('p,:header')[0],1)
+        return false
+      }
+    }
   })
 
   listing = {
@@ -535,21 +551,13 @@ function handleFigureDelete(sel) {
       if (startNode.parents(FIGURE_SELECTOR).find('pre').length) {
 
         // If at the start of pre>code, pressing 2times backspace will remove everything 
-        if ((startNode.parent().is('code') && sel.getRng().startOffset == 1)) {
-
-          remove_listing++
-
-          notify('Press BACKSPACE again to remove the current listing', null, 3000)
-
-          if (remove_listing == 2) {
-            tinymce.activeEditor.undoManager.transact(function () {
-              startNode.parents(FIGURE_SELECTOR).remove()
-            })
-            remove_listing = 0
-          }
-
+        if (startNode.parent().is('code') && (startNode.parent().contents().index(startNode) == 0 && sel.getRng().startOffset == 1)) {
+          tinymce.activeEditor.undoManager.transact(function () {
+            startNode.parents(FIGURE_SELECTOR).remove()
+          })
           return false
         }
+
 
         if (startNode.parent().is('pre') && sel.getRng().startOffset == 0)
           return false
@@ -651,7 +659,6 @@ function handleFigureEnter(sel) {
  * @param {*} sel => tinymce selection
  */
 function handleFigureChange(sel) {
-  3
 
   tinymce.triggerSave()
 
