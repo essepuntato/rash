@@ -280,7 +280,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
         }
 
         // Move caret #105
-        moveCaret(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}#${id} > p`)[0], true)
+        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}#${id} > p`)[0], false)
         return false
       }
 
