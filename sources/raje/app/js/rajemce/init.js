@@ -11,6 +11,8 @@ const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
 const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
+const HEADER_SELECTOR = 'header.page-header.container.cgen.mceNonEditable'
+const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
 $(document).ready(function () {
   //hide footer
@@ -48,7 +50,7 @@ $(document).ready(function () {
 
         // Move caret at the first h1 element of main section
         // Or right after heading
-        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${RAJE_SELECTOR}>section:first>h1:first`)[0], 0)
+        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
       })
 
       editor.on('keyDown', function (e) {
@@ -63,6 +65,10 @@ $(document).ready(function () {
       editor.on('nodeChange', function (e) {
 
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+        // Move caret to first heading if is after or before not editable header
+        if (selectedElement.next().is(HEADER_SELECTOR) || (selectedElement.prev().is(HEADER_SELECTOR) && tinymce.activeEditor.dom.select(FIRST_HEADING).length))
+          tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
 
         // If the current element isn't inside header, only in section this is permitted
         if (selectedElement.parents('section').length) {
