@@ -337,8 +337,12 @@ section = {
         selectedElement.remove()
 
         // The caret is moved at the end
-        moveCaret(newSection[0], false)
+        let heading = newSection.find('h1,h2,h3,h4,h5,h6').first()
         tinymce.activeEditor.focus()
+        tinymce.activeEditor.selection.select(heading[0], true)
+        
+        // If there is text move to end, viceversa move to start
+        tinymce.activeEditor.selection.collapse(heading.text().length ? false : true)
 
         // Update editor content
         tinymce.triggerSave()
