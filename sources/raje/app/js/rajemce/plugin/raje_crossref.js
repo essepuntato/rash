@@ -48,8 +48,8 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
                 crossref.update()
 
                 // Move caret to start of the new biblioentry element
-                // Issue #105
-                moveCaret(tinymce.activeEditor.dom.get(id), true)
+                // Issue #105 Firefox + Chromium
+                tinymce.activeEditor.selection.setCursorLocation($(tinymce.activeEditor.dom.get(id)).find('p')[0], false)
               })
 
               // Set variable null for successive usages
@@ -66,9 +66,8 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
                 crossref.update()
 
                 // This select the last element (last by order) and collapse the selection after the node
-                // #105
-                tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`a[href="#${tinymce.activeEditor.reference}"]:last-child`)[0])
-                tinymce.activeEditor.selection.collapse(false)
+                // #105 Firefox + Chromium
+                tinymce.activeEditor.selection.setCursorLocation($(tinymce.activeEditor.dom.select(`a[href="#${tinymce.activeEditor.reference}"]:last-child`))[0], false)
               })
 
               // Set variable null for successive usages
