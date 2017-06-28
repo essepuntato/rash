@@ -46,7 +46,7 @@ function createWindow() {
   })
 
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'placeholder.html'),
+    pathname: path.join(__dirname, 'template.html'),
     //pathname: path.join(__dirname, 'app', 'spinaci-rajedoc2016.html'),
     protocol: 'file:',
     slashes: true
