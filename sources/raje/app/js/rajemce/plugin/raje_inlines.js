@@ -76,8 +76,15 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
         // Update the current selection with code element
         tinymce.activeEditor.undoManager.transact(function () {
 
+          // Get the index of the current selected node
+          let previousNodeIndex = selectedElement.contents().index($(tinymce.activeEditor.selection.getRng().startContainer))
+
+          // Add code element
           tinymce.activeEditor.selection.setContent(`<code>${text}</code>`)
           tinymce.triggerSave()
+
+          // Move caret at the end of the successive node of previous selected node
+          tinymce.activeEditor.selection.setCursorLocation(selectedElement.contents()[previousNodeIndex + 1], 1)
         })
       }
     }
