@@ -45,6 +45,10 @@ $(document).ready(function () {
       editor.on('init', function (e) {
 
         editor.execCommand('mceFullScreen')
+
+        // Move caret at the first h1 element of main section
+        // Or right after heading
+        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${RAJE_SELECTOR}>section:first>h1:first`)[0], 0)
       })
 
       editor.on('keyDown', function (e) {
