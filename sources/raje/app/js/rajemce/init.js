@@ -116,7 +116,7 @@ $(document).ready(function () {
     object_resizing: false,
 
     // Update the table popover layout
-    table_toolbar: "tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+    table_toolbar: "tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
     image_advtab: true,
 

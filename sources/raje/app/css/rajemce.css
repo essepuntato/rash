@@ -43,3 +43,8 @@ i.mce-i-icon-formula:before {
   content: "\f1ec";
   font-family: FontAwesome;
 }
+
+i.mce-i-icon-listing:before {
+  content: "\f022";
+  font-family: FontAwesome;
+}
