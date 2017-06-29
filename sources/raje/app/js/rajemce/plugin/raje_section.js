@@ -19,7 +19,7 @@ const MAIN_SECTION_SELECTOR = 'div#raje_root > section:not([role])'
 const SECTION_SELECTOR = 'section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
 
-const MENU_SELECTOR = 'div#mceu_31-body[role=menu]'
+const MENU_SELECTOR = 'div#mceu_32-body[role=menu]'
 
 const HEADING = 'Heading'
 
