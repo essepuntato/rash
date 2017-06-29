@@ -56,8 +56,10 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
               tinymce.activeEditor.createNewReference = null
             }
 
-            // This is called if a normal reference is selected from modal
-            if (tinymce.activeEditor.reference != null) {
+            /**
+             * This is called if a normal reference is selected from modal
+             */
+            else if (tinymce.activeEditor.reference) {
 
               tinymce.activeEditor.undoManager.transact(function () {
 
@@ -65,9 +67,11 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
                 crossref.add(tinymce.activeEditor.reference)
                 crossref.update()
 
+                let selectedNode = $(tinymce.activeEditor.selection.getNode())
+
                 // This select the last element (last by order) and collapse the selection after the node
                 // #105 Firefox + Chromium
-                tinymce.activeEditor.selection.setCursorLocation($(tinymce.activeEditor.dom.select(`a[href="#${tinymce.activeEditor.reference}"]:last-child`))[0], false)
+                //tinymce.activeEditor.selection.setCursorLocation($(tinymce.activeEditor.dom.select(`a[href="#${tinymce.activeEditor.reference}"]:last-child`))[0], false)
               })
 
               // Set variable null for successive usages
@@ -168,10 +172,10 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
       return references
     },
 
-    add: function (reference) {
+    add: function (reference, next) {
 
-      // Create the empty reference
-      tinymce.activeEditor.selection.setContent(`<a contenteditable="false" href="#${reference}">&nbsp;</a>`)
+      // Create the empty reference with a whitespace at the end
+      tinymce.activeEditor.selection.setContent(`<a contenteditable="false" href="#${reference}">&nbsp;</a>&nbsp;`)
       tinymce.triggerSave()
     },
 
@@ -334,10 +338,8 @@ function updateReferences() {
       let original_content = $(this).attr('data-rash-original-content')
       let original_reference = $(this).parent('a').attr('href')
 
-      $(this).parent('a').replaceWith(`<a href="${original_reference}">${original_content}</a>`)
+      $(this).parent('a').replaceWith(`<a contenteditable="false" href="${original_reference}">${original_content}</a>`)
     })
-
-    //tinymce.triggerSave()
 
     references()
   }
