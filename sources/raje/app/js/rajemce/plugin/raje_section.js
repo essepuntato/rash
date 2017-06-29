@@ -23,6 +23,8 @@ const MENU_SELECTOR = 'div[id^=mceu_][id$=-body][role=menu]'
 
 const HEADING = 'Heading'
 
+const HEADING_TRASFORMATION_FORBIDDEN = 'Error, you cannot transform the current header in this way!'
+
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
   let raje_section_flag = false
@@ -523,27 +525,36 @@ section = {
    */
   upgrade: function () {
 
-    // Get the references of selected and parent section
-    let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
-    let parentSection = selectedSection.parent('section')
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-    // If there is a parent section upgrade is allowed
-    if (parentSection.length) {
+    if (selectedElement.is('h1,h2,h3,h4,h5,h6')) {
 
-      // Everything in here, is an atomic undo level
-      tinymce.activeEditor.undoManager.transact(function () {
+      // Get the references of selected and parent section
+      let selectedSection = selectedElement.parent(SECTION_SELECTOR)
+      let parentSection = selectedSection.parent(SECTION_SELECTOR)
 
-        // Save the section and detach
-        let bodySection = $(selectedSection[0].outerHTML)
-        selectedSection.detach()
+      // If there is a parent section upgrade is allowed
+      if (parentSection.length) {
 
-        // Update dimension and move the section out
-        parentSection.after(bodySection)
+        // Everything in here, is an atomic undo level
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        // Refresh tinymce content and set the heading dimension
-        bodySection.headingDimension()
-        tinymce.triggerSave()
-      })
+          // Save the section and detach
+          let bodySection = $(selectedSection[0].outerHTML)
+          selectedSection.detach()
+
+          // Update dimension and move the section out
+          parentSection.after(bodySection)
+
+          // Refresh tinymce content and set the heading dimension
+          bodySection.headingDimension()
+          tinymce.triggerSave()
+        })
+      }
+
+      // Notify error
+      else
+        notify(HEADING_TRASFORMATION_FORBIDDEN, 'error', 2000)
     }
   },
 
@@ -552,28 +563,36 @@ section = {
    */
   downgrade: function () {
 
-    // Get the references of selected and sibling section
-    let selectedSection = $(tinymce.activeEditor.selection.getNode()).parent('section')
-    let siblingSection = selectedSection.prev('section')
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
-    // If there is a previous sibling section downgrade is allowed
-    if (siblingSection.length) {
+    if (selectedElement.is('h1,h2,h3,h4,h5,h6')) {
+      // Get the references of selected and sibling section
+      let selectedSection = selectedElement.parent(SECTION_SELECTOR)
+      let siblingSection = selectedSection.prev(SECTION_SELECTOR)
 
-      // Everything in here, is an atomic undo level
-      tinymce.activeEditor.undoManager.transact(function () {
+      // If there is a previous sibling section downgrade is allowed
+      if (siblingSection.length) {
 
-        // Save the section and detach
-        let bodySection = $(selectedSection[0].outerHTML)
-        selectedSection.detach()
+        // Everything in here, is an atomic undo level
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        // Update dimension and move the section out
-        siblingSection.append(bodySection)
+          // Save the section and detach
+          let bodySection = $(selectedSection[0].outerHTML)
+          selectedSection.detach()
 
-        // Refresh tinymce content and set the heading dimension
-        bodySection.headingDimension()
-        tinymce.triggerSave()
-      })
-    }
+          // Update dimension and move the section out
+          siblingSection.append(bodySection)
+
+          // Refresh tinymce content and set the heading dimension
+          bodySection.headingDimension()
+          tinymce.triggerSave()
+        })
+      }
+    } 
+    
+    // Notify error
+    else
+      notify(HEADING_TRASFORMATION_FORBIDDEN, 'error', 2000)
   },
 
   /**
@@ -799,6 +818,9 @@ section = {
       // If current element is p
       if (selectedElement.is('p') || selectedElement.parent().is('p')) {
 
+        // Disable upgrade/downgrade
+        menu.children(':gt(10)').addClass('mce-disabled')
+
         // Check if caret is inside special section
         // In this case enable only first menuitem if caret is in abstract
         if (selectedElement.parents(SPECIAL_SECTION_SELECTOR).length) {
@@ -808,7 +830,6 @@ section = {
 
           return false
         }
-
 
         // Get deepness of the section
         let deepness = selectedElement.parents(SECTION_SELECTOR).length + 1
@@ -848,6 +869,11 @@ section = {
           menu.children(`:eq(${i})`).find('span.mce-text').text(text)
         }
       }
+
+      // Disable 
+      else if (selectedElement.is('h1') && selectedElement.parents(SPECIAL_SECTION_SELECTOR)) {
+        menu.children(':gt(10)').addClass('mce-disabled')
+      }
     }
   },
 
@@ -869,5 +895,8 @@ section = {
 
       cnt++
     })
+
+    // Enable upgrade/downgrade last three menu items
+    menu.children(':gt(10)').removeClass('mce-disabled')
   }
 }
