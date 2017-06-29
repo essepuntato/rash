@@ -105,6 +105,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             } else
               tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOGRAPHY_SELECTOR}>h1`)[0])
 
+            scrollTo(`${BIBLIOENTRY_SELECTOR}:last-child`)
+
             tinymce.activeEditor.focus()
           }
         }
@@ -588,8 +590,8 @@ section = {
           tinymce.triggerSave()
         })
       }
-    } 
-    
+    }
+
     // Notify error
     else
       notify(HEADING_TRASFORMATION_FORBIDDEN, 'error', 2000)
@@ -654,6 +656,8 @@ section = {
     //move caret and set focus to active aditor #105
     tinymce.activeEditor.focus()
     tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
+
+    scrollTo(ABSTRACT_SELECTOR)
   },
 
   /**
@@ -686,6 +690,8 @@ section = {
     //move caret and set focus to active aditor #105
     tinymce.activeEditor.focus()
     tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
+
+    scrollTo(ACKNOWLEDGEMENTS_SELECTOR)
   },
 
   /**

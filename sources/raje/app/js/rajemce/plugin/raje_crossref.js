@@ -50,6 +50,7 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
                 // Move caret to start of the new biblioentry element
                 // Issue #105 Firefox + Chromium
                 tinymce.activeEditor.selection.setCursorLocation($(tinymce.activeEditor.dom.get(id)).find('p')[0], false)
+                scrollTo(`${BIBLIOENTRY_SELECTOR}#${id}`)
               })
 
               // Set variable null for successive usages

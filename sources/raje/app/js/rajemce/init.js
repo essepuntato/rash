@@ -179,6 +179,10 @@ function notify(text, type, timeout) {
   }
 }
 
+function scrollTo(elementSelector) {
+  $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
+}
+
 jQuery.fn.extend({
 
   /**
