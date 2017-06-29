@@ -125,3 +125,14 @@ tinymce.PluginManager.add('raje_inlineQuote', function (editor, url) {
     }
   }
 })
+
+tinymce.PluginManager.add('raje_inlineFigure', function (editor, url) {
+  editor.addButton('raje_inlineFigure', {
+    text: 'inline_figure',
+    tooltip: 'Inline quote',
+    disabledStateSelector: DISABLE_SELECTOR_INLINE,
+
+    // Button behaviour
+    onclick: function () {}
+  })
+})

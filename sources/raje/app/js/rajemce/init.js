@@ -32,13 +32,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
+    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -86,7 +86,7 @@ $(document).ready(function () {
         }
 
       })
-
+      
       // Update saved content on undo and redo events
       editor.on('Undo', function (e) {
         tinymce.triggerSave()

@@ -181,11 +181,12 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
     onclick: function () {
 
       editor.windowManager.open({
-        title: 'Select image',
+        title: 'Select image from external link OR img folder',
         body: [{
           type: 'textbox',
           name: 'url',
-          label: 'url'
+          label: 'url',
+          placeholder: 'http://... OR img/...'
         }, {
           type: 'textbox',
           name: 'alt',
@@ -222,33 +223,42 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
 
       // Get the referece of the selected element
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-
-      // Check if the selected element is empty or not (thw way to append the figure depends on it)
-      if (selectedElement.text().trim().length != 0) {
-
-        // Add and select a new paragraph (where the figure is added)
-        let tmp = $('<p></p>')
-        selectedElement.after(tmp)
-        selectedElement = tmp
-      }
-
-      // Create the object of the figure
       let newFigure = this.create(url, alt)
 
+      // Begin atomic UNDO level 
+      tinymce.activeEditor.undoManager.transact(function () {
 
-      // append the new figure
-      selectedElement.append(newFigure)
-      tinymce.triggerSave()
-      caption()
+        // Check if the selected element is not empty, and add table after
+        if (selectedElement.text().trim().length != 0) {
 
-      tinymce.dom.DomQuery('figcaption').html("<strong class=\"cgen\" data-rash-original-content=\"\">Figure 1. </strong> Caption.")
+          // If selection is at start of the selected element
+          if (tinymce.activeEditor.selection.getRng().startOffset == 0)
+            selectedElement.before(newFigure)
+
+          else
+            selectedElement.after(newFigure)
+        }
+
+        // If selected element is empty, replace it with the new table
+        else
+          selectedElement.replaceWith(newFigure)
+
+        // Save updates 
+        tinymce.triggerSave()
+
+        // Update all captions with RASH function
+        captions()
+
+        // Update Rendered RASH
+        updateIframeFromSavedContent()
+      })
     },
 
     /**
      * 
      */
     create: function (url, alt) {
-      return $(`<figure contenteditable="false" id="${this.getNextId()}"><p><img src="${url}" alt="${alt}"/></p><figcaption contenteditable="true">Caption.</figcaption></figure>`)
+      return $(`<figure id="${this.getNextId()}"><p><img src="${url}" ${alt?'alt="'+alt+'"':''} /></p><figcaption>Caption.</figcaption></figure>`)
     },
 
     /**
@@ -421,7 +431,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
       let range = tinymce.activeEditor.selection.getRng()
       let startNode = $(range.startContainer)
       if (startNode.parent().is('code') && (startNode.parent().contents().index(startNode) == 0 && range.startOffset == 1)) {
-        tinymce.activeEditor.selection.setCursorLocation(startNode.parents(FIGURE_SELECTOR).prev('p,:header')[0],1)
+        tinymce.activeEditor.selection.setCursorLocation(startNode.parents(FIGURE_SELECTOR).prev('p,:header')[0], 1)
         return false
       }
     }
