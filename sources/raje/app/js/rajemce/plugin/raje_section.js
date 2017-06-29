@@ -19,7 +19,7 @@ const MAIN_SECTION_SELECTOR = 'div#raje_root > section:not([role])'
 const SECTION_SELECTOR = 'section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
 
-const MENU_SELECTOR = 'div#mceu_32-body[role=menu]'
+const MENU_SELECTOR = 'div[id^=mceu_][id$=-body][role=menu]'
 
 const HEADING = 'Heading'
 
@@ -417,8 +417,9 @@ section = {
 
         // If the deepness is 0, only paragraph are saved (not sections)
         if (deepness == 0) {
-          successiveElements.append(element.nextAll('p'))
-          element.nextAll().remove('p')
+          // Successive elements can be p or figures
+          successiveElements.append(element.nextAll(`p,${FIGURE_SELECTOR}`))
+          element.nextAll().remove(`p,${FIGURE_SELECTOR}`)
         } else {
           successiveElements.append(element.nextAll())
           element.nextAll().remove()
