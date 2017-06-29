@@ -538,6 +538,7 @@ function captions() {
 function handleFigureDelete(sel) {
 
   try {
+
     // Get reference of start and end node
     let startNode = $(sel.getRng().startContainer)
     let startNodeParent = startNode.parents(FIGURE_SELECTOR)
@@ -548,6 +549,23 @@ function handleFigureDelete(sel) {
     // If at least selection start or end is inside the figure
     if (startNodeParent.length || endNodeParent.length) {
 
+      // If selection wraps entirely a figure from the start of first element (th in table) and selection ends
+      if (endNode.parents('figcaption').length) {
+
+        let contents = endNode.parent().contents()
+        if (startNode.is(FIGURE_SELECTOR) && contents.index(endNode) == contents.length - 1 && sel.getRng().endOffset == endNode.text().length) {
+          tinymce.activeEditor.undoManager.transact(function () {
+
+            // Move cursor at the previous element and remove figure
+            tinymce.activeEditor.focus()
+            tinymce.activeEditor.selection.setCursorLocation(startNode.prev()[0], 1)
+            startNode.remove()
+            
+            return false
+          })
+        }
+      }
+
       // If selection doesn't start and end in the same figure, but one beetwen start or end is inside the figcaption, must block
       if (startNode.parents('figcaption').length != endNode.parents('figcaption').length && (startNode.parents('figcaption').length || endNode.parents('figcaption').length))
         return false
@@ -557,7 +575,7 @@ function handleFigureDelete(sel) {
       if ((startNodeParent.attr('id') != endNodeParent.attr('id')))
         return false
 
-      // If at start of code element prevent
+      // If cursor is at start of code prevent
       if (startNode.parents(FIGURE_SELECTOR).find('pre').length) {
 
         // If at the start of pre>code, pressing 2times backspace will remove everything 
