@@ -36,75 +36,93 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     // Sections sub menu
     menu: [{
-        text: `${HEADING} 1.`,
-        onclick: function () {
-          section.add(1)
-        }
-      }, {
-        text: `${HEADING} 1.1.`,
-        onclick: function () {
-          section.add(2)
-        }
-      }, {
-        text: `${HEADING} 1.1.1.`,
-        onclick: function () {
-          section.add(3)
-        }
-      }, {
-        text: `${HEADING} 1.1.1.1.`,
-        onclick: function () {
-          section.add(4)
-        }
-      }, {
-        text: `${HEADING} 1.1.1.1.1.`,
-        onclick: function () {
-          section.add(5)
-        }
-      }, {
-        text: `${HEADING} 1.1.1.1.1.1.`,
-        onclick: function () {
-          section.add(6)
-        }
-      }, {
-        text: 'Abstract',
-        onclick: function () {
-
-          section.addAbstract()
-        }
-      },
-      {
-        text: 'Acknowledgements',
-        onclick: function () {
-          section.addAcknowledgements()
-        }
-      },
-      {
-        text: 'References',
-        onclick: function () {
-
-          tinymce.triggerSave()
-
-          // Only if bibliography section doesn't exists
-          if (!$(BIBLIOGRAPHY_SELECTOR).length) {
-
-            // TODO change here
-            tinymce.activeEditor.undoManager.transact(function () {
-              // Add new biblioentry
-              section.addBiblioentry()
-
-              // Update iframe
-              updateIframeFromSavedContent()
-
-              //move caret and set focus to active aditor #105
-              tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
-            })
-          } else
-            tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOGRAPHY_SELECTOR}>h1`)[0])
-
-          tinymce.activeEditor.focus()
-        }
+      text: `${HEADING} 1.`,
+      onclick: function () {
+        section.add(1)
       }
-    ]
+    }, {
+      text: `${HEADING} 1.1.`,
+      onclick: function () {
+        section.add(2)
+      }
+    }, {
+      text: `${HEADING} 1.1.1.`,
+      onclick: function () {
+        section.add(3)
+      }
+    }, {
+      text: `${HEADING} 1.1.1.1.`,
+      onclick: function () {
+        section.add(4)
+      }
+    }, {
+      text: `${HEADING} 1.1.1.1.1.`,
+      onclick: function () {
+        section.add(5)
+      }
+    }, {
+      text: `${HEADING} 1.1.1.1.1.1.`,
+      onclick: function () {
+        section.add(6)
+      }
+    }, {
+      text: 'Special',
+      menu: [{
+          text: 'Abstract',
+          onclick: function () {
+
+            section.addAbstract()
+          }
+        },
+        {
+          text: 'Acknowledgements',
+          onclick: function () {
+            section.addAcknowledgements()
+          }
+        },
+        {
+          text: 'References',
+          onclick: function () {
+
+            tinymce.triggerSave()
+
+            // Only if bibliography section doesn't exists
+            if (!$(BIBLIOGRAPHY_SELECTOR).length) {
+
+              // TODO change here
+              tinymce.activeEditor.undoManager.transact(function () {
+                // Add new biblioentry
+                section.addBiblioentry()
+
+                // Update iframe
+                updateIframeFromSavedContent()
+
+                //move caret and set focus to active aditor #105
+                tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
+              })
+            } else
+              tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOGRAPHY_SELECTOR}>h1`)[0])
+
+            tinymce.activeEditor.focus()
+          }
+        }
+      ]
+    }, {
+      text: 'Transform',
+      menu: [{
+          text: 'Upgrade',
+          onclick: function () {
+            section.upgrade()
+          }
+        },
+        {
+          text: 'Downgrade',
+          onclick: function () {
+            section.downgrade()
+          }
+        }
+      ]
+    }]
   })
 
   editor.on('keyDown', function (e) {
