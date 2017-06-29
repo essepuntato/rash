@@ -15,8 +15,11 @@ const ENDNOTE_SELECTOR = 'section[role=doc-endnote]'
 const ABSTRACT_SELECTOR = 'section[role=doc-abstract]'
 const ACKNOWLEDGEMENTS_SELECTOR = 'section[role=doc-acknowledgements]'
 
-const SECTION_SELECTOR = 'div#raje_root > section:not([role])'
+const MAIN_SECTION_SELECTOR = 'div#raje_root > section:not([role])'
+const SECTION_SELECTOR = 'section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
+
+const HEADING = 'Heading'
 
 tinymce.PluginManager.add('raje_section', function (editor, url) {
 
@@ -31,32 +34,32 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     // Sections sub menu
     menu: [{
-        text: 'Heading 1.',
+        text: `${HEADING} 1.`,
         onclick: function () {
           section.add(1)
         }
       }, {
-        text: 'Heading 1.1.',
+        text: `${HEADING} 1.1.`,
         onclick: function () {
           section.add(2)
         }
       }, {
-        text: 'Heading 1.1.1.',
+        text: `${HEADING} 1.1.1.`,
         onclick: function () {
           section.add(3)
         }
       }, {
-        text: 'Heading 1.1.1.1.',
+        text: `${HEADING} 1.1.1.1.`,
         onclick: function () {
           section.add(4)
         }
       }, {
-        text: 'Heading 1.1.1.1.1.',
+        text: `${HEADING} 1.1.1.1.1.`,
         onclick: function () {
           section.add(5)
         }
       }, {
-        text: 'Heading 1.1.1.1.1.1.',
+        text: `${HEADING} 1.1.1.1.1.1.`,
         onclick: function () {
           section.add(6)
         }
@@ -92,9 +95,11 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
               //move caret and set focus to active aditor #105
               tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}:last-child`)[0], true)
-              tinymce.activeEditor.focus()
             })
-          }
+          } else
+            tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${BIBLIOGRAPHY_SELECTOR}>h1`)[0])
+
+          tinymce.activeEditor.focus()
         }
       }
     ]
@@ -340,7 +345,7 @@ section = {
         let heading = newSection.find('h1,h2,h3,h4,h5,h6').first()
         tinymce.activeEditor.focus()
         tinymce.activeEditor.selection.select(heading[0], true)
-        
+
         // If there is text move to end, viceversa move to start
         tinymce.activeEditor.selection.collapse(heading.text().length ? false : true)
 
@@ -600,16 +605,15 @@ section = {
       tinymce.activeEditor.undoManager.transact(function () {
 
         // This section can only be placed after non editable header
-        $(NON_EDITABLE_HEADER_SELECTOR).after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1><p><br/></p></section>`)
+        $(NON_EDITABLE_HEADER_SELECTOR).after(`<section id="doc-abstract" role="doc-abstract"><h1>Abstract</h1></section>`)
 
         updateIframeFromSavedContent()
-
-        //move caret and set focus to active aditor #105
-        tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > p`)[0])
-        tinymce.activeEditor.focus()
       })
     }
 
+    //move caret and set focus to active aditor #105
+    tinymce.activeEditor.focus()
+    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
   },
 
   /**
@@ -619,15 +623,15 @@ section = {
 
     if (!$(ACKNOWLEDGEMENTS_SELECTOR).length) {
 
-      let ack = $(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1><p><br/></p></section>`)
+      let ack = $(`<section id="doc-acknowledgements" role="doc-acknowledgements"><h1>Acknowledgements</h1></section>`)
 
       tinymce.activeEditor.undoManager.transact(function () {
 
         // Insert this section after last non special section 
         // OR after abstract section 
         // OR after non editable header
-        if ($(SECTION_SELECTOR).length)
-          $(SECTION_SELECTOR).last().after(ack)
+        if ($(MAIN_SECTION_SELECTOR).length)
+          $(MAIN_SECTION_SELECTOR).last().after(ack)
 
         else if ($(ABSTRACT_SELECTOR).length)
           $(ABSTRACT_SELECTOR).after(ack)
@@ -636,12 +640,12 @@ section = {
           $(NON_EDITABLE_HEADER_SELECTOR).after(ack)
 
         updateIframeFromSavedContent()
-
-        //move caret and set focus to active aditor #105
-        tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > p`)[0], true)
-        tinymce.activeEditor.focus()
       })
     }
+
+    //move caret and set focus to active aditor #105
+    tinymce.activeEditor.focus()
+    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
   },
 
   /**
@@ -662,8 +666,8 @@ section = {
       if ($(ACKNOWLEDGEMENTS_SELECTOR).length)
         $(ACKNOWLEDGEMENTS_SELECTOR).after(bibliography)
 
-      else if ($(SECTION_SELECTOR).length)
-        $(SECTION_SELECTOR).last().after(bibliography)
+      else if ($(MAIN_SECTION_SELECTOR).length)
+        $(MAIN_SECTION_SELECTOR).last().after(bibliography)
 
       else if ($(ABSTRACT_SELECTOR).length)
         $(ABSTRACT_SELECTOR).after(bibliography)
@@ -727,8 +731,8 @@ section = {
       else if ($(ACKNOWLEDGEMENTS_SELECTOR).length)
         $(ACKNOWLEDGEMENTS_SELECTOR).after(endnotes)
 
-      else if ($(SECTION_SELECTOR).length)
-        $(SECTION_SELECTOR).last().after(endnotes)
+      else if ($(MAIN_SECTION_SELECTOR).length)
+        $(MAIN_SECTION_SELECTOR).last().after(endnotes)
 
       else if ($(ABSTRACT_SELECTOR).length)
         $(ABSTRACT_SELECTOR).after(endnotes)
@@ -761,9 +765,10 @@ section = {
 
     // Dropdown menu reference
     let menu = $('div#mceu_31-body[role=menu]')
+    section.restoreSectionToolbar(menu)
 
-    // Disable all sub buttons
-    menu.children(':lt(6)').addClass('mce-disabled')
+    tinymce.triggerSave()
+
     // Save current selected element
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
@@ -771,10 +776,52 @@ section = {
     if (selectedElement.is('p') || selectedElement.parent().is('p')) {
 
       // Get deepness of the section
-      let deepness = selectedElement.parents('section').length + 1
+      let deepness = selectedElement.parents(SECTION_SELECTOR).length + 1
 
       // Remove disabling class on first {deepness} menu items
       menu.children(`:lt(${deepness})`).removeClass('mce-disabled')
+
+      let preHeaders = []
+      let parentSections = selectedElement.parents('section')
+
+      for (let i = parentSections.length; i > 0; i--) {
+        let elem = $(parentSections[i - 1])
+        let index = elem.parent().children(SECTION_SELECTOR).index(elem) + 1
+        preHeaders.push(index)
+      }
+
+      for (let i = 0; i <= preHeaders.length; i++) {
+        let text = `${HEADING} `
+
+        if (i != preHeaders.length) {
+          for (let x = 0; x <= i; x++)
+            text += `${preHeaders[x] + (x == i ? 1 : 0)}.`
+        } else {
+          for (let x = 0; x < i; x++)
+            text += `${preHeaders[x]}.`
+
+          text += '1.'
+        }
+
+        menu.children(`:eq(${i})`).find('span.mce-text').text(text)
+      }
     }
+  },
+
+  restoreSectionToolbar: function (menu) {
+
+    let cnt = 1
+
+    menu.children(':lt(6)').each(function () {
+      let text = `${HEADING} `
+
+      for (let i = 0; i < cnt; i++)
+        text += `1.`
+
+      $(this).find('span.mce-text').text(text)
+      $(this).addClass('mce-disabled')
+
+      cnt++
+    })
   }
 }
