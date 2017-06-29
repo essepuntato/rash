@@ -67,7 +67,7 @@ $(document).ready(function () {
         let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
         // Move caret to first heading if is after or before not editable header
-        if (selectedElement.next().is(HEADER_SELECTOR) || (selectedElement.prev().is(HEADER_SELECTOR) && tinymce.activeEditor.dom.select(FIRST_HEADING).length))
+        if (selectedElement.is('p') && (selectedElement.next().is(HEADER_SELECTOR) || (selectedElement.prev().is(HEADER_SELECTOR) && tinymce.activeEditor.dom.select(FIRST_HEADING).length)))
           tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
 
         // If the current element isn't inside header, only in section this is permitted
@@ -86,7 +86,7 @@ $(document).ready(function () {
         }
 
       })
-      
+
       // Update saved content on undo and redo events
       editor.on('Undo', function (e) {
         tinymce.triggerSave()
