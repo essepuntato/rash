@@ -19,6 +19,8 @@ const MAIN_SECTION_SELECTOR = 'div#raje_root > section:not([role])'
 const SECTION_SELECTOR = 'section:not([role])'
 const SPECIAL_SECTION_SELECTOR = 'section[role]'
 
+const MENU_SELECTOR = 'div#mceu_31-body[role=menu]'
+
 const HEADING = 'Heading'
 
 tinymce.PluginManager.add('raje_section', function (editor, url) {
@@ -764,50 +766,75 @@ section = {
   updateSectionToolbar: function () {
 
     // Dropdown menu reference
-    let menu = $('div#mceu_31-body[role=menu]')
-    section.restoreSectionToolbar(menu)
+    let menu = $(MENU_SELECTOR)
 
-    tinymce.triggerSave()
+    if (menu.length) {
+      section.restoreSectionToolbar(menu)
 
-    // Save current selected element
-    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      // Save current selected element
+      let selectedElement = $(tinymce.activeEditor.selection.getRng().startContainer)
 
-    // If current element is p
-    if (selectedElement.is('p') || selectedElement.parent().is('p')) {
+      if (selectedElement[0].nodeType == 3)
+        selectedElement = selectedElement.parent()
 
-      // Get deepness of the section
-      let deepness = selectedElement.parents(SECTION_SELECTOR).length + 1
+      // If current element is p
+      if (selectedElement.is('p') || selectedElement.parent().is('p')) {
 
-      // Remove disabling class on first {deepness} menu items
-      menu.children(`:lt(${deepness})`).removeClass('mce-disabled')
+        // Check if caret is inside special section
+        // In this case enable only first menuitem if caret is in abstract
+        if (selectedElement.parents(SPECIAL_SECTION_SELECTOR).length) {
 
-      let preHeaders = []
-      let parentSections = selectedElement.parents('section')
+          if (selectedElement.parents(ABSTRACT_SELECTOR).length)
+            menu.children(`:lt(1)`).removeClass('mce-disabled')
 
-      for (let i = parentSections.length; i > 0; i--) {
-        let elem = $(parentSections[i - 1])
-        let index = elem.parent().children(SECTION_SELECTOR).index(elem) + 1
-        preHeaders.push(index)
-      }
-
-      for (let i = 0; i <= preHeaders.length; i++) {
-        let text = `${HEADING} `
-
-        if (i != preHeaders.length) {
-          for (let x = 0; x <= i; x++)
-            text += `${preHeaders[x] + (x == i ? 1 : 0)}.`
-        } else {
-          for (let x = 0; x < i; x++)
-            text += `${preHeaders[x]}.`
-
-          text += '1.'
+          return false
         }
 
-        menu.children(`:eq(${i})`).find('span.mce-text').text(text)
+
+        // Get deepness of the section
+        let deepness = selectedElement.parents(SECTION_SELECTOR).length + 1
+
+        // Remove disabling class on first {deepness} menu items
+        menu.children(`:lt(${deepness})`).removeClass('mce-disabled')
+
+        let preHeaders = []
+        let parentSections = selectedElement.parents('section')
+
+        // Save index of all parent sections
+        for (let i = parentSections.length; i > 0; i--) {
+          let elem = $(parentSections[i - 1])
+          let index = elem.parent().children(SECTION_SELECTOR).index(elem) + 1
+          preHeaders.push(index)
+        }
+
+        // Update text of all menu item
+        for (let i = 0; i <= preHeaders.length; i++) {
+
+          let text = `${HEADING} `
+
+          // Update text based on section structure
+          if (i != preHeaders.length) {
+            for (let x = 0; x <= i; x++)
+              text += `${preHeaders[x] + (x == i ? 1 : 0)}.`
+          }
+
+          // In this case raje changes text of next sub heading
+          else {
+            for (let x = 0; x < i; x++)
+              text += `${preHeaders[x]}.`
+
+            text += '1.'
+          }
+
+          menu.children(`:eq(${i})`).find('span.mce-text').text(text)
+        }
       }
     }
   },
 
+  /**
+   * Restore normal text in section toolbar and disable all
+   */
   restoreSectionToolbar: function (menu) {
 
     let cnt = 1
