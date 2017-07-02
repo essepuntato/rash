@@ -88,39 +88,30 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 
   crossref = {
     getAllReferenceableSections: function () {
+
       let sections = []
 
       $('section').each(function () {
 
-        let level
+        let level = ''
 
+        // Sections without role have :after
         if (!$(this).attr('role')) {
 
-          switch ($(this).children(':header').first().prop('tagName')) {
-            case 'H1':
-              level = '1.'
-              break
+          // Save its deepness
+          let parentSections = $(this).parentsUntil('div#raje_root')
 
-            case 'H2':
-              level = '1.1.'
-              break
+          if (parentSections.length) {
 
-            case 'H3':
-              level = '1.1.1.'
-              break
-
-            case 'H4':
-              level = '1.1.1.1.'
-              break
-
-            case 'H5':
-              level = '1.1.1.1.1.'
-              break
-
-            case 'H6':
-              level = '1.1.1.1.1.1.'
-              break
+            // Iterate its parents backwards (higer first)
+            for (let i = parentSections.length; i--; i > 0) {
+              let section = $(parentSections[i])
+              level += `${section.parent().children(SECTION_SELECTOR).index(section)+1}.`
+            }
           }
+
+          // Current index
+          level += `${$(this).parent().children(SECTION_SELECTOR).index($(this))+1}.`
         }
 
         sections.push({
