@@ -367,11 +367,9 @@ section = {
 
         // The caret is moved at the end
         let heading = newSection.find('h1,h2,h3,h4,h5,h6').first()
-        tinymce.activeEditor.focus()
-        tinymce.activeEditor.selection.select(heading[0], true)
 
-        // If there is text move to end, viceversa move to start
-        tinymce.activeEditor.selection.collapse(heading.text().length ? false : true)
+        tinymce.activeEditor.focus()
+        tinymce.activeEditor.selection.setCursorLocation(heading[0], heading.text().length ? 1 : 0)
 
         // Update editor content
         tinymce.triggerSave()
@@ -603,6 +601,8 @@ section = {
    */
   updateSectionStructure: function () {
 
+    tinymce.triggerSave()
+
     // Save selected element and ancestor section references
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
     let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
@@ -611,7 +611,7 @@ section = {
 
     let toRemoveSections = []
 
-    ancestorSection.find('section').each(function () {
+    ancestorSection.find(SECTION_SELECTOR).each(function () {
 
       // Check if the current section doesn't have heading as first child
       if (!$(this).children().first().is(':header')) {
@@ -626,16 +626,26 @@ section = {
     // If there are sections to be removed
     if (toRemoveSections.length > 0) {
 
-      // Move everything after 
-      selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
+      tinymce.activeEditor.undoManager.transact(function () {
+        
+        // Move everything after 
+        selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
 
-      toRemoveSections[0].remove()
+        // Remove sections
+        toRemoveSections[0].remove()
 
-      ancestorSection.children('section').headingDimension()
+        // Refresh headings
+        headingDimension()
 
-      updateReferences()
-      updateIframeFromSavedContent()
+        // Update references if needed
+        updateReferences()
+
+        // Update iframe
+        updateIframeFromSavedContent()
+      })
     }
+
+
   },
   /**
    * 
