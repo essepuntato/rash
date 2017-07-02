@@ -159,6 +159,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
       // #################################
       if (e.keyCode == 8 || e.keyCode == 46) {
 
+        let toRemoveSections = section.getSectionsinSelection(tinymce.activeEditor.selection)
         raje_section_flag = true
 
         // Prevent remove from header
@@ -166,6 +167,20 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           (selectedElement.attr('data-mce-caret') == 'after' && selectedElement.parent().is(RAJE_SELECTOR)) ||
           (selectedElement.attr('data-mce-caret') && selectedElement.parent().is(RAJE_SELECTOR)) == 'before')
           return false
+
+        else if (toRemoveSections.length) {
+
+          tinymce.activeEditor.undoManager.transact(function () {
+
+            // Execute delete
+            tinymce.activeEditor.execCommand('delete')
+
+            // Update section structure
+            section.updateSectionStructure(toRemoveSections)
+          })
+
+          return false
+        }
 
         // If SELECTION STARTS or ENDS in special section
         else if (startNode.parents(SPECIAL_SECTION_SELECTOR).length || endNode.parents(SPECIAL_SECTION_SELECTOR).length) {
@@ -249,6 +264,8 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
             return false
           }
         }
+
+
       }
     } catch (exception) {}
 
@@ -335,12 +352,14 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
     section.updateSectionToolbar()
 
+    /*
     // If delete key is pressed, update the whole section structure
     if (raje_section_flag) {
       raje_section_flag = false
 
       section.updateSectionStructure()
     }
+    */
   })
 })
 
@@ -365,11 +384,18 @@ section = {
         // Remove the selected section
         selectedElement.remove()
 
-        // The caret is moved at the end
+        // If the new heading has text nodes, the offset won't be 0 (as normal) but instead it'll be length of node text
         let heading = newSection.find('h1,h2,h3,h4,h5,h6').first()
+        let offset = 0
 
+        if (heading.contents().length) {
+
+          heading = heading.contents().last()
+          offset = heading[0].wholeText.length
+        }
+        
         tinymce.activeEditor.focus()
-        tinymce.activeEditor.selection.setCursorLocation(heading[0], heading.text().length ? 1 : 0)
+        tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
 
         // Update editor content
         tinymce.triggerSave()
@@ -514,7 +540,7 @@ section = {
       else
         $(selectedElement.parents('section')[deepness - 1]).after(newSection)
 
-      newSection.headingDimension()
+      headingDimension()
 
       return true
     }
@@ -547,7 +573,7 @@ section = {
           parentSection.after(bodySection)
 
           // Refresh tinymce content and set the heading dimension
-          bodySection.headingDimension()
+          headingDimension()
           tinymce.triggerSave()
         })
       }
@@ -584,7 +610,7 @@ section = {
           siblingSection.append(bodySection)
 
           // Refresh tinymce content and set the heading dimension
-          bodySection.headingDimension()
+          headingDimension()
           tinymce.triggerSave()
         })
       }
@@ -599,10 +625,10 @@ section = {
    * 
    * After any delete, the editor must update the unvalidated elements
    */
-  updateSectionStructure: function () {
+  updateSectionStructure: function (toRemoveSections) {
 
-    tinymce.triggerSave()
-
+    /*
+    
     // Save selected element and ancestor section references
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
     let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
@@ -618,34 +644,50 @@ section = {
 
         toRemoveSections.push($(this))
       }
-    })
+    })*/
+    tinymce.triggerSave()
+
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
     // Get the list of the section without h1, those who have another section as first child
     //let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
 
     // If there are sections to be removed
-    if (toRemoveSections.length > 0) {
+    if (toRemoveSections.length) {
 
-      tinymce.activeEditor.undoManager.transact(function () {
-        
-        // Move everything after 
-        selectedElement.after(toRemoveSections[toRemoveSections.length - 1].html())
+      // Move everything after 
+      selectedElement.after($(toRemoveSections[toRemoveSections.length - 1]).html())
 
-        // Remove sections
-        toRemoveSections[0].remove()
+      // Remove sections
+      $(toRemoveSections[0]).remove()
 
-        // Refresh headings
-        headingDimension()
+      // Refresh headings
+      headingDimension()
 
-        // Update references if needed
-        updateReferences()
+      // Update references if needed
+      updateReferences()
 
-        // Update iframe
-        updateIframeFromSavedContent()
-      })
+      // Update iframe
+      updateIframeFromSavedContent()
     }
 
 
+  },
+
+  /**
+   * 
+   */
+  getSectionsinSelection: function (sel) {
+
+    let content = $(sel.getContent())
+    let sections = []
+
+    content.each(function () {
+      if ($(this).is(SECTION_SELECTOR))
+        sections.push(`section#${$(this).attr('id')}`)
+    })
+
+    return sections
   },
   /**
    * 
