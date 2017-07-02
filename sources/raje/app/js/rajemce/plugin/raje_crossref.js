@@ -185,6 +185,11 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
       // Update the reference (in saved content)
       references()
 
+      // Prevent adding of nested a as footnotes
+      $('a>sup>a').each(function () {
+        $(this).parent().html($(this).text())
+      })
+
       // Update editor with the right references
       updateIframeFromSavedContent()
     }
@@ -213,6 +218,9 @@ tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
 
       // Update the reference
       crossref.update()
+
+      // Move caret at the end of p in last inserted endnote
+      tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${ENDNOTE_SELECTOR}#${reference}>p`)[0], 1)
     }
   })
 })

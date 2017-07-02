@@ -183,20 +183,15 @@ function scrollTo(elementSelector) {
   $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
 }
 
-jQuery.fn.extend({
 
-  /**
-   * 
-   */
-  headingDimension: function () {
-    $(this).find('h1,h2,h3,h4,h5,h6').each(function () {
-      var counter = 0;
-      $(this).parents("section").each(function () {
-        if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
-          counter++;
-        }
-      });
-      $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+function headingDimension() {
+  $("h1,h2,h3,h4,h5,h6").each(function () {
+    var counter = 0;
+    $(this).parents("section").each(function () {
+      if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
+        counter++;
+      }
     });
-  }
-})
+    $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+  });
+}
