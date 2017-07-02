@@ -159,6 +159,21 @@ function moveCaret(element, toStart) {
   tinymce.activeEditor.selection.collapse(toStart)
 }
 
+function moveCursorToEnd(element) {
+
+  let heading = element
+  let offset = 0
+
+  if (heading.contents().length) {
+
+    heading = heading.contents().last()
+    offset = heading[0].wholeText.length
+  }
+
+  tinymce.activeEditor.focus()
+  tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
+}
+
 /**
  * Create custom into notification
  * @param {*} text 
@@ -185,13 +200,16 @@ function scrollTo(elementSelector) {
 
 
 function headingDimension() {
-  $(`${SECTION_SELECTOR}>h1,${SECTION_SELECTOR}>h2,${SECTION_SELECTOR}>h3,${SECTION_SELECTOR}>h4,${SECTION_SELECTOR}>h5,${SECTION_SELECTOR}>h6`).each(function () {
-    var counter = 0;
-    $(this).parents("section").each(function () {
-      if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
-        counter++;
-      }
-    });
-    $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+  $('h1,h2,h3,h4,h5,h6').each(function () {
+
+    if (!$(this).parents(HEADER_SELECTOR).length) {
+      var counter = 0;
+      $(this).parents("section").each(function () {
+        if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
+          counter++;
+        }
+      });
+      $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+    }
   });
 }

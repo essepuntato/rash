@@ -385,17 +385,7 @@ section = {
         selectedElement.remove()
 
         // If the new heading has text nodes, the offset won't be 0 (as normal) but instead it'll be length of node text
-        let heading = newSection.find('h1,h2,h3,h4,h5,h6').first()
-        let offset = 0
-
-        if (heading.contents().length) {
-
-          heading = heading.contents().last()
-          offset = heading[0].wholeText.length
-        }
-        
-        tinymce.activeEditor.focus()
-        tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
+        moveCursorToEnd(newSection.find('h1,h2,h3,h4,h5,h6').first())
 
         // Update editor content
         tinymce.triggerSave()
@@ -572,9 +562,9 @@ section = {
           // Update dimension and move the section out
           parentSection.after(bodySection)
 
-          // Refresh tinymce content and set the heading dimension
-          headingDimension()
           tinymce.triggerSave()
+          headingDimension()
+          updateIframeFromSavedContent()
         })
       }
 
@@ -609,9 +599,10 @@ section = {
           // Update dimension and move the section out
           siblingSection.append(bodySection)
 
+          tinymce.triggerSave()
           // Refresh tinymce content and set the heading dimension
           headingDimension()
-          tinymce.triggerSave()
+          updateIframeFromSavedContent()
         })
       }
     }
@@ -627,39 +618,58 @@ section = {
    */
   updateSectionStructure: function (toRemoveSections) {
 
-    /*
-    
-    // Save selected element and ancestor section references
-    let selectedElement = $(tinymce.activeEditor.selection.getNode())
-    let ancestorSection = selectedElement.parents(RAJE_SELECTOR)
-
-    // TODO update algorithm #issue96
-
-    let toRemoveSections = []
-
-    ancestorSection.find(SECTION_SELECTOR).each(function () {
-
-      // Check if the current section doesn't have heading as first child
-      if (!$(this).children().first().is(':header')) {
-
-        toRemoveSections.push($(this))
-      }
-    })*/
     tinymce.triggerSave()
 
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
-
-    // Get the list of the section without h1, those who have another section as first child
-    //let toRemoveSections = ancestorSection.find('section:has(section:first-child)')
+    let isAbstract = false
 
     // If there are sections to be removed
     if (toRemoveSections.length) {
 
-      // Move everything after 
-      selectedElement.after($(toRemoveSections[toRemoveSections.length - 1]).html())
+      let lastSection = toRemoveSections[toRemoveSections.length - 1]
+      let currentElement = $(lastSection)
 
-      // Remove sections
-      $(toRemoveSections[0]).remove()
+      // Check if the current section has p or figures to move
+      if (currentElement.children(`p,${FIGURE_SELECTOR}`).length)
+        selectedElement.after(currentElement.children(`p,${FIGURE_SELECTOR}`))
+
+      // Check if the current section has other section children
+      if (currentElement.children(SECTION_SELECTOR).length) {
+
+        // Iterate section until it reach a section with header
+        while (currentElement.children(SECTION_SELECTOR).length && !currentElement.children(`${SECTION_SELECTOR}:has(:header)`).length)
+          currentElement = currentElement.children(SECTION_SELECTOR).last()
+
+        // Save all children of the section with header and move them after the selected element
+        let children = currentElement.children(`${SECTION_SELECTOR}:has(:header)`)
+
+        // Find and remove all children without heading 
+        children.each(function () {
+          if ($(this).children(`${SECTION_SELECTOR}`).length) {
+            $(this).children(`${SECTION_SELECTOR}`).each(function () {
+              if (!$(this).children().first().is(':header'))
+                $(this).remove()
+            })
+          }
+
+          // Add the current section to the page
+          // If the selection ends or starts in abstract, the section is placed after it
+          if (selectedElement.parents(ABSTRACT_SELECTOR).length) {
+
+            selectedElement = $(ABSTRACT_SELECTOR)
+            isAbstract = true
+          }
+
+          selectedElement.after($(this).html())
+        })
+      }
+
+      // Save stored only selection isn't in abstract
+      if (!isAbstract)
+        tinymce.triggerSave()
+
+      // Remove the parent section
+      $(lastSection).remove()
 
       // Refresh headings
       headingDimension()
@@ -670,8 +680,6 @@ section = {
       // Update iframe
       updateIframeFromSavedContent()
     }
-
-
   },
 
   /**
