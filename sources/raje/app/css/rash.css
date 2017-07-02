@@ -136,12 +136,10 @@ h5 {
 }
 
 ol ol {
-    margin-top: 10px;
     list-style: lower-alpha
 }
 
 ol ol ol {
-    margin-top: 10px;
     list-style: upper-roman
 }
 
