@@ -348,19 +348,12 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
         // Save updates 
         tinymce.triggerSave()
 
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub])
+        //MathJax.Hub.Queue(["Typeset", MathJax.Hub, "SVG"])
 
         captions()
 
-        //console.log($('figure#' + id).html())
-        //console.log($('figure#'+id).find('span[data-mathml]').attr('data-mathml'))
-        //$('figure#'+id).find('p').replaceWith(`<p>${$('figure#'+id).find('span[data-mathml]').attr('data-mathml')}</p>`)
-
         // Update Rendered RASH
         updateIframeFromSavedContent()
-
-        //let mathml = $('figure#' + id).find('span[data-mathml]').data('mathml')
-        //$('figure#' + id).html(`<p>${mathml}</p>`)
       })
 
     },
@@ -369,7 +362,7 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
      * 
      */
     create: function (formula_input, id) {
-      return `<figure id="${id}"><p class="rash-math">\`\`${formula_input}\`\`</p></figure>`
+      return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
     },
 
     /**
@@ -515,7 +508,7 @@ function captions() {
   $(formulabox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("p");
     var cur_number = $(this).findNumber(formulabox_selector);
-    cur_caption.html(cur_caption.html() + "<span class=\"cgen\" data-rash-original-content=\"\" > (" +
+    cur_caption.html(cur_caption.html() + "<span contenteditable=\"false\" class=\"cgen\" data-rash-original-content=\"\" > (" +
       cur_number + ")</span>");
   });
   $(listingbox_selector).each(function () {
@@ -560,7 +553,7 @@ function handleFigureDelete(sel) {
             tinymce.activeEditor.focus()
             tinymce.activeEditor.selection.setCursorLocation(startNode.prev()[0], 1)
             startNode.remove()
-            
+
             return false
           })
         }

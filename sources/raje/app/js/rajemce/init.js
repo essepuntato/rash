@@ -131,6 +131,8 @@ $(document).ready(function () {
     image_advtab: true,
 
     paste_block_drop: true,
+
+    extended_valid_elements: "span[data-mathml,contenteditable],a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],$elements",
   })
 })
 
