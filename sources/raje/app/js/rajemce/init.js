@@ -132,7 +132,7 @@ $(document).ready(function () {
 
     paste_block_drop: true,
 
-    extended_valid_elements: "span[data-mathml,contenteditable],a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],$elements",
+    extended_valid_elements: "span[data-mathml,contenteditable],a[class|name|href|target|title|onclick|rel],script[type|src|#text],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],$elements",
   })
 })
 
@@ -166,7 +166,7 @@ function moveCursorToEnd(element) {
   let heading = element
   let offset = 0
 
-  if (heading.contents().length) {
+  if (heading.contents().length && heading.contents().last()[0].nodeType == 3) {
 
     heading = heading.contents().last()
     offset = heading[0].wholeText.length
@@ -215,3 +215,9 @@ function headingDimension() {
     }
   });
 }
+
+$(window).load(function () {
+  // Open and close menu headings Näive way
+  $('span:contains(\'Headings\')').parent('button').trigger('click')
+  $('span:contains(\'Headings\')').parent('button').trigger('click')
+})
