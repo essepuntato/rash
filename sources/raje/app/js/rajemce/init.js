@@ -32,13 +32,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
+    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_image raje_listing raje_formula formula | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -204,6 +204,21 @@ function scrollTo(elementSelector) {
   $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
 }
 
+/**
+ * 
+ */
+function getSuccessiveElementId(elementSelector, SUFFIX) {
+
+  let lastId = 0
+
+  $(elementSelector).each(function () {
+    let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
+    lastId = currentId > lastId ? currentId : lastId
+  })
+
+  return `${SUFFIX}${lastId+1}`
+}
+
 
 function headingDimension() {
   $('h1,h2,h3,h4,h5,h6').each(function () {
@@ -220,6 +235,9 @@ function headingDimension() {
   });
 }
 
+/**
+ * 
+ */
 $(window).load(function () {
   // Open and close menu headings Näive way
   $('span:contains(\'Headings\')').parent('button').trigger('click')

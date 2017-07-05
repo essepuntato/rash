@@ -10,6 +10,18 @@
 
 const FIGURE_SELECTOR = 'figure[id]'
 
+const FIGURE_TABLE_SELECTOR = `${FIGURE_SELECTOR}:has(table)`
+const TABLE_SUFFIX = 'table_'
+
+const FIGURE_IMAGE_SELECTOR = `${FIGURE_SELECTOR}:has(img:not([role=math]))`
+const IMAGE_SUFFIX = 'img_'
+
+const FIGURE_FORMULA_SELECTOR = `${FIGURE_SELECTOR}:has(span[role=math])`
+const FORMULA_SUFFIX = 'formula_'
+
+const FIGURE_LISTING_SELECTOR = `${FIGURE_SELECTOR}:has(pre:has(code))`
+const LISTING_SUFFIX = 'listing_'
+
 let remove_listing = 0
 
 /**
@@ -81,7 +93,7 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
 
       // Get the reference of the new created table
-      let newTable = this.create(width, heigth, this.getNextId())
+      let newTable = this.create(width, heigth, getSuccessiveElementId(FIGURE_TABLE_SELECTOR, TABLE_SUFFIX))
 
       // Begin atomic UNDO level 
       tinymce.activeEditor.undoManager.transact(function () {
@@ -110,20 +122,6 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
         // Update Rendered RASH
         updateIframeFromSavedContent()
       })
-    },
-
-    /**
-     * Get the last inserted id
-     */
-    getNextId: function () {
-      let id = 0
-      $(`${FIGURE_SELECTOR}:has(table)`).each(function () {
-        if ($(this).attr('id').indexOf('table_') > -1) {
-          let currId = parseInt($(this).attr('id').replace('table_', ''))
-          id = id > currId ? id : currId
-        }
-      })
-      return `table_${id+1}`
     },
 
     /**
@@ -168,12 +166,12 @@ tinymce.PluginManager.add('raje_table', function (editor, url) {
 /**
  * Raje_figure
  */
-tinymce.PluginManager.add('raje_figure', function (editor, url) {
+tinymce.PluginManager.add('raje_image', function (editor, url) {
 
   // Add a button that handle the inline element
-  editor.addButton('raje_figure', {
-    title: 'raje_figure',
-    icon: 'icon-figure',
+  editor.addButton('raje_image', {
+    title: 'raje_image',
+    icon: 'icon-image',
     tooltip: 'Image block',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
@@ -193,7 +191,7 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
           label: 'alt'
         }],
         onSubmit: function (e) {
-          figure.add(e.data.url, e.data.alt)
+          image.add(e.data.url, e.data.alt)
         }
       })
     }
@@ -214,7 +212,7 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
       return handleFigureEnter(tinymce.activeEditor.selection)
   })
 
-  figure = {
+  image = {
 
     /**
      * 
@@ -223,7 +221,7 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
 
       // Get the referece of the selected element
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newFigure = this.create(url, alt)
+      let newFigure = this.create(url, alt, getSuccessiveElementId(FIGURE_IMAGE_SELECTOR, IMAGE_SUFFIX))
 
       // Begin atomic UNDO level 
       tinymce.activeEditor.undoManager.transact(function () {
@@ -257,22 +255,8 @@ tinymce.PluginManager.add('raje_figure', function (editor, url) {
     /**
      * 
      */
-    create: function (url, alt) {
-      return $(`<figure id="${this.getNextId()}"><p><img src="${url}" ${alt?'alt="'+alt+'"':''} /></p><figcaption>Caption.</figcaption></figure>`)
-    },
-
-    /**
-     * 
-     */
-    getNextId: function () {
-      let id = 1
-      $('figurebox_selector').each(function () {
-        if ($(this).attr('id').indexOf('section') > -1) {
-          let currId = parseInt($(this).attr('id').replace('figure', ''))
-          id = id > currId ? id : currId
-        }
-      })
-      return `figure_${id+1}`
+    create: function (url, alt, id) {
+      return $(`<figure id="${id}"><p><img src="${url}" ${alt?'alt="'+alt+'"':''} /></p><figcaption>Caption.</figcaption></figure>`)
     }
   }
 })
@@ -330,10 +314,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
      */
     add: function (formula_input) {
 
-      let id = 'formula_1'
-
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newFormula = this.create(formula_input, id)
+      let newFormula = this.create(formula_input, getSuccessiveElementId(FIGURE_FORMULA_SELECTOR, FORMULA_SUFFIX))
 
       tinymce.activeEditor.undoManager.transact(function () {
 
@@ -348,8 +330,6 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
         // Save updates 
         tinymce.triggerSave()
 
-        //MathJax.Hub.Queue(["Typeset", MathJax.Hub, "SVG"])
-
         captions()
 
         // Update Rendered RASH
@@ -363,21 +343,7 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
      */
     create: function (formula_input, id) {
       return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
-    },
-
-    /**
-     * 
-     */
-    getNextId: function () {
-      let id = 0
-      $('figure[id]:has(pre:has(code))').each(function () {
-        if ($(this).attr('id').indexOf('listing_') > -1) {
-          let currId = parseInt($(this).attr('id').replace('listing_', ''))
-          id = id > currId ? id : currId
-        }
-      })
-      return `listing_${id+1}`
-    },
+    }
   }
 })
 
@@ -437,7 +403,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
     add: function () {
 
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newListing = this.create(this.getNextId())
+      let newListing = this.create(getSuccessiveElementId(FIGURE_LISTING_SELECTOR, LISTING_SUFFIX))
 
       tinymce.activeEditor.undoManager.transact(function () {
 
@@ -468,21 +434,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
      */
     create: function (id) {
       return $(`<figure id="${id}"><pre><code>${ZERO_SPACE}</code></pre><figcaption>Caption.</figcaption></figure>`)
-    },
-
-    /**
-     * 
-     */
-    getNextId: function () {
-      let id = 0
-      $('figure[id]:has(pre:has(code))').each(function () {
-        if ($(this).attr('id').indexOf('listing_') > -1) {
-          let currId = parseInt($(this).attr('id').replace('listing_', ''))
-          id = id > currId ? id : currId
-        }
-      })
-      return `listing_${id+1}`
-    },
+    }
   }
 })
 
@@ -495,6 +447,7 @@ function captions() {
   $(figurebox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("figcaption");
     var cur_number = $(this).findNumber(figurebox_selector);
+    cur_caption.find('strong').remove();
     cur_caption.html("<strong class=\"cgen\" data-rash-original-content=\"\" contenteditable=\"false\">Figure " + cur_number +
       ". </strong>" + cur_caption.html());
   });
@@ -508,6 +461,7 @@ function captions() {
   $(formulabox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("p");
     var cur_number = $(this).findNumber(formulabox_selector);
+    cur_caption.find('strong').remove();
     cur_caption.html(cur_caption.html() + "<span contenteditable=\"false\" class=\"cgen\" data-rash-original-content=\"\" > (" +
       cur_number + ")</span>");
   });

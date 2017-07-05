@@ -301,29 +301,23 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
 
         tinymce.triggerSave()
 
-        let id
+        let id = getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
 
         // Pressing enter in h1 will add a new biblioentry and caret reposition
         if (selectedElement.is('h1')) {
 
-          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
           section.addBiblioentry(id)
           updateIframeFromSavedContent()
         }
 
         // If selected element is inside text
-        else if (selectedElement.is('p')) {
-
-          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
+        else if (selectedElement.is('p'))
           section.addBiblioentry(id, null, selectedElement.parent('li'))
-        }
+
 
         // If selected element is without text
-        else if (selectedElement.is('li')) {
-
-          id = section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
+        else if (selectedElement.is('li'))
           section.addBiblioentry(id, null, selectedElement)
-        }
 
         // Move caret #105
         tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${BIBLIOENTRY_SELECTOR}#${id} > p`)[0], false)
@@ -788,7 +782,7 @@ section = {
       $(BIBLIOGRAPHY_SELECTOR).append('<ul></ul>')
 
     // IF id and text aren't passed as parameters, these can be retrieved or init from here
-    id = (id) ? id : section.getSuccessiveElementId(BIBLIOENTRY_SELECTOR, 'biblioentry_')
+    id = (id) ? id : getSuccessiveElementId(BIBLIOENTRY_SELECTOR, BIBLIOENTRY_SUFFIX)
     text = text ? text : '<br/>'
 
     let newItem = $(`<li role="doc-biblioentry" id="${id}"><p>${text}</p></li>`)
@@ -850,21 +844,6 @@ section = {
     // Create and append the new endnote
     let endnote = $(`<section role="doc-endnote" id="${id}"><p><br/></p></section>`)
     $(ENDNOTES_SELECTOR).append(endnote)
-  },
-
-  /**
-   * 
-   */
-  getSuccessiveElementId: function (elementSelector, SUFFIX) {
-
-    let lastId = 0
-
-    $(elementSelector).each(function () {
-      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
-      lastId = currentId > lastId ? currentId : lastId
-    })
-
-    return `${SUFFIX}${lastId+1}`
   },
 
   updateSectionToolbar: function () {

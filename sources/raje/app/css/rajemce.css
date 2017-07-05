@@ -37,7 +37,7 @@ i.mce-i-icon-table:before {
   font-family: FontAwesome;
 }
 
-i.mce-i-icon-figure:before {
+i.mce-i-icon-image:before {
   content: "\f03e";
   font-family: FontAwesome;
 }
