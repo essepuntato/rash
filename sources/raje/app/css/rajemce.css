@@ -5,6 +5,30 @@ table.mce-item-table,
   border: 1px solid black!important
 }
 
+header.page-header.container.cgen {
+  position: relative
+}
+
+header.page-header.container.cgen>#btnEditHeader {
+  color: white;
+  position: absolute;
+  content: "Edit";
+  right: 30px;
+  top: 30px;
+  background-color: #337AB7;
+  padding: 10px 15px;
+  visibility: hidden!important;
+  border-radius: 3px
+}
+
+header.page-header.container.cgen[data-mce-selected]>#btnEditHeader {
+  visibility: visible!important
+}
+
+header.page-header.container.cgen>#btnEditHeader:hover {
+  cursor: pointer
+}
+
 section ol>li,
 section ul>li {
   margin: 0 0 10px

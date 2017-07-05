@@ -242,4 +242,8 @@ $(window).load(function () {
   // Open and close menu headings Näive way
   $('span:contains(\'Headings\')').parent('button').trigger('click')
   $('span:contains(\'Headings\')').parent('button').trigger('click')
+
+  // Add edit button
+  $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
+  updateIframeFromSavedContent()
 })
