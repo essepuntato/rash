@@ -32,13 +32,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
+    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_figure raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_figure raje_listing raje_formula formula | raje_section',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -132,7 +132,11 @@ $(document).ready(function () {
 
     paste_block_drop: true,
 
-    extended_valid_elements: "span[data-mathml,contenteditable],a[class|name|href|target|title|onclick|rel],script[type|src|#text],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],$elements",
+    extended_valid_elements: "span[data-mathml|contenteditable]",
+
+    formula: {
+      path: 'node_modules/tinymce-formula/'
+    }
   })
 })
 
