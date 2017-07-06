@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      padding: 20px
+    }
+
+    .row {
+      margin-top: 10px;
+      margin-bottom: 10px
+    }
+
+    #txtTitle{
+      font-size: 300%;
+      height: auto;
+      font-weight: 500;
+      color: black
+    }
+  </style>
+
+  <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+
+  <script src="../../../node_modules/tinymce/tinymce.min.js">
+  </script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <h3>Heading</h3>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <label for="txtTitle">Title</label>
+        <input type="text" class="form-control" id="txtTitle" placeholder="Title">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <label for="txtSubtitle">Subtitle</label>
+        <input type="text" class="form-control" id="txtSubtitle" placeholder="Left empty for no subtitle">
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="../../jquery.min.js">
+  </script>
+  <script type="text/javascript" src="../../bootstrap.min.js">
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var args = top.tinymce.activeEditor.windowManager.getParams()
+
+      $('#txtTitle').val(args.title)
+      $('#txtSubtitle').val(args.subtitle)
+
+      let container = $('div.container-fluid')
+
+      if (args.authors.length) {
+
+        container.append('<hr><h3>Authors</h3>')
+        addAuthors(args.authors)
+        container.append('<hr>')
+      }
+
+      function addAuthors(authors) {
+
+        authors.forEach(function (author) {
+
+          let htmlAuthor = $(
+            `<div id="author">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="txtSubtitle">Name</label>
+                  <input type="text" class="form-control" id="txtAuthorName" value="${author.name}">
+                </div>
+                <div class="col-sm-6">
+                  <label for="txtSubtitle">Email</label>
+                  <input type="text" class="form-control" id="txtAuthorEmail" value="${author.email}">
+                </div>
+              </div>
+            </div>`
+          )
+
+          author.affiliations.forEach(function (affiliation) {
+            htmlAuthor.append(
+              `<div class="row">
+                <div class="col-sm-12">
+                  <label for="txtSubtitle">Affiliations</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="txtAuthorAffiliation" value="${affiliation}">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+            )
+          })
+
+
+          htmlAuthor.append(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-default" id="btnAddAffiliation">Add affiliation</button>
+                </div>
+              </div>`
+          )
+
+          $('div.container-fluid').append(htmlAuthor)
+
+          $('#btnAddAffiliation').on('click', function () {
+            $(this).parents('.row').first().before(
+              `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="txtAuthorAffiliation">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+            )
+          })
+        })
+      }
+    })
+  </script>
+</body>
+
+</html>

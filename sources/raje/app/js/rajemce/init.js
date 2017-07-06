@@ -11,7 +11,7 @@ const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
 const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
-const HEADER_SELECTOR = 'header.page-header.container.cgen.mceNonEditable'
+const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
 $(document).ready(function () {
@@ -32,13 +32,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_table raje_listing raje_formula raje_crossref raje_footnotes paste lists",
+    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_table raje_listing raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_image raje_listing raje_formula formula | raje_section',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inlineFigure raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_image raje_listing raje_formula formula | raje_section raje_metadata',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -244,6 +244,6 @@ $(window).load(function () {
   $('span:contains(\'Headings\')').parent('button').trigger('click')
 
   // Add edit button
-  $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
-  updateIframeFromSavedContent()
+  // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
+  // updateIframeFromSavedContent()
 })
