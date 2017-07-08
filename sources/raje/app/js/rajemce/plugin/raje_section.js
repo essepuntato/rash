@@ -111,21 +111,6 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           }
         }
       ]
-    }, {
-      text: 'Transform',
-      menu: [{
-          text: 'Upgrade',
-          onclick: function () {
-            section.upgrade()
-          }
-        },
-        {
-          text: 'Downgrade',
-          onclick: function () {
-            section.downgrade()
-          }
-        }
-      ]
     }]
   })
 
