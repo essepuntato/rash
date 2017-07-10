@@ -32,13 +32,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_table raje_listing raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
+    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist codesample blockquote raje_table raje_image raje_listing raje_formula formula | raje_section raje_metadata',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula formula | raje_section raje_metadata',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -132,7 +132,7 @@ $(document).ready(function () {
 
     paste_block_drop: true,
 
-    extended_valid_elements: "span[data-mathml|contenteditable]",
+    extended_valid_elements: "*[*]",
 
     formula: {
       path: 'node_modules/tinymce-formula/'
@@ -170,15 +170,30 @@ function moveCursorToEnd(element) {
   let heading = element
   let offset = 0
 
-  if (heading.contents().length && heading.contents().last()[0].nodeType == 3) {
+  if (heading.contents().length) {
 
     heading = heading.contents().last()
+
+    // If the last node is a strong,em,q etc. we have to take its text 
+    if (heading[0].nodeType != 3)
+      heading = heading.contents().last()
+
     offset = heading[0].wholeText.length
   }
 
   tinymce.activeEditor.focus()
   tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
 }
+
+function moveCursorToStart(element) {
+
+  let heading = element
+  let offset = 0
+
+  tinymce.activeEditor.focus()
+  tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
+}
+
 
 /**
  * Create custom into notification
