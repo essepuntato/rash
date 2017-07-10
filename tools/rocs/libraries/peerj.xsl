@@ -75,7 +75,7 @@ Under the following terms:
             <xsl:with-param name="img.content.width" select="$img.content.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="img.default.width" select="$img.default.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
-            <xsl:with-param name="numbering" select="false()" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="true()" as="xs:boolean" tunnel="yes" />
         </xsl:apply-templates>
         <xsl:call-template name="n" />
         <xsl:call-template name="n" />
@@ -99,7 +99,7 @@ Under the following terms:
             <xsl:with-param name="img.content.width" select="$img.content.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="img.default.width" select="$img.default.width" as="xs:string*" tunnel="yes" />
             <xsl:with-param name="bibtex" select="$bibtex" as="xs:boolean" tunnel="yes" />
-            <xsl:with-param name="numbering" select="false()" as="xs:boolean" tunnel="yes" />
+            <xsl:with-param name="numbering" select="true()" as="xs:boolean" tunnel="yes" />
         </xsl:apply-templates>
         
         <xsl:call-template name="n" />

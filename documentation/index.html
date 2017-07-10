@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6.2, June 20, 2017
+Research Articles in Simplified HTML (RASH) format - Documentation - Version 0.6.3, July 10, 2017
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -34,7 +34,7 @@ Under the following terms:
         <script src="../js/rash.js"> </script>
         
         <!-- MathJax for multi-browser support of LaTeX formulas, ASCIIMath and MathML -->
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"> </script>
         <!-- 
             The rendering of the LaTeX/ASCIIMath/MathML formulas is guarenteed if there is internet connection. 
             However, for offline rendering, one should store the whole MathJax package 
@@ -45,7 +45,7 @@ Under the following terms:
         <!-- /END Visualisation requirements (mandatory for optimal reading) -->
         
         <!-- Metadata -->
-        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.6, December 28, 2016</title>
+        <title property="dcterms:title">RASH: Research Articles in Simplified HTML -- Documentation - Version 0.6.3, 10 July 2017</title>
         
         <!-- Author's data (one or more) -->
         <meta about="#sp" name="dc.creator" content="Silvio Peroni"/>
@@ -776,7 +776,7 @@ Under the following terms:
 &lt;script src="rash.js"&gt; &lt;/script&gt;
 
 &lt;!-- MathJax for multi-browser support of LaTeX formulas, ASCIIMath and MathML --&gt;
-&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"&gt; &lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"&gt; &lt;/script&gt;
 &lt;!-- /END Visualisation requirements (mandatory for optimal reading) --&gt;</code></pre>
             <p>Note that the RASH file you are writing must be placed in the same location where the aforementioned scripts and stylesheets are. We have made available a <a href="../rash.zip">ZIP package</a> containing all these files with this documentation and a full example of a real research article <a href="#CDN2014"></a> written in RASH format.</p>
             <p>In addition to these Javascript files, we also suggest the use of <a href="https://www.mathjax.org/">MathJax</a>, which is a Javascript display engine for mathematics that works in all browsers. It is used for rendering particular elements used in RASH, i.e., MathML formulas (by means of the element <code>math</code>) as well as LaTeX and <a href="http://asciimath.org/">ASCIIMath</a> formulas (through the element <code>span</code> with the attribute <code>role</code> set to <q>math</q>), as shown in <a href="#inlines"></a>. Please note that the use of MathJax as introduced in the excerpt above is guaranteed only if there is internet connection. However, for offline rendering, one should store the whole <a href="https://docs.mathjax.org/en/v2.5-latest/installation.html">MathJax package</a> locally and should refer to it by means of a relative path, as shown in the following excerpt.</p>

@@ -55,7 +55,7 @@ Under the following terms:
     <xsl:template match="head[every $s in script/@src satisfies not(contains($s, 'MathJax.js?config=TeX-AMS-MML_HTMLorMML'))]">
         <head>
             <xsl:call-template name="copy-no-class" />
-            <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
                 <xsl:comment>//</xsl:comment>
                 <xsl:text> </xsl:text>
                 <xsl:comment>//</xsl:comment>
