@@ -153,18 +153,9 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
           (selectedElement.attr('data-mce-caret') && selectedElement.parent().is(RAJE_SELECTOR)) == 'before')
           return false
 
-        else if (toRemoveSections.length) {
-
-          tinymce.activeEditor.undoManager.transact(function () {
-
-            // Execute delete
-            tinymce.activeEditor.execCommand('delete')
-
-            // Update section structure
-            section.updateSectionStructure(toRemoveSections)
-          })
-
-          return false
+        // If selection isn't collapsed manage delete
+        if (!tinymce.activeEditor.selection.isCollapsed()) {
+          return section.manageDelete()
         }
 
         // If SELECTION STARTS or ENDS in special section
@@ -328,17 +319,7 @@ tinymce.PluginManager.add('raje_section', function (editor, url) {
   })
 
   editor.on('NodeChange', function (e) {
-
     section.updateSectionToolbar()
-
-    /*
-    // If delete key is pressed, update the whole section structure
-    if (raje_section_flag) {
-      raje_section_flag = false
-
-      section.updateSectionStructure()
-    }
-    */
   })
 })
 
@@ -593,91 +574,6 @@ section = {
 
   /**
    * 
-   * After any delete, the editor must update the unvalidated elements
-   */
-  updateSectionStructure: function (toRemoveSections) {
-
-    tinymce.triggerSave()
-
-    let selectedElement = $(tinymce.activeEditor.selection.getNode())
-    let isAbstract = false
-
-    // If there are sections to be removed
-    if (toRemoveSections.length) {
-
-      let lastSection = toRemoveSections[toRemoveSections.length - 1]
-      let currentElement = $(lastSection)
-
-      // Check if the current section has p or figures to move
-      if (currentElement.children(`p,${FIGURE_SELECTOR}`).length)
-        selectedElement.after(currentElement.children(`p,${FIGURE_SELECTOR}`))
-
-      // Check if the current section has other section children
-      if (currentElement.children(SECTION_SELECTOR).length) {
-
-        // Iterate section until it reach a section with header
-        while (currentElement.children(SECTION_SELECTOR).length && !currentElement.children(`${SECTION_SELECTOR}:has(:header)`).length)
-          currentElement = currentElement.children(SECTION_SELECTOR).last()
-
-        // Save all children of the section with header and move them after the selected element
-        let children = currentElement.children(`${SECTION_SELECTOR}:has(:header)`)
-
-        // Find and remove all children without heading 
-        children.each(function () {
-          if ($(this).children(`${SECTION_SELECTOR}`).length) {
-            $(this).children(`${SECTION_SELECTOR}`).each(function () {
-              if (!$(this).children().first().is(':header'))
-                $(this).remove()
-            })
-          }
-
-          // Add the current section to the page
-          // If the selection ends or starts in abstract, the section is placed after it
-          if (selectedElement.parents(ABSTRACT_SELECTOR).length) {
-
-            selectedElement = $(ABSTRACT_SELECTOR)
-            isAbstract = true
-          }
-
-          selectedElement.after($(this).html())
-        })
-      }
-
-      // Save stored only selection isn't in abstract
-      if (!isAbstract)
-        tinymce.triggerSave()
-
-      // Remove the parent section
-      $(lastSection).remove()
-
-      // Refresh headings
-      headingDimension()
-
-      // Update references if needed
-      updateReferences()
-
-      // Update iframe
-      updateIframeFromSavedContent()
-    }
-  },
-
-  /**
-   * 
-   */
-  getSectionsinSelection: function (sel) {
-
-    let content = $(sel.getContent())
-    let sections = []
-
-    content.each(function () {
-      if ($(this).is(SECTION_SELECTOR))
-        sections.push(`section#${$(this).attr('id')}`)
-    })
-
-    return sections
-  },
-  /**
-   * 
    */
   addAbstract: function () {
 
@@ -831,6 +727,9 @@ section = {
     $(ENDNOTES_SELECTOR).append(endnote)
   },
 
+  /**
+   * 
+   */
   updateSectionToolbar: function () {
 
     // Dropdown menu reference
@@ -928,5 +827,55 @@ section = {
 
     // Enable upgrade/downgrade last three menu items
     menu.children(':gt(10)').removeClass('mce-disabled')
+  },
+
+  manageDelete: function () {
+
+    let range = tinymce.activeEditor.selection.getRng()
+    let startNode = $(range.startContainer).parent()
+    let endNode = $(range.endContainer).parent()
+    let commonAncestorContainer = $(range.commonAncestorContainer)
+
+    // Deepness is relative to the common ancestor container of the range startContainer and end
+    let deepness = endNode.parent('section').parentsUntil(commonAncestorContainer).length + 1
+    let currentElement = endNode
+    let toMoveElements = []
+
+    tinymce.activeEditor.undoManager.transact(function () {
+
+      // Get and detach all next_end
+      for (let i = 0; i <= deepness; i++) {
+        currentElement.nextAll('section,p,figure').each(function () {
+          toMoveElements.push($(this))
+
+          $(this).detach()
+        })
+        currentElement = currentElement.parent()
+      }
+
+      // Execute delete
+      tinymce.activeEditor.execCommand('delete')
+
+      // Detach all next_begin
+      startNode.nextAll().each(function () {
+        $(this).detach()
+      })
+
+      // Append all next_end to startnode parent
+      toMoveElements.forEach(function (element) {
+        startNode.parent('section').append(element)
+      })
+
+      tinymce.triggerSave()
+
+      // Refresh headings
+      headingDimension()
+
+      // Update references if needed
+      updateReferences()
+
+      updateIframeFromSavedContent()
+    })
+    return false
   }
 }
