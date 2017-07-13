@@ -15,6 +15,16 @@ const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
 $(document).ready(function () {
+
+  // If there are some tinymce elements after its initialisation
+  // Process the rendered2storedRASH algorithm
+  // In order to render it correctly
+  if ($('div[id^=mceu_').length) {
+    rendered2SavedRASH()
+    rash()
+  }
+
+
   //hide footer
   $('footer.footer').hide()
 
@@ -262,3 +272,26 @@ $(window).load(function () {
   // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
   // updateIframeFromSavedContent()
 })
+
+/**
+ * 
+ */
+function markTinyMCE() {
+  $('div[id^=mceu_]').attr('data-rash-original-content', '')
+}
+
+/**
+ * 
+ */
+function removeTinyMCE() {
+  $('*[data-rash-original-content]').each(function () {
+    $(this).replaceWith($(this).attr('data-rash-original-content'))
+  })
+
+  $('body').html($('#raje_root').html())
+}
+
+function rendered2SavedRASH() {
+  markTinyMCE()
+  removeTinyMCE()
+}
