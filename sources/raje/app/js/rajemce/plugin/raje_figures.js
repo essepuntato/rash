@@ -349,7 +349,7 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
      */
     create: function (formula_input, id) {
       //return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
-      return `<figure id="${id}"><p>${formula_input}</p></figure>`
+      return `<figure id="${id}"><p><span contenteditable="false">${formula_input[0].outerHTML}</span></p></figure>`
     }
   }
 })

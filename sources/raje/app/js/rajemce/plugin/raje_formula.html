@@ -44,9 +44,13 @@
   <script>
     $('#formula_submit').on('click', function () {
 
+      let svgFormula = $('#formula_output').find('svg')
+
+      svgFormula.attr('role', 'math')
+
       // Save input
       var formula_input = [
-        $('#formula_output').find('svg')[0].outerHTML,
+        svgFormula,
         $('#MathJax_SVG_Hidden').parent()
       ]
 
