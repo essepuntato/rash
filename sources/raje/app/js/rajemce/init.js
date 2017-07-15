@@ -42,13 +42,13 @@ $(document).ready(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "formula raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
+    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula formula | raje_section raje_metadata',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -142,11 +142,17 @@ $(document).ready(function () {
 
     paste_block_drop: true,
 
-    extended_valid_elements: "*[*]",
+    extended_valid_elements: "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]",
 
     formula: {
       path: 'node_modules/tinymce-formula/'
-    }
+    },
+
+    cleanup_on_startup: false,
+    trim_span_elements: false,
+    verify_html: false,
+    cleanup: false,
+    convert_urls: false,
   })
 })
 

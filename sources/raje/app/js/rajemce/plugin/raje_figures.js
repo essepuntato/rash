@@ -315,9 +315,15 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
     add: function (formula_input) {
 
       let selectedElement = $(tinymce.activeEditor.selection.getNode())
-      let newFormula = this.create(formula_input, getSuccessiveElementId(FIGURE_FORMULA_SELECTOR, FORMULA_SUFFIX))
+      let newFormula = this.create(formula_input[0], getSuccessiveElementId(FIGURE_FORMULA_SELECTOR, FORMULA_SUFFIX))
 
       tinymce.activeEditor.undoManager.transact(function () {
+
+        tinymce.activeEditor.dom.add('tinymce', 'div', {
+          id: 'svgLibs'
+        })
+
+        tinymce.activeEditor.dom.setOuterHTML(tinymce.activeEditor.dom.select('div#svgLibs'), $(formula_input[1])[0].outerHTML)
 
         // Check if the selected element is not empty, and add table after
         if (selectedElement.text().trim().length != 0)
@@ -342,7 +348,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
      * 
      */
     create: function (formula_input, id) {
-      return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
+      //return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
+      return `<figure id="${id}"><p>${formula_input}</p></figure>`
     }
   }
 })
@@ -461,7 +468,7 @@ function captions() {
   $(formulabox_selector).each(function () {
     var cur_caption = $(this).parents("figure").find("p");
     var cur_number = $(this).findNumber(formulabox_selector);
-    cur_caption.find('strong').remove();
+    cur_caption.find('span.cgen').remove();
     cur_caption.html(cur_caption.html() + "<span contenteditable=\"false\" class=\"cgen\" data-rash-original-content=\"\" > (" +
       cur_number + ")</span>");
   });
