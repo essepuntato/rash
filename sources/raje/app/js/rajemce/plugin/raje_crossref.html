@@ -73,6 +73,16 @@
         })
       }
 
+      if (args.formulas.length) {
+
+        addPanel('Formulas')
+        args.formulas.forEach(function (formula) {
+          $('#listFormulas').append(
+            `<a data-type="role" data-reference="${formula.reference}" data-text="${formula.text}" class="list-group-item">${formula.text}</a>`
+          )
+        })
+      }
+
       addPanel('References')
 
       $('#listReferences').append(

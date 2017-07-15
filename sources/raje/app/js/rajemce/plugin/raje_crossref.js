@@ -16,6 +16,7 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
         sections: crossref.getAllReferenceableSections(),
         tables: crossref.getAllReferenceableTables(),
         listings: crossref.getAllReferenceableListings(),
+        formulas: crossref.getAllReferenceableFormulas(),
         references: crossref.getAllReferenceableReferences()
       }
 
@@ -148,6 +149,20 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
       })
 
       return listings
+    },
+
+    getAllReferenceableFormulas: function () {
+      let formulas = []
+
+      $(formulabox_selector).each(function () {
+
+        formulas.push({
+          reference: $(this).parents(FIGURE_SELECTOR).attr('id'),
+          text: `Formula ${$(this).parents(FIGURE_SELECTOR).find('span.cgen').text()}`
+        })
+      })
+
+      return formulas
     },
 
     getAllReferenceableReferences: function () {
