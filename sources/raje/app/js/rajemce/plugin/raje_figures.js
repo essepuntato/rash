@@ -278,6 +278,8 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
       editor.windowManager.open({
         title: 'Math formula editor',
         url: 'js/rajemce/plugin/raje_formula.html',
+        width: 800,
+        height: 600,
         onClose: function () {
 
           // If at least formula is written
@@ -614,7 +616,7 @@ function handleFigureCanc(sel) {
 function handleFigureEnter(sel) {
 
   let selectedElement = $(sel.getNode())
-  if (selectedElement.is('figcaption')) {
+  if (selectedElement.is('figcaption') || (selectedElement.parents(FIGURE_SELECTOR).length && selectedElement.is('p'))) {
 
     tinymce.activeEditor.undoManager.transact(function () {
 

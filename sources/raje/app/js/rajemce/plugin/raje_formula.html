@@ -11,6 +11,30 @@
     body {
       padding: 20px
     }
+
+    .outputWrapper,
+    .inputWrapper {
+      height: 150px;
+      border: 1px solid #E7E7E7;
+      margin-bottom: 15px;
+      line-height: 150px
+    }
+
+    #formula_input {
+      height: 150px;
+      line-height: 150px;
+      text-align: center
+    }
+
+    .row {
+      position: relative
+    }
+
+    .row .label {
+      position: absolute;
+      left: 20px;
+      top: -7.5px;
+    }
   </style>
 
   <link rel="stylesheet" href="../../../css/bootstrap.min.css">
@@ -26,12 +50,41 @@
 <body>
   <div class="container-fluid">
     <div class="row">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+              aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              </button>
+            <a class="navbar-brand" href="#">Brand</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+              <li><a href="#">Link</a></li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+      </nav>
+    </div>
+    <div class="row outputWrapper">
+      <span class="label label-primary">Output</span>
       <div class="form-group text-center">
         <p id="formula_output" class="rash-math">````</p>
       </div>
     </div>
     <div class="row">
-      <textarea id="formula_input" class="form-control" columns="3" autofocus></textarea>
+      <span class="label label-success">Input</span>
+      <input type="text" id="formula_input" class="form-control" autofocus>
     </div>
     <div class="row">
       <button class="btn btn-success" id="formula_submit">Submit</button>
