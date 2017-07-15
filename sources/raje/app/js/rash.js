@@ -560,6 +560,9 @@ function rash() {
         });
         MathJax.Hub.Config({
             jax: ["input/AsciiMath", "output/SVG"],
+            SVG: {
+                useGlobalCache: false
+            },
             asciimath2jax: {
                 // delimiters for AsciiMath formulas
                 delimiters: [

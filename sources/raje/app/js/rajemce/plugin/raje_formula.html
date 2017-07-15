@@ -42,6 +42,14 @@
   </script>
 
   <script>
+    $(window).load(function () {
+      MathJax.Hub.Config({
+        SVG: {
+          useGlobalCache: false
+        }
+      })
+    })
+
     $('#formula_submit').on('click', function () {
 
       let svgFormula = $('#formula_output').find('svg')
@@ -49,10 +57,7 @@
       svgFormula.attr('role', 'math')
 
       // Save input
-      var formula_input = [
-        svgFormula,
-        $('#MathJax_SVG_Hidden').parent()
-      ]
+      var formula_input = svgFormula
 
       // Passing data and close window
       window.parent.tinyMCE.get('raje_root').formula_input = formula_input
