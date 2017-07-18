@@ -14,6 +14,11 @@ const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
 const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
+
+const BULLET_LIST_TITLE = 'Bullet list'
+const NUMBERED_LIST_TITLE = 'Numbered list'
+const BLOCKQUOTE_TITLE = 'Blockquote'
+
 $(document).ready(function () {
 
   // If there are some tinymce elements after its initialisation
@@ -270,13 +275,15 @@ function headingDimension() {
  * 
  */
 $(window).load(function () {
+
   // Open and close menu headings Näive way
-  $('span:contains(\'Headings\')').parent('button').trigger('click')
-  $('span:contains(\'Headings\')').parent('button').trigger('click')
+  $(`div[aria-label='heading']`).find('button').trigger('click')
+  $(`div[aria-label='heading']`).find('button').trigger('click')
 
   // Add edit button
   // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
   // updateIframeFromSavedContent()
+  markTinyMCE()
 })
 
 /**
