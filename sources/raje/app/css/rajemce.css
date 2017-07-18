@@ -46,6 +46,11 @@ i.mce-i-icon-anchor:before {
   font-family: FontAwesome;
 }
 
+i.mce-i-icon-asterisk:before {
+  content: "\f069";
+  font-family: FontAwesome;
+}
+
 i.mce-i-icon-inline-code:before {
   content: "\f121";
   font-family: FontAwesome;

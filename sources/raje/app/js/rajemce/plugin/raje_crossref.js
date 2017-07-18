@@ -205,8 +205,8 @@ tinymce.PluginManager.add('raje_crossref', function (editor, url) {
 tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
 
   editor.addButton('raje_footnotes', {
-    text: 'raje_footnotes',
-    icon: false,
+    title: 'raje_footnotes',
+    icon: 'icon-asterisk',
     tooltip: 'Footnote',
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
