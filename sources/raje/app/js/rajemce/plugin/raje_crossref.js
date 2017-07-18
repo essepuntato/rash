@@ -213,20 +213,23 @@ tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
     // Button behaviour
     onclick: function () {
 
-      // Get successive biblioentry id
-      let reference = getSuccessiveElementId(ENDNOTE_SELECTOR, ENDNOTE_SUFFIX)
+      tinymce.activeEditor.undoManager.transact(function () {
+        
+        // Get successive biblioentry id
+        let reference = getSuccessiveElementId(ENDNOTE_SELECTOR, ENDNOTE_SUFFIX)
 
-      // Create the reference that points to the next id
-      crossref.add(reference)
+        // Create the reference that points to the next id
+        crossref.add(reference)
 
-      // Add the next biblioentry
-      section.addEndnote(reference)
+        // Add the next biblioentry
+        section.addEndnote(reference)
 
-      // Update the reference
-      crossref.update()
+        // Update the reference
+        crossref.update()
 
-      // Move caret at the end of p in last inserted endnote
-      tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${ENDNOTE_SELECTOR}#${reference}>p`)[0], 1)
+        // Move caret at the end of p in last inserted endnote
+        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(`${ENDNOTE_SELECTOR}#${reference}>p`)[0], 1)
+      })
     }
   })
 })
