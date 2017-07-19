@@ -271,7 +271,7 @@ function openFormulaEditor(formulaValue, callback) {
       title: 'Math formula editor',
       url: 'js/rajemce/plugin/raje_formula.html',
       width: 800,
-      height: 600,
+      height: 500,
       onClose: function () {
 
         let output = tinymce.activeEditor.formula_output
@@ -400,7 +400,7 @@ function openInlineFormulaEditor(formulaValue, callback) {
       title: 'Math formula editor',
       url: 'js/rajemce/plugin/raje_formula.html',
       width: 800,
-      height: 600,
+      height: 500,
       onClose: function () {
 
         let output = tinymce.activeEditor.formula_output
