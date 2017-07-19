@@ -70,7 +70,7 @@
                   <li><a data-formula="-:">``-:``</a></li>
                   <li><a data-formula="@">``@``</a></li>
                   <li><a data-formula="o+">``o+``</a></li>
-                  
+
                   <li><a data-formula="+">``+``</a></li>
                   <li><a data-formula="-">``-``</a></li>
                   <li><a data-formula="*">``*``</a></li>
@@ -131,6 +131,8 @@
   </script>
 
   <script>
+    let arg
+
     $(window).load(function () {
       MathJax.Hub.Config({
         SVG: {
@@ -143,25 +145,39 @@
           ]
         }
       })
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub])
+
+      MathJax.Hub.processSectionDelay = 0;
+
+      // Formula modification dialog
+      arg = top.tinymce.activeEditor.windowManager.getParams();
+
+      if (arg.formula_val) {
+        $('#formula_input').val(arg.formula_val)
+        $('#formula_output').html(`\`\`${arg.formula_val}\`\``)
+      }
     })
 
     $('#formula_submit').on('click', function () {
 
-      let svgFormula = $('#formula_output').find('svg')
+      let formulaSVG = $('#formula_output').find('svg')
 
-      svgFormula.attr('role', 'math')
+      formulaSVG.attr('role', 'math')
+      formulaSVG.attr('data-math-original-input', $('#formula_input').val())
+
+      console.log(arg)
 
       // Save input
-      var formula_input = svgFormula
+      var output = {
+        formula_svg: formulaSVG,
+        formula_id: (arg && arg.formula_id) ? arg.formula_id : null
+      }
 
       // Passing data and close window
-      window.parent.tinyMCE.get('raje_root').formula_input = formula_input
+      window.parent.tinyMCE.get('raje_root').formula_output = output
       window.parent.tinyMCE.activeEditor.windowManager.close()
     })
 
     $('#formula_input').on('input propertychange paste', function () {
-      MathJax.Hub.processSectionDelay = 0;
       MathJax.Hub.Queue([
         'Text',
         MathJax.Hub.getAllJax($('#formula_output')[0])[0],
