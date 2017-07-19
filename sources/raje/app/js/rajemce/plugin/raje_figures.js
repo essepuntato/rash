@@ -16,7 +16,7 @@ const TABLE_SUFFIX = 'table_'
 const FIGURE_IMAGE_SELECTOR = `${FIGURE_SELECTOR}:has(img:not([role=math]))`
 const IMAGE_SUFFIX = 'img_'
 
-const FIGURE_FORMULA_SELECTOR = `${FIGURE_SELECTOR}:has(span[role=math])`
+const FIGURE_FORMULA_SELECTOR = `${FIGURE_SELECTOR}:has(svg[role=math])`
 const FORMULA_SUFFIX = 'formula_'
 
 const FIGURE_LISTING_SELECTOR = `${FIGURE_SELECTOR}:has(pre:has(code))`
@@ -289,6 +289,8 @@ function openFormulaEditor(formulaValue) {
           // Set formula null
           tinymce.activeEditor.formula_output = null
         }
+
+        tinymce.activeEditor.windowManager.close()
       }
     },
     formulaValue
@@ -385,6 +387,78 @@ tinymce.PluginManager.add('raje_formula', function (editor, url) {
     create: function (formula_svg, id) {
       //return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
       return `<figure id="${id}"><p><span contenteditable="false">${formula_svg[0].outerHTML}</span></p></figure>`
+    }
+  }
+})
+
+tinymce.PluginManager.add('raje_inline_formula', function (editor, url) {
+
+  editor.addButton('raje_inline_formula', {
+    text: 'raje_inline_formula',
+    icon: false,
+    tooltip: 'Inline formula',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
+
+    // Button behaviour
+    onclick: function () {
+      openFormulaEditor()
+    }
+  })
+
+  editor.on('click', function (e) {
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+    // Open formula editor clicking on math formulas
+    if (selectedElement.children('svg[role=math]').length) {
+
+      openFormulaEditor({
+        formula_val: selectedElement.children('svg[role=math]').attr('data-math-original-input'),
+        formula_id: selectedElement.parents(FIGURE_SELECTOR).attr('id')
+      })
+    }
+  })
+
+  formula = {
+    /**
+     * 
+     */
+    add: function (formula_svg) {
+
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      let newFormula = this.create(formula_svg, getSuccessiveElementId(FIGURE_FORMULA_SELECTOR, FORMULA_SUFFIX))
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        tinymce.activeEditor.selection.setContent(newFormula)
+
+        // Save updates 
+        tinymce.triggerSave()
+
+        captions()
+
+        // Update Rendered RASH
+        updateIframeFromSavedContent()
+      })
+
+    },
+
+    update: function (formula_svg, formula_id) {
+
+      let selectedFigure = $(`#${formula_id}`)
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        selectedFigure.find('svg').replaceWith(formula_svg)
+        updateIframeFromSavedContent()
+      })
+    },
+
+    /**
+     * 
+     */
+    create: function (formula_svg, id) {
+      //return `<figure id="${id}"><p><span role="math" contenteditable="false">\`\`${formula_input}\`\`</span></p></figure>`
+      return `<span contenteditable="false">${formula_svg[0].outerHTML}</span>`
     }
   }
 })

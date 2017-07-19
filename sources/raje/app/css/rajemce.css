@@ -85,3 +85,7 @@ i.mce-i-icon-listing:before {
   content: "\f022";
   font-family: FontAwesome;
 }
+
+span > svg:hover {
+  cursor: pointer
+}
