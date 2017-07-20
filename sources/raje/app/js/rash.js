@@ -101,13 +101,14 @@ jQuery.fn.extend({
         $(".footer ul").hide();
     },
     addHeaderHTML: function () {
+
         /* Reset header */
-        $("header").remove();
-        $("p.keywords").remove();
+        $(this).find("header").remove();
+        $(this).find("p.keywords").remove();
 
         /* Header title */
         var header = $("<header class=\"page-header container cgen\" data-rash-original-content=\"\"></header>");
-        header.prependTo($("body"))
+        header.prependTo($(this).find("body"))
         var title_string = "";
         var title_split = $("head title").html().split(" -- ");
         if (title_split.length == 1) {
@@ -156,9 +157,9 @@ jQuery.fn.extend({
                     author.affiliation[j].replace(/\s+/g, " ").replace(/, ?/g, ", ").trim() + "</span>");
             }
             if (i == 0) {
-                author_element.insertAfter($("header h1"));
+                author_element.insertAfter($(this).find("header h1"));
             } else {
-                author_element.insertAfter($("header address:last-of-type"));
+                author_element.insertAfter($(this).find("header address:last-of-type"));
             }
         }
         /* /END Header author */
@@ -513,7 +514,7 @@ function rash() {
     /* /END Heading dimensions */
 
     /* Set header */
-    $(this).addHeaderHTML();
+    $('html').addHeaderHTML();
     /* /END Set header */
 
     /* Footer */
