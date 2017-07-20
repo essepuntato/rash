@@ -155,8 +155,8 @@
           let authors = []
           $('div#author').each(function(){
             let author = {
-              name: $(this).find('#txtAuthorName').val(),
-              email: $(this).find('#txtAuthorEmail').val(),
+              name: $(this).find('#txtAuthorName').val().trim().replace(/\u200B/g,''),
+              email: $(this).find('#txtAuthorEmail').val().trim().replace(/\u200B/g,''),
               affiliations: []
             }
             
@@ -165,7 +165,7 @@
               console.log($(this).find('.txtAuthorAffiliation'))
 
               $(this).find('.txtAuthorAffiliation').each(function(){
-                author.affiliations.push($(this).val())
+                author.affiliations.push($(this).val().trim().replace(/\u200B/g,''))
               })
             }
             authors.push(author)
