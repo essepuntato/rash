@@ -9,6 +9,14 @@ function openMetadataDialog() {
     width: 800,
     height: 800,
     onClose: function () {
+
+      if (tinymce.activeEditor.updated_metadata != null) {
+
+        metadata.update(tinymce.activeEditor.updated_metadata)
+
+        tinymce.activeEditor.updated_metadata == null
+      }
+
       tinymce.activeEditor.windowManager.close()
     }
   }, metadata.getAllMetadata())
@@ -101,6 +109,69 @@ tinymce.PluginManager.add('raje_metadata', function (editor, url) {
       })
 
       return keywords
+    },
+
+    /**
+     * 
+     */
+    update: function (updatedMetadata) {
+
+      $('head meta[property], head link[property], head meta[name]').remove()
+
+      let currentMetadata = metadata.getAllMetadata()
+
+      // Update title and subtitle
+      if (updatedMetadata.title != currentMetadata.title || updatedMetadata.subtitle != currentMetadata.subtitle) {
+        let text = updatedMetadata.title
+
+        if (updatedMetadata.subtitle.trim().length)
+          text += ` -- ${updatedMetadata.subtitle}`
+
+        $('title').text(text)
+      }
+
+      let affiliationsCache = []
+
+      updatedMetadata.authors.forEach(function (author) {
+
+        $('head').append(`<meta about="mailto:${author.email}" typeof="schema:Person" property="schema:name" name="dc.creator" content="${author.name}">`)
+        $('head').append(`<meta about="mailto:${author.email}" property="schema:email" content="${author.email}">`)
+
+        author.affiliations.forEach(function (affiliation) {
+
+          // Look up for already existing affiliation
+          let toAdd = true
+          let id
+
+          affiliationsCache.forEach(function (affiliationCache) {
+            if (affiliationCache.content == affiliation) {
+              toAdd = false
+              id = affiliationCache.id
+            }
+          })
+
+          // If there is no existing affiliation, add it
+          if (toAdd) {
+            let generatedId = `#affiliation_${affiliationsCache.length+1}`
+            affiliationsCache.push({
+              id: generatedId,
+              content: affiliation
+            })
+            id = generatedId
+          }
+
+          $('head').append(`<link about="mailto:${author.email}" property="schema:affiliation" href="${id}">`)
+        })
+      })
+
+      affiliationsCache.forEach(function (affiliationCache) {
+        $('head').append(`<meta about="${affiliationCache.id}" typeof="schema:Organization" property="schema:name" content="${affiliationCache.content}">`)
+      })
+
+      $('#raje_root').addHeaderHTML()
+      setNonEditableHeader()
+      updateIframeFromSavedContent()
     }
   }
+
 })

@@ -16,7 +16,7 @@
       margin-bottom: 10px
     }
 
-    #txtTitle{
+    #txtTitle {
       font-size: 300%;
       height: auto;
       font-weight: 500;
@@ -34,11 +34,10 @@
 <body>
   <div class="container-fluid">
 
-    <h3>Heading</h3>
+    <h3>Title</h3>
 
     <div class="row">
       <div class="col-sm-12">
-        <label for="txtTitle">Title</label>
         <input type="text" class="form-control" id="txtTitle" placeholder="Title">
       </div>
     </div>
@@ -74,8 +73,10 @@
 
       function addAuthors(authors) {
 
+        // Add all authors
         authors.forEach(function (author) {
 
+          // Single author must have name and email
           let htmlAuthor = $(
             `<div id="author">
               <div class="row">
@@ -91,13 +92,18 @@
             </div>`
           )
 
+          // Add affiliation title in any case (even if he doesn't have anyone)
+          htmlAuthor.append(
+            '<div class="row"><div class="col-sm-12"><label for="txtSubtitle">Affiliations</label></div></div>'
+          )
+
+          // Add any single affiliation
           author.affiliations.forEach(function (affiliation) {
             htmlAuthor.append(
               `<div class="row">
                 <div class="col-sm-12">
-                  <label for="txtSubtitle">Affiliations</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="txtAuthorAffiliation" value="${affiliation}">
+                    <input type="text" class="form-control txtAuthorAffiliation" value="${affiliation}">
                     <span class="input-group-btn">
                       <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
                     </span>
@@ -107,7 +113,7 @@
             )
           })
 
-
+          // Last button append affiliation
           htmlAuthor.append(
             `<div class="row">
                 <div class="col-sm-12">
@@ -116,24 +122,78 @@
               </div>`
           )
 
+          // Append single author
           $('div.container-fluid').append(htmlAuthor)
+        })
 
-          $('#btnAddAffiliation').on('click', function () {
-            $(this).parents('.row').first().before(
-              `<div class="row">
+        // Events for any author
+        // Remove affiliation by clicking on the red crossed button
+        $('div#author').on('click', 'button.btn.btn-danger#btnRemoveAffiliation', function (e) {
+          $(this).parents('.row').first().remove()
+        })
+
+        // Add new affiliation event
+        $('#btnAddAffiliation').on('click', function () {
+          $(this).parents('.row').first().before(
+            `<div class="row">
                 <div class="col-sm-12">
                   <div class="input-group">
-                    <input type="text" class="form-control" id="txtAuthorAffiliation">
+                    <input type="text" class="form-control txtAuthorAffiliation">
                     <span class="input-group-btn">
                       <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
                     </span>
                   </div>
                 </div>
               </div>`
-            )
-          })
+          )
         })
       }
+
+      function getMetadata() {
+
+        let getAuthors = function() {
+          let authors = []
+          $('div#author').each(function(){
+            let author = {
+              name: $(this).find('#txtAuthorName').val(),
+              email: $(this).find('#txtAuthorEmail').val(),
+              affiliations: []
+            }
+            
+            if($(this).find('.txtAuthorAffiliation').length) {
+
+              console.log($(this).find('.txtAuthorAffiliation'))
+
+              $(this).find('.txtAuthorAffiliation').each(function(){
+                author.affiliations.push($(this).val())
+              })
+            }
+            authors.push(author)
+          })
+          return authors
+        }
+
+        return {
+          subtitle: $('#txtSubtitle').val(),
+          title: $('#txtTitle').val(),
+          authors: getAuthors()
+        }
+      }
+
+      // Append submit button
+      container.append(
+        `<div class="row">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-primary" id="btnSubmit">Update metadata</button>
+          </div>
+        </div>`
+      )
+
+      $('#btnSubmit').on('click', function (e) {
+
+        window.parent.tinyMCE.get('raje_root').updated_metadata = getMetadata()
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
     })
   </script>
 </body>

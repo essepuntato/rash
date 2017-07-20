@@ -36,8 +36,8 @@ $(document).ready(function () {
   //attach whole body inside a placeholder div
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
-  $('header.page-header').addClass('mceNonEditable')
-
+  setNonEditableHeader()
+  
   tinymce.init({
 
     // Select the element to wrap
@@ -307,4 +307,8 @@ function removeTinyMCE() {
 function rendered2SavedRASH() {
   markTinyMCE()
   removeTinyMCE()
+}
+
+function setNonEditableHeader() {
+  $(HEADER_SELECTOR).addClass('mceNonEditable')
 }

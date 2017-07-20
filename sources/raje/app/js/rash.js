@@ -108,7 +108,7 @@ jQuery.fn.extend({
 
         /* Header title */
         var header = $("<header class=\"page-header container cgen\" data-rash-original-content=\"\"></header>");
-        header.prependTo($(this).find("body"))
+        header.prependTo($(this).find("body").length ? $(this).find("body") : $(this))
         var title_string = "";
         var title_split = $("head title").html().split(" -- ");
         if (title_split.length == 1) {
