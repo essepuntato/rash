@@ -1,6 +1,19 @@
 /**
  * 
  */
+
+function openMetadataDialog() {
+  tinymce.activeEditor.windowManager.open({
+    title: 'Edit metadata',
+    url: 'js/rajemce/plugin/raje_metadata.html',
+    width: 800,
+    height: 800,
+    onClose: function () {
+      tinymce.activeEditor.windowManager.close()
+    }
+  }, metadata.getAllMetadata())
+}
+
 tinymce.PluginManager.add('raje_metadata', function (editor, url) {
 
   // Add a button that handle the inline element
@@ -11,14 +24,13 @@ tinymce.PluginManager.add('raje_metadata', function (editor, url) {
 
     // Button behaviour
     onclick: function () {
-      editor.windowManager.open({
-        title: 'Edit metadata',
-        url: 'js/rajemce/plugin/raje_metadata.html',
-        width: 800,
-        height: 800,
-        onClose: function () {}
-      }, metadata.getAllMetadata())
+      openMetadataDialog()
     }
+  })
+
+  editor.on('click', function (e) {
+    if ($(tinymce.activeEditor.selection.getNode()).is(HEADER_SELECTOR))
+      openMetadataDialog()
   })
 
   metadata = {
