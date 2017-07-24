@@ -6,7 +6,7 @@ function openMetadataDialog() {
   tinymce.activeEditor.windowManager.open({
     title: 'Edit metadata',
     url: 'js/rajemce/plugin/raje_metadata.html',
-    width: 800,
+    width: 950,
     height: 800,
     onClose: function () {
 

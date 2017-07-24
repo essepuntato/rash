@@ -64,10 +64,14 @@
           <div class="col-sm-12">
             <div class="btn-group" role="group" aria-label="...">
               <button type="button" id="btnAddAffiliation" class="btn btn-default">Add affiliation</button>
-              <button type="button" id="btnAddAuthorBefore" class="btn btn-default">Insert new author before</button>
-              <button type="button" id="btnAddAuthorAfter" class="btn btn-default">Insert new author after</button>
+              <button type="button" id="btnAddAuthorAfter" class="btn btn-default">Insert new author</button>
               <button type="button" id="btnDeleteAuthor" class="btn btn-danger">Delete author</button>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <hr>
           </div>
         </div>`
 
@@ -101,7 +105,6 @@
 
         container.append('<h3>Authors</h3>')
         addAuthors(args.authors)
-        container.append('<hr>')
       }
 
       // Categories
@@ -112,9 +115,18 @@
       // Keywords
       container.append('<h3>Keywords</h3>')
       addKeywords(args.keywords)
-      container.append('<hr>')
 
       function addAuthors(authors) {
+
+        container.append(
+          `
+          <div class="row">
+            <div class="col-sm-12">
+              <button type="button" id="btnAddAuthorFirst" class="btn btn-default">Insert new author</button>
+            </div>
+          </div>
+        `
+        )
 
         // Add all authors
         authors.forEach(function (author) {
@@ -152,14 +164,15 @@
                     </span>
                   </div>
                 </div>
-              </div>`
+              </div>
+              `
             )
           })
 
           htmlAuthor.append(FOOTER_AUTHOR)
 
           // Append single author
-          $('div.container-fluid').append(htmlAuthor)
+          container.append(htmlAuthor)
         })
 
         container.on('click', '#btnAddAffiliation', function (e) {
@@ -177,23 +190,21 @@
           )
         })
 
-        container.on('click', '#btnAddAuthorBefore', function (e) {
-          $(this).parents('#author').first().before(NEW_AUTHOR)
-          $(this).parents('#author').first().before('<hr>')
-        })
-
         container.on('click', '#btnAddAuthorAfter', function (e) {
-          $(this).parents('#author').first().after(NEW_AUTHOR)
-          $(this).parents('#author').first().after('<hr>')
+          let author = $(NEW_AUTHOR)
+          $(this).parents('#author').first().after(author)
+
+          author.find('input').first().focus()
         })
 
-        container.on('click', '#btnAddAuthorAfter', function (e) {
-          $(this).parents('#author').first().after(NEW_AUTHOR)
-          $(this).parents('#author').first().after('<hr>')
+        container.on('click', '#btnAddAuthorFirst', function (e) {
+          let author = $(NEW_AUTHOR)
+          $(this).parents('.row').first().after(author)
+
+          author.find('input').first().focus()
         })
 
-        container.on('click','#btnDeleteAuthor',function(e){
-          $(this).parents('#author').after().remove()
+        container.on('click', '#btnDeleteAuthor', function (e) {
           $(this).parents('#author').remove()
         })
       }
@@ -227,9 +238,7 @@
         // Add new affiliation event
         $('#btnAddCategory').on('click', function (e) {
 
-          e.stopPropagation()
-
-          $(this).parents('.row').first().before(
+          let newCategory = $(
             `<div class="row">
                 <div class="col-sm-12">
                   <div class="input-group">
@@ -241,6 +250,10 @@
                 </div>
               </div>`
           )
+
+          $(this).parents('.row').first().before(newCategory)
+
+          newCategory.find('input').focus()
         })
       }
 
@@ -273,7 +286,8 @@
 
         // Add new affiliation event
         $('#btnAddKeyword').on('click', function () {
-          $(this).parents('.row').first().before(
+
+          let newKeyword = $(
             `<div class="row">
                 <div class="col-sm-12">
                   <div class="input-group">
@@ -285,6 +299,10 @@
                 </div>
               </div>`
           )
+
+          $(this).parents('.row').first().before(newKeyword)
+
+          newKeyword.find('input').focus()
         })
       }
 
