@@ -214,7 +214,7 @@ tinymce.PluginManager.add('raje_footnotes', function (editor, url) {
     onclick: function () {
 
       tinymce.activeEditor.undoManager.transact(function () {
-        
+
         // Get successive biblioentry id
         let reference = getSuccessiveElementId(ENDNOTE_SELECTOR, ENDNOTE_SUFFIX)
 
@@ -248,7 +248,7 @@ function references() {
           figurebox_selector_img + "," + figurebox_selector_svg);
         referenced_element_table = referenced_element.find(tablebox_selector_table);
         referenced_element_formula = referenced_element.find(
-          formulabox_selector_img + "," + formulabox_selector_span + "," + formulabox_selector_math);
+          formulabox_selector_img + "," + formulabox_selector_span + "," + formulabox_selector_math + "," + formulabox_selector_svg);
         referenced_element_listing = referenced_element.find(listingbox_selector_pre);
         /* Special sections */
         if (
