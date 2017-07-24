@@ -23,7 +23,7 @@
       color: black
     }
 
-    #author{
+    #author {
       background-color: white
     }
   </style>
@@ -42,7 +42,7 @@
 
     <div class="row">
       <div class="col-sm-12">
-        <input type="text" class="form-control" id="txtTitle" placeholder="Title">
+        <input type="text" class="form-control" id="txtTitle" placeholder="Title" autofocus>
       </div>
     </div>
 
@@ -99,6 +99,14 @@
 
 
     $(document).ready(function () {
+
+      // Exit from dialog modal on ESC press
+      $(document).on('keyup', function (e) {
+        if (e.keyCode == 27) {
+          window.parent.tinyMCE.activeEditor.windowManager.close()
+        }
+      });
+
       var args = top.tinymce.activeEditor.windowManager.getParams()
 
       $('#txtTitle').val(args.title)
@@ -113,7 +121,7 @@
       }
 
       // Categories
-      container.append('<h3>Categories</h3>')
+      container.append('<h3>ACM subject categories</h3>')
       addCategories(args.categories)
       container.append('<hr>')
 
