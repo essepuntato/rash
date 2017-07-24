@@ -168,6 +168,14 @@ tinymce.PluginManager.add('raje_metadata', function (editor, url) {
         $('head').append(`<meta about="${affiliationCache.id}" typeof="schema:Organization" property="schema:name" content="${affiliationCache.content}">`)
       })
 
+      updatedMetadata.categories.forEach(function(category){
+        $('head').append(`<meta name="dcterms.subject" content="${category}"/>`)
+      })
+
+      updatedMetadata.keywords.forEach(function(keyword){
+        $('head').append(`<meta property="prism:keyword" content="${keyword}"/>`)
+      })
+
       $('#raje_root').addHeaderHTML()
       setNonEditableHeader()
       updateIframeFromSavedContent()
