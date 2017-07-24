@@ -22,6 +22,10 @@
       font-weight: 500;
       color: black
     }
+
+    #author{
+      background-color: white
+    }
   </style>
 
   <link rel="stylesheet" href="../../../css/bootstrap.min.css">
@@ -54,6 +58,7 @@
 
   <script type="text/javascript" src="../../jquery.min.js">
   </script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="text/javascript" src="../../bootstrap.min.js">
   </script>
 
@@ -128,6 +133,8 @@
         `
         )
 
+        let sortable = $('<div id="sortable"></div>')
+
         // Add all authors
         authors.forEach(function (author) {
 
@@ -172,8 +179,10 @@
           htmlAuthor.append(FOOTER_AUTHOR)
 
           // Append single author
-          container.append(htmlAuthor)
+          sortable.append(htmlAuthor)
         })
+
+        container.append(sortable)
 
         container.on('click', '#btnAddAffiliation', function (e) {
           $(this).parents('.row').first().before(
@@ -199,7 +208,7 @@
 
         container.on('click', '#btnAddAuthorFirst', function (e) {
           let author = $(NEW_AUTHOR)
-          $(this).parents('.row').first().after(author)
+          $(this).parents('.row').next('div#sortable').prepend(author)
 
           author.find('input').first().focus()
         })
@@ -373,6 +382,11 @@
       container.on('click', 'button.btn.btn-danger:has(span)', function (e) {
         $(this).parents('.row').first().remove()
       })
+    })
+
+    $(window).load(function () {
+      $("#sortable").sortable();
+      $("#sortable").disableSelection();
     })
   </script>
 </body>
