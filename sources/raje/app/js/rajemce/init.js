@@ -3,9 +3,6 @@
  * Initilize TinyMCE editor with all required options
  */
 
-// TinyMCE DomQuery variable
-let dom = tinymce.dom.DomQuery
-
 // Invisible space constant
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
@@ -19,7 +16,13 @@ const BULLET_LIST_TITLE = 'Bullet list'
 const NUMBERED_LIST_TITLE = 'Numbered list'
 const BLOCKQUOTE_TITLE = 'Blockquote'
 
-$(document).ready(function () {
+var requiredScript = document.createElement("script");
+
+requiredScript.innerHTML = `window.$ = window.jQuery = require(__dirname + '/js/jquery.min.js');`;
+
+document.head.appendChild(requiredScript);
+
+$(window).load(function () {
 
   // If there are some tinymce elements after its initialisation
   // Process the rendered2storedRASH algorithm
@@ -37,7 +40,7 @@ $(document).ready(function () {
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
   setNonEditableHeader()
-  
+
   tinymce.init({
 
     // Select the element to wrap

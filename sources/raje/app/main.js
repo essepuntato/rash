@@ -46,6 +46,13 @@ const splash = {
 
     // Maximize page 
     browserWindow.maximize()
+  },
+
+  /**
+   * 
+   */
+  isStandAlone: function () {
+    return true
   }
 }
 
@@ -57,4 +64,11 @@ app.on('ready', splash.createWindow)
  */
 ipcMain.on('newArticle', (event, arg) => {
   splash.openEditor()
+})
+
+/**
+ * 
+ */
+ipcMain.on('isStandAloneSync', (event, arg) => {
+  event.returnValue = splash.isStandAlone()
 })
