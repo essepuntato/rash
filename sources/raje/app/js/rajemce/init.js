@@ -16,11 +16,10 @@ const BULLET_LIST_TITLE = 'Bullet list'
 const NUMBERED_LIST_TITLE = 'Numbered list'
 const BLOCKQUOTE_TITLE = 'Blockquote'
 
-var requiredScript = document.createElement("script");
-
-requiredScript.innerHTML = `window.$ = window.jQuery = require(__dirname + '/js/jquery.min.js');`;
-
-document.head.appendChild(requiredScript);
+const {
+  ipcRenderer,
+  webFrame
+} = require('electron')
 
 $(window).load(function () {
 
@@ -162,6 +161,20 @@ $(window).load(function () {
     cleanup: false,
     convert_urls: false,
   })
+
+  // Open and close menu headings Näive way
+  $(`div[aria-label='heading']`).find('button').trigger('click')
+  $(`div[aria-label='heading']`).find('button').trigger('click')
+
+  // Add edit button
+  // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
+  // updateIframeFromSavedContent()
+  markTinyMCE()
+
+
+  $(window).bind('keydown', 'meta+s', function () {
+    alert('save')
+  })
 })
 
 /**
@@ -277,21 +290,6 @@ function headingDimension() {
 /**
  * 
  */
-$(window).load(function () {
-
-  // Open and close menu headings Näive way
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-
-  // Add edit button
-  // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
-  // updateIframeFromSavedContent()
-  markTinyMCE()
-})
-
-/**
- * 
- */
 function markTinyMCE() {
   $('div[id^=mceu_]').attr('data-rash-original-content', '')
 }
@@ -314,4 +312,36 @@ function rendered2SavedRASH() {
 
 function setNonEditableHeader() {
   $(HEADER_SELECTOR).addClass('mceNonEditable')
+}
+
+// Electron app methods
+
+let IS_APP
+
+try {
+
+  loadRequiredScript()
+
+  IS_APP = checkIfApp()
+} catch (exception) {
+  console.log(exception)
+  IS_APP = false
+}
+
+console.log(IS_APP)
+
+function checkIfApp() {
+  return ipcRenderer.sendSync('isAppSync')
+}
+
+function loadRequiredScript() {
+
+  if (IS_APP) {
+
+    var requiredScript = document.createElement("script");
+
+    requiredScript.innerHTML = `window.$ = window.jQuery = require(__dirname + '/js/jquery.min.js');`;
+
+    document.head.appendChild(requiredScript);
+  }
 }

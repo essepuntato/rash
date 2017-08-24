@@ -51,7 +51,7 @@ const splash = {
   /**
    * 
    */
-  isStandAlone: function () {
+  isApp: function () {
     return true
   }
 }
@@ -69,6 +69,6 @@ ipcMain.on('newArticle', (event, arg) => {
 /**
  * 
  */
-ipcMain.on('isStandAloneSync', (event, arg) => {
-  event.returnValue = splash.isStandAlone()
+ipcMain.on('isAppSync', (event, arg) => {
+  event.returnValue = splash.isApp()
 })
