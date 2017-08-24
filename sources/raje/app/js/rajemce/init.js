@@ -173,7 +173,7 @@ $(window).load(function () {
 
 
   $(window).bind('keydown', 'meta+s', function () {
-    alert('save')
+    //alert('save')
   })
 })
 
