@@ -3,7 +3,8 @@ const app = electron.app
 
 const {
   BrowserWindow,
-  ipcMain
+  ipcMain,
+  dialog
 } = electron
 
 const url = require('url')
@@ -31,6 +32,8 @@ const splash = {
       protocol: 'file:',
       slashes: true
     }))
+
+
   },
 
   /**
@@ -71,4 +74,15 @@ ipcMain.on('newArticle', (event, arg) => {
  */
 ipcMain.on('isAppSync', (event, arg) => {
   event.returnValue = splash.isApp()
+})
+
+/**
+ * 
+ */
+ipcMain.on('saveDocumentSync', (event, arg) => {
+
+  let savePath = dialog.showSaveDialog(browserWindow, {
+    //nameFieldLabel: arg.title
+  })
+  event.returnValue = savePath ? savePath : 'null'
 })

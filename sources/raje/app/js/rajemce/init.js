@@ -49,13 +49,13 @@ $(window).load(function () {
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
+    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -160,6 +160,11 @@ $(window).load(function () {
     verify_html: false,
     cleanup: false,
     convert_urls: false,
+
+    save_enablewhendirty: true,
+    save_onsavecallback: function () {
+      console.log('Saved');
+    }
   })
 
   // Open and close menu headings Näive way
@@ -170,11 +175,6 @@ $(window).load(function () {
   // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
   // updateIframeFromSavedContent()
   markTinyMCE()
-
-
-  $(window).bind('keydown', 'meta+s', function () {
-    //alert('save')
-  })
 })
 
 /**
@@ -330,10 +330,16 @@ try {
 
 console.log(IS_APP)
 
+/**
+ * 
+ */
 function checkIfApp() {
   return ipcRenderer.sendSync('isAppSync')
 }
 
+/**
+ * 
+ */
 function loadRequiredScript() {
 
   if (IS_APP) {
@@ -344,4 +350,11 @@ function loadRequiredScript() {
 
     document.head.appendChild(requiredScript);
   }
+}
+
+/**
+ * 
+ */
+function saveDocument(options) {
+  return ipcRenderer.sendSync('saveDocumentSync', options)
 }
