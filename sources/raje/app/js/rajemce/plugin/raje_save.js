@@ -17,10 +17,13 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
      */
     execute: function () {
 
-      alert(saveDocument({
+      let result = saveDocument({
         title: saveManager.getTitle(),
         body: saveManager.getBody()
-      }))
+      })
+
+      if (result)
+        alert(result)
     },
 
     /**

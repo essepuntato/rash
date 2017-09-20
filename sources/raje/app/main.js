@@ -13,6 +13,8 @@ const path = require('path')
 const TEMPLATE = 'template.html'
 const SPLASH = 'splash.html'
 
+const raje_fs = require('./modules/raje_fs.js')
+
 let browserWindow
 
 const splash = {
@@ -81,8 +83,16 @@ ipcMain.on('isAppSync', (event, arg) => {
  */
 ipcMain.on('saveDocumentSync', (event, arg) => {
 
-  let savePath = dialog.showSaveDialog(browserWindow, {
-    //nameFieldLabel: arg.title
-  })
-  event.returnValue = savePath ? savePath : 'null'
+  let savePath = dialog.showSaveDialog(browserWindow)
+
+  if (savePath) {
+    raje_fs.saveArticleFirstTime(savePath, 'hello_world', (err, message) => {
+      if (err)
+        return event.returnValue = err
+
+      event.returnValue = message
+    })
+  }
+  else 
+    event.returnValue = null
 })
