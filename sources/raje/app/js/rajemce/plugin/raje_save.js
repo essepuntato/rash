@@ -22,8 +22,8 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         body: saveManager.getBody()
       })
 
-      if (result)
-        alert(result)
+      //if (result)
+        //alert(result)
     },
 
     /**

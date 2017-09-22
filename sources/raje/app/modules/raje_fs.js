@@ -1,33 +1,29 @@
-const fs = require('fs')
-const ncp = require('ncp').ncp
+const fs = require('fs-extra')
 
 module.exports = {
 
   /**
-   * Execute the save for the article, it will create the new folder or update the existing one
+   * Execute the first save for the article, it will create the new folder or "replace" the existing one
    */
   saveArticleFirstTime: function (path, document, callback) {
 
-    // Check if the directory already exists (note that the OS already ask if users want to replace the directory)
-    fs.exists(path, (err, res) => {
+    // If the directory already exists, first remove it
+    if (fs.existsSync(path)) {
+
+      fs.removeSync(path)
+    }
+
+    // In any case create the new directory
+    fs.mkdir(path, (err, res) => {
 
       if (err) return callback(err)
 
-      // Create the new directory
-      fs.mkdir(path, (err, res) => {
-
+      // Copy the assets directory content into the new directory
+      fs.copy(global.ASSETS_DIRECTORY, path, (err) => {
         if (err) return callback(err)
 
-        return callback(null, 'Directory created')
+        return callback(null, true)
       })
     })
-  },
-
-  /**
-   * 
-   */
-  copyDefaultAssets: function () {
-
-    
   }
 }

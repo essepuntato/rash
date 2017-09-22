@@ -1,6 +1,9 @@
 const electron = require('electron')
 const app = electron.app
 
+global.ROOT = __dirname
+global.ASSETS_DIRECTORY = `${global.ROOT}/assets/`
+
 const {
   BrowserWindow,
   ipcMain,
@@ -79,20 +82,23 @@ ipcMain.on('isAppSync', (event, arg) => {
 })
 
 /**
- * 
+ * Triggered when the save event is called
  */
 ipcMain.on('saveDocumentSync', (event, arg) => {
 
-  let savePath = dialog.showSaveDialog(browserWindow)
+  // Show save dialog here
+  let savePath = dialog.showSaveDialog(browserWindow, {
+    defaultPath: arg.title
+  })
 
+  // If the user select a folder, the article is saved for the first time
   if (savePath) {
     raje_fs.saveArticleFirstTime(savePath, 'hello_world', (err, message) => {
       if (err)
-        return event.returnValue = err
+        return event.returnValue = `Error: ${err}`
 
       event.returnValue = message
     })
-  }
-  else 
+  } else
     event.returnValue = null
 })
