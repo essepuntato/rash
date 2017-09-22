@@ -22,7 +22,11 @@ module.exports = {
       fs.copy(global.ASSETS_DIRECTORY, path, (err) => {
         if (err) return callback(err)
 
-        return callback(null, true)
+        fs.writeFile(`${path}/template.html`, document, (err, res) => {
+          if (err) return callback(err)
+
+          return callback(null, true)
+        })
       })
     })
   }

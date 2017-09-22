@@ -19,23 +19,42 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
 
       let result = saveDocument({
         title: saveManager.getTitle(),
-        body: saveManager.getBody()
+        document: saveManager.getDerashedArticle()
       })
-
-      //if (result)
-        //alert(result)
     },
 
     /**
-     * 
+     * Return the RASH article rendered (without tinymce)
      */
-    getBody: function () {
+    getDerashedArticle: function () {
 
-      return $('#raje_root').html()
+      // Save html references
+      let article = $('html').clone()
+      let tinymceSavedContent = article.find('#raje_root')
+
+      //replace body with the right one (this action remove tinymce)
+      article.find('body').html(tinymceSavedContent.html())
+      article.find('body').removeAttr('class')
+
+      //remove all style and link un-needed from the head
+      article.find('head').children('style').remove()
+      article.find('head').children('link[id]').remove()
+
+      // Execute derash (replace all cgen elements with its original content)
+      article.find('*[data-rash-original-content]').each(function () {
+        let originalContent = $(this).attr('data-rash-original-content')
+        $(this).replaceWith(originalContent)
+      })
+
+      return article.html()
     },
 
+    /**
+     * Return the title 
+     */
     getTitle: function () {
       return $('title').text()
-    }
+    },
+
   }
 })

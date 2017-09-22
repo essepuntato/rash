@@ -93,7 +93,7 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
 
   // If the user select a folder, the article is saved for the first time
   if (savePath) {
-    raje_fs.saveArticleFirstTime(savePath, 'hello_world', (err, message) => {
+    raje_fs.saveArticleFirstTime(savePath, arg.document, (err, message) => {
       if (err)
         return event.returnValue = `Error: ${err}`
 
