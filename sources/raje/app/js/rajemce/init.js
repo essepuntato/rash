@@ -21,7 +21,7 @@ const {
   webFrame
 } = require('electron')
 
-$(window).load(function () {
+$(document).ready(function () {
 
   // If there are some tinymce elements after its initialisation
   // Process the rendered2storedRASH algorithm
