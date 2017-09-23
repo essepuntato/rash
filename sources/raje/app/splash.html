@@ -24,6 +24,10 @@
     button.close:hover {
       color: red
     }
+
+    .container {
+      padding-top: 20px
+    }
   </style>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -86,7 +90,10 @@
 
       $('#btnCreateArticle').on('click', function () {
 
-        ipcRenderer.send('newArticle')
+        ipcRenderer.send('newArticle', {
+          width: screen.width,
+          height: screen.height
+        })
       })
     })
   </script>

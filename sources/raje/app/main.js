@@ -12,48 +12,69 @@ const {
 
 const url = require('url')
 const path = require('path')
+const windowManager = require('electron-window-manager')
 
 const TEMPLATE = 'template.html'
 const SPLASH = 'splash.html'
 
 const raje_fs = require('./modules/raje_fs.js')
 
-let browserWindow
+const EDITOR_WINDOW = 'editor'
+const SPLASH_WINDOW = 'splash'
 
 const splash = {
 
   /**
-   * 
+   * Init the windowmanager and open the splash window
    */
-  createWindow: function () {
+  openSplash: function () {
 
-    browserWindow = new BrowserWindow({
-      height: 400,
-      width: 500
-    })
+    // Init the window manager
+    windowManager.init()
 
-    browserWindow.loadURL(url.format({
+    // Get the url to the splash window
+    let splashWindowUrl = url.format({
       pathname: path.join(__dirname, SPLASH),
       protocol: 'file:',
       slashes: true
-    }))
+    })
 
+    // Open the splash window
+    windowManager.open(SPLASH_WINDOW, 'RAJE', splashWindowUrl, null, {
+      height: 400,
+      width: 500,
+      resizable: false,
+      movable: true,
+      fullscreenable: false
+    })
+  },
 
+  /**
+   * Close the splash window
+   */
+  closeSplash: function () {
+
+    windowManager.close(SPLASH_WINDOW)
   },
 
   /**
    * 
    */
-  openEditor: function () {
+  openEditor: function (size) {
 
-    browserWindow.loadURL(url.format({
+    // Get the URL to open the editor
+    let editorWindowUrl = url.format({
       pathname: path.join(__dirname, TEMPLATE),
       protocol: 'file:',
       slashes: true
-    }))
+    })
 
-    // Maximize page 
-    browserWindow.maximize()
+    // Open the new window with the size given by the splash window
+    windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
+      width: size.width,
+      height: size.height,
+      resizable: true
+    })
   },
 
   /**
@@ -65,13 +86,14 @@ const splash = {
 }
 
 // Event called when the app is ready
-app.on('ready', splash.createWindow)
+app.on('ready', splash.openSplash)
 
 /**
  * Open new article
  */
 ipcMain.on('newArticle', (event, arg) => {
-  splash.openEditor()
+  splash.openEditor(arg)
+  splash.closeSplash()
 })
 
 /**
@@ -87,7 +109,7 @@ ipcMain.on('isAppSync', (event, arg) => {
 ipcMain.on('saveDocumentSync', (event, arg) => {
 
   // Show save dialog here
-  let savePath = dialog.showSaveDialog(browserWindow, {
+  let savePath = dialog.showSaveDialog(editorWindow, {
     defaultPath: arg.title
   })
 
@@ -97,6 +119,7 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
       if (err)
         return event.returnValue = `Error: ${err}`
 
+      editorWindow.loadURL(`${savePath}/template.html`)
       event.returnValue = message
     })
   } else
