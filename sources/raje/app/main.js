@@ -109,7 +109,7 @@ ipcMain.on('isAppSync', (event, arg) => {
 ipcMain.on('saveDocumentSync', (event, arg) => {
 
   // Show save dialog here
-  let savePath = dialog.showSaveDialog(editorWindow, {
+  let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
     defaultPath: arg.title
   })
 
@@ -119,7 +119,14 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
       if (err)
         return event.returnValue = `Error: ${err}`
 
-      editorWindow.loadURL(`${savePath}/template.html`)
+      let editorWindowUrl = url.format({
+        pathname: path.join(savePath, TEMPLATE),
+        protocol: 'file:',
+        slashes: true
+      })
+
+      windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
+
       event.returnValue = message
     })
   } else
