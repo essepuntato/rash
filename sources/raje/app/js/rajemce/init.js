@@ -45,6 +45,10 @@ $(document).ready(function () {
     // Select the element to wrap
     selector: '#raje_root',
 
+    // Set window size
+    width: $(window).width(),
+    height: $(window).height(),
+
     // Set the styles of the content wrapped inside the element
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
@@ -63,7 +67,7 @@ $(document).ready(function () {
       // Set fullscreen 
       editor.on('init', function (e) {
 
-        editor.execCommand('mceFullScreen')
+        //editor.execCommand('mceFullScreen')
 
         // Move caret at the first h1 element of main section
         // Or right after heading
