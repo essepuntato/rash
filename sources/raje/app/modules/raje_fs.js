@@ -3,15 +3,14 @@ const fs = require('fs-extra')
 module.exports = {
 
   /**
-   * Execute the first save for the article, it will create the new folder or "replace" the existing one
+   * Execute the first save for the article
+   * it will create the new folder or "replace" the existing one
    */
   saveArticleFirstTime: function (path, document, callback) {
 
     // If the directory already exists, first remove it
-    if (fs.existsSync(path)) {
-
+    if (fs.existsSync(path))
       fs.removeSync(path)
-    }
 
     // In any case create the new directory
     fs.mkdir(path, (err, res) => {

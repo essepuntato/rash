@@ -1,8 +1,17 @@
+/**
+ * 
+ * Main process of Electron.js 
+ */
+
 const electron = require('electron')
 const app = electron.app
 
 global.ROOT = __dirname
-global.ASSETS_DIRECTORIES = [`${global.ROOT}/js`, `${global.ROOT}/css`, `${global.ROOT}/fonts`]
+global.ASSETS_DIRECTORIES = [
+  `${global.ROOT}/js`,
+  `${global.ROOT}/css`,
+  `${global.ROOT}/fonts`
+]
 
 const {
   BrowserWindow,
@@ -58,7 +67,7 @@ const splash = {
   },
 
   /**
-   * 
+   * Open the editable template  
    */
   openEditor: function (size) {
 
@@ -78,7 +87,7 @@ const splash = {
   },
 
   /**
-   * 
+   * Return true to let know that the client has Electron behind
    */
   isApp: function () {
     return true
@@ -89,7 +98,10 @@ const splash = {
 app.on('ready', splash.openSplash)
 
 /**
- * Open new article
+ * This method is used to call the function that 
+ * opens the editor with the template
+ * 
+ * Called by the splash window
  */
 ipcMain.on('newArticle', (event, arg) => {
   splash.openEditor(arg)
@@ -97,14 +109,26 @@ ipcMain.on('newArticle', (event, arg) => {
 })
 
 /**
+ * This method is used to let know to the client that
+ * the HTML file it's opened by Electron (not by a browser)
  * 
+ * If nothing is returned, tinymce isn't initialised
+ * 
+ * Called from the renderer process
  */
 ipcMain.on('isAppSync', (event, arg) => {
   event.returnValue = splash.isApp()
 })
 
 /**
- * Triggered when the save event is called
+ * This method is used to save the current document 
+ * calling the save dialog (in order to select where the document has to be saved)
+ * 
+ * Then The article is saved by the raje_fs module
+ * 
+ * After the save process, the url is updated loading the saved file url
+ * 
+ * Called from the renderer process
  */
 ipcMain.on('saveDocumentSync', (event, arg) => {
 
@@ -119,12 +143,14 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
       if (err)
         return event.returnValue = `Error: ${err}`
 
+      // Create the URL with the right protocol
       let editorWindowUrl = url.format({
         pathname: path.join(savePath, TEMPLATE),
         protocol: 'file:',
         slashes: true
       })
 
+      //Update the rendered HTML file
       windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
 
       event.returnValue = message
