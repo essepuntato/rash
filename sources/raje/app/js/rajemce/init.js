@@ -16,12 +16,19 @@ const BULLET_LIST_TITLE = 'Bullet list'
 const NUMBERED_LIST_TITLE = 'Numbered list'
 const BLOCKQUOTE_TITLE = 'Blockquote'
 
+const TINYMCE_TOOLBAR_HEIGTH = 76
+
 const {
   ipcRenderer,
   webFrame
 } = require('electron')
 
 $(document).ready(function () {
+
+  // Override the margin botton given by RASH for the footer
+  $('body').css({
+    'margin-bottom': 0
+  })
 
   // If there are some tinymce elements after its initialisation
   // Process the rendered2storedRASH algorithm
@@ -46,8 +53,7 @@ $(document).ready(function () {
     selector: '#raje_root',
 
     // Set window size
-    width: $(window).width(),
-    height: $(window).height(),
+    height: window.innerHeight - TINYMCE_TOOLBAR_HEIGTH,
 
     // Set the styles of the content wrapped inside the element
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
@@ -67,7 +73,7 @@ $(document).ready(function () {
       // Set fullscreen 
       editor.on('init', function (e) {
 
-        //editor.execCommand('mceFullScreen')
+        editor.execCommand('mceFullScreen')
 
         // Move caret at the first h1 element of main section
         // Or right after heading

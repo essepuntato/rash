@@ -66,6 +66,6 @@ i.mce-i-icon-listing:before {
   font-family: FontAwesome;
 }
 
-span > svg:hover {
+span>svg:hover {
   cursor: pointer
 }
