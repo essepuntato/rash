@@ -327,8 +327,6 @@ let IS_APP
 
 try {
 
-  loadRequiredScript()
-
   IS_APP = checkIfApp()
 } catch (exception) {
   console.log(exception)
