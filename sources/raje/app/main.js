@@ -2,7 +2,7 @@ const electron = require('electron')
 const app = electron.app
 
 global.ROOT = __dirname
-global.ASSETS_DIRECTORIES = [`${global.ROOT}/css`, `${global.ROOT}/fonts`, `${global.ROOT}/js`, `${global.ROOT}/node_modules/tinymce`]
+global.ASSETS_DIRECTORIES = [`${global.ROOT}/js`, `${global.ROOT}/css`, `${global.ROOT}/fonts`]
 
 const {
   BrowserWindow,
