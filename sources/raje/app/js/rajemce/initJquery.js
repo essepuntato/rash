@@ -1,4 +1,7 @@
-// Check if JQuery is defined, is not the user is opening the file with Electron
+/**
+ * Check if JQuery is defined
+ * is not the user is opening the file with Electron
+ */
 try {
   $('body').length
 

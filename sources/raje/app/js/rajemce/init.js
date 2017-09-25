@@ -3,18 +3,14 @@
  * Initilize TinyMCE editor with all required options
  */
 
- // Invisible space constant
+ // Invisible space constants
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
+// Selector constants (to move inside a new const file)
 const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
 const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
-
-
-const BULLET_LIST_TITLE = 'Bullet list'
-const NUMBERED_LIST_TITLE = 'Numbered list'
-const BLOCKQUOTE_TITLE = 'Blockquote'
 
 const TINYMCE_TOOLBAR_HEIGTH = 76
 
@@ -24,7 +20,7 @@ const {
 } = require('electron')
 
 /**
- * 
+ * Initilise TinyMCE 
  */
 $(document).ready(function () {
 
@@ -33,21 +29,13 @@ $(document).ready(function () {
     'margin-bottom': 0
   })
 
-  // If there are some tinymce elements after its initialisation
-  // Process the rendered2storedRASH algorithm
-  // In order to render it correctly
-  if ($('div[id^=mceu_').length) {
-    rendered2SavedRASH()
-    rash()
-  }
-
-
   //hide footer
   $('footer.footer').hide()
 
   //attach whole body inside a placeholder div
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
+  // 
   setNonEditableHeader()
 
   tinymce.init({
@@ -172,17 +160,12 @@ $(document).ready(function () {
     trim_span_elements: false,
     verify_html: false,
     cleanup: false,
-    convert_urls: false,
-
-    save_enablewhendirty: true,
-    save_onsavecallback: function () {
-      console.log('Saved');
-    }
+    convert_urls: false
   })
 })
 
 /**
- * 
+ * Open and close the headings dropdown
  */
 $(window).load(function() {
 
@@ -216,6 +199,10 @@ function moveCaret(element, toStart) {
   tinymce.activeEditor.selection.collapse(toStart)
 }
 
+/**
+ * 
+ * @param {*} element 
+ */
 function moveCursorToEnd(element) {
 
   let heading = element
@@ -236,6 +223,10 @@ function moveCursorToEnd(element) {
   tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
 }
 
+/**
+ * 
+ * @param {*} element 
+ */
 function moveCursorToStart(element) {
 
   let heading = element
