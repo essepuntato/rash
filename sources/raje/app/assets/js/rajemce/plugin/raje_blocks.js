@@ -1,1 +1,0 @@
-tinymce.PluginManager.add('raje_codeblock', function (editor, url) {})

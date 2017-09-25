@@ -18,15 +18,27 @@ module.exports = {
 
       if (err) return callback(err)
 
-      // Copy the assets directory content into the new directory
-      fs.copy(global.ASSETS_DIRECTORY, path, (err) => {
-        if (err) return callback(err)
+      // This copies the content of each directory in this array
+      global.ASSETS_DIRECTORIES.forEach(function (directoryPath) {
 
-        fs.writeFile(`${path}/template.html`, document, (err, res) => {
+        // Get the name of the 
+        let directoryPathName = `${path}/${directoryPath.split('/')[directoryPath.split('/').length - 1]}`
+
+        // It tries to create the directory and copy its content
+        fs.mkdir(directoryPathName, err => {
           if (err) return callback(err)
 
-          return callback(null, true)
+          fs.copy(directoryPath, directoryPathName, err => {
+            if (err) return callback(err)
+          })
         })
+      })
+
+      // Create the template file
+      fs.writeFile(`${path}/template.html`, document, (err, res) => {
+        if (err) return callback(err)
+
+        return callback(null, true)
       })
     })
   }

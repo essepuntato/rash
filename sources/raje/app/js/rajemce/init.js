@@ -3,7 +3,7 @@
  * Initilize TinyMCE editor with all required options
  */
 
-// Invisible space constant
+ // Invisible space constant
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
@@ -23,6 +23,9 @@ const {
   webFrame
 } = require('electron')
 
+/**
+ * 
+ */
 $(document).ready(function () {
 
   // Override the margin botton given by RASH for the footer
@@ -176,15 +179,16 @@ $(document).ready(function () {
       console.log('Saved');
     }
   })
+})
+
+/**
+ * 
+ */
+$(window).load(function() {
 
   // Open and close menu headings Näive way
   $(`div[aria-label='heading']`).find('button').trigger('click')
   $(`div[aria-label='heading']`).find('button').trigger('click')
-
-  // Add edit button
-  // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
-  // updateIframeFromSavedContent()
-  markTinyMCE()
 })
 
 /**
@@ -262,6 +266,10 @@ function notify(text, type, timeout) {
   }
 }
 
+/**
+ * 
+ * @param {*} elementSelector 
+ */
 function scrollTo(elementSelector) {
   $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
 }
@@ -281,7 +289,9 @@ function getSuccessiveElementId(elementSelector, SUFFIX) {
   return `${SUFFIX}${lastId+1}`
 }
 
-
+/**
+ * 
+ */
 function headingDimension() {
   $('h1,h2,h3,h4,h5,h6').each(function () {
 
@@ -307,19 +317,6 @@ function markTinyMCE() {
 /**
  * 
  */
-function removeTinyMCE() {
-  $('*[data-rash-original-content]').each(function () {
-    $(this).replaceWith($(this).attr('data-rash-original-content'))
-  })
-
-  $('body').html($('#raje_root').html())
-}
-
-function rendered2SavedRASH() {
-  markTinyMCE()
-  removeTinyMCE()
-}
-
 function setNonEditableHeader() {
   $(HEADER_SELECTOR).addClass('mceNonEditable')
 }
@@ -345,21 +342,6 @@ console.log(IS_APP)
  */
 function checkIfApp() {
   return ipcRenderer.sendSync('isAppSync')
-}
-
-/**
- * 
- */
-function loadRequiredScript() {
-
-  if (IS_APP) {
-
-    var requiredScript = document.createElement("script");
-
-    requiredScript.innerHTML = `window.$ = window.jQuery = require(__dirname + '/js/jquery.min.js');`;
-
-    document.head.appendChild(requiredScript);
-  }
 }
 
 /**
