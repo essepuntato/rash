@@ -9,6 +9,29 @@ module.exports = {
   getEditorMenu: function () {
     const template = [
 
+      // File
+      {
+        label: 'File',
+        submenu: [{
+          label: 'New'
+        }, {
+          label: 'Open...'
+        }, {
+          label: 'Recents',
+          submenu:[{
+            label: 'rencent'
+          }]
+        },{
+          type: 'separator'
+        },{
+          label: 'Save as...'
+        },{
+          label: 'Save'
+        },{
+          label: 'Close'
+        }]
+      },
+      /*
       // Edit
       {
         label: 'Edit',
@@ -86,7 +109,7 @@ module.exports = {
           }
         ]
       },
-
+      */
       // Help
       {
         role: 'help',
@@ -132,38 +155,6 @@ module.exports = {
           }
         ]
       })
-
-      // Edit menu
-      template[1].submenu.push({
-        type: 'separator'
-      }, {
-        label: 'Speech',
-        submenu: [{
-            role: 'startspeaking'
-          },
-          {
-            role: 'stopspeaking'
-          }
-        ]
-      })
-
-      // Window menu
-      template[3].submenu = [{
-          role: 'close'
-        },
-        {
-          role: 'minimize'
-        },
-        {
-          role: 'zoom'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          role: 'front'
-        }
-      ]
     }
 
     return template
