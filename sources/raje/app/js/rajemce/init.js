@@ -3,32 +3,31 @@
  * Initilize TinyMCE editor with all required options
  */
 
-// TinyMCE DomQuery variable
-let dom = tinymce.dom.DomQuery
-
-// Invisible space constant
+ // Invisible space constants
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
+// Selector constants (to move inside a new const file)
 const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
 const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
+const TINYMCE_TOOLBAR_HEIGTH = 76
 
-const BULLET_LIST_TITLE = 'Bullet list'
-const NUMBERED_LIST_TITLE = 'Numbered list'
-const BLOCKQUOTE_TITLE = 'Blockquote'
+const {
+  ipcRenderer,
+  webFrame
+} = require('electron')
 
+/**
+ * Initilise TinyMCE 
+ */
 $(document).ready(function () {
 
-  // If there are some tinymce elements after its initialisation
-  // Process the rendered2storedRASH algorithm
-  // In order to render it correctly
-  if ($('div[id^=mceu_').length) {
-    rendered2SavedRASH()
-    rash()
-  }
-
+  // Override the margin botton given by RASH for the footer
+  $('body').css({
+    'margin-bottom': 0
+  })
 
   //hide footer
   $('footer.footer').hide()
@@ -36,24 +35,28 @@ $(document).ready(function () {
   //attach whole body inside a placeholder div
   $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
+  // 
   setNonEditableHeader()
-  
+
   tinymce.init({
 
     // Select the element to wrap
     selector: '#raje_root',
 
+    // Set window size
+    height: window.innerHeight - TINYMCE_TOOLBAR_HEIGTH,
+
     // Set the styles of the content wrapped inside the element
     content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
     // Set plugins
-    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists",
+    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
 
     // Remove menubar
     menubar: false,
 
     // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata',
+    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
 
     // Setup full screen on init
     setup: function (editor) {
@@ -157,8 +160,18 @@ $(document).ready(function () {
     trim_span_elements: false,
     verify_html: false,
     cleanup: false,
-    convert_urls: false,
+    convert_urls: false
   })
+})
+
+/**
+ * Open and close the headings dropdown
+ */
+$(window).load(function() {
+
+  // Open and close menu headings Näive way
+  $(`div[aria-label='heading']`).find('button').trigger('click')
+  $(`div[aria-label='heading']`).find('button').trigger('click')
 })
 
 /**
@@ -186,6 +199,10 @@ function moveCaret(element, toStart) {
   tinymce.activeEditor.selection.collapse(toStart)
 }
 
+/**
+ * 
+ * @param {*} element 
+ */
 function moveCursorToEnd(element) {
 
   let heading = element
@@ -206,6 +223,10 @@ function moveCursorToEnd(element) {
   tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
 }
 
+/**
+ * 
+ * @param {*} element 
+ */
 function moveCursorToStart(element) {
 
   let heading = element
@@ -236,6 +257,10 @@ function notify(text, type, timeout) {
   }
 }
 
+/**
+ * 
+ * @param {*} elementSelector 
+ */
 function scrollTo(elementSelector) {
   $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
 }
@@ -255,7 +280,9 @@ function getSuccessiveElementId(elementSelector, SUFFIX) {
   return `${SUFFIX}${lastId+1}`
 }
 
-
+/**
+ * 
+ */
 function headingDimension() {
   $('h1,h2,h3,h4,h5,h6').each(function () {
 
@@ -274,21 +301,6 @@ function headingDimension() {
 /**
  * 
  */
-$(window).load(function () {
-
-  // Open and close menu headings Näive way
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-
-  // Add edit button
-  // $('header.cgen').append(`<div style="visibility:hidden" id="btnEditHeader">Edit</div>`)
-  // updateIframeFromSavedContent()
-  markTinyMCE()
-})
-
-/**
- * 
- */
 function markTinyMCE() {
   $('div[id^=mceu_]').attr('data-rash-original-content', '')
 }
@@ -296,19 +308,38 @@ function markTinyMCE() {
 /**
  * 
  */
-function removeTinyMCE() {
-  $('*[data-rash-original-content]').each(function () {
-    $(this).replaceWith($(this).attr('data-rash-original-content'))
-  })
-
-  $('body').html($('#raje_root').html())
-}
-
-function rendered2SavedRASH() {
-  markTinyMCE()
-  removeTinyMCE()
-}
-
 function setNonEditableHeader() {
   $(HEADER_SELECTOR).addClass('mceNonEditable')
+}
+
+// Electron app methods
+
+let IS_APP
+
+try {
+
+  IS_APP = checkIfApp()
+} catch (exception) {
+  console.log(exception)
+  IS_APP = false
+}
+
+console.log(IS_APP)
+
+/**
+ * 
+ */
+function checkIfApp() {
+  return ipcRenderer.sendSync('isAppSync')
+}
+
+/**
+ * 
+ */
+function saveDocument(options) {
+  return ipcRenderer.sendSync('saveDocumentSync', options)
+}
+
+function selectImage(){
+  return ipcRenderer.sendSync('selectImageSync')
 }
