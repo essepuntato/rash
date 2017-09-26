@@ -173,18 +173,26 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
 
 
 /**
+ * This method is used to select the image to import in the document
  * 
+ * When the image is selected it's saved inside the image temporary folder 
+ * (which is deleted when the app is closed)
  */
 ipcMain.on('selectImageSync', (event, arg) => {
 
   // Show the open dialog with options
   let imagePath = dialog.showOpenDialog({
-    filters: ['jpg', 'png', 'gif']
-  })[0]
+    filters: [{
+      name: 'Images',
+      extensions: ['jpg', 'png']
+    }]
+  })
 
-  if (imagePath) {
+  // If a file is selected
+  if (imagePath[0]) {
 
-    RAJE_FS.saveImageTemp(imagePath, (err, result) => {
+    // Save the image in the temporary folder
+    RAJE_FS.saveImageTemp(imagePath[0], (err, result) => {
 
       if (err) return event.returnValue = err
 

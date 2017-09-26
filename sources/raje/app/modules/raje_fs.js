@@ -48,7 +48,7 @@ module.exports = {
   },
 
   /**
-   * 
+   * Save the image in the temporary folder
    */
   saveImageTemp: function (image, callback) {
 
@@ -56,10 +56,11 @@ module.exports = {
     if (!fs.existsSync(global.IMAGE_TEMP))
       fs.mkdirpSync(global.IMAGE_TEMP)
 
-    // Copy the image into the temporary image folder
+    // Copy (reand and write) the image into the temporary image folder
     fs.readFile(image, (err, data) => {
       if (err) return callback(err)
 
+      // Get the image name
       let filename = image.split('/')[image.split('/').length - 1]
 
       fs.writeFile(`${global.IMAGE_TEMP}/${filename}`, data, err => {
@@ -71,7 +72,7 @@ module.exports = {
   },
 
   /**
-   * 
+   * Remove the temporary folder
    */
   removeImageTempFolder: function () {
     if (fs.existsSync(global.IMAGE_TEMP))
