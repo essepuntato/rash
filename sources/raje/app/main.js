@@ -16,7 +16,8 @@ global.ASSETS_DIRECTORIES = [
 const {
   BrowserWindow,
   ipcMain,
-  dialog
+  dialog,
+  Menu
 } = electron
 
 const url = require('url')
@@ -26,7 +27,8 @@ const windowManager = require('electron-window-manager')
 const TEMPLATE = 'template.html'
 const SPLASH = 'splash.html'
 
-const raje_fs = require('./modules/raje_fs.js')
+const RAJE_FS = require('./modules/raje_fs.js')
+const RAJE_MENU = require('./modules/raje_menu.js')
 
 const EDITOR_WINDOW = 'editor'
 const SPLASH_WINDOW = 'splash'
@@ -56,6 +58,9 @@ const splash = {
       movable: true,
       fullscreenable: false
     })
+
+    // Set the menu 
+    Menu.setApplicationMenu(Menu.buildFromTemplate(RAJE_MENU.getSplashMenu()))
   },
 
   /**
@@ -84,6 +89,9 @@ const splash = {
       height: size.height,
       resizable: true
     })
+
+    // Set the menu 
+    Menu.setApplicationMenu(Menu.buildFromTemplate(RAJE_MENU.getEditorMenu()))
   },
 
   /**
@@ -139,7 +147,7 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
 
   // If the user select a folder, the article is saved for the first time
   if (savePath) {
-    raje_fs.saveArticleFirstTime(savePath, arg.document, (err, message) => {
+    RAJE_FS.saveArticleFirstTime(savePath, arg.document, (err, message) => {
       if (err)
         return event.returnValue = `Error: ${err}`
 
@@ -151,7 +159,7 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
       })
 
       //Update the rendered HTML file
-      windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
+      //windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
 
       event.returnValue = message
     })
