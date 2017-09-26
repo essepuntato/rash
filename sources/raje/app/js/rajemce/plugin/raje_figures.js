@@ -179,22 +179,9 @@ tinymce.PluginManager.add('raje_image', function (editor, url) {
     // Button behaviour
     onclick: function () {
 
-      editor.windowManager.open({
-        title: 'Select image from external link OR img folder',
-        body: [{
-          type: 'textbox',
-          name: 'url',
-          label: 'url',
-          placeholder: 'http://... OR img/...'
-        }, {
-          type: 'textbox',
-          name: 'alt',
-          label: 'alt'
-        }],
-        onSubmit: function (e) {
-          image.add(e.data.url, e.data.alt)
-        }
-      })
+      let filename = selectImage()
+
+      image.add(filename, filename)
     }
   })
 

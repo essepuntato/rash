@@ -339,3 +339,7 @@ function checkIfApp() {
 function saveDocument(options) {
   return ipcRenderer.sendSync('saveDocumentSync', options)
 }
+
+function selectImage(){
+  return ipcRenderer.sendSync('selectImageSync')
+}

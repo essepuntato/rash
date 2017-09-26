@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 
+
 module.exports = {
 
   /**
@@ -20,17 +21,21 @@ module.exports = {
       // This copies the content of each directory in this array
       global.ASSETS_DIRECTORIES.forEach(function (directoryPath) {
 
-        // Get the name of the 
-        let directoryPathName = `${path}/${directoryPath.split('/')[directoryPath.split('/').length - 1]}`
+        // Tries to copy the folder content only if the directory exists
+        if (fs.existsSync(directoryPath)) {
 
-        // It tries to create the directory and copy its content
-        fs.mkdir(directoryPathName, err => {
-          if (err) return callback(err)
+          // Get the name of the 
+          let directoryPathName = `${path}/${directoryPath.split('/')[directoryPath.split('/').length - 1]}`
 
-          fs.copy(directoryPath, directoryPathName, err => {
+          // It tries to create the directory and copy its content
+          fs.mkdir(directoryPathName, err => {
             if (err) return callback(err)
+
+            fs.copy(directoryPath, directoryPathName, err => {
+              if (err) return callback(err)
+            })
           })
-        })
+        }
       })
 
       // Create the template file
@@ -40,5 +45,36 @@ module.exports = {
         return callback(null, true)
       })
     })
+  },
+
+  /**
+   * 
+   */
+  saveImageTemp: function (image, callback) {
+
+    // If the directory doesn't exist, create it
+    if (!fs.existsSync(global.IMAGE_TEMP))
+      fs.mkdirpSync(global.IMAGE_TEMP)
+
+    // Copy the image into the temporary image folder
+    fs.readFile(image, (err, data) => {
+      if (err) return callback(err)
+
+      let filename = image.split('/')[image.split('/').length - 1]
+
+      fs.writeFile(`${global.IMAGE_TEMP}/${filename}`, data, err => {
+        if (err) return callback(err)
+
+        return callback(null, `img/${filename}`)
+      })
+    })
+  },
+
+  /**
+   * 
+   */
+  removeImageTempFolder: function () {
+    if (fs.existsSync(global.IMAGE_TEMP))
+      fs.removeSync(global.IMAGE_TEMP)
   }
 }

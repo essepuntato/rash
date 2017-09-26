@@ -10,8 +10,10 @@ global.ROOT = __dirname
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
   `${global.ROOT}/css`,
-  `${global.ROOT}/fonts`
+  `${global.ROOT}/fonts`,
+  `${global.ROOT}/img`
 ]
+global.IMAGE_TEMP = global.ASSETS_DIRECTORIES[3]
 
 const {
   BrowserWindow,
@@ -105,6 +107,8 @@ const splash = {
 // Event called when the app is ready
 app.on('ready', splash.openSplash)
 
+app.on('quit', RAJE_FS.removeImageTempFolder)
+
 /**
  * This method is used to call the function that 
  * opens the editor with the template
@@ -165,4 +169,27 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
     })
   } else
     event.returnValue = null
+})
+
+
+/**
+ * 
+ */
+ipcMain.on('selectImageSync', (event, arg) => {
+
+  // Show the open dialog with options
+  let imagePath = dialog.showOpenDialog({
+    filters: ['jpg', 'png', 'gif']
+  })[0]
+
+  if (imagePath) {
+
+    RAJE_FS.saveImageTemp(imagePath, (err, result) => {
+
+      if (err) return event.returnValue = err
+
+      return event.returnValue = result
+    })
+  } else
+    return event.returnValue = null
 })
