@@ -1,15 +1,5 @@
 tinymce.PluginManager.add('raje_save', function (editor, url) {
 
-  editor.addButton('raje_save', {
-    title: 'raje_save',
-    text: 'Save',
-    icons: false,
-    onclick: function () {
-
-      saveManager.execute()
-    }
-  })
-
   saveManager = {
 
     /**

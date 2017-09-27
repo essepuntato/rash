@@ -18,16 +18,21 @@ module.exports = {
           label: 'Open...'
         }, {
           label: 'Recents',
-          submenu:[{
+          submenu: [{
             label: 'rencent'
           }]
-        },{
+        }, {
           type: 'separator'
-        },{
-          label: 'Save as...'
-        },{
-          label: 'Save'
-        },{
+        }, {
+          label: 'Save as...',
+          accelerator: 'CmdOrCtrl+Shift+S',
+          click: () => {
+            global.executeSaveAs()
+          }
+        }, {
+          label: 'Save',
+          accelerator: 'CmdOrCtrl+S',
+        }, {
           label: 'Close'
         }]
       },

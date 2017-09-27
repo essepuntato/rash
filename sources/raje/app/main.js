@@ -125,7 +125,7 @@ const windows = {
               windowManager.get(EDITOR_WINDOW).object.close()
               break
 
-            // The user doesn't want to save the document
+              // The user doesn't want to save the document
             case 1:
               global.draft = false
               windowManager.get(EDITOR_WINDOW).object.close()
@@ -245,3 +245,11 @@ ipcMain.on('selectImageSync', (event, arg) => {
   } else
     return event.returnValue = null
 })
+
+/**
+ * Send a message to the renderer process
+ * Start the save process
+ */
+global.executeSaveAs = function () {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSaveAs')
+}

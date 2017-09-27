@@ -3,7 +3,7 @@
  * Initilize TinyMCE editor with all required options
  */
 
- // Invisible space constants
+// Invisible space constants
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
@@ -167,7 +167,7 @@ $(document).ready(function () {
 /**
  * Open and close the headings dropdown
  */
-$(window).load(function() {
+$(window).load(function () {
 
   // Open and close menu headings Näive way
   $(`div[aria-label='heading']`).find('button').trigger('click')
@@ -340,6 +340,18 @@ function saveDocument(options) {
   return ipcRenderer.sendSync('saveDocumentSync', options)
 }
 
-function selectImage(){
+/**
+ * 
+ */
+function selectImage() {
   return ipcRenderer.sendSync('selectImageSync')
 }
+
+
+/**
+ * Start the save as process getting the data and sending it
+ * to the main process
+ */
+ipcRenderer.on('executeSaveAs', (event, data) => {
+  saveManager.execute()
+})
