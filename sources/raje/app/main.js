@@ -8,7 +8,10 @@ const app = electron.app
 
 global.ROOT = __dirname
 global.IMAGE_TEMP = `${global.ROOT}/img`
-global.draft = false
+
+global.hasChanged
+global.isNew
+global.savePath
 
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
@@ -80,6 +83,9 @@ const windows = {
    */
   openEditor: function (size) {
 
+    global.hasChanged = false
+    global.isNew = true
+
     // Get the URL to open the editor
     let editorWindowUrl = url.format({
       pathname: path.join(__dirname, TEMPLATE),
@@ -102,8 +108,8 @@ const windows = {
      */
     windowManager.get(EDITOR_WINDOW).object.on('close', event => {
 
-      // If the document is in draft mode (need to be saved)
-      if (global.draft) {
+      // If the document is in hasChanged mode (need to be saved)
+      if (global.hasChanged) {
 
         // Cancel the close event
         event.preventDefault()
@@ -121,13 +127,13 @@ const windows = {
             // The user wants to save the document
             case 0:
               // TODO save the document
-              global.draft = false
+              global.hasChanged = false
               windowManager.get(EDITOR_WINDOW).object.close()
               break
 
               // The user doesn't want to save the document
             case 1:
-              global.draft = false
+              global.hasChanged = false
               windowManager.get(EDITOR_WINDOW).object.close()
               break
           }
@@ -186,25 +192,37 @@ ipcMain.on('isAppSync', (event, arg) => {
  * 
  * Called from the renderer process
  */
-ipcMain.on('saveDocument', (event, arg) => {
+ipcMain.on('saveAsArticle', (event, arg) => {
 
-  // Show save dialog here
-  let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
-    defaultPath: arg.title
-  })
+  // If the document isn't saved for the first time
+  if (global.isNew) {
+    // Show save dialog here
+    let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
+      defaultPath: arg.title
+    })
 
-  // If the user select a folder, the article is saved for the first time
-  if (savePath) {
-    RAJE_FS.saveArticleFirstTime(savePath, arg.document, (err, message) => {
-      if (err)
-        return console.log(`Error: ${err}`)
+    // If the user select a folder, the article is saved for the first time
+    if (savePath) {
+      RAJE_FS.saveAsArticle(savePath, arg.document, (err, message) => {
+        if (err)
+          return console.log(`Error: ${err}`)
 
-      // Create the URL with the right protocol
-      let editorWindowUrl = url.format({
-        pathname: path.join(savePath, TEMPLATE),
-        protocol: 'file:',
-        slashes: true
+        global.isNew = false
+        global.savePath = savePath
       })
+    }
+  }
+})
+
+/**
+ * 
+ */
+ipcMain.on('saveArticle', (event, arg) => {
+
+  // If the document has been saved before
+  if (!global.isNew && typeof global.savePath != "undefined") {
+    RAJE_FS.saveArticle(global.savePath, arg.document, (err, res) => {
+      if(err) return console.log(err)
     })
   }
 })
@@ -244,13 +262,21 @@ ipcMain.on('selectImageSync', (event, arg) => {
  * 
  */
 ipcMain.on('updateDocumentState', (event, arg) => {
-  global.draft = arg
+  global.hasChanged = arg
 })
+
+/**
+ * Send a message to the renderer process
+ * Start the save as process
+ */
+global.executeSaveAs = function () {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSaveAs')
+}
 
 /**
  * Send a message to the renderer process
  * Start the save process
  */
-global.executeSaveAs = function () {
-  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSaveAs')
+global.executeSave = function(){
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
 }

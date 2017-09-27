@@ -5,7 +5,7 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
     /**
      * 
      */
-    execute: function () {
+    initSave: function () {
 
       // Clear all undo levels
       tinymce.activeEditor.undoManager.clear()
@@ -13,11 +13,29 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
       // Update the new document state
       updateDocumentState(false)
 
-      // Send message to the backend
-      saveDocument({
+      // Return the message for the backend
+      return {
         title: saveManager.getTitle(),
         document: saveManager.getDerashedArticle()
-      })
+      }
+    },
+
+    /**
+     * 
+     */
+    saveAs: function () {
+
+      // Send message to the backend
+      saveAsArticle(saveManager.initSave())
+    },
+
+    /**
+     * 
+     */
+    save: function () {
+
+      // Send message to the backend
+      saveArticle(saveManager.initSave())
     },
 
     /**

@@ -344,12 +344,7 @@ function selectImage() {
   return ipcRenderer.sendSync('selectImageSync')
 }
 
-/**
- * 
- */
-function saveDocument(options) {
-  return ipcRenderer.send('saveDocument', options)
-}
+
 
 /**
  * Send a message to the backend, notify the structural change
@@ -361,11 +356,32 @@ function updateDocumentState(state) {
   return ipcRenderer.send('updateDocumentState', state)
 }
 
+/**
+ * 
+ */
+function saveAsArticle(options) {
+  return ipcRenderer.send('saveAsArticle', options)
+}
+
+/**
+ * 
+ */
+function saveArticle(options) {
+  return ipcRenderer.send('saveArticle', options)
+}
 
 /**
  * Start the save as process getting the data and sending it
  * to the main process
  */
 ipcRenderer.on('executeSaveAs', (event, data) => {
-  saveManager.execute()
+  saveManager.saveAs()
+})
+
+/**
+ * Start the save process getting the data and sending it
+ * to the main process
+ */
+ipcRenderer.on('executeSave', (event, data) => {
+  saveManager.save()
 })

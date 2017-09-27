@@ -7,7 +7,7 @@ module.exports = {
    * Execute the first save for the article
    * it will create the new folder or "replace" the existing one
    */
-  saveArticleFirstTime: function (path, document, callback) {
+  saveAsArticle: function (path, document, callback) {
 
     // If the directory already exists, first remove it
     if (fs.existsSync(path))
@@ -47,6 +47,19 @@ module.exports = {
     })
   },
 
+  /**
+   * 
+   */
+  saveArticle: function (path, document, callback) {
+
+    // Overwrite the template.html with the document
+    fs.writeFile(`${path}/template.html`, document, (err, res) => {
+      if (err) return callback(err)
+
+      return callback(null, true)
+    })
+    
+  },
   /**
    * Save the image in the temporary folder
    */

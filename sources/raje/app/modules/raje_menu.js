@@ -32,6 +32,9 @@ module.exports = {
         }, {
           label: 'Save',
           accelerator: 'CmdOrCtrl+S',
+          click: () => {
+            global.executeSave()
+          }
         }, {
           label: 'Close'
         }]
