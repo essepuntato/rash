@@ -7,7 +7,14 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
      */
     execute: function () {
 
-      let result = saveDocument({
+      // Clear all undo levels
+      tinymce.activeEditor.undoManager.clear()
+
+      // Update the new document state
+      updateDocumentState(false)
+
+      // Send message to the backend
+      saveDocument({
         title: saveManager.getTitle(),
         document: saveManager.getDerashedArticle()
       })

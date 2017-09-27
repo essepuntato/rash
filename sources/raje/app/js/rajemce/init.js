@@ -103,6 +103,10 @@ $(document).ready(function () {
           }
         }
 
+        // Check if a change in the structure is made
+        // Then notify the backend 
+        if (tinymce.activeEditor.undoManager.hasUndo())
+          updateDocumentState(true)
       })
 
       // Update saved content on undo and redo events
@@ -336,15 +340,25 @@ function checkIfApp() {
 /**
  * 
  */
-function saveDocument(options) {
-  return ipcRenderer.sendSync('saveDocumentSync', options)
+function selectImage() {
+  return ipcRenderer.sendSync('selectImageSync')
 }
 
 /**
  * 
  */
-function selectImage() {
-  return ipcRenderer.sendSync('selectImageSync')
+function saveDocument(options) {
+  return ipcRenderer.send('saveDocument', options)
+}
+
+/**
+ * Send a message to the backend, notify the structural change
+ * 
+ * If the document is draft state = true
+ * If the document is saved state = false
+ */
+function updateDocumentState(state) {
+  return ipcRenderer.send('updateDocumentState', state)
 }
 
 

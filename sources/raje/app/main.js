@@ -8,7 +8,7 @@ const app = electron.app
 
 global.ROOT = __dirname
 global.IMAGE_TEMP = `${global.ROOT}/img`
-global.draft = true
+global.draft = false
 
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
@@ -186,7 +186,7 @@ ipcMain.on('isAppSync', (event, arg) => {
  * 
  * Called from the renderer process
  */
-ipcMain.on('saveDocumentSync', (event, arg) => {
+ipcMain.on('saveDocument', (event, arg) => {
 
   // Show save dialog here
   let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
@@ -197,7 +197,7 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
   if (savePath) {
     RAJE_FS.saveArticleFirstTime(savePath, arg.document, (err, message) => {
       if (err)
-        return event.returnValue = `Error: ${err}`
+        return console.log(`Error: ${err}`)
 
       // Create the URL with the right protocol
       let editorWindowUrl = url.format({
@@ -205,14 +205,8 @@ ipcMain.on('saveDocumentSync', (event, arg) => {
         protocol: 'file:',
         slashes: true
       })
-
-      //Update the rendered HTML file
-      //windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
-
-      event.returnValue = message
     })
-  } else
-    event.returnValue = null
+  }
 })
 
 
@@ -244,6 +238,13 @@ ipcMain.on('selectImageSync', (event, arg) => {
     })
   } else
     return event.returnValue = null
+})
+
+/**
+ * 
+ */
+ipcMain.on('updateDocumentState', (event, arg) => {
+  global.draft = arg
 })
 
 /**
