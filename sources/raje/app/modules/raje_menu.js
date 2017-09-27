@@ -6,159 +6,11 @@ module.exports = {
   /**
    * 
    */
-  getEditorMenu: function () {
+  getEditorMenu: function (canSave) {
     const template = [
-
-      // File
-      {
-        label: 'File',
-        submenu: [{
-          label: 'New'
-        }, {
-          label: 'Open...'
-        }, {
-          label: 'Recents',
-          submenu: [{
-            label: 'rencent'
-          }]
-        }, {
-          type: 'separator'
-        }, {
-          label: 'Save as...',
-          accelerator: 'CmdOrCtrl+Shift+S',
-          click: () => {
-            global.executeSaveAs()
-          }
-        }, {
-          label: 'Save',
-          accelerator: 'CmdOrCtrl+S',
-          click: () => {
-            global.executeSave()
-          }
-        }, {
-          label: 'Close'
-        }]
-      },
-      {
-        label: 'View',
-        submenu: [{
-            role: 'reload'
-          },
-          {
-            role: 'forcereload'
-          },
-          {
-            role: 'toggledevtools'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'resetzoom'
-          },
-          {
-            role: 'zoomin'
-          },
-          {
-            role: 'zoomout'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'togglefullscreen'
-          }
-        ]
-      },
-      /*
-      // Edit
-      {
-        label: 'Edit',
-        submenu: [{
-            role: 'undo'
-          },
-          {
-            role: 'redo'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'cut'
-          },
-          {
-            role: 'copy'
-          },
-          {
-            role: 'paste'
-          },
-          {
-            role: 'pasteandmatchstyle'
-          },
-          {
-            role: 'delete'
-          },
-          {
-            role: 'selectall'
-          }
-        ]
-      },
-
-      // View
-      {
-        label: 'View',
-        submenu: [{
-            role: 'reload'
-          },
-          {
-            role: 'forcereload'
-          },
-          {
-            role: 'toggledevtools'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'resetzoom'
-          },
-          {
-            role: 'zoomin'
-          },
-          {
-            role: 'zoomout'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'togglefullscreen'
-          }
-        ]
-      },
-
-      // Window
-      {
-        role: 'window',
-        submenu: [{
-            role: 'minimize'
-          },
-          {
-            role: 'close'
-          }
-        ]
-      },
-      */
-      // Help
-      {
-        role: 'help',
-        submenu: [{
-          label: 'Learn More',
-          click() {
-            require('electron').shell.openExternal('https://electron.atom.io')
-          }
-        }]
-      }
+      this.getTabFile(canSave),
+      this.getTabView(),
+      this.getTabHelp()
     ]
 
     if (process.platform === 'darwin') {
@@ -197,6 +49,131 @@ module.exports = {
     }
 
     return template
+  },
+
+  /**
+   * 
+   */
+  getTabFile: function (canSave) {
+    return {
+      label: 'File',
+      submenu: [{
+        label: 'New'
+      }, {
+        label: 'Open...'
+      }, {
+        label: 'Recents',
+        submenu: [{
+          label: 'rencent'
+        }]
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Save as...',
+        accelerator: 'CmdOrCtrl+Shift+S',
+        click: () => {
+          global.executeSaveAs()
+        }
+      }, {
+        label: 'Save',
+        accelerator: 'CmdOrCtrl+S',
+        enabled: canSave,
+        click: () => {
+          global.executeSave()
+        }
+      }, {
+        label: 'Close'
+      }]
+    }
+  },
+
+  /**
+   * 
+   */
+  getTabView: function () {
+    return {
+      label: 'View',
+      submenu: [{
+          role: 'reload'
+        },
+        {
+          role: 'forcereload'
+        },
+        {
+          role: 'toggledevtools'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'resetzoom'
+        },
+        {
+          role: 'zoomin'
+        },
+        {
+          role: 'zoomout'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'togglefullscreen'
+        }
+      ]
+    }
+  },
+
+  /**
+   * 
+   */
+  getTabEdit: function () {
+    return {
+      label: 'Edit',
+      submenu: [{
+          role: 'undo'
+        },
+        {
+          role: 'redo'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'cut'
+        },
+        {
+          role: 'copy'
+        },
+        {
+          role: 'paste'
+        },
+        {
+          role: 'pasteandmatchstyle'
+        },
+        {
+          role: 'delete'
+        },
+        {
+          role: 'selectall'
+        }
+      ]
+    }
+  },
+
+  /**
+   * 
+   */
+  getTabHelp: function () {
+    return {
+      role: 'help',
+      submenu: [{
+        label: 'Learn More',
+        click() {
+          require('electron').shell.openExternal('https://electron.atom.io')
+        }
+      }]
+    }
   },
 
   /**

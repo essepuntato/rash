@@ -42,7 +42,7 @@ module.exports = {
       fs.writeFile(`${path}/template.html`, document, (err, res) => {
         if (err) return callback(err)
 
-        return callback(null, true)
+        return callback(null, 'Well done! all changes are saved!')
       })
     })
   },
@@ -56,9 +56,9 @@ module.exports = {
     fs.writeFile(`${path}/template.html`, document, (err, res) => {
       if (err) return callback(err)
 
-      return callback(null, true)
+      return callback(null, 'Well done! all changes are saved!')
     })
-    
+
   },
   /**
    * Save the image in the temporary folder

@@ -61,7 +61,7 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).replaceWith(originalContent)
       })
 
-      return article.html()
+      return article[0].outerHTML
     },
 
     /**

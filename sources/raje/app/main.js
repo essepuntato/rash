@@ -100,11 +100,11 @@ const windows = {
       resizable: true
     })
 
-    // Set the menu 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(RAJE_MENU.getEditorMenu()))
+    // Update the app menu
+    windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
 
     /**
-     * Catch the close 
+     * Catch the close event
      */
     windowManager.get(EDITOR_WINDOW).object.on('close', event => {
 
@@ -147,6 +147,14 @@ const windows = {
    */
   isApp: function () {
     return true
+  },
+
+  /**
+   * 
+   */
+  updateEditorMenu: function (menu) {
+    // Set the menu 
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
   }
 }
 
@@ -207,8 +215,18 @@ ipcMain.on('saveAsArticle', (event, arg) => {
         if (err)
           return console.log(`Error: ${err}`)
 
+        // Store important variables to check the save state
         global.isNew = false
         global.savePath = savePath
+
+        windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+
+        // Notify the client 
+        global.sendNotification({
+          text: message,
+          type: 'success',
+          timeout: 2000
+        })
       })
     }
   }
@@ -221,8 +239,15 @@ ipcMain.on('saveArticle', (event, arg) => {
 
   // If the document has been saved before
   if (!global.isNew && typeof global.savePath != "undefined") {
-    RAJE_FS.saveArticle(global.savePath, arg.document, (err, res) => {
-      if(err) return console.log(err)
+    RAJE_FS.saveArticle(global.savePath, arg.document, (err, message) => {
+      if (err) return console.log(err)
+
+      // Notify the client
+      global.sendNotification({
+        text: message,
+        type: 'success',
+        timeout: 2000
+      })
     })
   }
 })
@@ -277,6 +302,13 @@ global.executeSaveAs = function () {
  * Send a message to the renderer process
  * Start the save process
  */
-global.executeSave = function(){
+global.executeSave = function () {
   windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
+}
+
+/**
+ * 
+ */
+global.sendNotification = function (message) {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('notify', message)
 }

@@ -385,3 +385,11 @@ ipcRenderer.on('executeSaveAs', (event, data) => {
 ipcRenderer.on('executeSave', (event, data) => {
   saveManager.save()
 })
+
+
+/**
+ * 
+ */
+ipcRenderer.on('notify', (event, data) => {
+  notify(data.text, data.type, data.timeout)
+})
