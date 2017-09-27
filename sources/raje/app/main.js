@@ -7,13 +7,15 @@ const electron = require('electron')
 const app = electron.app
 
 global.ROOT = __dirname
+global.IMAGE_TEMP = `${global.ROOT}/img`
+global.draft = true
+
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
   `${global.ROOT}/css`,
   `${global.ROOT}/fonts`,
-  `${global.ROOT}/img`
+  IMAGE_TEMP
 ]
-global.IMAGE_TEMP = global.ASSETS_DIRECTORIES[3]
 
 const {
   BrowserWindow,
@@ -35,7 +37,7 @@ const RAJE_MENU = require('./modules/raje_menu.js')
 const EDITOR_WINDOW = 'editor'
 const SPLASH_WINDOW = 'splash'
 
-const splash = {
+const windows = {
 
   /**
    * Init the windowmanager and open the splash window
@@ -94,6 +96,44 @@ const splash = {
 
     // Set the menu 
     Menu.setApplicationMenu(Menu.buildFromTemplate(RAJE_MENU.getEditorMenu()))
+
+    /**
+     * Catch the close 
+     */
+    windowManager.get(EDITOR_WINDOW).object.on('close', event => {
+
+      // If the document is in draft mode (need to be saved)
+      if (global.draft) {
+
+        // Cancel the close event
+        event.preventDefault()
+
+        // Show the dialog box "the document need to be saved"
+        dialog.showMessageBox({
+          type: 'warning',
+          buttons: ['Save changes', 'Discard changes', 'Cancel, continue editing'],
+          title: 'Unsaved changes',
+          message: 'The article has been changed, do you want to save the changes?',
+          cancelId: 2
+        }, (response) => {
+          switch (response) {
+
+            // The user wants to save the document
+            case 0:
+              // TODO save the document
+              global.draft = false
+              windowManager.get(EDITOR_WINDOW).object.close()
+              break
+
+            // The user doesn't want to save the document
+            case 1:
+              global.draft = false
+              windowManager.get(EDITOR_WINDOW).object.close()
+              break
+          }
+        })
+      }
+    })
   },
 
   /**
@@ -105,7 +145,7 @@ const splash = {
 }
 
 // Event called when the app is ready
-app.on('ready', splash.openSplash)
+app.on('ready', windows.openSplash)
 
 app.on('quit', RAJE_FS.removeImageTempFolder)
 
@@ -116,8 +156,12 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  * Called by the splash window
  */
 ipcMain.on('newArticle', (event, arg) => {
-  splash.openEditor(arg)
-  splash.closeSplash()
+
+  // The document isnt' saved for the first time
+  global.saved = false
+
+  windows.openEditor(arg)
+  windows.closeSplash()
 })
 
 /**
@@ -129,7 +173,7 @@ ipcMain.on('newArticle', (event, arg) => {
  * Called from the renderer process
  */
 ipcMain.on('isAppSync', (event, arg) => {
-  event.returnValue = splash.isApp()
+  event.returnValue = windows.isApp()
 })
 
 /**
