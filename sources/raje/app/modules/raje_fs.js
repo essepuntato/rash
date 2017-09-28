@@ -60,14 +60,44 @@ module.exports = {
     fs.writeFile(`${path}/template.html`, document, (err, res) => {
       if (err) return callback(err)
 
-      this.writeRajeHiddenFile(path, err => {
+      // Copy/rewrite all images
+      this.copyAssetImages(err => {
         if (err) return callback(err)
 
-        return callback(null, 'Hooray! all changes has been saved!')
+        // Write .raje file
+        this.writeRajeHiddenFile(path, err => {
+          if (err) return callback(err)
+
+          return callback(null, 'Hooray! all changes has been saved!')
+        })
       })
-
     })
+  },
 
+  /**
+   * Copy all temporary images
+   */
+  copyAssetImages: function (callback) {
+
+    let destinationFolderImage = `${global.savePath}/img`
+
+    if (fs.existsSync(global.IMAGE_TEMP)) {
+
+      // If the destination folder image doesn't exists
+      if (!fs.existsSync(destinationFolderImage))
+        fs.mkdirpSync(destinationFolderImage)
+
+      fs.readdir(global.IMAGE_TEMP, (err, images) => {
+        if (err) return callback(err)
+
+        images.forEach(function (image) {
+
+          fs.createReadStream(`${global.IMAGE_TEMP}/${image}`).pipe(fs.createWriteStream(`${destinationFolderImage}/${image}`))
+        })
+
+        return callback(null)
+      })
+    }
   },
 
   /**
@@ -84,9 +114,10 @@ module.exports = {
   },
 
   /**
-   * 
+   * Search inside the folder if there is a .raje file
    */
   checkRajeHiddenFile: function (path, callback) {
+
     fs.readdir(path, (err, fileArray) => {
       if (err) return callback(err)
 
@@ -106,22 +137,26 @@ module.exports = {
   },
 
   /**
-   * Save the image in the temporary folder
+   * Save the image in the temporary folder OR in the assets folder
    */
   saveImageTemp: function (image, callback) {
 
-    // If the directory doesn't exist, create it
-    if (!fs.existsSync(global.IMAGE_TEMP))
-      fs.mkdirpSync(global.IMAGE_TEMP)
+    // The folder where images have to be stored
+    let destinationPath = (global.isWrapper) ? global.IMAGE_TEMP : `${global.savePath}/img`
 
-    // Copy (reand and write) the image into the temporary image folder
+    // If the directory doesn't exist, create it
+    if (!fs.existsSync(destinationPath))
+      fs.mkdirpSync(destinationPath)
+
+    // Copy (read and write) the image into the temporary image folder
     fs.readFile(image, (err, data) => {
       if (err) return callback(err)
 
       // Get the image name
       let filename = image.split('/')[image.split('/').length - 1]
+      let destinationFilename = `${destinationPath}/${filename}`
 
-      fs.writeFile(`${global.IMAGE_TEMP}/${filename}`, data, err => {
+      fs.writeFile(destinationFilename, data, err => {
         if (err) return callback(err)
 
         return callback(null, `img/${filename}`)

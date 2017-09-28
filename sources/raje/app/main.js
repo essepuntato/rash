@@ -13,6 +13,10 @@ global.hasChanged
 global.isNew
 global.savePath
 
+// This variable is used to know if the editor have to save
+// images inside the tmp folder or in the RASH package
+global.isWrapper
+
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
   `${global.ROOT}/css`,
@@ -92,6 +96,7 @@ const windows = {
       // Remember that the document is already saved
       global.isNew = false
       global.savePath = localRootPath
+      global.isWrapper = false
 
       // Get the URL to open the editor
       editorWindowUrl = url.format({
@@ -103,7 +108,8 @@ const windows = {
     } else {
 
       // Remember that the document isn't saved yet
-      global.isNew = false
+      global.isNew = true
+      global.isWrapper = true
 
       editorWindowUrl = editorWindowUrl = url.format({
         pathname: path.join(__dirname, TEMPLATE),
@@ -190,9 +196,6 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  */
 ipcMain.on('createArticle', (event, arg) => {
 
-  // The document isnt' saved for the first time
-  global.saved = false
-
   windows.openEditor(null, arg)
   windows.closeSplash()
 })
@@ -215,8 +218,6 @@ ipcMain.on('openArticle', (event, arg) => {
 
     RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
       if (err) return 
-
-      global.saved = true
 
       windows.openEditor(localRootPath, arg)
       windows.closeSplash()
