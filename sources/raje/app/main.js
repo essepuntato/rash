@@ -202,33 +202,34 @@ ipcMain.on('isAppSync', (event, arg) => {
  */
 ipcMain.on('saveAsArticle', (event, arg) => {
 
-  // If the document isn't saved for the first time
-  if (global.isNew) {
-    // Show save dialog here
-    let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
-      defaultPath: arg.title
-    })
+  // Show save dialog here
+  let savePath = dialog.showSaveDialog({
+    title: 'Save as',
+    defaultPath: arg.title,
+    properties: [
+      'openDirectory'
+    ]
+  })
 
-    // If the user select a folder, the article is saved for the first time
-    if (savePath) {
-      RAJE_FS.saveAsArticle(savePath, arg.document, (err, message) => {
-        if (err)
-          return console.log(`Error: ${err}`)
+  // If the user select a folder, the article is saved for the first time
+  if (savePath) {
+    RAJE_FS.saveAsArticle(savePath, arg.document, (err, message) => {
+      if (err)
+        return console.log(`Error: ${err}`)
 
-        // Store important variables to check the save state
-        global.isNew = false
-        global.savePath = savePath
+      // Store important variables to check the save state
+      global.isNew = false
+      global.savePath = savePath
 
-        windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+      windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
 
-        // Notify the client 
-        global.sendNotification({
-          text: message,
-          type: 'success',
-          timeout: 2000
-        })
+      // Notify the client 
+      global.sendNotification({
+        text: message,
+        type: 'success',
+        timeout: 2000
       })
-    }
+    })
   }
 })
 

@@ -42,13 +42,17 @@ module.exports = {
       fs.writeFile(`${path}/template.html`, document, (err, res) => {
         if (err) return callback(err)
 
-        return callback(null, 'Well done! all changes are saved!')
+        this.writeRajeHiddenFile(path, err => {
+          if (err) return callback(err)
+
+          return callback(null, 'Hooray! all changes has been saved!')
+        })
       })
     })
   },
 
   /**
-   * 
+   * This method only updates the template.html file and copy/rewrite the images
    */
   saveArticle: function (path, document, callback) {
 
@@ -56,10 +60,30 @@ module.exports = {
     fs.writeFile(`${path}/template.html`, document, (err, res) => {
       if (err) return callback(err)
 
-      return callback(null, 'Well done! all changes are saved!')
+      this.writeRajeHiddenFile(path, err => {
+        if (err) return callback(err)
+
+        return callback(null, 'Hooray! all changes has been saved!')
+      })
+
     })
 
   },
+
+  /**
+   * Write the hidden RAJE file, to 
+   */
+  writeRajeHiddenFile: function (path, callback) {
+
+    const RAJE_HIDDEN_FILE = '.raje'
+    fs.writeFile(`${path}/${RAJE_HIDDEN_FILE}`, null, (err, res) => {
+
+      if (err) return callback(err)
+
+      return callback(null)
+    })
+  },
+
   /**
    * Save the image in the temporary folder
    */
