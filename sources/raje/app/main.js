@@ -81,17 +81,36 @@ const windows = {
   /**
    * Open the editable template  
    */
-  openEditor: function (size) {
+  openEditor: function (localRootPath, size) {
 
     global.hasChanged = false
-    global.isNew = true
 
-    // Get the URL to open the editor
-    let editorWindowUrl = url.format({
-      pathname: path.join(__dirname, TEMPLATE),
-      protocol: 'file:',
-      slashes: true
-    })
+    // Set the URL of the document
+    let editorWindowUrl
+    if (localRootPath) {
+
+      // Remember that the document is already saved
+      global.isNew = false
+      global.savePath = localRootPath
+
+      // Get the URL to open the editor
+      editorWindowUrl = url.format({
+        pathname: path.join(localRootPath, TEMPLATE),
+        protocol: 'file:',
+        slashes: true
+      })
+
+    } else {
+
+      // Remember that the document isn't saved yet
+      global.isNew = false
+
+      editorWindowUrl = editorWindowUrl = url.format({
+        pathname: path.join(__dirname, TEMPLATE),
+        protocol: 'file:',
+        slashes: true
+      })
+    }
 
     // Open the new window with the size given by the splash window
     windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
@@ -169,13 +188,40 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  * 
  * Called by the splash window
  */
-ipcMain.on('newArticle', (event, arg) => {
+ipcMain.on('createArticle', (event, arg) => {
 
   // The document isnt' saved for the first time
   global.saved = false
 
-  windows.openEditor(arg)
+  windows.openEditor(null, arg)
   windows.closeSplash()
+})
+
+
+/**
+ * 
+ */
+ipcMain.on('openArticle', (event, arg) => {
+
+  // Select the article folder
+  let localRootPath = dialog.showOpenDialog({
+    title: 'Open RASH article',
+    properties: [
+      'openDirectory'
+    ]
+  })[0]
+
+  if (localRootPath) {
+
+    RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
+      if (err) return 
+
+      global.saved = true
+
+      windows.openEditor(localRootPath, arg)
+      windows.closeSplash()
+    })
+  }
 })
 
 /**

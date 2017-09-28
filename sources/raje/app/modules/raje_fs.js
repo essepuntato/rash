@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-
+const RAJE_HIDDEN_FILE = '.raje'
 
 module.exports = {
 
@@ -75,12 +75,33 @@ module.exports = {
    */
   writeRajeHiddenFile: function (path, callback) {
 
-    const RAJE_HIDDEN_FILE = '.raje'
-    fs.writeFile(`${path}/${RAJE_HIDDEN_FILE}`, null, (err, res) => {
+    fs.writeFile(`${path}/${RAJE_HIDDEN_FILE}`, '', (err, res) => {
 
       if (err) return callback(err)
 
       return callback(null)
+    })
+  },
+
+  /**
+   * 
+   */
+  checkRajeHiddenFile: function (path, callback) {
+    fs.readdir(path, (err, fileArray) => {
+      if (err) return callback(err)
+
+      // Control if inside the root folder there is the .raje file
+      let hiddenFileFound = false
+      fileArray.forEach(function (file) {
+        if (file == RAJE_HIDDEN_FILE)
+          hiddenFileFound = true
+      })
+
+      if (hiddenFileFound)
+        return callback(null)
+
+      else
+        return callback('Error, this is not a RAJE file')
     })
   },
 
