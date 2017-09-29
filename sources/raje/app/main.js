@@ -100,7 +100,7 @@ const windows = {
 
       // Get the URL to open the editor
       editorWindowUrl = url.format({
-        pathname: path.join(localRootPath, TEMPLATE),
+        pathname: localRootPath,
         protocol: 'file:',
         slashes: true
       })
@@ -230,22 +230,23 @@ ipcMain.on('createArticle', (event, arg) => {
  */
 ipcMain.on('openArticle', (event, arg) => {
 
-  // Select the article folder
+  // Select the article index
   let localRootPath = dialog.showOpenDialog({
     title: 'Open RASH article',
     properties: [
-      'openDirectory'
-    ]
-  })[0]
+      'openFile'
+    ],
+    filters: [{
+      name: 'HTML',
+      extensions: ['html']
+    }]
+  })
 
   if (localRootPath) {
 
-    RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
-      if (err) return
-
-      windows.openEditor(localRootPath, arg)
-      windows.closeSplash()
-    })
+    // Open the first element of what the dialog returns
+    windows.openEditor(localRootPath[0], arg)
+    windows.closeSplash()
   }
 })
 
