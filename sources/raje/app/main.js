@@ -183,8 +183,20 @@ const windows = {
   }
 }
 
-// Event called when the app is ready
+/**
+ * Event called when the app is ready
+ */
 app.on('ready', windows.openSplash)
+
+/**
+ * This event is called on OSX when the user click on icon in the dock
+ */
+app.on('activate', (event, hasVisibleWindows) => {
+
+  // If there aren't any open windows
+  if (!hasVisibleWindows)
+    windows.openSplash()
+})
 
 /**
  * On OS X it is common for applications and their menu bar
@@ -195,6 +207,8 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
+
+
 
 app.on('quit', RAJE_FS.removeImageTempFolder)
 
