@@ -24,6 +24,9 @@ global.ASSETS_DIRECTORIES = [
   IMAGE_TEMP
 ]
 
+global.TEMPLATE = 'index.html'
+global.SPLASH = 'splash.html'
+
 const {
   BrowserWindow,
   ipcMain,
@@ -34,9 +37,6 @@ const {
 const url = require('url')
 const path = require('path')
 const windowManager = require('electron-window-manager')
-
-const TEMPLATE = 'template.html'
-const SPLASH = 'splash.html'
 
 const RAJE_FS = require('./modules/raje_fs.js')
 const RAJE_MENU = require('./modules/raje_menu.js')
@@ -97,6 +97,8 @@ const windows = {
       global.isNew = false
       global.savePath = localRootPath
       global.isWrapper = false
+
+      // TODO check if the document has validated RASH content
 
       // Get the URL to open the editor
       editorWindowUrl = url.format({

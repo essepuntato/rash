@@ -39,7 +39,7 @@ module.exports = {
       })
 
       // Create the template file
-      fs.writeFile(`${path}/template.html`, document, (err, res) => {
+      fs.writeFile(`${path}/${global.TEMPLATE}`, document, (err, res) => {
         if (err) return callback(err)
 
         this.writeRajeHiddenFile(path, err => {
@@ -52,12 +52,12 @@ module.exports = {
   },
 
   /**
-   * This method only updates the template.html file and copy/rewrite the images
+   * This method only updates the index.html file and copy/rewrite the images
    */
   saveArticle: function (path, document, callback) {
 
-    // Overwrite the template.html with the document
-    fs.writeFile(`${path}/template.html`, document, err => {
+    // Overwrite the index.html with the document
+    fs.writeFile(`${path}/${global.TEMPLATE}`, document, err => {
       if (err) return callback(err)
 
       // Copy/rewrite all images
