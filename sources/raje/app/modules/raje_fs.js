@@ -57,7 +57,7 @@ module.exports = {
   saveArticle: function (path, document, callback) {
 
     // Overwrite the template.html with the document
-    fs.writeFile(`${path}/template.html`, document, (err, res) => {
+    fs.writeFile(`${path}/template.html`, document, err => {
       if (err) return callback(err)
 
       // Copy/rewrite all images
@@ -98,6 +98,7 @@ module.exports = {
         return callback(null)
       })
     }
+    return callback(null)
   },
 
   /**
@@ -105,12 +106,24 @@ module.exports = {
    */
   writeRajeHiddenFile: function (path, callback) {
 
-    fs.writeFile(`${path}/${RAJE_HIDDEN_FILE}`, '', (err, res) => {
+    // Check if the hidden .raje file exists
+    this.checkRajeHiddenFile(path, (err) => {
 
-      if (err) return callback(err)
+      // If there is an error, the file doesn't exist
+      if (err)
+
+        // Write the hidden .raje file
+        return fs.writeFile(`${path}/${RAJE_HIDDEN_FILE}`, '', (err, res) => {
+
+          if (err) return callback(err)
+
+          return callback(null)
+        })
 
       return callback(null)
     })
+
+
   },
 
   /**
@@ -132,7 +145,7 @@ module.exports = {
         return callback(null)
 
       else
-        return callback('Error, this is not a RAJE file')
+        return callback('Error, this is not a hidden .raje file')
     })
   },
 
