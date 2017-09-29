@@ -3,7 +3,7 @@
  * Initilize TinyMCE editor with all required options
  */
 
- // Invisible space constants
+// Invisible space constants
 const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
@@ -14,332 +14,372 @@ const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
 const TINYMCE_TOOLBAR_HEIGTH = 76
 
-const {
-  ipcRenderer,
-  webFrame
-} = require('electron')
+let ipcRenderer, webFrame
 
-/**
- * Initilise TinyMCE 
- */
-$(document).ready(function () {
+if (IS_APP) {
 
-  // Override the margin botton given by RASH for the footer
-  $('body').css({
-    'margin-bottom': 0
-  })
+  ipcRenderer = require('electron').ipcRenderer
+  webFrame = require('electron').webFrame
+  
+  /**
+   * Initilise TinyMCE 
+   */
+  $(document).ready(function () {
 
-  //hide footer
-  $('footer.footer').hide()
+    // Override the margin botton given by RASH for the footer
+    $('body').css({
+      'margin-bottom': 0
+    })
 
-  //attach whole body inside a placeholder div
-  $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
+    //hide footer
+    $('footer.footer').hide()
 
-  // 
-  setNonEditableHeader()
+    //attach whole body inside a placeholder div
+    $('body').html(`<div id="raje_root">${$('body').html()}</div>`)
 
-  tinymce.init({
+    // 
+    setNonEditableHeader()
 
-    // Select the element to wrap
-    selector: '#raje_root',
+    tinymce.init({
 
-    // Set window size
-    height: window.innerHeight - TINYMCE_TOOLBAR_HEIGTH,
+      // Select the element to wrap
+      selector: '#raje_root',
 
-    // Set the styles of the content wrapped inside the element
-    content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
+      // Set window size
+      height: window.innerHeight - TINYMCE_TOOLBAR_HEIGTH,
 
-    // Set plugins
-    plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
+      // Set the styles of the content wrapped inside the element
+      content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
-    // Remove menubar
-    menubar: false,
+      // Set plugins
+      plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
 
-    // Custom toolbar
-    toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
+      // Remove menubar
+      menubar: false,
 
-    // Setup full screen on init
-    setup: function (editor) {
+      // Custom toolbar
+      toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
 
-      // Set fullscreen 
-      editor.on('init', function (e) {
+      // Setup full screen on init
+      setup: function (editor) {
 
-        editor.execCommand('mceFullScreen')
+        // Set fullscreen 
+        editor.on('init', function (e) {
 
-        // Move caret at the first h1 element of main section
-        // Or right after heading
-        tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
-      })
+          editor.execCommand('mceFullScreen')
 
-      editor.on('keyDown', function (e) {
-
-        // Prevent shift+enter
-        if (e.keyCode == 13 && e.shiftKey) {
-          e.preventDefault()
-        }
-      })
-
-      // Prevent span 
-      editor.on('nodeChange', function (e) {
-
-        let selectedElement = $(tinymce.activeEditor.selection.getNode())
-
-        // Move caret to first heading if is after or before not editable header
-        if (selectedElement.is('p') && (selectedElement.next().is(HEADER_SELECTOR) || (selectedElement.prev().is(HEADER_SELECTOR) && tinymce.activeEditor.dom.select(FIRST_HEADING).length)))
+          // Move caret at the first h1 element of main section
+          // Or right after heading
           tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
+        })
 
-        // If the current element isn't inside header, only in section this is permitted
-        if (selectedElement.parents('section').length) {
+        editor.on('keyDown', function (e) {
 
-          if (selectedElement.is('span#_mce_caret[data-mce-bogus]') || selectedElement.parent().is('span#_mce_caret[data-mce-bogus]')) {
-
-            // Remove span normally created with bold
-            if (selectedElement.parent().is('span#_mce_caret[data-mce-bogus]'))
-              selectedElement = selectedElement.parent()
-
-            let bm = tinymce.activeEditor.selection.getBookmark()
-            selectedElement.replaceWith(selectedElement.html())
-            tinymce.activeEditor.selection.moveToBookmark(bm)
+          // Prevent shift+enter
+          if (e.keyCode == 13 && e.shiftKey) {
+            e.preventDefault()
           }
+        })
+
+        // Prevent span 
+        editor.on('nodeChange', function (e) {
+
+          let selectedElement = $(tinymce.activeEditor.selection.getNode())
+
+          // Move caret to first heading if is after or before not editable header
+          if (selectedElement.is('p') && (selectedElement.next().is(HEADER_SELECTOR) || (selectedElement.prev().is(HEADER_SELECTOR) && tinymce.activeEditor.dom.select(FIRST_HEADING).length)))
+            tinymce.activeEditor.selection.setCursorLocation(tinymce.activeEditor.dom.select(FIRST_HEADING)[0], 0)
+
+          // If the current element isn't inside header, only in section this is permitted
+          if (selectedElement.parents('section').length) {
+
+            if (selectedElement.is('span#_mce_caret[data-mce-bogus]') || selectedElement.parent().is('span#_mce_caret[data-mce-bogus]')) {
+
+              // Remove span normally created with bold
+              if (selectedElement.parent().is('span#_mce_caret[data-mce-bogus]'))
+                selectedElement = selectedElement.parent()
+
+              let bm = tinymce.activeEditor.selection.getBookmark()
+              selectedElement.replaceWith(selectedElement.html())
+              tinymce.activeEditor.selection.moveToBookmark(bm)
+            }
+          }
+
+          // Check if a change in the structure is made
+          // Then notify the backend 
+          if (tinymce.activeEditor.undoManager.hasUndo())
+            updateDocumentState(true)
+        })
+
+        // Update saved content on undo and redo events
+        editor.on('Undo', function (e) {
+          tinymce.triggerSave()
+        })
+
+        editor.on('Redo', function (e) {
+          tinymce.triggerSave()
+        })
+      },
+
+      // Set default target
+      default_link_target: "_blank",
+
+      // Prepend protocol if the link starts with www
+      link_assume_external_targets: true,
+
+      // Hide target list
+      target_list: false,
+
+      // Hide title
+      link_title: false,
+
+      // Set formats
+      formats: {
+        inline_quote: {
+          inline: 'q'
         }
+      },
 
-      })
+      // Remove "powered by tinymce"
+      branding: false,
 
-      // Update saved content on undo and redo events
-      editor.on('Undo', function (e) {
-        tinymce.triggerSave()
-      })
+      // Prevent auto br on element insert
+      apply_source_formatting: false,
 
-      editor.on('Redo', function (e) {
-        tinymce.triggerSave()
-      })
-    },
+      // Prevent non editable object resize
+      object_resizing: false,
 
-    // Set default target
-    default_link_target: "_blank",
+      // Update the table popover layout
+      table_toolbar: "tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
 
-    // Prepend protocol if the link starts with www
-    link_assume_external_targets: true,
+      image_advtab: true,
 
-    // Hide target list
-    target_list: false,
+      paste_block_drop: true,
 
-    // Hide title
-    link_title: false,
+      extended_valid_elements: "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]",
 
-    // Set formats
-    formats: {
-      inline_quote: {
-        inline: 'q'
-      }
-    },
+      formula: {
+        path: 'node_modules/tinymce-formula/'
+      },
 
-    // Remove "powered by tinymce"
-    branding: false,
-
-    // Prevent auto br on element insert
-    apply_source_formatting: false,
-
-    // Prevent non editable object resize
-    object_resizing: false,
-
-    // Update the table popover layout
-    table_toolbar: "tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
-
-    image_advtab: true,
-
-    paste_block_drop: true,
-
-    extended_valid_elements: "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]",
-
-    formula: {
-      path: 'node_modules/tinymce-formula/'
-    },
-
-    cleanup_on_startup: false,
-    trim_span_elements: false,
-    verify_html: false,
-    cleanup: false,
-    convert_urls: false
+      cleanup_on_startup: false,
+      trim_span_elements: false,
+      verify_html: false,
+      cleanup: false,
+      convert_urls: false
+    })
   })
-})
 
-/**
- * Open and close the headings dropdown
- */
-$(window).load(function() {
+  /**
+   * Open and close the headings dropdown
+   */
+  $(window).load(function () {
 
-  // Open and close menu headings Näive way
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-  $(`div[aria-label='heading']`).find('button').trigger('click')
-})
+    // Open and close menu headings Näive way
+    $(`div[aria-label='heading']`).find('button').trigger('click')
+    $(`div[aria-label='heading']`).find('button').trigger('click')
+  })
 
-/**
- * Update content in the iframe, with the one stored by tinymce
- * And save/restore the selection
- */
-function updateIframeFromSavedContent() {
 
-  // Save the bookmark 
-  let bookmark = tinymce.activeEditor.selection.getBookmark(2, true)
+  /**
+   * Update content in the iframe, with the one stored by tinymce
+   * And save/restore the selection
+   */
+  function updateIframeFromSavedContent() {
 
-  // Update iframe content
-  tinymce.activeEditor.setContent($('#raje_root').html())
+    // Save the bookmark 
+    let bookmark = tinymce.activeEditor.selection.getBookmark(2, true)
 
-  // Restore the bookmark 
-  tinymce.activeEditor.selection.moveToBookmark(bookmark)
-}
+    // Update iframe content
+    tinymce.activeEditor.setContent($('#raje_root').html())
 
-/**
- * Accept a js object that exists in frame
- * @param {*} element 
- */
-function moveCaret(element, toStart) {
-  tinymce.activeEditor.selection.select(element)
-  tinymce.activeEditor.selection.collapse(toStart)
-}
+    // Restore the bookmark 
+    tinymce.activeEditor.selection.moveToBookmark(bookmark)
+  }
 
-/**
- * 
- * @param {*} element 
- */
-function moveCursorToEnd(element) {
+  /**
+   * Accept a js object that exists in frame
+   * @param {*} element 
+   */
+  function moveCaret(element, toStart) {
+    tinymce.activeEditor.selection.select(element)
+    tinymce.activeEditor.selection.collapse(toStart)
+  }
 
-  let heading = element
-  let offset = 0
+  /**
+   * 
+   * @param {*} element 
+   */
+  function moveCursorToEnd(element) {
 
-  if (heading.contents().length) {
+    let heading = element
+    let offset = 0
 
-    heading = heading.contents().last()
+    if (heading.contents().length) {
 
-    // If the last node is a strong,em,q etc. we have to take its text 
-    if (heading[0].nodeType != 3)
       heading = heading.contents().last()
 
-    offset = heading[0].wholeText.length
-  }
+      // If the last node is a strong,em,q etc. we have to take its text 
+      if (heading[0].nodeType != 3)
+        heading = heading.contents().last()
 
-  tinymce.activeEditor.focus()
-  tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
-}
-
-/**
- * 
- * @param {*} element 
- */
-function moveCursorToStart(element) {
-
-  let heading = element
-  let offset = 0
-
-  tinymce.activeEditor.focus()
-  tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
-}
-
-
-/**
- * Create custom into notification
- * @param {*} text 
- * @param {*} timeout 
- */
-function notify(text, type, timeout) {
-
-  // Display only one notification, blocking all others
-  if (tinymce.activeEditor.notificationManager.getNotifications().length == 0) {
-
-    let notify = {
-      text: text,
-      type: type ? type : 'info',
-      timeout: timeout ? timeout : 1000
+      offset = heading[0].wholeText.length
     }
 
-    tinymce.activeEditor.notificationManager.open(notify)
+    tinymce.activeEditor.focus()
+    tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
   }
-}
 
-/**
- * 
- * @param {*} elementSelector 
- */
-function scrollTo(elementSelector) {
-  $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
-}
+  /**
+   * 
+   * @param {*} element 
+   */
+  function moveCursorToStart(element) {
 
-/**
- * 
- */
-function getSuccessiveElementId(elementSelector, SUFFIX) {
+    let heading = element
+    let offset = 0
 
-  let lastId = 0
+    tinymce.activeEditor.focus()
+    tinymce.activeEditor.selection.setCursorLocation(heading[0], offset)
+  }
 
-  $(elementSelector).each(function () {
-    let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
-    lastId = currentId > lastId ? currentId : lastId
+
+  /**
+   * Create custom into notification
+   * @param {*} text 
+   * @param {*} timeout 
+   */
+  function notify(text, type, timeout) {
+
+    // Display only one notification, blocking all others
+    if (tinymce.activeEditor.notificationManager.getNotifications().length == 0) {
+
+      let notify = {
+        text: text,
+        type: type ? type : 'info',
+        timeout: timeout ? timeout : 1000
+      }
+
+      tinymce.activeEditor.notificationManager.open(notify)
+    }
+  }
+
+  /**
+   * 
+   * @param {*} elementSelector 
+   */
+  function scrollTo(elementSelector) {
+    $(tinymce.activeEditor.getBody()).find(elementSelector).get(0).scrollIntoView();
+  }
+
+  /**
+   * 
+   */
+  function getSuccessiveElementId(elementSelector, SUFFIX) {
+
+    let lastId = 0
+
+    $(elementSelector).each(function () {
+      let currentId = parseInt($(this).attr('id').replace(SUFFIX, ''))
+      lastId = currentId > lastId ? currentId : lastId
+    })
+
+    return `${SUFFIX}${lastId+1}`
+  }
+
+  /**
+   * 
+   */
+  function headingDimension() {
+    $('h1,h2,h3,h4,h5,h6').each(function () {
+
+      if (!$(this).parents(HEADER_SELECTOR).length) {
+        var counter = 0;
+        $(this).parents("section").each(function () {
+          if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
+            counter++;
+          }
+        });
+        $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
+      }
+    });
+  }
+
+  /**
+   * 
+   */
+  function markTinyMCE() {
+    $('div[id^=mceu_]').attr('data-rash-original-content', '')
+  }
+
+  /**
+   * 
+   */
+  function setNonEditableHeader() {
+    $(HEADER_SELECTOR).addClass('mceNonEditable')
+  }
+
+  /**
+   * 
+   */
+  function checkIfApp() {
+    return ipcRenderer.sendSync('isAppSync')
+  }
+
+  /**
+   * 
+   */
+  function selectImage() {
+    return ipcRenderer.sendSync('selectImageSync')
+  }
+
+
+
+  /**
+   * Send a message to the backend, notify the structural change
+   * 
+   * If the document is draft state = true
+   * If the document is saved state = false
+   */
+  function updateDocumentState(state) {
+    return ipcRenderer.send('updateDocumentState', state)
+  }
+
+  /**
+   * 
+   */
+  function saveAsArticle(options) {
+    return ipcRenderer.send('saveAsArticle', options)
+  }
+
+  /**
+   * 
+   */
+  function saveArticle(options) {
+    return ipcRenderer.send('saveArticle', options)
+  }
+
+  /**
+   * Start the save as process getting the data and sending it
+   * to the main process
+   */
+  ipcRenderer.on('executeSaveAs', (event, data) => {
+    saveManager.saveAs()
   })
 
-  return `${SUFFIX}${lastId+1}`
-}
+  /**
+   * Start the save process getting the data and sending it
+   * to the main process
+   */
+  ipcRenderer.on('executeSave', (event, data) => {
+    saveManager.save()
+  })
 
-/**
- * 
- */
-function headingDimension() {
-  $('h1,h2,h3,h4,h5,h6').each(function () {
 
-    if (!$(this).parents(HEADER_SELECTOR).length) {
-      var counter = 0;
-      $(this).parents("section").each(function () {
-        if ($(this).children("h1,h2,h3,h4,h5,h6").length > 0) {
-          counter++;
-        }
-      });
-      $(this).replaceWith("<h" + counter + ">" + $(this).html() + "</h" + counter + ">")
-    }
-  });
-}
-
-/**
- * 
- */
-function markTinyMCE() {
-  $('div[id^=mceu_]').attr('data-rash-original-content', '')
-}
-
-/**
- * 
- */
-function setNonEditableHeader() {
-  $(HEADER_SELECTOR).addClass('mceNonEditable')
-}
-
-// Electron app methods
-
-let IS_APP
-
-try {
-
-  IS_APP = checkIfApp()
-} catch (exception) {
-  console.log(exception)
-  IS_APP = false
-}
-
-console.log(IS_APP)
-
-/**
- * 
- */
-function checkIfApp() {
-  return ipcRenderer.sendSync('isAppSync')
-}
-
-/**
- * 
- */
-function saveDocument(options) {
-  return ipcRenderer.sendSync('saveDocumentSync', options)
-}
-
-function selectImage(){
-  return ipcRenderer.sendSync('selectImageSync')
+  /**
+   * 
+   */
+  ipcRenderer.on('notify', (event, data) => {
+    notify(data.text, data.type, data.timeout)
+  })
 }

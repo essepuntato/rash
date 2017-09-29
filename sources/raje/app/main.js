@@ -7,13 +7,22 @@ const electron = require('electron')
 const app = electron.app
 
 global.ROOT = __dirname
+global.IMAGE_TEMP = `${global.ROOT}/img`
+
+global.hasChanged
+global.isNew
+global.savePath
+
+// This variable is used to know if the editor have to save
+// images inside the tmp folder or in the RASH package
+global.isWrapper
+
 global.ASSETS_DIRECTORIES = [
   `${global.ROOT}/js`,
   `${global.ROOT}/css`,
   `${global.ROOT}/fonts`,
-  `${global.ROOT}/img`
+  IMAGE_TEMP
 ]
-global.IMAGE_TEMP = global.ASSETS_DIRECTORIES[3]
 
 const {
   BrowserWindow,
@@ -35,7 +44,7 @@ const RAJE_MENU = require('./modules/raje_menu.js')
 const EDITOR_WINDOW = 'editor'
 const SPLASH_WINDOW = 'splash'
 
-const splash = {
+const windows = {
 
   /**
    * Init the windowmanager and open the splash window
@@ -76,14 +85,38 @@ const splash = {
   /**
    * Open the editable template  
    */
-  openEditor: function (size) {
+  openEditor: function (localRootPath, size) {
 
-    // Get the URL to open the editor
-    let editorWindowUrl = url.format({
-      pathname: path.join(__dirname, TEMPLATE),
-      protocol: 'file:',
-      slashes: true
-    })
+    global.hasChanged = false
+
+    // Set the URL of the document
+    let editorWindowUrl
+    if (localRootPath) {
+
+      // Remember that the document is already saved
+      global.isNew = false
+      global.savePath = localRootPath
+      global.isWrapper = false
+
+      // Get the URL to open the editor
+      editorWindowUrl = url.format({
+        pathname: path.join(localRootPath, TEMPLATE),
+        protocol: 'file:',
+        slashes: true
+      })
+
+    } else {
+
+      // Remember that the document isn't saved yet
+      global.isNew = true
+      global.isWrapper = true
+
+      editorWindowUrl = editorWindowUrl = url.format({
+        pathname: path.join(__dirname, TEMPLATE),
+        protocol: 'file:',
+        slashes: true
+      })
+    }
 
     // Open the new window with the size given by the splash window
     windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
@@ -92,8 +125,46 @@ const splash = {
       resizable: true
     })
 
-    // Set the menu 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(RAJE_MENU.getEditorMenu()))
+    // Update the app menu
+    windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+
+    /**
+     * Catch the close event
+     */
+    windowManager.get(EDITOR_WINDOW).object.on('close', event => {
+
+      // If the document is in hasChanged mode (need to be saved)
+      if (global.hasChanged) {
+
+        // Cancel the close event
+        event.preventDefault()
+
+        // Show the dialog box "the document need to be saved"
+        dialog.showMessageBox({
+          type: 'warning',
+          buttons: ['Save changes', 'Discard changes', 'Cancel, continue editing'],
+          title: 'Unsaved changes',
+          message: 'The article has been changed, do you want to save the changes?',
+          cancelId: 2
+        }, (response) => {
+          switch (response) {
+
+            // The user wants to save the document
+            case 0:
+              // TODO save the document
+              global.hasChanged = false
+              windowManager.get(EDITOR_WINDOW).object.close()
+              break
+
+              // The user doesn't want to save the document
+            case 1:
+              global.hasChanged = false
+              windowManager.get(EDITOR_WINDOW).object.close()
+              break
+          }
+        })
+      }
+    })
   },
 
   /**
@@ -101,11 +172,29 @@ const splash = {
    */
   isApp: function () {
     return true
+  },
+
+  /**
+   * 
+   */
+  updateEditorMenu: function (menu) {
+    // Set the menu 
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
   }
 }
 
 // Event called when the app is ready
-app.on('ready', splash.openSplash)
+app.on('ready', windows.openSplash)
+
+/**
+ * On OS X it is common for applications and their menu bar
+ * to stay active until the user quits explicitly with Cmd + Q
+ */
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
 
 app.on('quit', RAJE_FS.removeImageTempFolder)
 
@@ -115,9 +204,35 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  * 
  * Called by the splash window
  */
-ipcMain.on('newArticle', (event, arg) => {
-  splash.openEditor(arg)
-  splash.closeSplash()
+ipcMain.on('createArticle', (event, arg) => {
+
+  windows.openEditor(null, arg)
+  windows.closeSplash()
+})
+
+
+/**
+ * 
+ */
+ipcMain.on('openArticle', (event, arg) => {
+
+  // Select the article folder
+  let localRootPath = dialog.showOpenDialog({
+    title: 'Open RASH article',
+    properties: [
+      'openDirectory'
+    ]
+  })[0]
+
+  if (localRootPath) {
+
+    RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
+      if (err) return
+
+      windows.openEditor(localRootPath, arg)
+      windows.closeSplash()
+    })
+  }
 })
 
 /**
@@ -129,7 +244,7 @@ ipcMain.on('newArticle', (event, arg) => {
  * Called from the renderer process
  */
 ipcMain.on('isAppSync', (event, arg) => {
-  event.returnValue = splash.isApp()
+  event.returnValue = windows.isApp()
 })
 
 /**
@@ -142,49 +257,81 @@ ipcMain.on('isAppSync', (event, arg) => {
  * 
  * Called from the renderer process
  */
-ipcMain.on('saveDocumentSync', (event, arg) => {
+ipcMain.on('saveAsArticle', (event, arg) => {
 
   // Show save dialog here
-  let savePath = dialog.showSaveDialog(windowManager.get(EDITOR_WINDOW), {
-    defaultPath: arg.title
+  let savePath = dialog.showSaveDialog({
+    title: 'Save as',
+    defaultPath: arg.title,
+    properties: [
+      'openDirectory'
+    ]
   })
 
   // If the user select a folder, the article is saved for the first time
   if (savePath) {
-    RAJE_FS.saveArticleFirstTime(savePath, arg.document, (err, message) => {
+    RAJE_FS.saveAsArticle(savePath, arg.document, (err, message) => {
       if (err)
-        return event.returnValue = `Error: ${err}`
+        return console.log(`Error: ${err}`)
 
-      // Create the URL with the right protocol
-      let editorWindowUrl = url.format({
-        pathname: path.join(savePath, TEMPLATE),
-        protocol: 'file:',
-        slashes: true
+      // Store important variables to check the save state
+      global.isNew = false
+      global.savePath = savePath
+
+      windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+
+      // Notify the client 
+      global.sendNotification({
+        text: message,
+        type: 'success',
+        timeout: 2000
       })
-
-      //Update the rendered HTML file
-      //windowManager.get(EDITOR_WINDOW).loadURL(editorWindowUrl)
-
-      event.returnValue = message
     })
-  } else
-    event.returnValue = null
+  }
+})
+
+/**
+ * 
+ */
+ipcMain.on('saveArticle', (event, arg) => {
+
+  // If the document has been saved before
+  if (!global.isNew && typeof global.savePath != "undefined") {
+    RAJE_FS.saveArticle(global.savePath, arg.document, (err, message) => {
+      if (err) return console.log(err)
+
+      // Notify the client
+      global.sendNotification({
+        text: message,
+        type: 'success',
+        timeout: 2000
+      })
+    })
+  }
 })
 
 
 /**
+ * This method is used to select the image to import in the document
  * 
+ * When the image is selected it's saved inside the image temporary folder 
+ * (which is deleted when the app is closed)
  */
 ipcMain.on('selectImageSync', (event, arg) => {
 
   // Show the open dialog with options
   let imagePath = dialog.showOpenDialog({
-    filters: ['jpg', 'png', 'gif']
-  })[0]
+    filters: [{
+      name: 'Images',
+      extensions: ['jpg', 'png']
+    }]
+  })
 
-  if (imagePath) {
+  // If a file is selected
+  if (imagePath[0]) {
 
-    RAJE_FS.saveImageTemp(imagePath, (err, result) => {
+    // Save the image in the temporary folder
+    RAJE_FS.saveImageTemp(imagePath[0], (err, result) => {
 
       if (err) return event.returnValue = err
 
@@ -193,3 +340,33 @@ ipcMain.on('selectImageSync', (event, arg) => {
   } else
     return event.returnValue = null
 })
+
+/**
+ * 
+ */
+ipcMain.on('updateDocumentState', (event, arg) => {
+  global.hasChanged = arg
+})
+
+/**
+ * Send a message to the renderer process
+ * Start the save as process
+ */
+global.executeSaveAs = function () {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSaveAs')
+}
+
+/**
+ * Send a message to the renderer process
+ * Start the save process
+ */
+global.executeSave = function () {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
+}
+
+/**
+ * 
+ */
+global.sendNotification = function (message) {
+  windowManager.get(EDITOR_WINDOW).object.webContents.send('notify', message)
+}

@@ -6,97 +6,11 @@ module.exports = {
   /**
    * 
    */
-  getEditorMenu: function () {
+  getEditorMenu: function (canSave) {
     const template = [
-
-      // Edit
-      {
-        label: 'Edit',
-        submenu: [{
-            role: 'undo'
-          },
-          {
-            role: 'redo'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'cut'
-          },
-          {
-            role: 'copy'
-          },
-          {
-            role: 'paste'
-          },
-          {
-            role: 'pasteandmatchstyle'
-          },
-          {
-            role: 'delete'
-          },
-          {
-            role: 'selectall'
-          }
-        ]
-      },
-
-      // View
-      {
-        label: 'View',
-        submenu: [{
-            role: 'reload'
-          },
-          {
-            role: 'forcereload'
-          },
-          {
-            role: 'toggledevtools'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'resetzoom'
-          },
-          {
-            role: 'zoomin'
-          },
-          {
-            role: 'zoomout'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            role: 'togglefullscreen'
-          }
-        ]
-      },
-
-      // Window
-      {
-        role: 'window',
-        submenu: [{
-            role: 'minimize'
-          },
-          {
-            role: 'close'
-          }
-        ]
-      },
-
-      // Help
-      {
-        role: 'help',
-        submenu: [{
-          label: 'Learn More',
-          click() {
-            require('electron').shell.openExternal('https://electron.atom.io')
-          }
-        }]
-      }
+      this.getTabFile(canSave),
+      this.getTabView(),
+      this.getTabHelp()
     ]
 
     if (process.platform === 'darwin') {
@@ -132,41 +46,134 @@ module.exports = {
           }
         ]
       })
+    }
 
-      // Edit menu
-      template[1].submenu.push({
+    return template
+  },
+
+  /**
+   * 
+   */
+  getTabFile: function (canSave) {
+    return {
+      label: 'File',
+      submenu: [{
+        label: 'New'
+      }, {
+        label: 'Open...'
+      }, {
+        label: 'Recents',
+        submenu: [{
+          label: 'rencent'
+        }]
+      }, {
         type: 'separator'
       }, {
-        label: 'Speech',
-        submenu: [{
-            role: 'startspeaking'
-          },
-          {
-            role: 'stopspeaking'
-          }
-        ]
-      })
+        label: 'Save as...',
+        accelerator: 'CmdOrCtrl+Shift+S',
+        click: () => {
+          global.executeSaveAs()
+        }
+      }, {
+        label: 'Save',
+        accelerator: 'CmdOrCtrl+S',
+        enabled: canSave,
+        click: () => {
+          global.executeSave()
+        }
+      }, {
+        label: 'Close'
+      }]
+    }
+  },
 
-      // Window menu
-      template[3].submenu = [{
-          role: 'close'
+  /**
+   * 
+   */
+  getTabView: function () {
+    return {
+      label: 'View',
+      submenu: [{
+          role: 'reload'
         },
         {
-          role: 'minimize'
+          role: 'forcereload'
         },
         {
-          role: 'zoom'
+          role: 'toggledevtools'
         },
         {
           type: 'separator'
         },
         {
-          role: 'front'
+          role: 'resetzoom'
+        },
+        {
+          role: 'zoomin'
+        },
+        {
+          role: 'zoomout'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'togglefullscreen'
         }
       ]
     }
+  },
 
-    return template
+  /**
+   * 
+   */
+  getTabEdit: function () {
+    return {
+      label: 'Edit',
+      submenu: [{
+          role: 'undo'
+        },
+        {
+          role: 'redo'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'cut'
+        },
+        {
+          role: 'copy'
+        },
+        {
+          role: 'paste'
+        },
+        {
+          role: 'pasteandmatchstyle'
+        },
+        {
+          role: 'delete'
+        },
+        {
+          role: 'selectall'
+        }
+      ]
+    }
+  },
+
+  /**
+   * 
+   */
+  getTabHelp: function () {
+    return {
+      role: 'help',
+      submenu: [{
+        label: 'Learn More',
+        click() {
+          require('electron').shell.openExternal('https://electron.atom.io')
+        }
+      }]
+    }
   },
 
   /**

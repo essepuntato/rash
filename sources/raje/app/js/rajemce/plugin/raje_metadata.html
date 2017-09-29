@@ -35,7 +35,7 @@
 
   <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 
-  <script src="../../../node_modules/tinymce/tinymce.min.js">
+  <script src="../../tinymce/tinymce.min.js">
   </script>
 
 </head>
@@ -340,8 +340,6 @@
             }
 
             if ($(this).find('.txtAuthorAffiliation').length) {
-
-              console.log($(this).find('.txtAuthorAffiliation'))
 
               $(this).find('.txtAuthorAffiliation').each(function () {
                 author.affiliations.push($(this).val().trim().replace(/\u200B/g, ''))

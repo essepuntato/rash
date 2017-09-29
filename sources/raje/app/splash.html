@@ -55,7 +55,7 @@
           </a>
 
           <a class="list-group-item" id="btnOpenArticle">
-            <p class="list-group-item-text">Open RASH article</p>
+            <p class="list-group-item-text">Open existing RASH article</p>
           </a>
 
           <a class="list-group-item disabled" id="btnCloneArticle">
@@ -83,6 +83,13 @@
   <script src="js/bootstrap.min.js"></script>
 
   <script>
+    function getWindowSize() {
+      return {
+        width: screen.width,
+        height: screen.height
+      }
+    }
+
     $(document).ready(function () {
       const {
         ipcRenderer
@@ -90,10 +97,12 @@
 
       $('#btnCreateArticle').on('click', function () {
 
-        ipcRenderer.send('newArticle', {
-          width: screen.width,
-          height: screen.height
-        })
+        ipcRenderer.send('createArticle', getWindowSize())
+      })
+
+      $('#btnOpenArticle').on('click', function () {
+
+        ipcRenderer.send('openArticle', getWindowSize())
       })
     })
   </script>
