@@ -14,20 +14,13 @@ const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
 const TINYMCE_TOOLBAR_HEIGTH = 76
 
-let IS_APP = true
-
 let ipcRenderer, webFrame
 
-try {
+if (IS_APP) {
 
   ipcRenderer = require('electron').ipcRenderer
   webFrame = require('electron').webFrame
-} catch (exception) {
-  IS_APP = false
-}
-
-
-if (IS_APP) {
+  
   /**
    * Initilise TinyMCE 
    */
