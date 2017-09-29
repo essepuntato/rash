@@ -186,6 +186,16 @@ const windows = {
 // Event called when the app is ready
 app.on('ready', windows.openSplash)
 
+/**
+ * On OS X it is common for applications and their menu bar
+ * to stay active until the user quits explicitly with Cmd + Q
+ */
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
 app.on('quit', RAJE_FS.removeImageTempFolder)
 
 /**
@@ -217,7 +227,7 @@ ipcMain.on('openArticle', (event, arg) => {
   if (localRootPath) {
 
     RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
-      if (err) return 
+      if (err) return
 
       windows.openEditor(localRootPath, arg)
       windows.closeSplash()
