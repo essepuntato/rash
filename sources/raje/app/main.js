@@ -172,7 +172,7 @@ const windows = {
   /**
    * Return true to let know that the client has Electron behind
    */
-  isApp: function () {
+  hasBackend: function () {
     return true
   },
 
@@ -260,8 +260,8 @@ ipcMain.on('openArticle', (event, arg) => {
  * 
  * Called from the renderer process
  */
-ipcMain.on('isAppSync', (event, arg) => {
-  event.returnValue = windows.isApp()
+ipcMain.on('hasBackendSync', (event, arg) => {
+  event.returnValue = windows.hasBackend()
 })
 
 /**
