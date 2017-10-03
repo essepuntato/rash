@@ -1,4 +1,4 @@
-**How to cite:** Peroni, S., Osborne, F., Di Iorio, A., Nuzzolese, A. G., Poggi, F., Vitali, F., Motta, E. (2016). Research Articles in Simplified HTML: a Web-first format for HTML-based scholarly articles. PeerJ PrePrints 4: e2513. http://dx.doi.org/10.7287/peerj.preprints.2513
+**How to cite:** Peroni, S., Osborne, F., Di Iorio, A., Nuzzolese, A. G., Poggi, F., Vitali, F., Motta, E. (2017). Research Articles in Simplified HTML: a Web-first format for HTML-based scholarly articles. PeerJ Computer Science 3: e132. e2513. DOI: https://doi.org/10.7717/peerj-cs.132
 
 # RASH Framework [![Join the chat at https://gitter.im/essepuntato/rash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/essepuntato/rash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
