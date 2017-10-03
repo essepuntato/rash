@@ -11,6 +11,6 @@ gulp.task('watch', function () {
 
 gulp.task('build', function () {
   return gulp.src(jsFiles)
-    .pipe(concat('rajemce.js'))
+    .pipe(concat('raje_core.js'))
     .pipe(gulp.dest(jsDest));
 });
