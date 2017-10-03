@@ -93,9 +93,17 @@ const windows = {
     let editorWindowUrl
     if (localRootPath) {
 
+      let getDirectory = function () {
+
+        let tmp = localRootPath.split('/')
+        tmp.pop()
+
+        return `${tmp.join('/')}/`
+      }
+
       // Remember that the document is already saved
       global.isNew = false
-      global.savePath = localRootPath
+      global.savePath = getDirectory()
       global.isWrapper = false
 
       // TODO check if the document has validated RASH content
@@ -246,8 +254,10 @@ ipcMain.on('openArticle', (event, arg) => {
 
   if (localRootPath) {
 
+    localRootPath = localRootPath[0]
+
     // Open the first element of what the dialog returns
-    windows.openEditor(localRootPath[0], arg)
+    windows.openEditor(localRootPath, arg)
     windows.closeSplash()
   }
 })
