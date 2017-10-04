@@ -286,6 +286,8 @@ ipcMain.on('hasBackendSync', (event, arg) => {
  */
 ipcMain.on('saveAsArticle', (event, arg) => {
 
+
+  console.log(arg.document)
   // Show save dialog here
   let savePath = dialog.showSaveDialog({
     title: 'Save as',

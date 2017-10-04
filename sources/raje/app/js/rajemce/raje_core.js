@@ -1906,8 +1906,11 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
       let article = $('html').clone()
       let tinymceSavedContent = article.find('#raje_root')
 
+      article.removeAttr('class')
+
       //replace body with the right one (this action remove tinymce)
       article.find('body').html(tinymceSavedContent.html())
+      article.find('body').removeAttr('style')
       article.find('body').removeAttr('class')
 
       //remove all style and link un-needed from the head
@@ -1920,7 +1923,7 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).replaceWith(originalContent)
       })
 
-      return article[0].outerHTML
+      return new XMLSerializer().serializeToString(article[0])
     },
 
     /**
