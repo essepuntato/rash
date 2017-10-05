@@ -1923,6 +1923,16 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).replaceWith(originalContent)
       })
 
+      // Remove target from TinyMCE link
+      article.find('a[target]').each(function () {
+        $(this).removeAttr('target')
+      })
+
+      // Remove not allowed span elments inside the formula
+      article.find(FIGURE_FORMULA_SELECTOR).each(function () {
+        $(this).children('p').html($(this).find('span[contenteditable]').html())
+      })
+
       return new XMLSerializer().serializeToString(article[0])
     },
 
