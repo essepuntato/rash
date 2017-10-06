@@ -454,7 +454,7 @@ section = {
   create: function (text, level) {
     // Create the section 
     // Version2 removed ${ZERO_SPACE} from text
-    return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
+    return $(`<section id="${this.getNextId()}"><h${level} data-rash-original-wrapper="h1">${text}</h${level}></section>`)
   },
 
   /**

@@ -1923,6 +1923,13 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).replaceWith(originalContent)
       })
 
+      // Execute derash changing the wrapper
+      article.find('*[data-rash-original-wrapper]').each(function(){
+        let content = $(this).html()
+        let wrapper = $(this).attr('data-rash-original-wrapper')
+        $(this).replaceWith(`<${wrapper}>${content}</${wrapper}>`)
+      })
+
       // Remove target from TinyMCE link
       article.find('a[target]').each(function () {
         $(this).removeAttr('target')
@@ -1937,6 +1944,8 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
       article.find(FIGURE_FORMULA_SELECTOR).each(function () {
         $(this).children('p').html($(this).find('span[contenteditable]').html())
       })
+
+
 
       return new XMLSerializer().serializeToString(article[0])
     },
@@ -2406,7 +2415,7 @@ section = {
   create: function (text, level) {
     // Create the section 
     // Version2 removed ${ZERO_SPACE} from text
-    return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
+    return $(`<section id="${this.getNextId()}"><h${level} data-rash-original-wrapper="h1">${text}</h${level}></section>`)
   },
 
   /**
