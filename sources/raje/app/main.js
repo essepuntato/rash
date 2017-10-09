@@ -24,6 +24,9 @@ global.ASSETS_DIRECTORIES = [
   IMAGE_TEMP
 ]
 
+global.TEMPLATE = 'index.html'
+global.SPLASH = 'splash.html'
+
 const {
   BrowserWindow,
   ipcMain,
@@ -34,9 +37,6 @@ const {
 const url = require('url')
 const path = require('path')
 const windowManager = require('electron-window-manager')
-
-const TEMPLATE = 'template.html'
-const SPLASH = 'splash.html'
 
 const RAJE_FS = require('./modules/raje_fs.js')
 const RAJE_MENU = require('./modules/raje_menu.js')
@@ -93,14 +93,24 @@ const windows = {
     let editorWindowUrl
     if (localRootPath) {
 
+      let getDirectory = function () {
+
+        let tmp = localRootPath.split('/')
+        tmp.pop()
+
+        return `${tmp.join('/')}/`
+      }
+
       // Remember that the document is already saved
       global.isNew = false
-      global.savePath = localRootPath
+      global.savePath = getDirectory()
       global.isWrapper = false
+
+      // TODO check if the document has validated RASH content
 
       // Get the URL to open the editor
       editorWindowUrl = url.format({
-        pathname: path.join(localRootPath, TEMPLATE),
+        pathname: localRootPath,
         protocol: 'file:',
         slashes: true
       })
@@ -170,7 +180,7 @@ const windows = {
   /**
    * Return true to let know that the client has Electron behind
    */
-  isApp: function () {
+  hasBackend: function () {
     return true
   },
 
@@ -183,8 +193,20 @@ const windows = {
   }
 }
 
-// Event called when the app is ready
+/**
+ * Event called when the app is ready
+ */
 app.on('ready', windows.openSplash)
+
+/**
+ * This event is called on OSX when the user click on icon in the dock
+ */
+app.on('activate', (event, hasVisibleWindows) => {
+
+  // If there aren't any open windows
+  if (!hasVisibleWindows)
+    windows.openSplash()
+})
 
 /**
  * On OS X it is common for applications and their menu bar
@@ -195,6 +217,8 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
+
+
 
 app.on('quit', RAJE_FS.removeImageTempFolder)
 
@@ -216,22 +240,25 @@ ipcMain.on('createArticle', (event, arg) => {
  */
 ipcMain.on('openArticle', (event, arg) => {
 
-  // Select the article folder
+  // Select the article index
   let localRootPath = dialog.showOpenDialog({
     title: 'Open RASH article',
     properties: [
-      'openDirectory'
-    ]
-  })[0]
+      'openFile'
+    ],
+    filters: [{
+      name: 'HTML',
+      extensions: ['html']
+    }]
+  })
 
   if (localRootPath) {
 
-    RAJE_FS.checkRajeHiddenFile(localRootPath, err => {
-      if (err) return
+    localRootPath = localRootPath[0]
 
-      windows.openEditor(localRootPath, arg)
-      windows.closeSplash()
-    })
+    // Open the first element of what the dialog returns
+    windows.openEditor(localRootPath, arg)
+    windows.closeSplash()
   }
 })
 
@@ -243,8 +270,8 @@ ipcMain.on('openArticle', (event, arg) => {
  * 
  * Called from the renderer process
  */
-ipcMain.on('isAppSync', (event, arg) => {
-  event.returnValue = windows.isApp()
+ipcMain.on('hasBackendSync', (event, arg) => {
+  event.returnValue = windows.hasBackend()
 })
 
 /**
@@ -259,6 +286,8 @@ ipcMain.on('isAppSync', (event, arg) => {
  */
 ipcMain.on('saveAsArticle', (event, arg) => {
 
+
+  console.log(arg.document)
   // Show save dialog here
   let savePath = dialog.showSaveDialog({
     title: 'Save as',

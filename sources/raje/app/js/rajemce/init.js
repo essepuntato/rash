@@ -8,7 +8,6 @@ const ZERO_SPACE = '&#8203;'
 const RAJE_SELECTOR = 'body#tinymce'
 
 // Selector constants (to move inside a new const file)
-const DISABLE_SELECTOR_FIGURES = 'figure *, h1, h2, h3, h4, h5, h6'
 const HEADER_SELECTOR = 'header.page-header.container.cgen'
 const FIRST_HEADING = `${RAJE_SELECTOR}>section:first>h1:first`
 
@@ -16,7 +15,7 @@ const TINYMCE_TOOLBAR_HEIGTH = 76
 
 let ipcRenderer, webFrame
 
-if (IS_APP) {
+if (hasBackend) {
 
   ipcRenderer = require('electron').ipcRenderer
   webFrame = require('electron').webFrame

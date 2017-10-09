@@ -58,11 +58,14 @@ module.exports = {
     return {
       label: 'File',
       submenu: [{
-        label: 'New'
+        label: 'New',
+        enabled: false
       }, {
-        label: 'Open...'
+        label: 'Open...',
+        enabled: false
       }, {
         label: 'Recents',
+        enabled: false,
         submenu: [{
           label: 'rencent'
         }]
@@ -82,7 +85,8 @@ module.exports = {
           global.executeSave()
         }
       }, {
-        label: 'Close'
+        label: 'Close',
+        role: 'close'
       }]
     }
   },

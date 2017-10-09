@@ -454,7 +454,7 @@ section = {
   create: function (text, level) {
     // Create the section 
     // Version2 removed ${ZERO_SPACE} from text
-    return $(`<section id="${this.getNextId()}"><h${level}>${text}</h${level}></section>`)
+    return $(`<section id="${this.getNextId()}"><h${level} data-rash-original-wrapper="h1">${text}</h${level}></section>`)
   },
 
   /**
@@ -699,7 +699,7 @@ section = {
     // Add the section if it not exists
     if (!$(ENDNOTE_SELECTOR).length) {
 
-      let endnotes = $(`<section id="doc-endnotes" role="doc-endnotes"><h1>Footnotes</h1></section>`)
+      let endnotes = $(`<section id="doc-endnotes" role="doc-endnotes"><h1 data-rash-original-content="">Footnotes</h1></section>`)
 
       // Insert this section after bibliography section
       // OR after acknowledgements section

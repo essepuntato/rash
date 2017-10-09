@@ -2,8 +2,8 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   watch = require('gulp-watch');
 
-var jsFiles = ['js/editor/*.js'],//, 'js/libs/*.js'],
-  jsDest = 'js/';
+var jsFiles = ['js/rajemce/init.js', 'js/rajemce/plugin/*.js'],
+  jsDest = './js/rajemce';
 
 gulp.task('watch', function () {
   gulp.watch(jsFiles, ['build']);
@@ -11,6 +11,6 @@ gulp.task('watch', function () {
 
 gulp.task('build', function () {
   return gulp.src(jsFiles)
-    .pipe(concat('raje.js'))
+    .pipe(concat('raje_core.js'))
     .pipe(gulp.dest(jsDest));
 });
