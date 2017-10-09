@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+
+  <style>
+    body {
+      padding: 20px
+    }
+
+    a.list-group-item:hover {
+      cursor: pointer
+    }
+  </style>
+
+  <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <script src="../../tinymce/tinymce.min.js">
+  </script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="../../jquery.min.js">
+  </script>
+  <script type="text/javascript" src="../../bootstrap.min.js">
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      var args = top.tinymce.activeEditor.windowManager.getParams()
+
+      if (args.sections.length) {
+
+        addPanel('Section')
+        args.sections.forEach(function (section) {
+          $('#listSection').append(
+            `<a data-type="role" data-reference="${section.reference}" data-text="${section.text}" class="list-group-item">${section.level?section.level:''} ${section.text}</a>`
+          )
+        })
+      }
+
+      if (args.tables.length) {
+
+        addPanel('Tables')
+        args.tables.forEach(function (table) {
+          $('#listTables').append(
+            `<a data-type="role" data-reference="${table.reference}" data-text="${table.text}" class="list-group-item">${table.text}</a>`
+          )
+        })
+      }
+
+      if (args.listings.length) {
+
+        addPanel('Listings')
+        args.listings.forEach(function (listing) {
+          $('#listListings').append(
+            `<a data-type="role" data-reference="${listing.reference}" data-text="${listing.text}" class="list-group-item">${listing.text}</a>`
+          )
+        })
+      }
+
+      if (args.formulas.length) {
+
+        addPanel('Formulas')
+        args.formulas.forEach(function (formula) {
+          $('#listFormulas').append(
+            `<a data-type="role" data-reference="${formula.reference}" data-text="${formula.text}" class="list-group-item">${formula.text}</a>`
+          )
+        })
+      }
+
+      addPanel('References')
+
+      $('#listReferences').append(
+        `<a data-type="role" id="addNewReference" class="list-group-item">+ Add new reference</a>`
+      )
+
+      args.references.forEach(function (reference) {
+        $('#listReferences').append(
+          `<a data-type="role" data-reference="${reference.reference}" data-text="${reference.text}" class="list-group-item">${reference.level}. ${reference.text}</a>`
+        )
+      })
+
+      $('a[data-reference]').on('click', function () {
+
+        // Save cross_ref data
+        if ($(this).attr('data-reference'))
+          window.parent.tinyMCE.get('raje_root').reference = $(this).attr('data-reference')
+
+        // Close the window
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
+
+      $('a#addNewReference').on('click', function () {
+        window.parent.tinyMCE.get('raje_root').createNewReference = true
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
+    })
+
+    function addPanel(name) {
+
+      $('#accordion').append(
+        `
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse${name}" aria-expanded="true" aria-controls="collapseOne">
+                  ${name}
+                </a>
+              </h4>
+            </div>
+            <div id="collapse${name}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div id="list${name}" class="list-group">
+              </div>
+            </div>
+          </div>`
+      )
+    }
+  </script>
+</body>
+
+</html>

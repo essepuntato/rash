@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      padding: 20px
+    }
+
+    .row {
+      margin-top: 10px;
+      margin-bottom: 10px
+    }
+
+    #txtTitle {
+      font-size: 300%;
+      height: auto;
+      font-weight: 500;
+      color: black
+    }
+
+    #author {
+      background-color: white
+    }
+
+    #author:hover{
+      cursor: move;
+      background-color: #f9f9f9
+    }
+  </style>
+
+  <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+
+  <script src="../../tinymce/tinymce.min.js">
+  </script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <h3>Title</h3>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="text" class="form-control" id="txtTitle" placeholder="Title" autofocus>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <label for="txtSubtitle">Subtitle</label>
+        <input type="text" class="form-control" id="txtSubtitle" placeholder="Left empty for no subtitle">
+      </div>
+    </div>
+
+    <hr>
+  </div>
+
+  <script type="text/javascript" src="../../jquery.min.js">
+  </script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="../../bootstrap.min.js">
+  </script>
+
+  <script type="text/javascript">
+    const FOOTER_AUTHOR =
+      `
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="button" id="btnAddAffiliation" class="btn btn-default">Add affiliation</button>
+              <button type="button" id="btnAddAuthorAfter" class="btn btn-default">Insert new author</button>
+              <button type="button" id="btnDeleteAuthor" class="btn btn-danger">Delete author</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <hr>
+          </div>
+        </div>`
+
+
+    const NEW_AUTHOR =
+      `<div id="author">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="txtSubtitle">Name</label>
+            <input type="text" class="form-control" id="txtAuthorName" placeholder="Placeholder author name">
+          </div>
+          <div class="col-sm-6">
+            <label for="txtSubtitle">Email</label>
+            <input type="text" class="form-control" id="txtAuthorEmail" placeholder="Placeholder author email">
+          </div>
+        </div>
+        <div class="row"><div class="col-sm-12"><label for="txtSubtitle">Affiliations</label></div></div>
+        ${FOOTER_AUTHOR}
+      </div>`
+
+
+    $(document).ready(function () {
+
+      // Exit from dialog modal on ESC press
+      $(document).on('keyup', function (e) {
+        if (e.keyCode == 27) {
+          window.parent.tinyMCE.activeEditor.windowManager.close()
+        }
+      });
+
+      var args = top.tinymce.activeEditor.windowManager.getParams()
+
+      $('#txtTitle').val(args.title)
+      $('#txtSubtitle').val(args.subtitle)
+
+      let container = $('div.container-fluid')
+
+      if (args.authors.length) {
+
+        container.append('<h3>Authors</h3>')
+        addAuthors(args.authors)
+      }
+
+      // Categories
+      container.append('<h3>ACM subject categories</h3>')
+      addCategories(args.categories)
+      container.append('<hr>')
+
+      // Keywords
+      container.append('<h3>Keywords</h3>')
+      addKeywords(args.keywords)
+
+      function addAuthors(authors) {
+
+        container.append(
+          `
+          <div class="row">
+            <div class="col-sm-12">
+              <button type="button" id="btnAddAuthorFirst" class="btn btn-default">Insert new author</button>
+            </div>
+          </div>
+        `
+        )
+
+        let sortable = $('<div id="sortable"></div>')
+
+        // Add all authors
+        authors.forEach(function (author) {
+
+          // Single author must have name and email
+          let htmlAuthor = $(
+            `<div id="author">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="txtSubtitle">Name</label>
+                  <input type="text" class="form-control" id="txtAuthorName" value="${author.name}">
+                </div>
+                <div class="col-sm-6">
+                  <label for="txtSubtitle">Email</label>
+                  <input type="text" class="form-control" id="txtAuthorEmail" value="${author.email}">
+                </div>
+              </div>
+            </div>`
+          )
+
+          // Add affiliation title in any case (even if he doesn't have anyone)
+          htmlAuthor.append(
+            '<div class="row"><div class="col-sm-12"><label for="txtSubtitle">Affiliations</label></div></div>'
+          )
+
+          // Add any single affiliation
+          author.affiliations.forEach(function (affiliation) {
+            htmlAuthor.append(
+              `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtAuthorAffiliation" value="${affiliation}">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              `
+            )
+          })
+
+          htmlAuthor.append(FOOTER_AUTHOR)
+
+          // Append single author
+          sortable.append(htmlAuthor)
+        })
+
+        container.append(sortable)
+
+        container.on('click', '#btnAddAffiliation', function (e) {
+          $(this).parents('.row').first().before(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtAuthorAffiliation" placeholder="Placeholder affiliation">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveAffiliation"><span aria-hidden="true">&times;</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+          )
+        })
+
+        container.on('click', '#btnAddAuthorAfter', function (e) {
+          let author = $(NEW_AUTHOR)
+          $(this).parents('#author').first().after(author)
+
+          author.find('input').first().focus()
+        })
+
+        container.on('click', '#btnAddAuthorFirst', function (e) {
+          let author = $(NEW_AUTHOR)
+          $(this).parents('.row').next('div#sortable').prepend(author)
+
+          author.find('input').first().focus()
+        })
+
+        container.on('click', '#btnDeleteAuthor', function (e) {
+          $(this).parents('#author').remove()
+        })
+      }
+
+      function addCategories(categories) {
+
+        categories.forEach(function (category) {
+
+          container.append(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtCategory" value="${category}">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveCategory"><span aria-hidden="true">×</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+          )
+        })
+
+        container.append(
+          `<div class="row">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-default" id="btnAddCategory">Add category</button>
+              </div>
+            </div>`
+        )
+
+        // Add new affiliation event
+        $('#btnAddCategory').on('click', function (e) {
+
+          let newCategory = $(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtCategory" placeholder="Placeholder category">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button" id="btnRemoveCategory"><span aria-hidden="true">×</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+          )
+
+          $(this).parents('.row').first().before(newCategory)
+
+          newCategory.find('input').focus()
+        })
+      }
+
+      function addKeywords(keywords) {
+
+        keywords.forEach(function (keyword) {
+
+          container.append(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtKeyword" value="${keyword}">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button"><span aria-hidden="true">×</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+          )
+        })
+
+        container.append(
+          `<div class="row">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-default" id="btnAddKeyword">Add keyword</button>
+              </div>
+            </div>
+            <hr>`
+        )
+
+        // Add new affiliation event
+        $('#btnAddKeyword').on('click', function () {
+
+          let newKeyword = $(
+            `<div class="row">
+                <div class="col-sm-12">
+                  <div class="input-group">
+                    <input type="text" class="form-control txtKeyword" placeholder="Placeholder keyword">
+                    <span class="input-group-btn">
+                      <button class="btn btn-danger" type="button"><span aria-hidden="true">×</span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>`
+          )
+
+          $(this).parents('.row').first().before(newKeyword)
+
+          newKeyword.find('input').focus()
+        })
+      }
+
+      function getMetadata() {
+
+        let getAuthors = function () {
+          let authors = []
+          $('div#author').each(function () {
+            let author = {
+              name: $(this).find('#txtAuthorName').val().trim().replace(/\u200B/g, ''),
+              email: $(this).find('#txtAuthorEmail').val().trim().replace(/\u200B/g, ''),
+              affiliations: []
+            }
+
+            if ($(this).find('.txtAuthorAffiliation').length) {
+
+              $(this).find('.txtAuthorAffiliation').each(function () {
+                author.affiliations.push($(this).val().trim().replace(/\u200B/g, ''))
+              })
+            }
+            authors.push(author)
+          })
+          return authors
+        }
+
+        let getCategories = function () {
+          let categories = []
+          $('.txtCategory').each(function () {
+            categories.push($(this).val())
+          })
+          return categories
+        }
+
+        let getKeywords = function () {
+          let keywords = []
+          $('.txtKeyword').each(function () {
+            keywords.push($(this).val())
+          })
+          return keywords
+        }
+
+        return {
+          subtitle: $('#txtSubtitle').val(),
+          title: $('#txtTitle').val(),
+          authors: getAuthors(),
+          categories: getCategories(),
+          keywords: getKeywords()
+        }
+      }
+
+      // Append submit button
+      container.append(
+        `<div class="row metadata_submit">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-primary" id="btnSubmit">Update metadata</button>
+          </div>
+        </div>`
+      )
+
+      $('#btnSubmit').on('click', function (e) {
+
+        window.parent.tinyMCE.get('raje_root').updated_metadata = getMetadata()
+        window.parent.tinyMCE.activeEditor.windowManager.close()
+      })
+
+      container.on('click', 'button.btn.btn-danger:has(span)', function (e) {
+        $(this).parents('.row').first().remove()
+      })
+    })
+
+    $(window).load(function () {
+      $("#sortable").sortable();
+      $("#sortable").disableSelection();
+    })
+  </script>
+</body>
+
+</html>

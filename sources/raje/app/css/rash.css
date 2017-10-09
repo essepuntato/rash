@@ -1,5 +1,5 @@
-/*
-rash.css - Version 0.4, February 16, 2016
+/* 
+rash.css - Version 0.5, December 28, 2016
 by Silvio Peroni
 
 This work is licensed under a Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/).
@@ -19,7 +19,7 @@ Under the following terms:
 /* Font */
 
 body {
-  font-size: 12pt;
+    font-size: 12pt;
 }
 
 
@@ -29,18 +29,18 @@ body {
 /* Footnote counters */
 
 body {
-  counter-reset: fn_pointer;
+    counter-reset: fn_pointer;
 }
 
 section[role=doc-endnotes] {
-  counter-reset: fn;
+    counter-reset: fn;
 }
 
 section[role=doc-endnotes]>section[role=doc-endnote]:before {
-  counter-increment: fn;
-  content: counter(fn);
-  float: left;
-  padding-right: 10px;
+    counter-increment: fn;
+    content: counter(fn);
+    float: left;
+    padding-right: 10px;
 }
 
 
@@ -50,53 +50,61 @@ section[role=doc-endnotes]>section[role=doc-endnote]:before {
 /* Figure, table and formula */
 
 img {
-  max-width: 90%;
-  height: auto;
+    max-width: 90%;
+    height: auto;
 }
 
 table {
-  max-width: 90%;
+    max-width: 90%;
 }
 
 figure {
-  margin-top: 2em;
-  margin-bottom: 2em;
-  text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    text-align: center;
 }
 
 figure>p:not(mathml|math) {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
-figure img:not([role=math]), figure svg {
-  border: 1px solid black;
-}
+
+/*
+figure img:not([role=math]),
+figure svg {
+    border: 1px solid black;
+}*/
 
 figure>pre {
-  text-align: left;
+    text-align: left;
 }
 
 figcaption {
-  margin-top: 5px;
+    margin-top: 5px;
 }
 
 table {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
-td, th {
-  border: 1px solid black;
-  padding: 5px;
+td,
+th {
+    border: 1px solid black;
+    padding: 5px;
 }
 
 td p {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 th {
-  background-color: #606060;
-  color: white;
-  text-align: center;
+    background-color: #606060;
+    color: white;
+    text-align: center;
+}
+
+.rash-math div {
+    display: inline !important;
 }
 
 
@@ -106,57 +114,65 @@ th {
 /* Heading counters */
 
 body {
-  counter-reset: h1;
+    counter-reset: h1;
 }
 
 h1 {
-  counter-reset: h2;
+    counter-reset: h2;
 }
 
 h2 {
-  counter-reset: h3;
+    counter-reset: h3;
 }
 
 h3 {
-  counter-reset: h4;
+    counter-reset: h4;
 }
 
 h4 {
-  counter-reset: h5;
+    counter-reset: h5;
 }
 
 h5 {
-  counter-reset: h6;
+    counter-reset: h6;
+}
+
+ol ol {
+    list-style: lower-alpha
+}
+
+ol ol ol {
+    list-style: upper-roman
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h1:before {
-  counter-increment: h1;
-  content: counter(h1) ". ";
+    counter-increment: h1;
+    content: counter(h1) ". ";
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h2:before {
-  counter-increment: h2;
-  content: counter(h1) "." counter(h2) ". ";
+    counter-increment: h2;
+    content: counter(h1) "." counter(h2) ". ";
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h3:before {
-  counter-increment: h3;
-  content: counter(h1) "." counter(h2) "." counter(h3) ". ";
+    counter-increment: h3;
+    content: counter(h1) "." counter(h2) "." counter(h3) ". ";
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h4:before {
-  counter-increment: h4;
-  content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". ";
+    counter-increment: h4;
+    content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". ";
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h5:before {
-  counter-increment: h5;
-  content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". ";
+    counter-increment: h5;
+    content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". ";
 }
 
 section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-acknowledgements]):not([role=doc-endnotes]) h6:before {
-  counter-increment: h6;
-  content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". ";
+    counter-increment: h6;
+    content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". ";
 }
 
 
@@ -166,7 +182,7 @@ section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-ackn
 /* Header */
 
 .title {
-  font-size: 300%;
+    font-size: 300%;
 }
 
 
@@ -176,40 +192,41 @@ section:not([role=doc-abstract]):not([role=doc-bibliography]):not([role=doc-ackn
 /* Footer */
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px!important;
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-  padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-.footer span, .footer div {
-  margin-left: 30px;
+.footer span,
+.footer div {
+    margin-left: 30px;
 }
 
 #layoutselection {
-  margin-left: 0px;
-  margin-right: 5px;
+    margin-left: 0px;
+    margin-right: 5px;
 }
 
 .footer div {
-  margin-top: -5px;
+    margin-top: -5px;
 }
 
 .footer p {
-  display: inline;
+    display: inline;
 }
 
 
@@ -219,81 +236,131 @@ body {
 /* Not cited */
 
 .notcited {
-  color: lightgrey;
-  font-style: italic;
-  cursor: help;
+    color: red;
+    cursor: help;
 }
 
 
 /* /END Not cited */
 
 
+/* Sections */
+
+body>section {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width:768px) {
+    body>section {
+        width: 750px;
+    }
+}
+
+@media (min-width:992px) {
+    body>section {
+        width: 970px;
+    }
+}
+
+@media (min-width:1200px) {
+    body>section {
+        width: 1170px;
+    }
+}
+
+body>section:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+
+
+/* /END Sections */
+
+
 /* Error */
 
 .error {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
 
 .error:before {
-  content: "[[";
+    content: "[[";
 }
 
 .error:after {
-  content: "]]";
+    content: "]]";
 }
 
 
 /* /END Error */
 
 
+/* Reference list */
+
+section[role=doc-bibliography]>ul {
+    list-style-type: decimal;
+}
+
+
+/* /END Reference list */
+
+
 /* ### Rules for printing the document */
 
 @media print {
-  @page {
-    size: A4;
-    margin: 20mm 0mm 20mm 0mm;
-  }
-  html, body {
-    width: 210mm;
-    height: 297mm;
-  }
-  p {
-    font-size: 10pt;
-    text-align: justify;
-  }
-  pre {
-    text-align: left;
-  }
-  figcaption, figure>p {
-    text-align: center;
-  }
-  .title {
-    font-size: 16pt !important;
-  }
-  h1 {
-    font-size: 14pt !important;
-  }
-  h2 {
-    font-size: 12pt !important;
-  }
-  h3 {
-    font-size: 11pt !important;
-  }
-  h4, h5, h6 {
-    font-size: 10pt !important;
-  }
-  pre {
-    font-size: 8pt !important;
-  }
-  blockquote {
-    font-size: 10pt !important;
-  }
-  address {
-    font-size: 12pt !important;
-  }
-  table {
-    max-width: 100%;
-    font-size: 80%;
-  }
+    @page {
+        size: A4;
+        margin: 20mm 0mm 20mm 0mm;
+    }
+    html,
+    body {
+        width: 210mm;
+        height: 297mm;
+    }
+    p {
+        font-size: 10pt;
+        text-align: justify;
+    }
+    pre {
+        text-align: left;
+    }
+    figcaption,
+    figure>p {
+        text-align: center;
+    }
+    .title {
+        font-size: 16pt !important;
+    }
+    h1 {
+        font-size: 14pt !important;
+    }
+    h2 {
+        font-size: 12pt !important;
+    }
+    h3 {
+        font-size: 11pt !important;
+    }
+    h4,
+    h5,
+    h6 {
+        font-size: 10pt !important;
+    }
+    pre {
+        font-size: 8pt !important;
+    }
+    blockquote {
+        font-size: 10pt !important;
+    }
+    address {
+        font-size: 12pt !important;
+    }
+    table {
+        max-width: 100%;
+        font-size: 80%;
+    }
 }
