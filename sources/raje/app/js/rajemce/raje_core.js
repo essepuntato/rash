@@ -2565,9 +2565,7 @@ section = {
     }
 
     //move caret and set focus to active aditor #105
-    tinymce.activeEditor.focus()
-    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
-
+    moveCaret(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
     scrollTo(ABSTRACT_SELECTOR)
   },
 
@@ -2599,9 +2597,7 @@ section = {
     }
 
     //move caret and set focus to active aditor #105
-    tinymce.activeEditor.focus()
-    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
-
+    moveCaret(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
     scrollTo(ACKNOWLEDGEMENTS_SELECTOR)
   },
 
