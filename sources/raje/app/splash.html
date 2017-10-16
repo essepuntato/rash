@@ -45,7 +45,9 @@
       <div class="col-xs-10 col-xs-offset-1">
 
         <div class="page-header">
-          <h1 class="text-center">Welcome to RAJE <small>v2.0</small></h1>
+          <h1 class="text-center">Welcome to RAJE
+            <small>v2.0</small>
+          </h1>
         </div>
 
         <div class="list-group">
@@ -67,10 +69,16 @@
       </div>
     </div>
 
+
+
     <div class="row">
       <div class="col-xs-offset-1 col-xs-10">
-        <h2>Recent articles</h2>
+        <h1 class="text-center">
+          <small>Recent articles</small>
+        </h1>
         <div id="recents"></div>
+        <div class="list-group" id="recent-articles">
+        </div>
       </div>
     </div>
   </div>
@@ -83,6 +91,24 @@
   <script src="js/bootstrap.min.js"></script>
 
   <script>
+    ipcRenderer = require('electron').ipcRenderer
+
+    let recentArticles = ipcRenderer.sendSync('getRecentArticles')
+
+    if (recentArticles) {
+      let listGroup = $('div.list-group#recent-articles')
+      recentArticles.forEach(function (recentArticle) {
+        listGroup.append(
+          `
+          <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <h3 class="mb-1">${recentArticle.title}</h3>
+            <small class="text-muted">${recentArticle.date}</small>
+            <p class="mb-1">${recentArticle.path}</p>
+          </div>`
+        )
+      })
+    }
+
     function getWindowSize() {
       return {
         width: screen.width,

@@ -40,6 +40,7 @@ const windowManager = require('electron-window-manager')
 
 const RAJE_FS = require('./modules/raje_fs.js')
 const RAJE_MENU = require('./modules/raje_menu.js')
+const RAJE_STORAGE = require('./modules/raje_storage.js')
 
 const EDITOR_WINDOW = 'editor'
 const SPLASH_WINDOW = 'splash'
@@ -54,6 +55,9 @@ const windows = {
     // Init the window manager
     windowManager.init()
 
+    // DEBUG mode
+    // RAJE_STORAGE.clearAll()
+
     // Get the url to the splash window
     let splashWindowUrl = url.format({
       pathname: path.join(__dirname, SPLASH),
@@ -63,7 +67,7 @@ const windows = {
 
     // Open the splash window
     windowManager.open(SPLASH_WINDOW, 'RAJE', splashWindowUrl, null, {
-      height: 400,
+      height: 600,
       width: 500,
       resizable: false,
       movable: true,
@@ -285,9 +289,6 @@ ipcMain.on('hasBackendSync', (event, arg) => {
  * Called from the renderer process
  */
 ipcMain.on('saveAsArticle', (event, arg) => {
-
-
-  console.log(arg.document)
   // Show save dialog here
   let savePath = dialog.showSaveDialog({
     title: 'Save as',
@@ -308,6 +309,9 @@ ipcMain.on('saveAsArticle', (event, arg) => {
       global.savePath = savePath
 
       windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+      
+      // Save recent article entry
+      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, arg.title))
 
       // Notify the client 
       global.sendNotification({
@@ -375,6 +379,17 @@ ipcMain.on('selectImageSync', (event, arg) => {
  */
 ipcMain.on('updateDocumentState', (event, arg) => {
   global.hasChanged = arg
+})
+
+/**
+ * 
+ */
+ipcMain.on('getRecentArticles', (event, arg) => {
+  RAJE_STORAGE.getRecentArticles((err, data) => {
+    if (err) return err
+
+    event.returnValue = data
+  })
 })
 
 /**

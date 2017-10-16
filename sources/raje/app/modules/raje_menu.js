@@ -193,7 +193,7 @@ module.exports = {
       }, {
         label: 'Import from Github ...'
       }]
-    }]
+    }, this.getTabView()]
 
     if (process.platform === 'darwin') {
       template.unshift({
