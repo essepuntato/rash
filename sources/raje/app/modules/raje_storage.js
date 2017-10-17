@@ -6,12 +6,8 @@ global.RECENT_ARTICLE_STORAGE = "RECENT_ARTICLE_STORAGE"
 module.exports = {
 
   /**
-   * 
-   */
-  recentArticles: [],
-
-  /**
-   * 
+   * Create a JSON object with path title and date.
+   * The path is the identifier
    */
   createRecentArticleEntry: function (path, title) {
     var dt = datetime.create()
@@ -24,33 +20,43 @@ module.exports = {
   },
 
   /**
-   * 
+   * Add a new entry inside the storage
    */
   pushRecentArticleEntry: function (newArticle) {
 
-    this.getRecentArticles((err, data) => {
+    // Get all recent articles
+    this.getRecentArticles((err, recentArticles) => {
       if (err) return callback(err)
-
-      // Update recentArticles
-      this.recentArticles = data
 
       // Push the new article and check if is already created
       // In this case remove the new article
-      this.recentArticles.push(newArticle)
+      recentArticles.push(newArticle)
       for (var i = 0; i <= newArticle.length - 2; i++) {
         if (newArticle.path == recentArticles[i].path)
           recentArticles.splice(i, 1)
       }
 
-      this.updateRecentArticles(this.recentArticles)
+      // Update the entire array
+      this.updateRecentArticles(recentArticles)
     })
   },
 
   /**
-   * 
+   * Remove an entry
    */
   popRecentArticleEntry: function (path) {
+    this.getRecentArticles((err, recentArticles) => {
+      if (err) return callback(err)
 
+      // Lookup for an article with the same path
+      // If there is remove it
+      for (var i = 0; i < recentArticles.length - 1; i++) {
+        if (path == recentArticles[i].path)
+          recentArticles.splice(i, 1)
+      }
+
+      this.updateRecentArticles(recentArticles)
+    })
   },
 
   /**
@@ -63,24 +69,23 @@ module.exports = {
   },
 
   /**
-   * 
+   * Get all recent articles
    */
   getRecentArticles: function (callback) {
 
-    storage.get(global.RECENT_ARTICLE_STORAGE, (err, data) => {
+    storage.get(global.RECENT_ARTICLE_STORAGE, (err, recentArticles) => {
       if (err) return callback(err)
 
-      this.recentArticles = data
+      // If the result isn't an array, instatiate it
+      if (recentArticles.constructor !== Array)
+        recentArticles = []
 
-      if (this.recentArticles.constructor !== Array)
-        this.recentArticles = []
-
-      return callback(null, this.recentArticles)
+      return callback(null, recentArticles)
     })
   },
 
   /**
-   * 
+   * DEBUG only - clear all elements in storage
    */
   clearAll: function () {
     storage.clear(err => {

@@ -68,7 +68,7 @@ const windows = {
     // Open the splash window
     windowManager.open(SPLASH_WINDOW, 'RAJE', splashWindowUrl, null, {
       height: 600,
-      width: 500,
+      width: 1000,
       resizable: false,
       movable: true,
       fullscreenable: false
@@ -118,6 +118,12 @@ const windows = {
         protocol: 'file:',
         slashes: true
       })
+
+      // The title is the folder name, the path has to be splitted
+      let tmp = savePath.split('/')
+      
+      // Add the already created article here
+      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, tmp[tmp.length - 2]))
 
     } else {
 
@@ -389,6 +395,13 @@ ipcMain.on('getRecentArticles', (event, arg) => {
 
     event.returnValue = data
   })
+})
+
+/**
+ * 
+ */
+ipcMain.on('popRecentArticleEntry', (event, arg) => {
+  RAJE_STORAGE.popRecentArticleEntry(arg.path)
 })
 
 /**
