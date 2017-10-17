@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "async": "^2.1.4",
+    "cheerio": "^1.0.0-rc.2",
     "electron-json-storage": "^3.2.0",
     "electron-spell-check-provider": "^1.0.0",
     "electron-window-manager": "^1.0.4",
