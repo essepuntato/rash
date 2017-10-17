@@ -13,7 +13,7 @@ module.exports = {
     var dt = datetime.create()
 
     return {
-      path: `${path}/${global.TEMPLATE}`,
+      path: path + global.TEMPLATE,
       title: title,
       date: `Created on ${dt.format('d/m/y')} at ${dt.format('H:M')}`
     }

@@ -121,7 +121,7 @@ const windows = {
 
       // The title is the folder name, the path has to be splitted
       let tmp = savePath.split('/')
-      
+
       // Add the already created article here
       RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, tmp[tmp.length - 2]))
 
@@ -312,12 +312,12 @@ ipcMain.on('saveAsArticle', (event, arg) => {
 
       // Store important variables to check the save state
       global.isNew = false
-      global.savePath = savePath
+      global.savePath = `${savePath}/`
 
       windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
 
       // Save recent article entry
-      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, arg.title))
+      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(global.savePath, arg.title))
 
       // Notify the client 
       global.sendNotification({
@@ -402,6 +402,18 @@ ipcMain.on('getRecentArticles', (event, arg) => {
  */
 ipcMain.on('popRecentArticleEntry', (event, arg) => {
   RAJE_STORAGE.popRecentArticleEntry(arg.path)
+})
+
+/**
+ * 
+ */
+ipcMain.on('openRecentArticleEntry', (event, arg) => {
+
+  try {
+    // Open the first element of what the dialog returns
+    windows.openEditor(arg.path, arg.size)
+    windows.closeSplash()
+  } catch (exception) {}
 })
 
 /**

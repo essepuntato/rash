@@ -100,7 +100,7 @@
       recentArticles.forEach(function (recentArticle) {
         listGroup.append(
           `
-          <div id="recentArticleEntry" class="list-group-item" data-recent-article-path="${recentArticle.path}">
+          <div class="list-group-item recentArticleEntry" data-recent-article-path="${recentArticle.path}">
 
             <div class="pull-right"><button type="button" class="close btnRemoveRecentArticle" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
             <h4 class="list-group-item-heading">${recentArticle.title}</h4>
@@ -113,11 +113,20 @@
       $('.btnRemoveRecentArticle').on('click', function () {
 
         let arg = {
-          path: $(this).parents('#recentArticleEntry').attr('data-recent-article-path')
+          path: $(this).parents('.recentArticleEntry').attr('data-recent-article-path')
         }
 
         ipcRenderer.send('popRecentArticleEntry', arg)
-        $(this).parents('#recentArticleEntry').remove()
+        $(this).parents('.recentArticleEntry').remove()
+      })
+
+      $('.recentArticleEntry').on('click', function () {
+        let arg = {
+          path: $(this).attr('data-recent-article-path'),
+          size: getWindowSize()
+        }
+
+        ipcRenderer.send('openRecentArticleEntry', arg)
       })
     }
 
