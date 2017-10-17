@@ -31,7 +31,7 @@ module.exports = {
       // Push the new article and check if is already created
       // In this case remove the new article
       recentArticles.push(newArticle)
-      for (var i = 0; i <= newArticle.length - 2; i++) {
+      for (var i = 0; i <= recentArticles.length - 2; i++) {
         if (newArticle.path == recentArticles[i].path)
           recentArticles.splice(i, 1)
       }
@@ -50,7 +50,7 @@ module.exports = {
 
       // Lookup for an article with the same path
       // If there is remove it
-      for (var i = 0; i < recentArticles.length - 1; i++) {
+      for (var i = 0; i <= recentArticles.length - 1; i++) {
         if (path == recentArticles[i].path)
           recentArticles.splice(i, 1)
       }
