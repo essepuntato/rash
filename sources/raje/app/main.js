@@ -309,7 +309,7 @@ ipcMain.on('saveAsArticle', (event, arg) => {
       global.savePath = savePath
 
       windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
-      
+
       // Save recent article entry
       RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, arg.title))
 
@@ -360,18 +360,17 @@ ipcMain.on('selectImageSync', (event, arg) => {
     }]
   })
 
-  // If a file is selected
-  if (imagePath[0]) {
-
-    // Save the image in the temporary folder
+  try {
     RAJE_FS.saveImageTemp(imagePath[0], (err, result) => {
 
       if (err) return event.returnValue = err
 
       return event.returnValue = result
     })
-  } else
+
+  } catch (exception) {
     return event.returnValue = null
+  }
 })
 
 /**

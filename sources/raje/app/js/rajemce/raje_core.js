@@ -933,7 +933,8 @@ tinymce.PluginManager.add('raje_image', function (editor, url) {
 
       let filename = selectImage()
 
-      image.add(filename, filename)
+      if(filename != null)
+        mage.add(filename, filename)
     }
   })
 
