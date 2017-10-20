@@ -1,5 +1,5 @@
 {
-  "name": "RAJE",
+  "name": "raje",
   "version": "0.0.1",
   "scripts": {
     "dist": "electron-packager ./app --all --out=./dist --overwrite",
