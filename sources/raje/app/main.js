@@ -70,7 +70,7 @@ const windows = {
     // Open the splash window
     windowManager.open(SPLASH_WINDOW, 'RAJE', splashWindowUrl, null, {
       height: 600,
-      width: 1000,
+      width: 600,
       resizable: false,
       movable: true,
       fullscreenable: false
