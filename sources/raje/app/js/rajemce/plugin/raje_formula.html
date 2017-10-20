@@ -36,7 +36,7 @@
       top: -7.5px;
     }
 
-    #formula_submit{
+    #formula_submit {
       margin-top: 20px
     }
   </style>
@@ -167,6 +167,7 @@
 
       formulaSVG.attr('role', 'math')
       formulaSVG.attr('data-math-original-input', $('#formula_input').val())
+      formulaSVG.attr('data-mathml', $('#formula_output').find('*[data-mathml]').attr('data-mathml'))
 
       // Save input
       var output = {

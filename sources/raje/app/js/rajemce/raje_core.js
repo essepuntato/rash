@@ -203,6 +203,8 @@ if (hasBackend) {
   function moveCaret(element, toStart) {
     tinymce.activeEditor.selection.select(element)
     tinymce.activeEditor.selection.collapse(toStart)
+
+    tinymce.activeEditor.focus()
   }
 
   /**
@@ -931,7 +933,8 @@ tinymce.PluginManager.add('raje_image', function (editor, url) {
 
       let filename = selectImage()
 
-      image.add(filename, filename)
+      if(filename != null)
+        mage.add(filename, filename)
     }
   })
 
@@ -1924,7 +1927,7 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
       })
 
       // Execute derash changing the wrapper
-      article.find('*[data-rash-original-wrapper]').each(function(){
+      article.find('*[data-rash-original-wrapper]').each(function () {
         let content = $(this).html()
         let wrapper = $(this).attr('data-rash-original-wrapper')
         $(this).replaceWith(`<${wrapper}>${content}</${wrapper}>`)
@@ -1945,7 +1948,11 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).children('p').html($(this).find('span[contenteditable]').html())
       })
 
-
+      article.find(`${FIGURE_FORMULA_SELECTOR},${INLINE_FORMULA_SELECTOR}`).each(function () {
+        if ($(this).find('svg[data-mathml]').length) {
+          $(this).children('p').html($(this).find('svg[data-mathml]').attr('data-mathml'))
+        }
+      })
 
       return new XMLSerializer().serializeToString(article[0])
     },
@@ -2306,7 +2313,7 @@ section = {
         selectedElement.remove()
 
         // If the new heading has text nodes, the offset won't be 0 (as normal) but instead it'll be length of node text
-        moveCursorToEnd(newSection.find('h1,h2,h3,h4,h5,h6').first())
+        moveCaret(newSection.find(':header').first()[0])
 
         // Update editor content
         tinymce.triggerSave()
@@ -2338,7 +2345,7 @@ section = {
         // Remove the selected section
         selectedElement.html(selectedElement.text().trim().substring(0, tinymce.activeEditor.selection.getRng().startOffset))
 
-        moveCaret(newSection[0], true)
+        moveCaret(newSection.find(':header').first()[0])
 
         // Update editor
         tinymce.triggerSave()
@@ -2413,8 +2420,17 @@ section = {
    * Return JQeury object that represent the section
    */
   create: function (text, level) {
-    // Create the section 
-    // Version2 removed ${ZERO_SPACE} from text
+    // Create the section
+
+    // Trim white spaces and add zero_space char if nothing is inside
+
+    if (typeof text != "undefined") {
+      text = text.trim()
+      if (text.length == 0)
+        text = "<br>"
+    } else
+      text = "<br>"
+
     return $(`<section id="${this.getNextId()}"><h${level} data-rash-original-wrapper="h1">${text}</h${level}></section>`)
   },
 
@@ -2550,9 +2566,7 @@ section = {
     }
 
     //move caret and set focus to active aditor #105
-    tinymce.activeEditor.focus()
-    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
-
+    moveCaret(tinymce.activeEditor.dom.select(`${ABSTRACT_SELECTOR} > h1`)[0])
     scrollTo(ABSTRACT_SELECTOR)
   },
 
@@ -2584,9 +2598,7 @@ section = {
     }
 
     //move caret and set focus to active aditor #105
-    tinymce.activeEditor.focus()
-    tinymce.activeEditor.selection.select(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
-
+    moveCaret(tinymce.activeEditor.dom.select(`${ACKNOWLEDGEMENTS_SELECTOR} > h1`)[0])
     scrollTo(ACKNOWLEDGEMENTS_SELECTOR)
   },
 

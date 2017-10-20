@@ -65,7 +65,7 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
       })
 
       // Execute derash changing the wrapper
-      article.find('*[data-rash-original-wrapper]').each(function(){
+      article.find('*[data-rash-original-wrapper]').each(function () {
         let content = $(this).html()
         let wrapper = $(this).attr('data-rash-original-wrapper')
         $(this).replaceWith(`<${wrapper}>${content}</${wrapper}>`)
@@ -86,7 +86,11 @@ tinymce.PluginManager.add('raje_save', function (editor, url) {
         $(this).children('p').html($(this).find('span[contenteditable]').html())
       })
 
-
+      article.find(`${FIGURE_FORMULA_SELECTOR},${INLINE_FORMULA_SELECTOR}`).each(function () {
+        if ($(this).find('svg[data-mathml]').length) {
+          $(this).children('p').html($(this).find('svg[data-mathml]').attr('data-mathml'))
+        }
+      })
 
       return new XMLSerializer().serializeToString(article[0])
     },

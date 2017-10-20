@@ -45,7 +45,9 @@
       <div class="col-xs-10 col-xs-offset-1">
 
         <div class="page-header">
-          <h1 class="text-center">Welcome to RAJE <small>v2.0</small></h1>
+          <h1 class="text-center">Welcome to RAJE
+            <small>v2.0</small>
+          </h1>
         </div>
 
         <div class="list-group">
@@ -67,10 +69,16 @@
       </div>
     </div>
 
+
+
     <div class="row">
       <div class="col-xs-offset-1 col-xs-10">
-        <h2>Recent articles</h2>
+        <h1 class="text-center">
+          <small>Recent articles</small>
+        </h1>
         <div id="recents"></div>
+        <div class="list-group" id="recent-articles">
+        </div>
       </div>
     </div>
   </div>
@@ -83,6 +91,48 @@
   <script src="js/bootstrap.min.js"></script>
 
   <script>
+    ipcRenderer = require('electron').ipcRenderer
+
+    // Save the window size in electron
+    ipcRenderer.send('saveScreenSize',getWindowSize())
+
+    let recentArticles = ipcRenderer.sendSync('getRecentArticles')
+
+    if (recentArticles) {
+      let listGroup = $('div.list-group#recent-articles')
+      recentArticles.forEach(function (recentArticle) {
+        listGroup.append(
+          `
+          <div class="list-group-item recentArticleEntry" data-recent-article-path="${recentArticle.path}">
+
+            <div class="pull-right"><button type="button" class="close btnRemoveRecentArticle" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <h4 class="list-group-item-heading">${recentArticle.title}</h4>
+            <small class="text-success">${recentArticle.date}</small>
+            <p class="list-group-item-text">${recentArticle.path}</p>
+          </div>`
+        )
+      })
+
+      $('.btnRemoveRecentArticle').on('click', function () {
+
+        let arg = {
+          path: $(this).parents('.recentArticleEntry').attr('data-recent-article-path')
+        }
+
+        ipcRenderer.send('popRecentArticleEntry', arg)
+        $(this).parents('.recentArticleEntry').remove()
+      })
+
+      $('.recentArticleEntry').on('click', function () {
+        let arg = {
+          path: $(this).attr('data-recent-article-path'),
+          size: getWindowSize()
+        }
+
+        ipcRenderer.send('openRecentArticleEntry', arg)
+      })
+    }
+
     function getWindowSize() {
       return {
         width: screen.width,
@@ -97,12 +147,12 @@
 
       $('#btnCreateArticle').on('click', function () {
 
-        ipcRenderer.send('createArticle', getWindowSize())
+        ipcRenderer.send('createArticle')
       })
 
       $('#btnOpenArticle').on('click', function () {
 
-        ipcRenderer.send('openArticle', getWindowSize())
+        ipcRenderer.send('openArticle')
       })
     })
   </script>

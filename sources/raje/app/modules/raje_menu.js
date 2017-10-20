@@ -1,3 +1,5 @@
+const RAJE_STORAGE = require('./raje_storage.js')
+
 /**
  * 
  */
@@ -8,8 +10,9 @@ module.exports = {
    */
   getEditorMenu: function (canSave) {
     const template = [
-      this.getTabFile(canSave),
+      this.getTabArticle(canSave),
       this.getTabView(),
+      this.getTabEdit(),
       this.getTabHelp()
     ]
 
@@ -54,15 +57,21 @@ module.exports = {
   /**
    * 
    */
-  getTabFile: function (canSave) {
+  getTabArticle: function (canSave) {
     return {
-      label: 'File',
+      label: 'Article',
       submenu: [{
         label: 'New',
-        enabled: false
+        accelerator: 'CmdOrCtrl+N',
+        click: () => {
+          global.newArticle()
+        }
       }, {
         label: 'Open...',
-        enabled: false
+        accelerator: 'CmdOrCtrl+O',
+        click: () => {
+
+        }
       }, {
         label: 'Recents',
         enabled: false,
@@ -184,14 +193,21 @@ module.exports = {
    * 
    */
   getSplashMenu: function () {
+
     const template = [{
-      label: 'File',
+      label: 'Article',
       submenu: [{
-        label: 'Create new '
+        label: 'New',
+        accelerator: 'CmdOrCtrl+N',
+        click: () => {
+          global.newArticle()
+        }
       }, {
-        label: 'Open local ...'
-      }, {
-        label: 'Import from Github ...'
+        label: 'Open...',
+        accelerator: 'CmdOrCtrl+O',
+        click: () => {
+          global.openArticle()
+        }
       }]
     }]
 
@@ -230,6 +246,32 @@ module.exports = {
       })
     }
 
+    /*
+    // Get recent articles
+    let recentArticles = RAJE_STORAGE.getRecentArticlesSync()
+    let dropdownEntry = {
+      label: 'Recent articles'
+    }
+
+    // if there are some
+    if (recentArticles.length > 0) {
+
+      let tmp = []
+      recentArticles.forEach(function (recentArticle) {
+        tmp.push(recentArticle.path)
+      })
+
+      dropdownEntry.submenu = tmp
+    } 
+    
+    // If there aren't 
+    else
+      dropdownEntry.enabled = false
+
+    // Add the entry to the template
+    template.push(dropdownEntry)
+    */
     return template
+
   }
 }

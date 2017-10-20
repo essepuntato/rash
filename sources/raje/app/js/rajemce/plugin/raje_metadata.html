@@ -27,7 +27,7 @@
       background-color: white
     }
 
-    #author:hover{
+    #author:hover {
       cursor: move;
       background-color: #f9f9f9
     }
@@ -102,6 +102,20 @@
         ${FOOTER_AUTHOR}
       </div>`
 
+    /**
+     *
+     */
+    function addKeydownManager() {
+
+      $("input").off('keydown')
+
+      $('input').on('keydown', function (e) {
+        if (e.keyCode == 65) {
+          if (e.metaKey || e.ctrlKey)
+            $(this).select()
+        }
+      })
+    }
 
     $(document).ready(function () {
 
@@ -110,7 +124,7 @@
         if (e.keyCode == 27) {
           window.parent.tinyMCE.activeEditor.windowManager.close()
         }
-      });
+      })
 
       var args = top.tinymce.activeEditor.windowManager.getParams()
 
@@ -210,6 +224,7 @@
                 </div>
               </div>`
           )
+          addKeydownManager()
         })
 
         container.on('click', '#btnAddAuthorAfter', function (e) {
@@ -276,6 +291,7 @@
           $(this).parents('.row').first().before(newCategory)
 
           newCategory.find('input').focus()
+          addKeydownManager()
         })
       }
 
@@ -325,6 +341,7 @@
           $(this).parents('.row').first().before(newKeyword)
 
           newKeyword.find('input').focus()
+          addKeydownManager()
         })
       }
 
@@ -398,6 +415,8 @@
     $(window).load(function () {
       $("#sortable").sortable();
       $("#sortable").disableSelection();
+
+      addKeydownManager()
     })
   </script>
 </body>
