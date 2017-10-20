@@ -93,6 +93,9 @@
   <script>
     ipcRenderer = require('electron').ipcRenderer
 
+    // Save the window size in electron
+    ipcRenderer.send('saveScreenSize',getWindowSize())
+
     let recentArticles = ipcRenderer.sendSync('getRecentArticles')
 
     if (recentArticles) {
@@ -144,12 +147,12 @@
 
       $('#btnCreateArticle').on('click', function () {
 
-        ipcRenderer.send('createArticle', getWindowSize())
+        ipcRenderer.send('createArticle')
       })
 
       $('#btnOpenArticle').on('click', function () {
 
-        ipcRenderer.send('openArticle', getWindowSize())
+        ipcRenderer.send('openArticle')
       })
     })
   </script>

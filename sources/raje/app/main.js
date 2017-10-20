@@ -27,6 +27,8 @@ global.ASSETS_DIRECTORIES = [
 global.TEMPLATE = 'index.html'
 global.SPLASH = 'splash.html'
 
+global.screenSize
+
 const {
   BrowserWindow,
   ipcMain,
@@ -89,7 +91,7 @@ const windows = {
   /**
    * Open the editable template  
    */
-  openEditor: function (localRootPath, size) {
+  openEditor: function (localRootPath) {
 
     global.hasChanged = false
 
@@ -143,8 +145,8 @@ const windows = {
 
       // Open the new window with the size given by the splash window
       windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
-        width: size.width,
-        height: size.height,
+        width: global.screenSize.width,
+        height: global.screenSize.height,
         resizable: true
       })
 
@@ -194,7 +196,7 @@ const windows = {
        */
       windowManager.get(EDITOR_WINDOW).object.on('closed', event => {
         RAJE_FS.removeRajemceInArticle(editorWindowUrl, err => {
-          if(err) throw err
+          if (err) throw err
         })
       })
     })
@@ -252,9 +254,7 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  * Called by the splash window
  */
 ipcMain.on('createArticle', (event, arg) => {
-
-  windows.openEditor(null, arg)
-  windows.closeSplash()
+  global.newArticle()
 })
 
 
@@ -262,27 +262,7 @@ ipcMain.on('createArticle', (event, arg) => {
  * 
  */
 ipcMain.on('openArticle', (event, arg) => {
-
-  // Select the article index
-  let localRootPath = dialog.showOpenDialog({
-    title: 'Open RASH article',
-    properties: [
-      'openFile'
-    ],
-    filters: [{
-      name: 'HTML',
-      extensions: ['html']
-    }]
-  })
-
-  if (localRootPath) {
-
-    localRootPath = localRootPath[0]
-
-    // Open the first element of what the dialog returns
-    windows.openEditor(localRootPath, arg)
-    windows.closeSplash()
-  }
+  global.openArticle()
 })
 
 /**
@@ -424,9 +404,16 @@ ipcMain.on('openRecentArticleEntry', (event, arg) => {
 
   try {
     // Open the first element of what the dialog returns
-    windows.openEditor(arg.path, arg.size)
+    windows.openEditor(arg.path)
     windows.closeSplash()
   } catch (exception) {}
+})
+
+/**
+ * 
+ */
+ipcMain.on('saveScreenSize', (event, arg) => {
+  global.screenSize = arg
 })
 
 /**
@@ -443,6 +430,39 @@ global.executeSaveAs = function () {
  */
 global.executeSave = function () {
   windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
+}
+
+/**
+ * 
+ */
+global.newArticle = function () {
+  windowManager.closeCurrent()
+  windows.openEditor(null)
+}
+
+/**
+ * 
+ */
+global.openArticle = function () {
+  // Select the article index
+  let localRootPath = dialog.showOpenDialog({
+    title: 'Open RASH article',
+    properties: [
+      'openFile'
+    ],
+    filters: [{
+      name: 'HTML',
+      extensions: ['html']
+    }]
+  })
+
+  try {
+    localRootPath = localRootPath[0]
+
+    // Open the first element of what the dialog returns
+    windows.openEditor(localRootPath)
+    windows.closeSplash()
+  } catch (exception) {}
 }
 
 /**

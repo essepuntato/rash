@@ -85,6 +85,21 @@ module.exports = {
   },
 
   /**
+   * 
+   */
+  getRecentArticlesSync: function () {
+    storage.get(global.RECENT_ARTICLE_STORAGE, (err, recentArticles) => {
+      if (err) throw err
+
+      // If the result isn't an array, instatiate it
+      if (recentArticles.constructor !== Array)
+        recentArticles = []
+
+      return recentArticles
+    })
+  },
+
+  /**
    * DEBUG only - clear all elements in storage
    */
   clearAll: function () {
