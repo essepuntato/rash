@@ -12,6 +12,7 @@ module.exports = {
     const template = [
       this.getTabArticle(canSave),
       this.getTabView(),
+      this.getTabEdit(),
       this.getTabHelp()
     ]
 
