@@ -21,6 +21,10 @@ ul ul ul {
   margin-top: 10px
 }
 
+li.hidden-list-style{
+  list-style-type: none
+}
+
 i.mce-i-icon-anchor:before {
   content: "\f13d";
   font-family: FontAwesome;

@@ -37,10 +37,27 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
     if (selectedElement.is('p') && (selectedElement.parents('ul').length || selectedElement.parents('li').length)) {
 
+
+      /**
+       * Check if CMD+ENTER or CTRL+ENTER are pressed
+       */
+      if ((e.metaKey || e.ctrlKey) && e.keyCode == 13) {
+        e.preventDefault()
+        console.log('Pressed META+ENTER in list item')
+      }
+
+      /**
+       * Check if SHIFT+TAB is pressed
+       */
+      else if (e.shiftKey && e.keyCode == 9) {
+        e.preventDefault()
+        list.deNest()
+      }
+
       /**
        * Check if ENTER is pressed
        */
-      if (e.keyCode == 13) {
+      else if (e.keyCode == 13) {
 
         e.preventDefault()
 
@@ -59,17 +76,9 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
       /**
        * Check if TAB is pressed
        */
-      if (e.keyCode == 9) {
+      else if (e.keyCode == 9) {
         e.preventDefault()
-        console.log('Pressed TAB in list item')
-      }
-
-      /**
-       * Check if SHIFT+TAB is pressed
-       */
-      if (e.shiftKey && e.keyCode == 9) {
-        e.preventDefault()
-        console.log('Pressed SHIFT+TAB in list item')
+        list.nest()
       }
     }
   })
@@ -104,7 +113,7 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         tinymce.triggerSave()
 
         // Move the cursor
-        moveCaret(newList.find('p')[0], true)
+        moveCaret(newList.find('p')[0], false)
       })
     },
 
@@ -177,6 +186,52 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         // Update the content
         tinymce.triggerSave()
       })
+    },
+
+    /**
+     * 
+     */
+    nest: function () {
+
+      let p = $(tinymce.activeEditor.selection.getNode())
+      let listItem = p.parent('li')
+
+      // Check if the current li has at least one previous element
+      if (listItem.prevAll().length > 0) {
+
+        // Create the new list
+        let text = '<br>'
+
+        if (p.text().trim().length)
+          text = p.text().trim()
+
+        let newList = $(`<li class="hidden-list-style"><ol><li><p>${text}</p></li></ol></li>`)
+
+        // Replace the li with the new list
+        listItem.replaceWith(newList)
+
+        // Move the caret at the end of the new p 
+        moveCaret(newList.find('p')[0], false)
+
+        tinymce.triggerSave()
+      }
+    },
+
+    /**
+     * 
+     */
+    deNest: function () {
+
+      let listItem = $(tinymce.activeEditor.selection.getNode()).parent('li')
+      let list = listItem.parent()
+
+      if (listItem.nextAll().length > 0) {
+
+      }
+
+      // TODO Check if the current list has a list-parent
+      // TODO Check if the current li has successive li
+      // TODO Move the set of li to the parent 
     }
   }
 })
