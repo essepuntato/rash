@@ -201,12 +201,12 @@ if (hasBackend) {
    * @param {*} element 
    */
   function moveCaret(element, toStart) {
-    tinymce.activeEditor.selection.select(element)
+    tinymce.activeEditor.selection.select(element, true)
     tinymce.activeEditor.selection.collapse(toStart)
 
     tinymce.activeEditor.focus()
   }
-
+  
   /**
    * 
    * @param {*} element 
