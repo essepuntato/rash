@@ -21,6 +21,7 @@
     "electron-spell-check-provider": "^1.0.0",
     "electron-window-manager": "^1.0.4",
     "fs-extra": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.1",
     "jquery": "^3.1.1",
     "octonode": "^0.7.7",
     "request": "^2.79.0",
