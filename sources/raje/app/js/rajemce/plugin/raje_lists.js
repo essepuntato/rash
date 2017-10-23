@@ -33,11 +33,13 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
   editor.on('keyDown', function (e) {
 
 
-    // TODO Check if the selected element is a P inside a list (OL, UL)
+    // Check if the selected element is a P inside a list (OL, UL)
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
     if (selectedElement.is('p') && (selectedElement.parents('ul').length || selectedElement.parents('li').length)) {
 
-      // Check if enter key is pressed 
+      /**
+       * Check if ENTER is pressed
+       */
       if (e.keyCode == 13) {
 
         e.preventDefault()
@@ -54,11 +56,20 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         }
       }
 
-      // Check if tab key is pressed
+      /**
+       * Check if TAB is pressed
+       */
       if (e.keyCode == 9) {
-        console.log('Pressed TAB in list item')
-
         e.preventDefault()
+        console.log('Pressed TAB in list item')
+      }
+
+      /**
+       * Check if SHIFT+TAB is pressed
+       */
+      if (e.shiftKey && e.keyCode == 9) {
+        e.preventDefault()
+        console.log('Pressed SHIFT+TAB in list item')
       }
     }
   })
@@ -94,9 +105,6 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
 
         // Move the cursor
         moveCaret(newList.find('p')[0], true)
-
-        // Restore the whole content
-        // updateIframeFromSavedContent()
       })
     },
 
@@ -133,7 +141,7 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         listItem.after(newListItem)
 
         // Move the caret to the new li
-        moveCaret(newListItem[0])
+        moveCaret(newListItem[0], true)
 
         // Update the content
         tinymce.triggerSave()
