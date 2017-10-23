@@ -57,23 +57,20 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
 
       tinymce.activeEditor.undoManager.transact(function () {
 
+        let newList = $(`<${type}><li><p>${text}</p></li></${type}>`)
+
         // Add the new element
-        selectedElement.replaceWith(`<${type} data-pointer><li><p>${text}</p></li></${type}>`)
+        selectedElement.replaceWith(newList)
 
         // Save changes
         tinymce.triggerSave()
 
         // Move the cursor
-        moveCaret($(`${type}[data-pointer]`).find('p')[0])
-
-        // Remove the pointer attribute
-        $(`${type}[data-pointer]`).removeAttr('data-pointer')
+        moveCaret(newList.find('p')[0])
 
         // Restore the whole content
         updateIframeFromSavedContent()
       })
     },
-
-
   }
 })
