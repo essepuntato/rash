@@ -1686,7 +1686,9 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
-    onclick: function () {}
+    onclick: function () {
+      list.add(OL)
+    }
   })
 
   editor.addButton('raje_ul', {
@@ -1696,7 +1698,18 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
     disabledStateSelector: DISABLE_SELECTOR_FIGURES,
 
     // Button behaviour
-    onclick: function () {}
+    onclick: function () {
+      list.add(UL)
+    }
+  })
+
+  /**
+   * 
+   */
+  editor.on('keyDown', function (e) {
+
+    // TODO Manage enter key
+    // TODO 
   })
 
 
@@ -1708,13 +1721,36 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
     /**
      * 
      */
-    add: function(type){
+    add: function (type) {
 
-      //TODO lookup the current element 
-      //TODO check if the current element has not-blank text
-      //TODO add the new element
-      //TODO move the cursor
-    }
+      // Get the current element 
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      let text = '<br>'
+
+      // If the current element has text, save it
+      if (selectedElement.text().trim().length > 0)
+        text = selectedElement.text().trim()
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // Add the new element
+        selectedElement.replaceWith(`<${type} data-pointer><li><p>${text}</p></li></${type}>`)
+
+        // Save changes
+        tinymce.triggerSave()
+
+        // Move the cursor
+        moveCaret($(`${type}[data-pointer]`).find('p')[0])
+
+        // Remove the pointer attribute
+        $(`${type}[data-pointer]`).removeAttr('data-pointer')
+
+        // Restore the whole content
+        updateIframeFromSavedContent()
+      })
+    },
+
+
   }
 })
 /**
