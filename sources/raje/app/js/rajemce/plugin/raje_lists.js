@@ -33,13 +33,21 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
   editor.on('keyDown', function (e) {
 
 
-    // TODO Check if the selected element is inside a list (OL, UL)
+    // TODO Check if the selected element is a P inside a list (OL, UL)
     let selectedElement = $(tinymce.activeEditor.selection.getNode())
-    if (selectedElement.parents('ul').length || selectedElement.parents('li').length) {
+    if (selectedElement.is('p') && (selectedElement.parents('ul').length || selectedElement.parents('li').length)) {
 
       // Check if enter key is pressed 
       if (e.keyCode == 13) {
-        console.log('Pressed ENTER in list item')
+
+        // Check if the selection is collapsed
+        if (tinymce.activeEditor.selection.isCollapsed()) {
+
+          // Remove the empty LI
+          if (!selectedElement.text().trim().length)
+            list.removeListItem(selectedElement.parent('li'))
+
+        }
 
         e.preventDefault()
       }
@@ -83,18 +91,48 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         tinymce.triggerSave()
 
         // Move the cursor
-        moveCaret(newList.find('p')[0])
+        moveCaret(newList.find('p')[0], true)
 
         // Restore the whole content
-        updateIframeFromSavedContent()
+        // updateIframeFromSavedContent()
       })
     },
 
     /**
      * 
      */
-    addListItem: function () {
+    addListItem: function (listItem) {
 
+      // Get the remaining text until the end of the element
+      let text = selectedElement.text()
+      let startOffset = tinymce.activeEditor.selection.getRng().startOffset
+      let remainingText = text.substring(startOffset, text.length).trim()
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+      })
+    },
+
+    /**
+     * 
+     */
+    removeListItem: function (listItem) {
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // Check if the list has exactly one child remove the list
+        if (listItem.parent().children('li').length == 1) {
+          let list = listItem.parent()
+          list.remove()
+        }
+
+        // If the list has more children remove the selected child
+        else
+          listItem.remove()
+
+        // Update the content
+        tinymce.triggerSave()
+      })
     }
   }
 })
