@@ -32,8 +32,25 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
    */
   editor.on('keyDown', function (e) {
 
-    // TODO Manage enter key
-    // TODO 
+
+    // TODO Check if the selected element is inside a list (OL, UL)
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    if (selectedElement.parents('ul').length || selectedElement.parents('li').length) {
+
+      // Check if enter key is pressed 
+      if (e.keyCode == 13) {
+        console.log('Pressed ENTER in list item')
+
+        e.preventDefault()
+      }
+
+      // Check if tab key is pressed
+      if (e.keyCode == 9) {
+        console.log('Pressed TAB in list item')
+
+        e.preventDefault()
+      }
+    }
   })
 
 
@@ -72,5 +89,12 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         updateIframeFromSavedContent()
       })
     },
+
+    /**
+     * 
+     */
+    addListItem: function () {
+
+    }
   }
 })
