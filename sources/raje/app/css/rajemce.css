@@ -66,6 +66,16 @@ i.mce-i-icon-listing:before {
   font-family: FontAwesome;
 }
 
+i.mce-i-icon-ol:before {
+  content: "\f0cb";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-ul:before {
+  content: "\f0ca";
+  font-family: FontAwesome;
+}
+
 span>svg:hover {
   cursor: pointer
 }

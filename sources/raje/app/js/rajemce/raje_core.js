@@ -51,13 +51,13 @@ if (hasBackend) {
       content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
       // Set plugins
-      plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
+      plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste raje_lists raje_save",
 
       // Remove menubar
       menubar: false,
 
       // Custom toolbar
-      toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
+      toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | raje_ol raje_ul raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
 
       // Setup full screen on init
       setup: function (editor) {
@@ -1673,6 +1673,49 @@ tinymce.PluginManager.add('raje_inlineFigure', function (editor, url) {
     // Button behaviour
     onclick: function () {}
   })
+})
+tinymce.PluginManager.add('raje_lists', function (editor, url) {
+
+  const OL = 'ol'
+  const UL = 'ul'
+
+  editor.addButton('raje_ol', {
+    title: 'raje_ol',
+    icon: 'icon-ol',
+    tooltip: 'Ordered list',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
+
+    // Button behaviour
+    onclick: function () {}
+  })
+
+  editor.addButton('raje_ul', {
+    title: 'raje_ul',
+    icon: 'icon-ul',
+    tooltip: 'Unordered list',
+    disabledStateSelector: DISABLE_SELECTOR_FIGURES,
+
+    // Button behaviour
+    onclick: function () {}
+  })
+
+
+  /**
+   * 
+   */
+  let list = {
+
+    /**
+     * 
+     */
+    add: function(type){
+
+      //TODO lookup the current element 
+      //TODO check if the current element has not-blank text
+      //TODO add the new element
+      //TODO move the cursor
+    }
+  }
 })
 /**
  * 
