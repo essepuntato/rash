@@ -40,16 +40,18 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
       // Check if enter key is pressed 
       if (e.keyCode == 13) {
 
+        e.preventDefault()
+
         // Check if the selection is collapsed
         if (tinymce.activeEditor.selection.isCollapsed()) {
 
           // Remove the empty LI
           if (!selectedElement.text().trim().length)
-            list.removeListItem(selectedElement.parent('li'))
+            list.removeListItem()
 
+          else
+            list.addListItem()
         }
-
-        e.preventDefault()
       }
 
       // Check if tab key is pressed
@@ -101,24 +103,56 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
     /**
      * 
      */
-    addListItem: function (listItem) {
+    addListItem: function () {
 
-      // Get the remaining text until the end of the element
-      let text = selectedElement.text()
+      // Get the references of the existing element
+      let p = $(tinymce.activeEditor.selection.getNode())
+      let listItem = p.parent('li')
+
+      // Placeholder text of the new li
+      let newText = '<br>'
+
+      // Get the start offset and text of the current li
       let startOffset = tinymce.activeEditor.selection.getRng().startOffset
-      let remainingText = text.substring(startOffset, text.length).trim()
+      let pText = p.text().trim()
+
+      // If the cursor isn't at the end
+      if (startOffset != pText.length) {
+
+        // Update the text of the current li
+        p.text(pText.substring(0, startOffset))
+
+        // Get the remaining text
+        newText = pText.substring(startOffset, pText.length)
+      }
 
       tinymce.activeEditor.undoManager.transact(function () {
 
+        // Create and add the new li
+        let newListItem = $(`<li><p>${newText}</p></li>`)
+        listItem.after(newListItem)
+
+        // Move the caret to the new li
+        moveCaret(newListItem[0])
+
+        // Update the content
+        tinymce.triggerSave()
       })
     },
 
     /**
      * 
      */
-    removeListItem: function (listItem) {
+    removeListItem: function () {
+
+      // Get the selected listItem
+      let listItem = $(tinymce.activeEditor.selection.getNode()).parent('li')
 
       tinymce.activeEditor.undoManager.transact(function () {
+
+        // Add a empty paragraph after the list
+        let newP = $('<p><br></p>')
+        listItem.parent().after(newP)
 
         // Check if the list has exactly one child remove the list
         if (listItem.parent().children('li').length == 1) {
@@ -129,6 +163,8 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         // If the list has more children remove the selected child
         else
           listItem.remove()
+
+        moveCaret(newP[0])
 
         // Update the content
         tinymce.triggerSave()
