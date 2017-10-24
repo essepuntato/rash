@@ -51,13 +51,13 @@ if (hasBackend) {
       content_css: ['css/bootstrap.min.css', 'css/rash.css', 'css/rajemce.css'],
 
       // Set plugins
-      plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste lists raje_save",
+      plugins: "raje_inlineFigure fullscreen link codesample raje_inlineCode raje_inlineQuote raje_section table image noneditable raje_image raje_codeblock raje_table raje_listing raje_inline_formula raje_formula raje_crossref raje_footnotes raje_metadata paste raje_lists raje_save",
 
       // Remove menubar
       menubar: false,
 
       // Custom toolbar
-      toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | numlist bullist raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
+      toolbar: 'undo redo bold italic link superscript subscript raje_inlineCode raje_inlineQuote raje_inline_formula raje_crossref raje_footnotes | raje_ol raje_ul raje_codeblock blockquote raje_table raje_image raje_listing raje_formula | raje_section raje_metadata raje_save',
 
       // Setup full screen on init
       setup: function (editor) {
@@ -201,12 +201,12 @@ if (hasBackend) {
    * @param {*} element 
    */
   function moveCaret(element, toStart) {
-    tinymce.activeEditor.selection.select(element)
+    tinymce.activeEditor.selection.select(element, true)
     tinymce.activeEditor.selection.collapse(toStart)
 
     tinymce.activeEditor.focus()
   }
-
+  
   /**
    * 
    * @param {*} element 
