@@ -64,11 +64,17 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         // Check if the selection is collapsed
         if (tinymce.activeEditor.selection.isCollapsed()) {
 
-          // Remove the empty LI
-          if (!selectedElement.text().trim().length)
-            list.removeListItem()
+          if (!selectedElement.text().trim().length) {
 
-          else
+            // De nest
+            if (selectedElement.parents('ul,ol').length > 1)
+              list.deNest()
+
+            // Remove the empty LI
+            else
+              list.removeListItem()
+
+          } else
             list.addListItem()
         }
       }
@@ -205,15 +211,31 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
         if (p.text().trim().length)
           text = p.text().trim()
 
-        let newList = $(`<li class="hidden-list-style"><ol><li><p>${text}</p></li></ol></li>`)
+        // Get type of the parent list
+        let type = listItem.parent()[0].tagName.toLowerCase()
 
-        // Replace the li with the new list
-        listItem.replaceWith(newList)
+        // Create the new nested list
+        let newListItem = $(listItem[0].outerHTML)
 
-        // Move the caret at the end of the new p 
-        moveCaret(newList.find('p')[0], false)
+        tinymce.activeEditor.undoManager.transact(function () {
 
-        tinymce.triggerSave()
+          // If the previous element has a list
+          if (listItem.prev().find('ul,ol').length)
+            listItem.prev().find('ul,ol').append(newListItem)
+
+          // Add the new list inside the previous li
+          else {
+            newListItem = $(`<${type}>${newListItem[0].outerHTML}</${type}>`)
+            listItem.prev().append(newListItem)
+          }
+
+          listItem.remove()
+
+          // Move the caret at the end of the new p 
+          moveCaret(newListItem.find('p')[0])
+
+          tinymce.triggerSave()
+        })
       }
     },
 
@@ -225,13 +247,33 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
       let listItem = $(tinymce.activeEditor.selection.getNode()).parent('li')
       let list = listItem.parent()
 
-      if (listItem.nextAll().length > 0) {
+      // Check if the current list has at least another list as parent
+      if (listItem.parents('ul,ol').length > 1) {
 
+        tinymce.activeEditor.undoManager.transact(function () {
+
+          // Get all li: current and if there are successive
+          let nextLi = [listItem]
+          if (listItem.nextAll().length > 0) {
+            listItem.nextAll().each(function () {
+              nextLi.push($(this))
+            })
+          }
+
+          // Move all li out from the nested list
+          for (let i = nextLi.length - 1; i > -1; i--) {
+            nextLi[i].remove()
+            list.parent().after(nextLi[i])
+          }
+
+          // If empty remove the list
+          if (!list.children('li').length)
+            list.remove()
+
+          // Move the caret at the end
+          moveCaret(listItem.find('p')[0])
+        })
       }
-
-      // TODO Check if the current list has a list-parent
-      // TODO Check if the current li has successive li
-      // TODO Move the set of li to the parent 
     }
   }
 })
