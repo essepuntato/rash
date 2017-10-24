@@ -1,0 +1,116 @@
+#rashEditor[contenteditable="true"]:active, #rashEditor[contenteditable="true"]:focus {
+  border: none;
+  outline: none;
+}
+
+/* Chrome generated p and li */
+
+#rashEditor section>div, #rashEditor li {
+  margin: 0 0 10px;
+}
+
+#rashEditor .inline_formula {
+  background-color: #ffb7b7;
+}
+
+/** Sortable */
+ul#sortable{
+  list-style: none;
+  padding-left: 0
+}
+
+ul.dropdown-menu > li:hover{
+  cursor: pointer
+}
+
+/* Editor styles */
+
+ol,ul{
+  text-align: left
+}
+
+#formulaEditor .btn-group {
+  margin-top: 20px;
+}
+
+#formulaEditor textarea {
+  resize: vertical;
+}
+
+#formulaEditor #formula_output {
+  margin: 20px 0;
+}
+
+figure {
+  position: relative;
+}
+
+span.tableOptions {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+body {
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#messageDealer{
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+}
+
+#rashEditor li>a[data-code]{
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+address.lead.authors{
+  position: relative
+}
+
+span.authorSettings{
+  position: absolute;
+  left: -80px;
+}
+
+span.authorSettings:hover{
+  cursor: pointer
+}
+
+li.ui-state-default:hover{
+  cursor: move
+}
+
+div.list-group > a:hover{
+  cursor: pointer
+}
+
+img.avatar{
+  height: 20px;
+  padding-right: 10px
+}
+
+span.affiliation.placeholder{
+  color:#999
+}
+/*
+pre{
+  position: relative
+}
+
+pre::after{
+  position: absolute;
+  top: 0;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: rgba('0,0,0,.5');
+  content: "enter = new line"
+}
+
+figure > pref::after{
+  display: none
+}*/

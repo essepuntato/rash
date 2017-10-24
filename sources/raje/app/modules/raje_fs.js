@@ -1,4 +1,6 @@
 const fs = require('fs-extra')
+const cheerio = require('cheerio')
+
 const RAJE_HIDDEN_FILE = '.raje'
 
 module.exports = {
@@ -183,5 +185,47 @@ module.exports = {
   removeImageTempFolder: function () {
     if (fs.existsSync(global.IMAGE_TEMP))
       fs.removeSync(global.IMAGE_TEMP)
+  },
+
+  /**
+   * 
+   */
+  addRajemceInArticle: function (path, callback) {
+
+    path = path.replace('file://', '')
+
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) return callback(err)
+
+      const $ = cheerio.load(data, {
+        normalizeWhitespace: true
+      })
+
+      $('script[src="js/jquery.min.js"]')
+        .after(`<script src="js/rajemce/init_rajemce.js" data-rash-original-content=""/>`)
+
+      fs.writeFile(path, $.html())
+
+      return callback(null)
+    })
+  },
+
+  removeRajemceInArticle: function (path, callback) {
+
+    path = path.replace('file://', '')
+
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) return callback(err)
+
+      const $ = cheerio.load(data, {
+        normalizeWhitespace: true
+      })
+
+      $('script[src="js/rajemce/init_rajemce.js"]').remove()
+
+      fs.writeFile(path, $.html())
+
+      return callback(null)
+    })
   }
 }

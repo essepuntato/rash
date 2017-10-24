@@ -27,6 +27,8 @@ global.ASSETS_DIRECTORIES = [
 global.TEMPLATE = 'index.html'
 global.SPLASH = 'splash.html'
 
+global.screenSize
+
 const {
   BrowserWindow,
   ipcMain,
@@ -40,6 +42,7 @@ const windowManager = require('electron-window-manager')
 
 const RAJE_FS = require('./modules/raje_fs.js')
 const RAJE_MENU = require('./modules/raje_menu.js')
+const RAJE_STORAGE = require('./modules/raje_storage.js')
 
 const EDITOR_WINDOW = 'editor'
 const SPLASH_WINDOW = 'splash'
@@ -54,6 +57,9 @@ const windows = {
     // Init the window manager
     windowManager.init()
 
+    // DEBUG mode
+    // RAJE_STORAGE.clearAll()
+
     // Get the url to the splash window
     let splashWindowUrl = url.format({
       pathname: path.join(__dirname, SPLASH),
@@ -63,8 +69,8 @@ const windows = {
 
     // Open the splash window
     windowManager.open(SPLASH_WINDOW, 'RAJE', splashWindowUrl, null, {
-      height: 400,
-      width: 500,
+      height: 600,
+      width: 600,
       resizable: false,
       movable: true,
       fullscreenable: false
@@ -85,7 +91,7 @@ const windows = {
   /**
    * Open the editable template  
    */
-  openEditor: function (localRootPath, size) {
+  openEditor: function (localRootPath) {
 
     global.hasChanged = false
 
@@ -115,6 +121,12 @@ const windows = {
         slashes: true
       })
 
+      // The title is the folder name, the path has to be splitted
+      let tmp = savePath.split('/')
+
+      // Add the already created article here
+      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(savePath, tmp[tmp.length - 2]))
+
     } else {
 
       // Remember that the document isn't saved yet
@@ -128,52 +140,65 @@ const windows = {
       })
     }
 
-    // Open the new window with the size given by the splash window
-    windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
-      width: size.width,
-      height: size.height,
-      resizable: true
-    })
+    // Add the init_rajemce script
+    RAJE_FS.addRajemceInArticle(editorWindowUrl, err => {
 
-    // Update the app menu
-    windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+      // Open the new window with the size given by the splash window
+      windowManager.open(EDITOR_WINDOW, 'RAJE', editorWindowUrl, null, {
+        width: global.screenSize.width,
+        height: global.screenSize.height,
+        resizable: true
+      })
 
-    /**
-     * Catch the close event
-     */
-    windowManager.get(EDITOR_WINDOW).object.on('close', event => {
+      // Update the app menu
+      windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
 
-      // If the document is in hasChanged mode (need to be saved)
-      if (global.hasChanged) {
+      /**
+       * Catch the close event
+       */
+      windowManager.get(EDITOR_WINDOW).object.on('close', event => {
 
-        // Cancel the close event
-        event.preventDefault()
+        // If the document is in hasChanged mode (need to be saved)
+        if (global.hasChanged) {
 
-        // Show the dialog box "the document need to be saved"
-        dialog.showMessageBox({
-          type: 'warning',
-          buttons: ['Save changes', 'Discard changes', 'Cancel, continue editing'],
-          title: 'Unsaved changes',
-          message: 'The article has been changed, do you want to save the changes?',
-          cancelId: 2
-        }, (response) => {
-          switch (response) {
+          // Cancel the close event
+          event.preventDefault()
 
-            // The user wants to save the document
-            case 0:
-              // TODO save the document
-              global.hasChanged = false
-              windowManager.get(EDITOR_WINDOW).object.close()
-              break
+          // Show the dialog box "the document need to be saved"
+          dialog.showMessageBox({
+            type: 'warning',
+            buttons: ['Save changes', 'Discard changes', 'Cancel, continue editing'],
+            title: 'Unsaved changes',
+            message: 'The article has been changed, do you want to save the changes?',
+            cancelId: 2
+          }, (response) => {
+            switch (response) {
 
-              // The user doesn't want to save the document
-            case 1:
-              global.hasChanged = false
-              windowManager.get(EDITOR_WINDOW).object.close()
-              break
-          }
+              // The user wants to save the document
+              case 0:
+                // TODO save the document
+                global.hasChanged = false
+                windowManager.get(EDITOR_WINDOW).object.close()
+                break
+
+                // The user doesn't want to save the document
+              case 1:
+                global.hasChanged = false
+                windowManager.get(EDITOR_WINDOW).object.close()
+                break
+            }
+          })
+        }
+      })
+
+      /**
+       * When the editor is closed, remove rajemce from the article if is still there
+       */
+      windowManager.get(EDITOR_WINDOW).object.on('closed', event => {
+        RAJE_FS.removeRajemceInArticle(editorWindowUrl, err => {
+          if (err) throw err
         })
-      }
+      })
     })
   },
 
@@ -229,9 +254,7 @@ app.on('quit', RAJE_FS.removeImageTempFolder)
  * Called by the splash window
  */
 ipcMain.on('createArticle', (event, arg) => {
-
-  windows.openEditor(null, arg)
-  windows.closeSplash()
+  global.newArticle()
 })
 
 
@@ -239,27 +262,7 @@ ipcMain.on('createArticle', (event, arg) => {
  * 
  */
 ipcMain.on('openArticle', (event, arg) => {
-
-  // Select the article index
-  let localRootPath = dialog.showOpenDialog({
-    title: 'Open RASH article',
-    properties: [
-      'openFile'
-    ],
-    filters: [{
-      name: 'HTML',
-      extensions: ['html']
-    }]
-  })
-
-  if (localRootPath) {
-
-    localRootPath = localRootPath[0]
-
-    // Open the first element of what the dialog returns
-    windows.openEditor(localRootPath, arg)
-    windows.closeSplash()
-  }
+  global.openArticle()
 })
 
 /**
@@ -285,9 +288,6 @@ ipcMain.on('hasBackendSync', (event, arg) => {
  * Called from the renderer process
  */
 ipcMain.on('saveAsArticle', (event, arg) => {
-
-
-  console.log(arg.document)
   // Show save dialog here
   let savePath = dialog.showSaveDialog({
     title: 'Save as',
@@ -305,9 +305,12 @@ ipcMain.on('saveAsArticle', (event, arg) => {
 
       // Store important variables to check the save state
       global.isNew = false
-      global.savePath = savePath
+      global.savePath = `${savePath}/`
 
       windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+
+      // Save recent article entry
+      RAJE_STORAGE.pushRecentArticleEntry(RAJE_STORAGE.createRecentArticleEntry(global.savePath, arg.title))
 
       // Notify the client 
       global.sendNotification({
@@ -356,18 +359,17 @@ ipcMain.on('selectImageSync', (event, arg) => {
     }]
   })
 
-  // If a file is selected
-  if (imagePath[0]) {
-
-    // Save the image in the temporary folder
+  try {
     RAJE_FS.saveImageTemp(imagePath[0], (err, result) => {
 
       if (err) return event.returnValue = err
 
       return event.returnValue = result
     })
-  } else
+
+  } catch (exception) {
     return event.returnValue = null
+  }
 })
 
 /**
@@ -375,6 +377,43 @@ ipcMain.on('selectImageSync', (event, arg) => {
  */
 ipcMain.on('updateDocumentState', (event, arg) => {
   global.hasChanged = arg
+})
+
+/**
+ * 
+ */
+ipcMain.on('getRecentArticles', (event, arg) => {
+  RAJE_STORAGE.getRecentArticles((err, data) => {
+    if (err) return err
+
+    event.returnValue = data
+  })
+})
+
+/**
+ * 
+ */
+ipcMain.on('popRecentArticleEntry', (event, arg) => {
+  RAJE_STORAGE.popRecentArticleEntry(arg.path)
+})
+
+/**
+ * 
+ */
+ipcMain.on('openRecentArticleEntry', (event, arg) => {
+
+  try {
+    // Open the first element of what the dialog returns
+    windows.openEditor(arg.path)
+    windows.closeSplash()
+  } catch (exception) {}
+})
+
+/**
+ * 
+ */
+ipcMain.on('saveScreenSize', (event, arg) => {
+  global.screenSize = arg
 })
 
 /**
@@ -391,6 +430,39 @@ global.executeSaveAs = function () {
  */
 global.executeSave = function () {
   windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
+}
+
+/**
+ * 
+ */
+global.newArticle = function () {
+  windowManager.closeCurrent()
+  windows.openEditor(null)
+}
+
+/**
+ * 
+ */
+global.openArticle = function () {
+  // Select the article index
+  let localRootPath = dialog.showOpenDialog({
+    title: 'Open RASH article',
+    properties: [
+      'openFile'
+    ],
+    filters: [{
+      name: 'HTML',
+      extensions: ['html']
+    }]
+  })
+
+  try {
+    localRootPath = localRootPath[0]
+
+    // Open the first element of what the dialog returns
+    windows.openEditor(localRootPath)
+    windows.closeSplash()
+  } catch (exception) {}
 }
 
 /**
