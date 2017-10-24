@@ -43,7 +43,7 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
        */
       if ((e.metaKey || e.ctrlKey) && e.keyCode == 13) {
         e.preventDefault()
-        console.log('Pressed META+ENTER in list item')
+        list.addParagraph()
       }
 
       /**
@@ -274,6 +274,38 @@ tinymce.PluginManager.add('raje_lists', function (editor, url) {
           moveCaret(listItem.find('p')[0])
         })
       }
+    },
+
+    /**
+     * 
+     */
+    addParagraph: function () {
+
+      // Get references of current p
+      let p = $(tinymce.activeEditor.selection.getNode())
+      let startOffset = tinymce.activeEditor.selection.getRng().startOffset
+      let pText = p.text().trim()
+
+      let text = '<br>'
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // If the ENTER breaks p
+        if (startOffset != pText.length) {
+
+          // Update the text of the current li
+          p.text(pText.substring(0, startOffset))
+
+          // Get the remaining text
+          text = pText.substring(startOffset, pText.length)
+        }
+
+        // Create and add the element
+        let newP = $(`<p>${text}</p>`)
+        p.after(newP)
+        
+        moveCaret(newP[0], true)
+      })
     }
   }
 })
