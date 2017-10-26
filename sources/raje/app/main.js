@@ -151,7 +151,7 @@ const windows = {
       })
 
       // Update the app menu
-      windows.updateEditorMenu(RAJE_MENU.getEditorMenu(!global.isNew))
+      windows.updateEditorMenu(RAJE_MENU.getEditorMenu())
 
       /**
        * Catch the close event
@@ -429,7 +429,14 @@ global.executeSaveAs = function () {
  * Start the save process
  */
 global.executeSave = function () {
-  windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
+
+  // If the article hasn't been saved yet, call saveAs
+  if (global.isNew)
+    windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSaveAs')
+
+  // Or call save
+  else
+    windowManager.get(EDITOR_WINDOW).object.webContents.send('executeSave')
 }
 
 /**
