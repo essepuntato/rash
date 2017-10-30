@@ -55,7 +55,7 @@ $(document).ready(function () {
 
     // Remove and re-add RASH
     $('script[src="js/rash.js"]').remove()
-    thisScript.after('<script src="js/rash.js"></script>')
+    //thisScript.after('<script src="js/rash.js"></script>')
 
     // Add TinyMCE in the right position
     thisScript.after('<script src="js/tinymce/tinymce.js" data-rash-original-content=""></script>')
