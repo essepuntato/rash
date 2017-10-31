@@ -522,6 +522,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
     if (e.keyCode == 13)
       return handleFigureEnter(tinymce.activeEditor.selection)
 
+      /*
     if (e.keyCode == 9) {
       if (tinymce.activeEditor.selection.isCollapsed() && $(tinymce.activeEditor.selection.getNode()).parents(`code,${FIGURE_SELECTOR}`).length) {
         tinymce.activeEditor.selection.setContent('\t')
@@ -536,7 +537,7 @@ tinymce.PluginManager.add('raje_listing', function (editor, url) {
         tinymce.activeEditor.selection.setCursorLocation(startNode.parents(FIGURE_SELECTOR).prev('p,:header')[0], 1)
         return false
       }
-    }
+    }*/
   })
 
   listing = {

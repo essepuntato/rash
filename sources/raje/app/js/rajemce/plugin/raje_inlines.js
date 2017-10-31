@@ -23,23 +23,17 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
 
   editor.on('keyDown', function (e) {
 
-    // On enter key 
-    if (e.keyCode == 13) {
-      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    // Check if the selected element is a CODE that isn't inside a FIGURE or PRE
+    let selectedElement = $(tinymce.activeEditor.selection.getNode())
+    if (selectedElement.is('code') && !selectedElement.parents(FIGURE_SELECTOR).length && !selectedElement.parents('pre').length) {
 
-      // If the current element is code, but it isn't inside pre
-      if (selectedElement.is('code') && !selectedElement.parents(FIGURE_SELECTOR).length) {
+      /**
+       * Check if ENTER is pressed
+       */
+      if (e.keyCode == 13) {
 
-        let contents = selectedElement.parent().contents()
-        let index = contents.index(selectedElement)
-
-        // Move caret to the next node (also text)
-        if (contents[index + 1] != null) {
-          tinymce.activeEditor.selection.setCursorLocation(contents[index + 1], 0)
-          tinymce.activeEditor.selection.setContent(ZERO_SPACE)
-        }
-
-        return false
+        e.preventDefault()
+        code.exit()
       }
     }
   })
@@ -87,6 +81,32 @@ tinymce.PluginManager.add('raje_inlineCode', function (editor, url) {
           tinymce.activeEditor.selection.setCursorLocation(selectedElement.contents()[previousNodeIndex + 1], 1)
         })
       }
+    },
+
+    /**
+     * 
+     */
+    exit: function () {
+
+      // Get the current node index, relative to its parent
+      let selectedElement = $(tinymce.activeEditor.selection.getNode())
+      let parentContent = selectedElement.parent().contents()
+      let index = parentContent.index(selectedElement)
+
+      tinymce.activeEditor.undoManager.transact(function () {
+
+        // Check if the current node has a text after
+        if (typeof parentContent[index + 1] != 'undefined' && $(parentContent[index + 1]).is('text')) {
+          tinymce.activeEditor.selection.setCursorLocation(parentContent[index + 1], 0)
+          tinymce.activeEditor.selection.setContent(ZERO_SPACE)
+        }
+
+        // If the node hasn't text after, raje has to add it
+        else {
+          selectedElement.after(ZERO_SPACE)
+          tinymce.activeEditor.selection.setCursorLocation(parentContent[index + 1], 0)
+        }
+      })
     }
   }
 })
