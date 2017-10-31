@@ -167,7 +167,7 @@ const windows = {
           // Show the dialog box "the document need to be saved"
           dialog.showMessageBox({
             type: 'warning',
-            buttons: ['Save changes', 'Discard changes', 'Cancel, continue editing'],
+            buttons: ['Save changes [NOT IMPLEMENTED YET]', 'Discard changes', 'Continue editing'],
             title: 'Unsaved changes',
             message: 'The article has been changed, do you want to save the changes?',
             cancelId: 2
