@@ -333,7 +333,7 @@ function rash() {
             cur_entry_id == undefined ||
             cur_entry_id == false ||
             $("a[href=#" + cur_entry_id + "]").length == 0) {
-            $(this).find("p").prepend("<span class=\"cgen notcited\" data-rash-original-content=\"\" title=\"This reference is not cited in the document.\">[X] </span>");
+            $(this).find("p").prepend("<span class=\"cgen notcited\" contenteditable=\"false\" data-rash-original-content=\"\" title=\"This reference is not cited in the document.\">[X] </span>");
         }
     })
     /* /END Bibliographic reference list */

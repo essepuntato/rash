@@ -21,6 +21,10 @@ ul ul ul {
   margin-top: 10px
 }
 
+li.hidden-list-style{
+  list-style-type: none
+}
+
 i.mce-i-icon-anchor:before {
   content: "\f13d";
   font-family: FontAwesome;
@@ -63,6 +67,16 @@ i.mce-i-icon-formula:before {
 
 i.mce-i-icon-listing:before {
   content: "\f022";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-ol:before {
+  content: "\f0cb";
+  font-family: FontAwesome;
+}
+
+i.mce-i-icon-ul:before {
+  content: "\f0ca";
   font-family: FontAwesome;
 }
 

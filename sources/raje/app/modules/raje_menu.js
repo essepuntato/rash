@@ -8,9 +8,9 @@ module.exports = {
   /**
    * 
    */
-  getEditorMenu: function (canSave) {
+  getEditorMenu: function () {
     const template = [
-      this.getTabArticle(canSave),
+      this.getTabArticle(),
       this.getTabView(),
       this.getTabEdit(),
       this.getTabHelp()
@@ -89,7 +89,6 @@ module.exports = {
       }, {
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
-        enabled: canSave,
         click: () => {
           global.executeSave()
         }
